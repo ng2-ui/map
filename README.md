@@ -1,2 +1,6 @@
+
 # ng2-map
-Angular2 Google Maps Directives
+Google maps components for Angular2 apps
+
+## Placeholder for `angularjs-google-maps` angular2 module
+
