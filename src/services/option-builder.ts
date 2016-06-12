@@ -1,24 +1,26 @@
 import {Injectable} from '@angular/core';
 import {getJSON, IJson} from './util';
+import {GeoCoder} from "./geo-coder";
 
 @Injectable()
 export class OptionBuilder {
 
-  googlizeAllInputs(definedInputs: string[], userInputs: any[]) {
+  constructor(private geoCoder: GeoCoder) {}
+  
+  googlizeAllInputs(definedInputs: string[], userInputs: any) {
     let options: google.maps.MarkerOptions = <google.maps.MarkerOptions>{};
 
     definedInputs.forEach(input => {
       if (userInputs[input] !== undefined)  {
-        console.log('input', input, userInputs[input]);
-        options[input] = this.googlize(this[input], {key: input});
+        options[input] = this.googlize(userInputs[input], {key: input});
       }
     });
-    console.log('googlized options', options);
+    console.log('all inputs googlized', options);
     return options;
   }
 
-  googlizeAll(inputs: any[], options?: IJson): any {
-    let options = inputs;
+  googlizeMultiple(inputs: any[], options?: IJson): any {
+    let options = {};
     for(var key in inputs) {
       let val = inputs[key];
       // (non-strings are fully converted)
@@ -36,7 +38,7 @@ export class OptionBuilder {
     options = options || {};
     
     let output =
-      // -> googlize -> getJsonParsed -> googlize until all elements are parsed
+      // -> googlize -> getJsonParsed -> googlizeMultiple -> googlize until all elements are parsed
       this.getJSONParsed(input, options)
 
         /* Foo.Bar(...) -> new google.maps.Foo.Bar(...) */
@@ -69,6 +71,24 @@ export class OptionBuilder {
     return output;
   }
 
+  updateGoogleObject(object, changes) {
+    let val: any, currentValue: any, setMethodName: string;
+    if (object) {
+      for (var key in changes) {
+        setMethodName = `set${key.replace(/^[a-z]/, x => x.toUpperCase()) }`;
+        currentValue = changes[key].currentValue;
+        if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
+          this.geoCoder.geocode({address: currentValue}).subscribe(results => {
+            object[setMethodName](results[0].geometry.location);
+          })
+        } else {
+          val =  this.googlize(currentValue);
+          object[setMethodName](currentValue);
+        }
+      }
+    }
+  }
+  
   private getLatLng(input:string | Array): google.maps.LatLng | Array<google.maps.LatLng>{
     let output;
     if (input[0].constructor == Array) { // [[1,2],[3,4]]
@@ -94,7 +114,7 @@ export class OptionBuilder {
         // check for nested hashes and convert to Google API options
         let newOptions = options;
         newOptions['doNotConverStringToNumber'] = true;
-        output = this.googlize(output, newOptions);
+        output = this.googlizeMultiple(output, newOptions);
       }
     } catch (e) {}
     return output;

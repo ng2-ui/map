@@ -11,6 +11,7 @@ import {OptionBuilder} from "../services/option-builder";
 import {NavigatorGeolocation} from "../services/navigator-geolocation";
 import {GeoCoder} from "../services/geo-coder";
 import {Ng2Map} from "../services/ng2-map";
+import {Subject} from "rxjs/Rx";
 
 const INPUTS = `
   backgroundColor, center, disableDefaultUI, disableDoubleClickZoom, draggable, draggableCursor,
@@ -34,6 +35,7 @@ export class Ng2MapComponent implements OnChanges {
   public el: HTMLElement;
   public map: google.maps.Map;
   public mapOptions: google.maps.MapOptions = {};
+  public inputChanges$ = new Subject();
 
   constructor(
     private optionBuilder: OptionBuilder,
@@ -61,61 +63,43 @@ export class Ng2MapComponent implements OnChanges {
   
   initializeMap(): void {
     this.el = this.elementRef.nativeElement.querySelector('.google-map');
-    INPUTS.forEach(option => {
-      if (this[option] !== undefined)  {
-        console.log('map option', option, this[option]);
-        this.mapOptions[option] = this.optionBuilder.googlize(this[option]);
-      }
-    });
-    
+    this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
     console.log('this.mapOptions', this.mapOptions);
-    if (typeof this.mapOptions.center === 'string') {
-      delete this.mapOptions.center;
-    }
+
     this.mapOptions.zoom = this.mapOptions.zoom || 15;
+    typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
     this.map = new google.maps.Map(this.el, this.mapOptions);
     
-    this.setDefaultCenter();
-    this.setCenterFromAddress();
+    this.setCenter();
     
     // broadcast map ready message
     this.ng2Map.map = this.map;
     this.ng2Map.mapReady$.next(this.map);
+    
+    // update map when input changes
+    this.inputChanges$
+      .debounceTime(1000)
+      .subscribe(changes =>this.optionBuilder.updateGoogleObject(this.map, changes));
   }
   
-  setDefaultCenter(): void {
+  setCenter(): void {
     if (!this['center']) {
       this.geolocation.getCurrentPosition().subscribe(position => {
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         this.map.setCenter(latLng);
       });
     }
-  }
-
-  setCenterFromAddress(): void {
-    if (typeof this['center'] === 'string') {
+    else if (typeof this['center'] === 'string') {
       this.geoCoder.geocode({address: this['center']}).subscribe(results => {
         console.log('results', this.map, results[0].geometry.location);
         this.map.setCenter(results[0].geometry.location);
       })
     }
   }
-  
+
   ngOnChanges(changes: {[key: string]: SimpleChange}) {
     let val: any, currentValue: any, setMethodName: string;
-    if (this.map) {
-      for (var key in changes) {
-        setMethodName = `set${key.replace(/^[a-z]/, x => x.toUpperCase()) }`;
-        currentValue = changes[key].currentValue;
-        if (key === 'center' && typeof currentValue === 'string') {
-          this.geoCoder.geocode({address: currentValue}).subscribe(results => {
-            this.map.setCenter(results[0].geometry.location);
-          })
-        } else {
-          val =  this.optionBuilder.googlize(currentValue);
-          this.map[setMethodName](currentValue);
-        }
-      }
-    }
-  }  
+    this.inputChanges$.next(changes);
+  }
+  
 }
