@@ -31,6 +31,9 @@ var getJSON = function(str: string): any {
   return JSON.parse(jsonize(str));
 };
 
+/**
+ * json type definition
+ */
 interface IJson {
   [x: string]: string|number|boolean|Date|IJson|IJsonArray;
 }

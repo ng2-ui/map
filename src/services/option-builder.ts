@@ -2,6 +2,10 @@ import {Injectable} from '@angular/core';
 import {getJSON, IJson} from './util';
 import {GeoCoder} from "./geo-coder";
 
+/**
+ * change any object to google object options
+ * e.g. [1,2] -> new google.maps.LatLng(1,2);
+ */
 @Injectable()
 export class OptionBuilder {
 
@@ -15,7 +19,6 @@ export class OptionBuilder {
         options[input] = this.googlize(userInputs[input], {key: input});
       }
     });
-    console.log('all inputs googlized', options);
     return options;
   }
 
@@ -71,24 +74,6 @@ export class OptionBuilder {
     return output;
   }
 
-  updateGoogleObject(object, changes) {
-    let val: any, currentValue: any, setMethodName: string;
-    if (object) {
-      for (var key in changes) {
-        setMethodName = `set${key.replace(/^[a-z]/, x => x.toUpperCase()) }`;
-        currentValue = changes[key].currentValue;
-        if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
-          this.geoCoder.geocode({address: currentValue}).subscribe(results => {
-            object[setMethodName](results[0].geometry.location);
-          })
-        } else {
-          val =  this.googlize(currentValue);
-          object[setMethodName](currentValue);
-        }
-      }
-    }
-  }
-  
   private getLatLng(input:string | Array): google.maps.LatLng | Array<google.maps.LatLng>{
     let output;
     if (input[0].constructor == Array) { // [[1,2],[3,4]]

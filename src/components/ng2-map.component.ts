@@ -4,6 +4,8 @@ import {
   ViewEncapsulation,
   NgZone,
   OnChanges,
+  OnDestroy,
+  EventEmitter,
   SimpleChange
 } from '@angular/core';
 
@@ -21,22 +23,35 @@ const INPUTS = `
   overviewMapControlOptions, rotateControlOptions, scaleControlOptions, streetViewControlOptions,
   zoomControlOptions`.split(',').map(el => el.trim());
 
+const OUTPUTS = `
+  bounds_changed, center_changed, click, dblclick, drag, dragend, dragstart, heading_changed, idle
+  maptypeid_changed, mousemove, mouseout, mouseover, projection_changed, resize, rightclick, 
+  tilesloaded, tile_changed, zoom_changed`
+  .split(',').map(el => `map${el.trim().replace(/^[a-z]/,x => x.toUpperCase())}`);
+
 @Component({
   selector: 'ng2-map',
   providers: [Ng2Map, OptionBuilder, GeoCoder, NavigatorGeolocation],
   moduleId: module.id,
   styles: [`.google-map {width: 100%; height: 100%}`],
   inputs: INPUTS,
+  output: OUTPUTS,
   encapsulation: ViewEncapsulation.None,
-  template: `<div class="google-map"><ng-content></ng-content></div>`
+  template: `
+    <div class="google-map"></div>
+    <ng-content></ng-content>
+  `
 })
-export class Ng2MapComponent implements OnChanges {
+export class Ng2MapComponent implements OnChanges, OnDestroy {
 
   public el: HTMLElement;
   public map: google.maps.Map;
   public mapOptions: google.maps.MapOptions = {};
   public inputChanges$ = new Subject();
 
+  //map objects by group
+  public infoWindows: any = {};
+  
   constructor(
     private optionBuilder: OptionBuilder,
     private elementRef: ElementRef,
@@ -46,8 +61,16 @@ export class Ng2MapComponent implements OnChanges {
     private ng2Map: Ng2Map
   ) {
     this.addGoogleMapsApi();
+    
+    // all outputs needs to be initialized,
+    // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
+    OUTPUTS.forEach(output => this[output] = new EventEmitter());
   }
-  
+
+  ngOnChanges(changes: {[key: string]: SimpleChange}) {
+    this.inputChanges$.next(changes);
+  }
+
   addGoogleMapsApi(): void {
     window['ng2MapComponentRef'] = { zone: this.zone, componentFn: () => this.initializeMap()};
     window['initNg2Map'] = function() {
@@ -71,35 +94,46 @@ export class Ng2MapComponent implements OnChanges {
     this.map = new google.maps.Map(this.el, this.mapOptions);
     
     this.setCenter();
-    
+
+    //set google events listeners and emits to this outputs listeners
+    this.ng2Map.setObjectEvents(OUTPUTS, this, 'map');
+
     // broadcast map ready message
     this.ng2Map.map = this.map;
+    this.ng2Map.mapComponent = this;
+    this.ng2Map.map.mapComponent = this;
+    
+    // ........
+    console.log('......... map is ready.......');
     this.ng2Map.mapReady$.next(this.map);
     
     // update map when input changes
     this.inputChanges$
       .debounceTime(1000)
-      .subscribe(changes =>this.optionBuilder.updateGoogleObject(this.map, changes));
+      .subscribe(changes =>this.ng2Map.updateGoogleObject(this.map, changes));
   }
   
   setCenter(): void {
     if (!this['center']) {
       this.geolocation.getCurrentPosition().subscribe(position => {
+        console.log('setting map center from current location');
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         this.map.setCenter(latLng);
       });
     }
     else if (typeof this['center'] === 'string') {
       this.geoCoder.geocode({address: this['center']}).subscribe(results => {
-        console.log('results', this.map, results[0].geometry.location);
+        console.log('setting map center from address', this['center']);
         this.map.setCenter(results[0].geometry.location);
       })
     }
   }
 
-  ngOnChanges(changes: {[key: string]: SimpleChange}) {
-    let val: any, currentValue: any, setMethodName: string;
-    this.inputChanges$.next(changes);
+  openInfoWindow(id, anchor, data) {
+    this.infoWindows[id].open(anchor, data);
   }
-  
+
+  ngOnDestroy() {
+    OUTPUTS.forEach(output => google.maps.event.clearListeners(this.map, output));
+  }
 }
