@@ -1,7 +1,7 @@
 {
-  "name": "ng2-publish-seed",
-  "version": "0.1.4",
-  "description": "Angular2 npm package publish project example",
+  "name": "ng2-map",
+  "version": "0.1.0",
+  "description": "Angular2 Google Map`",
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
@@ -34,16 +34,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jsvalley/ng2-publish-seed.git"
+    "url": "git+https://github.com/jsvalley/ng2-map.git"
   },
   "author": "Allen Kim<allenhwkim@gmail.com>",
   "bugs": {
-    "url": "https://github.com/jsvalley/ng2-publish-seed/issues"
+    "url": "https://github.com/jsvalley/ng2-map/issues"
   },
-  "homepage": "https://github.com/jsvalley/ng2-publish-seed#readme",
+  "homepage": "https://github.com/jsvalley/ng2-map#readme",
   "keywords": [
     "angular2",
-    "publish",
-    "seed"
+    "google",
+    "map"
   ]
 }
