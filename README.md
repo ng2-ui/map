@@ -16,7 +16,7 @@ Angular2 Google Map (ng-map version 2)
 
 <table>
   <tr><th> Ver.  <th> Feature <th> Note. </tr>
-  <tr><td> 0.1.0 
+  <tr><td> 0.1.0 (current)
       <td> ng2-map<br/>
            marker<br/>
            info-window 
