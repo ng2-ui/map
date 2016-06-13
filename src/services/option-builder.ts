@@ -62,7 +62,7 @@ export class OptionBuilder {
       }
     }
 
-    if (output instanceof Object) {
+    if (options['key'] && output instanceof Object) {
       if (options['key'] === 'icon') {
         output = this.getMarkerIcon(output);
       }
@@ -101,12 +101,13 @@ export class OptionBuilder {
         newOptions['doNotConverStringToNumber'] = true;
         output = this.googlizeMultiple(output, newOptions);
       }
-    } catch (e) {}
+    } catch (e) {
+    }
     return output;
   }
 
   private getAnyMapObject(input: string): any {
-    let output:any;
+    let output: any;
     if (input.match(/^[A-Z][a-zA-Z0-9]+\(.*\)$/)) {
       try {
         let exp = "new google.maps." + input;
@@ -175,6 +176,7 @@ export class OptionBuilder {
 
   private getDateObject(input: string): Date {
     let output: Date;
+    
     if (input.match(/^(\d{4}\-\d\d\-\d\d([tT][\d:\.]*)?)([zZ]|([+\-])(\d\d):?(\d\d))?$/)) {
       try {
         output = new Date(input);

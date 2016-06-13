@@ -43,11 +43,23 @@ export class Ng2Map {
           })
         } else {
           val =  this.optionBuilder.googlize(currentValue);
-          object[setMethodName](currentValue);
+          object[setMethodName](val);
         }
       }
     }
   }
   
+  updateProperty(object, key, currentValue, previousValue?): void {
+    let val: any, currentValue: any, setMethodName: string;
+    setMethodName = `set${key.replace(/^[a-z]/, x => x.toUpperCase()) }`;
+    if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
+      this.geoCoder.geocode({address: currentValue}).subscribe(results => {
+        object[setMethodName](results[0].geometry.location);
+      })
+    } else {
+      val =  this.optionBuilder.googlize(currentValue);
+      object[setMethodName](val);
+    }
+  }
 }
 

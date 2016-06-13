@@ -23,12 +23,16 @@ var jsonize = function(str): string {
 /**
  * Returns string to an object by using JSON.parse()
  */
-var getJSON = function(str: string): any {
-  var re =/^[\+\-]?[0-9\.]+,[ ]*\ ?[\+\-]?[0-9\.]+$/; //lat,lng
-  if (str.match(re)) {
-    str = "["+str+"]";
+var getJSON = function(input: any): any {
+  if (typeof input === 'string') {
+    var re =/^[\+\-]?[0-9\.]+,[ ]*\ ?[\+\-]?[0-9\.]+$/; //lat,lng
+    if (input.match(re)) {
+      input = "["+input+"]";
+    }
+    return JSON.parse(jsonize(input));
+  } else {
+    return input; 
   }
-  return JSON.parse(jsonize(str));
 };
 
 /**

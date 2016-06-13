@@ -2,7 +2,6 @@ import {
   Component,
   ElementRef,
   ViewEncapsulation,
-  NgZone,
   OnChanges,
   OnDestroy,
   EventEmitter,
@@ -44,14 +43,16 @@ export class InfoWindow implements OnChanges, OnDestroy {
   constructor(
     private optionBuilder: OptionBuilder,
     private elementRef: ElementRef,
-    private ng2Map: Ng2Map,
-    private cd: ChangeDetectorRef
+    private ng2Map: Ng2Map
   ) {
     this.elementRef.nativeElement.style.display = 'none';
+
+    if (this.ng2Map.map) { //map is ready already
+      this.initialize(this.ng2Map.map);
+    } else {
+      this.ng2Map.mapReady$.subscribe(map => this.initialize(map));
+    }
     
-    this.ng2Map.mapReady$.subscribe(map =>  {
-      this.initialize(map)
-    });
     // all outputs needs to be initialized,
     // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
     OUTPUTS.forEach(output => this[output] = new EventEmitter());
@@ -63,6 +64,7 @@ export class InfoWindow implements OnChanges, OnDestroy {
 
   // called when map is ready
   initialize(map): void {
+    console.log('infowindow is being initialized');
     this.template = this.elementRef.nativeElement.innerHTML;
     
     this.options = this.optionBuilder.googlizeAllInputs(INPUTS, this);
@@ -101,6 +103,6 @@ export class InfoWindow implements OnChanges, OnDestroy {
 
   ngOnDestroy() {
     OUTPUTS.forEach(output => google.maps.event.clearListeners(this.infoWindow, output));
+    delete this.infoWindow;
   }
-  //TODO. destroy infoWindow
 }

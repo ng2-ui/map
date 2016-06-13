@@ -7,7 +7,7 @@ import {Ng2Map} from "../services/ng2-map";
 import {Subject} from "rxjs/Rx";
 
 const INPUTS = `
-   anchorPoint, animation, clickable, cursor, draggable, icon, label, opacity
+  anchorPoint, animation, clickable, cursor, draggable, icon, label, opacity
   ,optimized,place, position, shape, title, visible, zIndex`.split(',').map(el => el.trim());
 const OUTPUTS = `
   animation_changed, click, clickable_changed, cursor_changed, dblclick, drag, drag_end, draggable_changed,
@@ -32,8 +32,11 @@ export class Marker implements OnChanges, OnDestroy {
     private geolocation: NavigatorGeolocation,
     private geoCoder: GeoCoder
   ) {
-    console.log('......... marker is being initialized');
-    this.ng2Map.mapReady$.subscribe(map => this.initialize(map));
+    if (this.ng2Map.map) { //map is ready already
+      this.initialize(this.ng2Map.map);
+    } else {
+      this.ng2Map.mapReady$.subscribe(map => this.initialize(map));
+    }
     
     // all outputs needs to be initialized,
     // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
@@ -46,6 +49,8 @@ export class Marker implements OnChanges, OnDestroy {
 
   // called when map is ready
   initialize(map): void {
+    console.log('......... marker is being initialized');
+    
     this.options = this.optionBuilder.googlizeAllInputs(INPUTS, this);
     console.log('MARKER options', this.options);
 
@@ -61,28 +66,34 @@ export class Marker implements OnChanges, OnDestroy {
     
     // update marker when input changes
     this.inputChanges$
-      .debounceTime(1000)
-      .subscribe(changes =>this.ng2Map.updateGoogleObject(this.marker, changes));
+      .subscribe(changes => {
+        console.log('marker options are changed', changes);
+        this.ng2Map.updateGoogleObject(this.marker, changes)
+      });
   }
 
   setPosition(): void {
-    if (!this['position']) {
-      this.geolocation.getCurrentPosition().subscribe(position => {
-        console.log('setting marker position from current location');
-        let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        this.marker.setPosition(latLng);
-      });
-    }
-    else if (typeof this['position'] === 'string') {
-      this.geoCoder.geocode({address: this['position']}).subscribe(results => {
-        console.log('setting marker position from address', this['position']);
-        this.marker.setPosition(results[0].geometry.location);
-      })
-    }
+    setTimeout(() => {  // *ngFor position=".." does not refelect its value immediately
+      if (!this['position']) {
+        this.geolocation.getCurrentPosition().subscribe(position => {
+          console.log('setting marker position from current location');
+          let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          this.marker.setPosition(latLng);
+        });
+      }
+      else if (typeof this['position'] === 'string') {
+        this.geoCoder.geocode({address: this['position']}).subscribe(results => {
+          console.log('setting marker position from address', this['position']);
+          this.marker.setPosition(results[0].geometry.location);
+        })
+      }
+    }, 500);
   }
 
   ngOnDestroy() {
     OUTPUTS.forEach(output => google.maps.event.clearListeners(this.marker, output));
+    delete this.marker.setMap(null);
+    delete this.marker;
   }
 
 }
