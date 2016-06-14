@@ -5,6 +5,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
+    "build": "rm -rf dist && tsc && cp -R src/* dist"
   },
   "typescript": {
     "definition": "dist/index.d.ts"

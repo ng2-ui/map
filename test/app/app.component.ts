@@ -4,17 +4,7 @@ import { Ng2MapComponent, Marker, InfoWindow } from "ng2-map";
 @Component({
   selector: 'my-app',
   directives: [ Ng2MapComponent, Marker, InfoWindow ],
-  template: `
-    <ng2-map [center]="center">
-      <marker position="Brampton, Canada" draggable="true" (markerClick)="clicked($event)"></marker>
-      <marker *ngFor="let pos of positions" [position]="pos"></marker>
-      <info-window id="iw">
-        lat: [[lat]], lng: [[lng]]
-      </info-window>
-    </ng2-map>
-    center: <input [(ngModel)]="center" />
-    <button (click)="showRandomMarkers()">Show Random Markers</button>
-  `
+  template: document.querySelector('#my-app-template').innerHTML
 })
 export class AppComponent {
   public center ="Brampton, Canada";
