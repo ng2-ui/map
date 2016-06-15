@@ -2,6 +2,8 @@
 
 Angular2 Google Map (ng-map version 2)
 
+* **[DEMO](http://plnkr.co/edit/9AI9dg?p=preview)**
+
 ### Design Principle
 
 1. **All google properties must be able to be defined in html without Javascript.**   
@@ -11,7 +13,30 @@ Angular2 Google Map (ng-map version 2)
    No hiding, nor manipulation. By doing so, programmers don't need to learnthis module.
    If you know Google Maps V3 API, there shouldn't be no problem using this module.
 
+### Usage
 
+1. Install node_module `ng2-map`
+
+        $ npm install ng2-map --save
+       
+2. Update `system.config.js` to recognize ng2-map.
+
+        map['ng2-map'] = 'node_modules/ng2-map';
+        packages['ng2-map'] = { main: 'index.js', defaultExtension: 'js' };
+        
+3. Ready to go. Use it in your application by importing `NG2_MAP_DIRECTIVES`.
+
+        import { NG2_MAP_DIRECTIVES } from "ng2-map";
+
+        @Component({
+          selector: 'my-app',
+          directives: [ NG2_MAP_DIRECTIVES ],
+          template: `<ng2-map  [center]="Brampton, Canada"></ng2-map>`
+        })
+        export class AppComponent {
+          ... 
+        }
+          
 ### Google Maps V3 Compatibility Table
 
 <table>
@@ -44,3 +69,29 @@ Angular2 Google Map (ng-map version 2)
   <tr><td> Autocomplete    <td> AutocompleteOptions     <td> Autocomplete Events    <td> 1.1.0
   <tr><td> DirectionsRenderer <td> DirectionsRendererOptions     <td> DirectionsRenderer Events    <td> 1.2.0
 </table>
+
+### For Developers
+
+  * To run index.html in `test` directory
+  
+          $ cd test
+          $ python -mSimpleHTTPServer
+
+  * To test with src, update `systemjs.config.ts` to use `src` directory
+  
+          // For Development tet
+          map['ng2-map'] = 'src';
+          packages['ng2-map'] = { main: 'index.ts', defaultExtension: 'ts' };
+          
+  * To publish npm package
+  
+          $ npm run build
+          * npm publish
+          
+  * To test with npm package,  update `systemjs.config.ts` to use `dist` directory
+  
+          // For node_modules test
+          // map['ng2-map'] = 'dist';
+          // packages['ng2-map'] = { main: 'index.js', defaultExtension: 'js' };
+  
+  

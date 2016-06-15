@@ -18,9 +18,6 @@
     'rxjs':                       { defaultExtension: 'js' }
   };
 
-  map['ng2-map'] = 'src';
-  packages['ng2-map'] = { main: 'index.ts', defaultExtension: 'ts' };
-
   /**
    * For test of node module publish, visit http://plnkr.co/edit/32syXF?p=preview 
    */
@@ -44,6 +41,14 @@
     packages['@angular/'+pkgName] = { main: pkgName + '.umd.js', defaultExtension: 'js' };
   });
 
+  // For Development tet
+  map['ng2-map'] = 'src';
+  packages['ng2-map'] = { main: 'index.ts', defaultExtension: 'ts' };
+
+  // For node_modules test
+  // map['ng2-map'] = 'dist';
+  // packages['ng2-map'] = { main: 'index.js', defaultExtension: 'js' };
+  
   var config = {
     // DEMO ONLY! REAL CODE SHOULD NOT TRANSPILE IN THE BROWSER
     transpiler: 'ts',

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { Ng2MapComponent, Marker, InfoWindow } from "ng2-map";
+import { NG2_MAP_DIRECTIVES } from "ng2-map";
 
 @Component({
   selector: 'my-app',
-  directives: [ Ng2MapComponent, Marker, InfoWindow ],
+  directives: [ NG2_MAP_DIRECTIVES ],
   template: document.querySelector('#my-app-template').innerHTML
 })
 export class AppComponent {
