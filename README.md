@@ -2,7 +2,7 @@
 
 Angular2 Google Map (ng-map version 2)
 
-* **[DEMO](http://plnkr.co/edit/9AI9dg?p=preview)**
+* **[![Imgur](http://i.imgur.com/O2EOCxf.png)](http://plnkr.co/edit/9AI9dg?p=preview)**
 
 ### Design Principle
 
