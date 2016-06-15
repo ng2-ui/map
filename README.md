@@ -1,6 +1,6 @@
 # ng2-map
 
-Angular2 Google Map (ng-map version 2)
+Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
 * **[![Imgur](http://i.imgur.com/O2EOCxf.png)](http://plnkr.co/edit/9AI9dg?p=preview)**
 
@@ -60,14 +60,14 @@ Angular2 Google Map (ng-map version 2)
   <tr><td> FusionTablesLayer <td> FusionTablesLayerOptions <td> FusionTablesLayer Events <td> v0.3.0
   <tr><td> HeatMapLayer  <td> HeatMapLayerLayerOptions <td> HeatMapLayer Events      <td> v0.3.0
   <tr><td> KmlLayer      <td> KmlLayerLayerOptions     <td> KmlLayer Events          <td> v0.3.0
-  <tr><td> Data          <td> DataOptions              <td> Data Events              <td> v0.4.0 `<map-data>`
+  <tr><td> Data          <td> DataOptions              <td> Data Events              <td> v0.4.0 `map-data`
   <tr><td> BicyclingLayer  <td> BicyclingLayerOptins    <td> BicyclingLayer Events   <td> v0.5.0 
   <tr><td> MapsEngineLayer <td> MapsEngineLayerOptins   <td> MapsEngineLayer Events  <td> v0.5.0 
   <tr><td> TrafficLayer    <td> TrafficLayerOptions     <td> TrafficLayer Events     <td> v0.5.0 
   <tr><td> StreetViewPanorama  <td> StreetViewPanoramaOptions     <td> StreetViewPanorama Events  <td> v0.6.0 
-  <tr><td> DrawingManager  <td> DrawingManagerOptions   <td> Drawing Manager Events <td> 0.7.0
-  <tr><td> Autocomplete    <td> AutocompleteOptions     <td> Autocomplete Events    <td> 1.1.0
-  <tr><td> DirectionsRenderer <td> DirectionsRendererOptions     <td> DirectionsRenderer Events    <td> 1.2.0
+  <tr><td> DrawingManager  <td> DrawingManagerOptions   <td> Drawing Manager Events <td> v0.7.0
+  <tr><td> Autocomplete    <td> AutocompleteOptions     <td> Autocomplete Events    <td> v1.1.0
+  <tr><td> DirectionsRenderer <td> DirectionsRendererOptions     <td> DirectionsRenderer Events    <td> v1.2.0
 </table>
 
 ### For Developers
