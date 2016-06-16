@@ -2,7 +2,7 @@
 <html>
 <head>
   <script>document.write('<base href="' + document.location + '" />');</script>
-  <title>Angular2 DateTime Picker Test</title>
+  <title>Angular2 Google Maps</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <script src="node_modules/zone.js/dist/zone.min.js?main=browser"></script>
@@ -11,13 +11,13 @@
 
   <script src="systemjs.config.js"></script>
   <script>System.import('app').catch(function(err){ console.error(err); });</script>
-  <style>.google-map {height: 500px !important}</style>
+  <style>ng2-map {width: 600px}</style>
 </head>
 
 <body>
 <my-app>Loading...</my-app>
 <script type="ng2-template" id="my-app-template">
-  <ng2-map  [center]="center">
+  <ng2-map [center]="center">
     <marker position="Brampton, Canada" draggable="true" (markerClick)="clicked($event)"></marker>
     <marker *ngFor="let pos of positions" [position]="pos"></marker>
     <info-window id="iw">

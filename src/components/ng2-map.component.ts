@@ -34,7 +34,10 @@ const OUTPUTS = `
   selector: 'ng2-map',
   providers: [Ng2Map, OptionBuilder, GeoCoder, NavigatorGeolocation],
   moduleId: module.id,
-  styles: [`.google-map {width: 100%; height: 100%; min-height: 300px;}`],
+  styles: [`
+    ng2-map {display: block; height: 300px;}
+    .google-map {width: 100%; height: 100%}
+  `],
   inputs: INPUTS,
   outputs: OUTPUTS,
   encapsulation: ViewEncapsulation.None,
