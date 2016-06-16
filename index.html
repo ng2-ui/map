@@ -47,6 +47,46 @@
         <button (click)="showRandomMarkers()">Show Random Markers</button>
       </script>
 
+      <h3>Design Principle</h3>
+
+      <ol>
+        <li><p><strong>All google properties must be able to be defined in html without Javascript.</strong> <br>
+          Thus, basic users don't even have to know what Javascript is. </p></li>
+
+        <li><p><strong>Expose all original Google Maps V3 api to the user without any exception.</strong> <br>
+          No hiding, nor manipulation. By doing so, programmers don't need to learnthis module.
+          If you know Google Maps V3 API, there shouldn't be no problem using this module.</p></li>
+      </ol>
+
+      <h3>Usage</h3>
+
+      <ol>
+        <li><p>Install node_module <code>ng2-map</code></p>
+
+          <pre><code>$ npm install ng2-map --save</code></pre>
+        </li>
+
+        <li><p>Update <code>system.config.js</code> to recognize ng2-map.</p>
+
+<pre><code>map['ng2-map'] = 'node_modules/ng2-map';
+packages['ng2-map'] = { main: 'index.js', defaultExtension: 'js' };</code></pre>
+        </li>
+
+        <li><p>Ready to go. Use it in your application by importing <code>NG2_MAP_DIRECTIVES</code>.</p>
+
+<pre><code>import { NG2_MAP_DIRECTIVES } from "ng2-map";
+
+@Component({
+  selector: 'my-app',
+  directives: [ NG2_MAP_DIRECTIVES ],
+  template: `&lt;ng2-map  [center]="Brampton, Canada"&gt;&lt;/ng2-map&gt;`
+})
+export class AppComponent {
+  ...
+}</code></pre>
+        </li>
+      </ol>
+
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/jsvalley/ng2-map">Ng2-map</a> is maintained by <a
             href="https://github.com/jsvalley">jsvalley</a>.</span>
