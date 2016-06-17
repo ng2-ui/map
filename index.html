@@ -86,6 +86,55 @@ export class AppComponent {
         </li>
       </ol>
 
+      <div class="social-section">
+        <div class="mdl-grid social-buttons">
+          <!-- facebook sdk -->
+          <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=254907754864724";
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));</script>
+
+          <!-- facebook -->
+          <div class="fb-like"
+               data-href="{{ page.url }}"
+               data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
+          &nbsp;
+
+          <!-- twitter -->
+          <a href="https://twitter.com/share" class="twitter-share-button" data-size="medium">Tweet</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          &nbsp;
+
+          <!-- linkedin -->
+          <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+          <script type="IN/Share" data-counter="right"></script>
+          &nbsp;
+
+          <!-- Google + -->
+          <!-- Place this tag in your head or just before your close body tag. -->
+          <script src="https://apis.google.com/js/platform.js" async defer></script>
+          <!-- Place this tag where you want the +1 button to render. -->
+          <div class="g-plusone" data-size="medium"></div>
+          &nbsp;
+
+          <!-- Tumblr -->
+          <a class="tumblr-share-button" data-color="blue" data-notes="right" href="https://embed.tumblr.com/share"></a>
+          <script>!function(d,s,id){var js,ajs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://secure.assets.tumblr.com/share-button.js";ajs.parentNode.insertBefore(js,ajs);}}(document, "script", "tumblr-js");</script>
+          &nbsp;
+
+        </div>
+
+        <!-- facebook comment starts -->
+        <div id="fb-root"></div>
+        <div class="fb-comments" data-href="http://jsvalley.github.io/ng2-map" data-numposts="5"></div>
+        <!-- facebook comment ends -->
+      </div>
+
+      </div>
+
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/jsvalley/ng2-map">Ng2-map</a> is maintained by <a
             href="https://github.com/jsvalley">jsvalley</a>.</span>
