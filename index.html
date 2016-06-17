@@ -16,7 +16,15 @@
 
     <script src="systemjs.config.js"></script>
     <script>System.import('app').catch(function(err){ console.error(err); });</script> </head>
-    <style>.google-map  {height: 500px !important} </style>
+    <style>
+      my-app {display: block; min-height: 500px}
+      my-app h1 {font-size: 1.5em}
+      ng2-map {display: block; width: 70%;}
+      .ls {min-height: 400px; max-height: 500px; overflow: auto; width: 30%; float: right; list-style: none; cursor: pointer; color: #155996;}
+    </style>
+    <script>
+      function reload(id) { window.location.hash = id; window.location.reload(); }
+    </script>
 
   </head>
   <body>
@@ -28,12 +36,14 @@
     </section>
 
     <section class="main-content">
-      <h3>
-        <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true">
-          <span aria-hidden="true" class="octicon octicon-link"></span>
-        </a>Welcome to GitHub Pages.
-      </h3>
 
+      <ul class="ls">
+        <h2> Examples </h2>
+        <li onclick="reload('simple-map')">Simple Map</li>
+        <li onclick="reload('simple-marker')">Simple Marker</li>
+        <li onclick="reload('marker-ng-for')">Marker With *ngFor</li>
+        <li onclick="reload('simple-info-window')">Simple InfoWindow</li>
+      </ul>
       <my-app>Loading...</my-app>
 
       <h3>Design Principle</h3>

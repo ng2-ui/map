@@ -5,7 +5,7 @@ import { NG2_MAP_DIRECTIVES } from "ng2-map";
 @Component({
   selector: 'my-app',
   directives: [ NG2_MAP_DIRECTIVES ],
-  templateUrl: 'app/app.tpl.html'
+  template: `<div #mapComponents></div>` 
 })
 export class AppComponent {
   public center ="Brampton, Canada";
@@ -19,9 +19,16 @@ export class AppComponent {
     this.load(componentId);
   }
 
+  reload(componentId) {
+    window.location.hash = componentId;
+    window.location.reload();
+  }
+
   // load a component remotely
   load(componentId) {
-    let url: string  = `app/${componentId}.component.ts`;
+   
+    let url: string  =
+      `https://raw.githubusercontent.com/jsvalley/ng2-map/master/test/app/${componentId}.component.ts`;
 
     try {
       this.mapComponents.remove(0);
