@@ -15,4 +15,5 @@ import {NG2_MAP_DIRECTIVES} from 'ng2-map';
     </ul>
   `
 })
-export class SimpleMapComponent{}
+export class TestComponent{
+}

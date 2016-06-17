@@ -2,11 +2,10 @@ import {Component, ViewChild, ViewContainerRef, ComponentResolver} from '@angula
 import {Observable} from 'rxjs/Rx';
 import { NG2_MAP_DIRECTIVES } from "ng2-map";
 
-
 @Component({
   selector: 'my-app',
   directives: [ NG2_MAP_DIRECTIVES ],
-  template: `<div #mapComponents></div>`
+  templateUrl: 'app/app.tpl.html'
 })
 export class AppComponent {
   public center ="Brampton, Canada";
@@ -16,11 +15,14 @@ export class AppComponent {
   constructor(private compResolver:ComponentResolver) {}
 
   ngAfterViewInit(){
-    let url = 'app/simple-map.component.ts';
-    this.loadComponentRemotely(url);
+    let componentId = window.location.hash ? window.location.hash.replace(/#/,'') : 'simple-marker';
+    this.load(componentId);
   }
 
-  loadComponentRemotely(url) {
+  // load a component remotely
+  load(componentId) {
+    let url: string  = `app/${componentId}.component.ts`;
+
     try {
       this.mapComponents.remove(0);
     } catch(e) {}
@@ -29,24 +31,13 @@ export class AppComponent {
     let resolve = comp => Observable.fromPromise(this.compResolver.resolveComponent(comp));
 
     importer(url)
-      .switchMap(comp => resolve(comp.SimpleMapComponent))
-      .subscribe(factory => this.mapComponents.createComponent(factory, 0))
+      .switchMap(comp => {
+        return resolve(comp.TestComponent)
+      })
+      .subscribe(factory => {
+        this.mapComponents.createComponent(factory, 0);
+        window.location.hash = componentId;
+      })
   }
 
-  clicked(marker) {
-    marker.map.mapComponent.openInfoWindow('iw', marker, {
-      lat: marker.getPosition().lat(), lng: marker.getPosition().lng()
-    })
-  }
-
-  showRandomMarkers() {
-    let randomLat: number, randomLng: number;
-    
-    this.positions = [];
-    for (let i=0; i<9; i++) {
-      randomLat = Math.random() * (43.7399 - 43.7300) + 43.7300;
-      randomLng = Math.random() * (-79.7600 - -79.7699) + -79.7699;
-      this.positions.push([randomLat, randomLng]);
-    }
-  }
 }
