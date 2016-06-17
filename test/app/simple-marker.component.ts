@@ -9,9 +9,9 @@ import {NG2_MAP_DIRECTIVES} from 'ng2-map';
       <marker position="Brampton, Canada" draggable="true"></marker>
     </ng2-map>
     <pre>
-      &lt;ng2-map center="Brampton, Canada">
-        &lt;marker position="Brampton, Canada" draggable="true">&lt;/marker>
-      &lt;/ng2-map>
+&lt;ng2-map center="Brampton, Canada">
+  &lt;marker position="Brampton, Canada" draggable="true">&lt;/marker>
+&lt;/ng2-map>
     </pre>
   `
 })

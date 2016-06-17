@@ -12,12 +12,12 @@ import {NG2_MAP_DIRECTIVES} from 'ng2-map';
       </info-window>
     </ng2-map>
     <pre>
-    &lt;ng2-map center="Brampton, Canada">
-      &lt;marker position="Brampton, Canada" draggable="true" (markerClick)="clicked($event)">&lt;/marker>
-      &lt;info-window id="iw">
-        lat: [[lat]], lng: [[lng]]
-      &lt;/info-window>
-    &lt;/ng2-map>
+&lt;ng2-map center="Brampton, Canada">
+  &lt;marker position="Brampton, Canada" draggable="true" (markerClick)="clicked($event)">&lt;/marker>
+  &lt;info-window id="iw">
+    lat: [[lat]], lng: [[lng]]
+  &lt;/info-window>
+&lt;/ng2-map>
     </pre>
     Please click the marker to see a info window
   `

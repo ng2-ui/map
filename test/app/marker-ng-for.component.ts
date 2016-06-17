@@ -8,11 +8,11 @@ template: `
   <ng2-map zoom="13" center="Brampton, Canada">
     <marker *ngFor="let pos of positions" [position]="pos"></marker>
   </ng2-map>
-  <pre>
   <button (click)="showRandomMarkers()">Show Random Markers</button>
-  &lt;ng2-map zoom="13" center="Brampton, Canada">
-    &lt;marker *ngFor="let pos of positions" [position]="pos">&lt;/marker>
-  &lt;/ng2-map>
+  <pre>
+&lt;ng2-map zoom="13" center="Brampton, Canada">
+  &lt;marker *ngFor="let pos of positions" [position]="pos">&lt;/marker>
+&lt;/ng2-map>
   </pre>
 `
 })
