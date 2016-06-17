@@ -17,11 +17,34 @@
     <script src="systemjs.config.js"></script>
     <script>System.import('app').catch(function(err){ console.error(err); });</script> </head>
     <style>
-      my-app {display: block; min-height: 500px}
+      my-app {
+        display: block;
+        min-height: 500px
+      }
       my-app h1 {font-size: 1.5em}
-      ng2-map {display: block; width: 70%;}
-      .ls {min-height: 400px; max-height: 500px; overflow: auto; width: 30%; float: right; list-style: none; cursor: pointer; color: #155996;}
+      ng2-map {
+        min-width: 280px;
+        display: block;
+        width: 70%;
+      }
+      .ls {
+        min-height: 400px;
+        max-height: 500px;
+        overflow: auto;
+        width: 30%;
+        float: right;
+        list-style: none;
+        cursor: pointer;
+        color: #155996;
+      }
       .social-buttons {line-height: 16px}
+      @media screen and (max-width: 768px) {
+        .ls {
+          float: none;
+          min-height: inherit;
+          width: auto;
+        }
+      }
     </style>
     <script>
       function reload(id) { window.location.hash = id; window.location.reload(); }
