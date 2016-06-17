@@ -35,17 +35,6 @@
       </h3>
 
       <my-app>Loading...</my-app>
-      <script type="ng2-template" id="my-app-template">
-        <ng2-map  [center]="center">
-          <marker position="Brampton, Canada" draggable="true" (markerClick)="clicked($event)"></marker>
-          <marker *ngFor="let pos of positions" [position]="pos"></marker>
-          <info-window id="iw">
-            lat: [[lat]], lng: [[lng]]
-          </info-window>
-        </ng2-map>
-        center: <input [(ngModel)]="center" />
-        <button (click)="showRandomMarkers()">Show Random Markers</button>
-      </script>
 
       <h3>Design Principle</h3>
 
