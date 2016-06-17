@@ -23,7 +23,6 @@
       }
       my-app h1 {font-size: 1.5em}
       ng2-map {
-        min-width: 280px;
         display: block;
         width: 70%;
       }
@@ -39,6 +38,10 @@
       }
       .social-buttons {line-height: 16px}
       @media screen and (max-width: 768px) {
+        ng2-map {
+          width: 100%;
+          display: block;
+        }
         .ls {
           float: none;
           min-height: inherit;
