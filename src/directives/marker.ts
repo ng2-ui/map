@@ -10,8 +10,8 @@ const INPUTS = `
   anchorPoint, animation, clickable, cursor, draggable, icon, label, opacity
   ,optimized,place, position, shape, title, visible, zIndex`.split(',').map(el => el.trim());
 const OUTPUTS = `
-  animation_changed, click, clickable_changed, cursor_changed, dblclick, drag, drag_end, draggable_changed,
-  drag_start, flat_changed, icon_changed, mousedown, mouseout, mouseover, mouseup, position_changed, rightclick,
+  animation_changed, click, clickable_changed, cursor_changed, dblclick, drag, dragend, draggable_changed,
+  dragstart, flat_changed, icon_changed, mousedown, mouseout, mouseover, mouseup, position_changed, rightclick,
   shape_changed, title_changed, visible_changed, zindex_changed
   `.split(',').map(el => `marker${el.trim().replace(/^[a-z]/,x => x.toUpperCase())}`);
 

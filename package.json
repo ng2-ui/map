@@ -1,6 +1,6 @@
 {
   "name": "ng2-map",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Angular2 Google Map`",
   "license": "MIT",
   "main": "dist/index.js",

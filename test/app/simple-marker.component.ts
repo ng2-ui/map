@@ -6,7 +6,10 @@ import {NG2_MAP_DIRECTIVES} from 'ng2-map';
   template: `
     <h1>Simple Marker</h1>
     <ng2-map center="Brampton, Canada">
-      <marker position="Brampton, Canada" draggable="true"></marker>
+      <marker position="Brampton, Canada"
+        (markerDragstart)="log('dragstart')"
+        (markerDragend)="log('dragend')"
+        draggable="true"></marker>
     </ng2-map>
     <pre>
 &lt;ng2-map center="Brampton, Canada">
@@ -16,4 +19,7 @@ import {NG2_MAP_DIRECTIVES} from 'ng2-map';
   `
 })
 export class TestComponent{
+  log(str) {
+    console.log('event .... >', str);
+  }
 }

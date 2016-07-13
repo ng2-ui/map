@@ -15,7 +15,7 @@ var geo_coder_1 = require("../services/geo-coder");
 var ng2_map_1 = require("../services/ng2-map");
 var Rx_1 = require("rxjs/Rx");
 var INPUTS = "\n  anchorPoint, animation, clickable, cursor, draggable, icon, label, opacity\n  ,optimized,place, position, shape, title, visible, zIndex".split(',').map(function (el) { return el.trim(); });
-var OUTPUTS = "\n  animation_changed, click, clickable_changed, cursor_changed, dblclick, drag, drag_end, draggable_changed,\n  drag_start, flat_changed, icon_changed, mousedown, mouseout, mouseover, mouseup, position_changed, rightclick,\n  shape_changed, title_changed, visible_changed, zindex_changed\n  ".split(',').map(function (el) { return ("marker" + el.trim().replace(/^[a-z]/, function (x) { return x.toUpperCase(); })); });
+var OUTPUTS = "\n  animation_changed, click, clickable_changed, cursor_changed, dblclick, drag, dragend, draggable_changed,\n  dragstart, flat_changed, icon_changed, mousedown, mouseout, mouseover, mouseup, position_changed, rightclick,\n  shape_changed, title_changed, visible_changed, zindex_changed\n  ".split(',').map(function (el) { return ("marker" + el.trim().replace(/^[a-z]/, function (x) { return x.toUpperCase(); })); });
 var Marker = (function () {
     function Marker(ng2Map, optionBuilder, geolocation, geoCoder) {
         var _this = this;
