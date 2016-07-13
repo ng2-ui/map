@@ -17,7 +17,9 @@ export declare class Ng2MapComponent implements OnChanges, OnDestroy {
     mapOptions: google.maps.MapOptions;
     inputChanges$: Subject<{}>;
     infoWindows: any;
+    mapInitPath: number;
     constructor(optionBuilder: OptionBuilder, elementRef: ElementRef, zone: NgZone, geolocation: NavigatorGeolocation, geoCoder: GeoCoder, ng2Map: Ng2Map);
+    ngAfterViewInit(): void;
     ngOnChanges(changes: {
         [key: string]: SimpleChange;
     }): void;

@@ -31,10 +31,12 @@ const OUTPUTS = `
   .split(',').map(el => `map${el.trim().replace(/^[a-z]/,x => x.toUpperCase())}`);
 
 @Component({
-  selector: 'ng2-map',
+  selector: 'ng2-map, jui-map',
   providers: [Ng2Map, OptionBuilder, GeoCoder, NavigatorGeolocation],
-  moduleId: module.id,
-  styles: [`.google-map {width: 100%; height: 100%; min-height: 300px;}`],
+  styles: [`
+    ng2-map {display: block; height: 300px;}
+    .google-map {width: 100%; height: 100%}
+  `],
   inputs: INPUTS,
   outputs: OUTPUTS,
   encapsulation: ViewEncapsulation.None,
@@ -53,6 +55,9 @@ export class Ng2MapComponent implements OnChanges, OnDestroy {
   //map objects by group
   public infoWindows: any = {};
   
+  //map init path
+  public mapInitPath: number; // 1: init after loading google api first, 2: init when view is initialized
+  
   constructor(
     private optionBuilder: OptionBuilder,
     private elementRef: ElementRef,
@@ -61,11 +66,20 @@ export class Ng2MapComponent implements OnChanges, OnDestroy {
     private geoCoder: GeoCoder,
     private ng2Map: Ng2Map
   ) {
-    this.addGoogleMapsApi();
+    if (typeof google === 'undefined' || !google.maps.Map) {
+      this.mapInitPath = 1;
+      this.addGoogleMapsApi();
+    }
     
     // all outputs needs to be initialized,
     // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
     OUTPUTS.forEach(output => this[output] = new EventEmitter());
+  }
+  
+  ngAfterViewInit(): void {
+    if (this.mapInitPath !== 1) {
+      this.initializeMap();
+    }
   }
 
   ngOnChanges(changes: {[key: string]: SimpleChange}) {
@@ -87,6 +101,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy {
   
   initializeMap(): void {
     this.el = this.elementRef.nativeElement.querySelector('.google-map');
+    console.log('this.el...............', this.el);
     this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
     console.log('this.mapOptions', this.mapOptions);
 

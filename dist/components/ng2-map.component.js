@@ -30,11 +30,19 @@ var Ng2MapComponent = (function () {
         this.inputChanges$ = new Rx_1.Subject();
         //map objects by group
         this.infoWindows = {};
-        this.addGoogleMapsApi();
+        if (typeof google === 'undefined' || !google.maps.Map) {
+            this.mapInitPath = 1;
+            this.addGoogleMapsApi();
+        }
         // all outputs needs to be initialized,
         // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
         OUTPUTS.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
     }
+    Ng2MapComponent.prototype.ngAfterViewInit = function () {
+        if (this.mapInitPath !== 1) {
+            this.initializeMap();
+        }
+    };
     Ng2MapComponent.prototype.ngOnChanges = function (changes) {
         this.inputChanges$.next(changes);
     };
@@ -54,6 +62,7 @@ var Ng2MapComponent = (function () {
     Ng2MapComponent.prototype.initializeMap = function () {
         var _this = this;
         this.el = this.elementRef.nativeElement.querySelector('.google-map');
+        console.log('this.el...............', this.el);
         this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
         console.log('this.mapOptions', this.mapOptions);
         this.mapOptions.zoom = this.mapOptions.zoom || 15;
@@ -99,10 +108,9 @@ var Ng2MapComponent = (function () {
     };
     Ng2MapComponent = __decorate([
         core_1.Component({
-            selector: 'ng2-map',
+            selector: 'ng2-map, jui-map',
             providers: [ng2_map_1.Ng2Map, option_builder_1.OptionBuilder, geo_coder_1.GeoCoder, navigator_geolocation_1.NavigatorGeolocation],
-            moduleId: module.id,
-            styles: [".google-map {width: 100%; height: 100%; min-height: 300px;}"],
+            styles: ["\n    ng2-map {display: block; height: 300px;}\n    .google-map {width: 100%; height: 100%}\n  "],
             inputs: INPUTS,
             outputs: OUTPUTS,
             encapsulation: core_1.ViewEncapsulation.None,

@@ -31,9 +31,8 @@ const OUTPUTS = `
   .split(',').map(el => `map${el.trim().replace(/^[a-z]/,x => x.toUpperCase())}`);
 
 @Component({
-  selector: 'ng2-map',
+  selector: 'ng2-map, jui-map',
   providers: [Ng2Map, OptionBuilder, GeoCoder, NavigatorGeolocation],
-  moduleId: module.id,
   styles: [`
     ng2-map {display: block; height: 300px;}
     .google-map {width: 100%; height: 100%}
