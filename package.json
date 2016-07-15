@@ -1,6 +1,6 @@
 {
   "name": "ng2-map",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Angular2 Google Map`",
   "license": "MIT",
   "main": "dist/index.js",
@@ -35,13 +35,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jsvalley/ng2-map.git"
+    "url": "git+https://github.com/ng2-ui/ng2-map.git"
   },
   "author": "Allen Kim<allenhwkim@gmail.com>",
   "bugs": {
-    "url": "https://github.com/jsvalley/ng2-map/issues"
+    "url": "https://github.com/ng2-ui/ng2-map/issues"
   },
-  "homepage": "https://github.com/jsvalley/ng2-map#readme",
+  "homepage": "https://github.com/ng2-ui/ng2-map#readme",
   "keywords": [
     "angular2",
     "google",
