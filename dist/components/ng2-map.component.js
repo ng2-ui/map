@@ -55,7 +55,10 @@ var Ng2MapComponent = (function () {
         if (!window['google'] && !document.querySelector('#ng2-map-api')) {
             var script = document.createElement('script');
             script.id = "ng2-map-api";
-            script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
+            // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
+            var apiUrl = Ng2MapComponent['apiUrl'] || "https://maps.google.com/maps/api/js";
+            apiUrl += apiUrl.indexOf('?') ? '&' : '?';
+            script.src = apiUrl + "callback=initNg2Map";
             document.querySelector('body').appendChild(script);
         }
     };

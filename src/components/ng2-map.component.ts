@@ -96,7 +96,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy {
       script.id ="ng2-map-api";
 
       // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
-      let apiUrl = Ng2MapComponent.apiUrl || "https://maps.google.com/maps/api/js";
+      let apiUrl = Ng2MapComponent['apiUrl'] || "https://maps.google.com/maps/api/js";
       apiUrl += apiUrl.indexOf('?') ? '&' : '?';
       script.src = apiUrl + "callback=initNg2Map";
       document.querySelector('body').appendChild(script);
