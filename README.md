@@ -36,7 +36,19 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
         export class AppComponent {
           ... 
         }
-          
+        
+  NOTE: if you domain is new, and you are having api key error, please specify your api key like the following
+  
+      import { NG2_MAP_DIRECTIVES, Ng2MapComponent } from "ng2-map";  // <--- this
+      // Ng2MapComponent.apiUrl = "https://maps.google.com/maps/api/js?key=YOUR_KEY";  // ???
+
+      @Component({ ... })
+      export class AppComponent {
+        constructor() {
+          Ng2MapComponent.apiUrl = "https://maps.google.com/maps/api/js?key=YOUR_KEY";
+        }
+      }
+       
 ### Google Maps V3 Compatibility Table
 
 <table>
