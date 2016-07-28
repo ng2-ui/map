@@ -45,12 +45,21 @@ var OptionBuilder = (function () {
     };
     OptionBuilder.prototype.googlize = function (input, options) {
         options = options || {};
-        var output = 
-        // -> googlize -> getJsonParsed -> googlizeMultiple -> googlize until all elements are parsed
-        this.getJSONParsed(input, options)
-            || this.getAnyMapObject(input)
-            || this.getAnyMapConstant(input, options)
-            || this.getDateObject(input);
+        var output;
+        if (input === 'false' || input === false) {
+            output = false;
+        }
+        else if (input === '0' || input === 0) {
+            output = 0;
+        }
+        else {
+            output =
+                // -> googlize -> getJsonParsed -> googlizeMultiple -> googlize until all elements are parsed
+                this.getJSONParsed(input, options)
+                    || this.getAnyMapObject(input)
+                    || this.getAnyMapConstant(input, options)
+                    || this.getDateObject(input);
+        }
         if (output instanceof Array) {
             if (options['key'] === "bounds") {
                 output = new google.maps.LatLngBounds(output[0], output[1]);

@@ -5,7 +5,7 @@ import {NG2_MAP_DIRECTIVES} from 'ng2-map';
   directives: [NG2_MAP_DIRECTIVES],
   template: `
     <h1>Simple Marker</h1>
-    <ng2-map center="Brampton, Canada">
+    <ng2-map center="Brampton, Canada" scrollwheel="false">
       <marker position="Brampton, Canada"
         (markerDragstart)="log('dragstart')"
         (markerDragend)="log('dragend')"

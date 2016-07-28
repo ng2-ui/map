@@ -39,10 +39,15 @@ export class OptionBuilder {
 
   googlize(input: any, options?: IJson): any {
     options = options || {};
-    
-    let output =
-      // -> googlize -> getJsonParsed -> googlizeMultiple -> googlize until all elements are parsed
-      this.getJSONParsed(input, options)
+    let output: any;
+    if (input === 'false' || input === false) {
+      output = false;
+    } else if (input === '0' || input === 0) {
+      output = 0;
+    } else {
+      output =
+        // -> googlize -> getJsonParsed -> googlizeMultiple -> googlize until all elements are parsed
+        this.getJSONParsed(input, options)
 
         /* Foo.Bar(...) -> new google.maps.Foo.Bar(...) */
         || this.getAnyMapObject(input)
@@ -52,7 +57,9 @@ export class OptionBuilder {
 
         /*  2016-06-20 -> new Date('2016-06-20') */
         || this.getDateObject(input);
-    
+    }
+
+
     if (output instanceof Array) {
       if (options['key'] === "bounds") {
         output = new google.maps.LatLngBounds(output[0], output[1]);
