@@ -107,3 +107,13 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
           // packages['ng2-map'] = { main: 'index.js', defaultExtension: 'js' };
   
   
+## For Developers
+
+### To start
+
+    $ git clone https://github.com/ng2-ui/ng2-map.git
+    $ cd ng2-popup
+    $ npm install
+    $ npm start
+
+
