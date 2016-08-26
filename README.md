@@ -24,10 +24,11 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
 2. Update `system.config.js` to recognize ng2-map.
 
-        map['ng2-map'] = 'node_modules/ng2-xxxxxxx/dist';
+        map['ng2-map'] = 'node_modules/ng2-map/dist';
         packages['ng2-map'] = { main: 'index.js', defaultExtension: 'js' }
 
 3. import Ng2AutoCompleteModule to your AppModule
+
         import { NgModule } from '@angular/core';
         import { FormsModule } from "@angular/forms";
         import { BrowserModule  } from '@angular/platform-browser';
