@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
-import {NG2_MAP_DIRECTIVES} from 'ng2-map';
 
 @Component({
-  directives: [NG2_MAP_DIRECTIVES],
   template: `
     <h1>Simple Map</h1>
     <ng2-map center="Brampton, Canada"></ng2-map>
@@ -15,5 +13,5 @@ import {NG2_MAP_DIRECTIVES} from 'ng2-map';
     </ul>
   `
 })
-export class TestComponent{
+export class SimpleMapComponent{
 }

@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
-import {NG2_MAP_DIRECTIVES} from 'ng2-map';
 
 @Component({
-  directives: [NG2_MAP_DIRECTIVES],
   template: `
     <h1>Simple Marker</h1>
     <ng2-map center="Brampton, Canada" scrollwheel="false">
@@ -18,7 +16,7 @@ import {NG2_MAP_DIRECTIVES} from 'ng2-map';
     </pre>
   `
 })
-export class TestComponent{
+export class SimpleMarkerComponent{
   log(str) {
     console.log('event .... >', str);
   }

@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
-import {NG2_MAP_DIRECTIVES} from 'ng2-map';
 
 @Component({
-directives: [NG2_MAP_DIRECTIVES],
 template: `
   <h1>Marker Wigh *ngFor</h1>
   <ng2-map zoom="13" center="Brampton, Canada">
@@ -16,7 +14,7 @@ template: `
   </pre>
 `
 })
-export class TestComponent{
+export class MarkerNgForComponent{
   public positions=[];
   
   constructor() {

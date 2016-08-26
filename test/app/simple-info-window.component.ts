@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
-import {NG2_MAP_DIRECTIVES} from 'ng2-map';
 
 @Component({
-  directives: [NG2_MAP_DIRECTIVES],
   template: `
     <h1>Simple InfoWindow</h1>
     <ng2-map center="Brampton, Canada">
@@ -22,7 +20,7 @@ import {NG2_MAP_DIRECTIVES} from 'ng2-map';
     Please click the marker to see a info window
   `
 })
-export class TestComponent{
+export class SimpleInfoWindowComponent{
   clicked(marker) {
     marker.map.mapComponent.openInfoWindow('iw', marker, {
       lat: marker.getPosition().lat(), lng: marker.getPosition().lng()
