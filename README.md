@@ -98,23 +98,6 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindowOptions">InfoWindowOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindow">InfoWindow Events</a>
       <td> supported as `info-window`
-<<<<<<< HEAD
-  <tr><td> Circle        <td> CircleOptions            <td> Circle Events        <td> v0.6.0
-  <tr><td> Polygon       <td> PolygonOptions           <td> Polygon Events       <td> v0.6.0
-  <tr><td> Polyline      <td> PolylineOptions          <td> Polyline Events      <td> v0.6.0
-  <tr><td> GroundOverlay <td> GroundOverlayOptions     <td> GroundOverlay Events <td> v0.6.0
-  <tr><td> FusionTablesLayer <td> FusionTablesLayerOptions <td> FusionTablesLayer Events <td> v0.7.0
-  <tr><td> HeatMapLayer  <td> HeatMapLayerLayerOptions <td> HeatMapLayer Events      <td> v0.7.0
-  <tr><td> KmlLayer      <td> KmlLayerLayerOptions     <td> KmlLayer Events          <td> v0.7.0
-  <tr><td> Data          <td> DataOptions              <td> Data Events              <td> v0.7.0 `map-data`
-  <tr><td> BicyclingLayer  <td> BicyclingLayerOptins    <td> BicyclingLayer Events   <td> v0.8.0 
-  <tr><td> MapsEngineLayer <td> MapsEngineLayerOptins   <td> MapsEngineLayer Events  <td> v0.8.0 
-  <tr><td> TrafficLayer    <td> TrafficLayerOptions     <td> TrafficLayer Events     <td> v0.8.0 
-  <tr><td> StreetViewPanorama  <td> StreetViewPanoramaOptions     <td> StreetViewPanorama Events  <td> v0.8.0 
-  <tr><td> DrawingManager  <td> DrawingManagerOptions   <td> Drawing Manager Events <td> v0.9.0
-  <tr><td> Autocomplete    <td> AutocompleteOptions     <td> Autocomplete Events    <td> v1.1.0
-  <tr><td> DirectionsRenderer <td> DirectionsRendererOptions     <td> DirectionsRenderer Events    <td> v1.2.0
-=======
   <tr><td> Circle        <td> CircleOptions            <td> Circle Events        <td> Coming soon
   <tr><td> Polygon       <td> PolygonOptions           <td> Polygon Events       <td> Coming Soon
   <tr><td> Polyline      <td> PolylineOptions          <td> Polyline Events      <td> Coming Soon
@@ -130,7 +113,6 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   <tr><td> DrawingManager  <td> DrawingManagerOptions   <td> Drawing Manager Events <td> Coming Soon
   <tr><td> Autocomplete    <td> AutocompleteOptions     <td> Autocomplete Events    <td> Coming Soon
   <tr><td> DirectionsRenderer <td> DirectionsRendererOptions     <td> DirectionsRenderer Events    <td> Coming Soon
->>>>>>> rc5 upgrade
 </table>
 
 ### For Developers
