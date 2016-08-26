@@ -6,10 +6,12 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
 ### Design Principle
 
-1. **All google properties must be able to be defined in html without Javascript.**   
+1. **All google properties must be able to be defined in html without Javascript.**
+
    Thus, basic users don't even have to know what Javascript is. 
 
-2. **Expose all original Google Maps V3 api to the user without any exception.**   
+2. **Expose all original Google Maps V3 api to the user without any exception.** 
+
    No hiding, nor manipulation. By doing so, programmers don't need to learnthis module.
    If you know Google Maps V3 API, there shouldn't be no problem using this module.
 
