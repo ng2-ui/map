@@ -1,10 +1,10 @@
 import { NgModule }       from '@angular/core';
 import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule }    from "@angular/forms";
-import { HttpModule }    from "@angular/http";
+import { HttpModule }     from "@angular/http";
 
 import { AppComponent }   from './app.component';
-import { Ng2MapModule } from 'ng2-map';
+import { Ng2MapModule }   from 'ng2-map';
 import {APP_ROUTER_PROVIDERS} from "./app.route";
 import {LocationStrategy, HashLocationStrategy} from "@angular/common";
 
