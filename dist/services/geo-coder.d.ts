@@ -1,3 +1,4 @@
+/// <reference types="googlemaps" />
 import { Subject } from "rxjs/Rx";
 /**
  *   Provides [defered/promise API](https://docs.angularjs.org/api/ng/service/$q)

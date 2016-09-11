@@ -1,8 +1,10 @@
-export { OptionBuilder } from "./services/option-builder";
-export { GeoCoder } from "./services/geo-coder";
-export { NavigatorGeolocation } from "./services/navigator-geolocation";
-export { Ng2Map } from "./services/ng2-map";
-export { Ng2MapComponent } from './components/ng2-map.component';
-export { Marker } from './directives/marker';
-export { InfoWindow } from './components/info-window';
-export { Ng2MapModule } from './ng2-map.module';
+import { OptionBuilder } from "./services/option-builder";
+import { GeoCoder } from "./services/geo-coder";
+import { NavigatorGeolocation } from "./services/navigator-geolocation";
+import { Ng2Map } from "./services/ng2-map";
+import { Ng2MapComponent } from './components/ng2-map.component';
+import { Marker } from './directives/marker';
+import { InfoWindow } from './components/info-window';
+export { OptionBuilder, GeoCoder, NavigatorGeolocation, Ng2Map, Ng2MapComponent, Marker, InfoWindow };
+export declare class Ng2MapModule {
+}

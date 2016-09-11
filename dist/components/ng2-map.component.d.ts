@@ -1,3 +1,4 @@
+/// <reference types="googlemaps" />
 import { ElementRef, NgZone, OnChanges, OnDestroy, SimpleChange } from '@angular/core';
 import { OptionBuilder } from "../services/option-builder";
 import { NavigatorGeolocation } from "../services/navigator-geolocation";

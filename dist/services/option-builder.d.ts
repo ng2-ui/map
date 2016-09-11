@@ -1,3 +1,4 @@
+/// <reference types="googlemaps" />
 import { IJson } from './util';
 import { GeoCoder } from "./geo-coder";
 /**

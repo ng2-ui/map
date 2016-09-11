@@ -1,3 +1,4 @@
+/// <reference types="googlemaps" />
 import { ElementRef, OnChanges, OnDestroy, SimpleChange } from '@angular/core';
 import { OptionBuilder } from "../services/option-builder";
 import { Ng2Map } from "../services/ng2-map";

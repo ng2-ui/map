@@ -1,3 +1,4 @@
+/// <reference types="googlemaps" />
 import { SimpleChange } from '@angular/core';
 import { Subject } from "rxjs/Rx";
 import { OptionBuilder } from "./option-builder";
