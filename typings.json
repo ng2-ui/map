@@ -1,8 +1,0 @@
-{
-  "globalDependencies": {
-    "core-js": "registry:dt/core-js#0.0.0+20160602141332",
-    "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
-    "google.maps": "registry:dt/google.maps#3.20.0+20160414124451",
-    "node": "registry:dt/node#6.0.0+20160602155235"
-  }
-}

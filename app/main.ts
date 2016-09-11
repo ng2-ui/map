@@ -1,12 +1,18 @@
+// The browser platform with a compiler
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
 import { NgModule }       from '@angular/core';
 import { BrowserModule }  from '@angular/platform-browser';
 import { FormsModule }    from "@angular/forms";
 import { HttpModule }     from "@angular/http";
 
-import { AppComponent }   from './app.component';
+//noinspection TypeScriptCheckImport
 import { Ng2MapModule }   from 'ng2-map';
-import {APP_ROUTER_PROVIDERS} from "./app.route";
-import {LocationStrategy, HashLocationStrategy} from "@angular/common";
+
+import { AppComponent }   from './app.component';
+
+import { APP_ROUTER_PROVIDERS } from "./app.route";
+import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 
 @NgModule({
   imports: [BrowserModule, FormsModule, HttpModule, APP_ROUTER_PROVIDERS, Ng2MapModule ],
@@ -16,3 +22,5 @@ import {LocationStrategy, HashLocationStrategy} from "@angular/common";
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
+
+platformBrowserDynamic().bootstrapModule(AppModule);

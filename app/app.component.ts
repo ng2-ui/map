@@ -1,10 +1,11 @@
 import { Component, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
+
+//noinspection TypeScriptCheckImport
 import { Ng2MapComponent } from 'ng2-map';
 
 @Component({
   selector: 'my-app',
-  //moduleId: module.id  //this causes  'referenceerror module is not defined'
   templateUrl: 'test/app/app.tpl.html'
 })
 export class AppComponent {

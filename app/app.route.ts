@@ -1,9 +1,9 @@
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
-import {SimpleInfoWindowComponent} from "./simple-info-window.component";
-import {SimpleMapComponent} from "./simple-map.component";
-import {SimpleMarkerComponent} from "./simple-marker.component";
-import {MarkerNgForComponent} from "./marker-ng-for.component";
+import { SimpleInfoWindowComponent } from "./simple-info-window.component";
+import { SimpleMapComponent } from "./simple-map.component";
+import { SimpleMarkerComponent } from "./simple-marker.component";
+import { MarkerNgForComponent } from "./marker-ng-for.component";
 
 export const routes: Routes = [
   { path: 'simple-info-window', component: SimpleInfoWindowComponent},

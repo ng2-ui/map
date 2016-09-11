@@ -19,8 +19,7 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
 1. Install node_module `ng2-map` and typings
 
-        $ npm install ng2-map --save
-        $ typings install dt~google.maps --global --save
+        $ npm install ng2-map @types/google-maps --save
 
 2. Update `system.config.js` to recognize ng2-map.
 

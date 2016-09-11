@@ -1,6 +1,6 @@
 (function(global) {
   var map = {
-    app: "test/app",
+    app: ".",
     '@angular': '../node_modules/@angular',
     'rxjs': '../node_modules/rxjs'
   };
@@ -18,9 +18,9 @@
   };
 
   map['ng2-map'] = '../dist';
-  packages['ng2-map'] = {main: 'index.js', defaultExtension: 'js'};
-  map['ng2-map'] = '../src';
-  packages['ng2-map'] = {main: 'index.ts', defaultExtension: 'ts'};
+  packages['ng2-map'] = {main: 'ng2-map.umd.js', defaultExtension: 'js'};
+  // map['ng2-map'] = '../src';
+  // packages['ng2-map'] = {main: 'index.ts', defaultExtension: 'ts'};
 
   System.config({
     transpiler: 'typescript', //use typescript for compilation
