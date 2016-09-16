@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from "@angular/forms";
-import { BrowserModule  } from '@angular/platform-browser';
+import { CommonModule  } from '@angular/common';
 
 import { OptionBuilder } from "./services/option-builder";
 import { GeoCoder } from "./services/geo-coder";
@@ -22,7 +22,7 @@ export {
 };
 
 @NgModule({
-  imports: [ BrowserModule ],
+  imports: [ CommonModule ],
   declarations: [Ng2MapComponent, Marker, InfoWindow],
   providers: [GeoCoder, NavigatorGeolocation, Ng2Map, OptionBuilder],
   exports:  [Ng2MapComponent, Marker, InfoWindow]

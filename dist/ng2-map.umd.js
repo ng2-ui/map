@@ -1,12 +1,12 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@angular/core"), require("@angular/platform-browser"), require("rxjs/Rx"));
+		module.exports = factory(require("@angular/core"), require("@angular/common"), require("rxjs/Rx"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@angular/core", "@angular/platform-browser", "rxjs/Rx"], factory);
+		define(["@angular/core", "@angular/common", "rxjs/Rx"], factory);
 	else if(typeof exports === 'object')
-		exports["ng2-map"] = factory(require("@angular/core"), require("@angular/platform-browser"), require("rxjs/Rx"));
+		exports["ng2-map"] = factory(require("@angular/core"), require("@angular/common"), require("rxjs/Rx"));
 	else
-		root["ng2-map"] = factory(root["@angular/core"], root["@angular/platform-browser"], root["rxjs/Rx"]);
+		root["ng2-map"] = factory(root["@angular/core"], root["@angular/common"], root["rxjs/Rx"]);
 })(this, function(__WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_6__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -65,7 +65,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var platform_browser_1 = __webpack_require__(2);
+	var common_1 = __webpack_require__(2);
 	var option_builder_1 = __webpack_require__(3);
 	exports.OptionBuilder = option_builder_1.OptionBuilder;
 	var geo_coder_1 = __webpack_require__(5);
@@ -85,7 +85,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    Ng2MapModule = __decorate([
 	        core_1.NgModule({
-	            imports: [platform_browser_1.BrowserModule],
+	            imports: [common_1.CommonModule],
 	            declarations: [ng2_map_component_1.Ng2MapComponent, marker_1.Marker, info_window_1.InfoWindow],
 	            providers: [geo_coder_1.GeoCoder, navigator_geolocation_1.NavigatorGeolocation, ng2_map_1.Ng2Map, option_builder_1.OptionBuilder],
 	            exports: [ng2_map_component_1.Ng2MapComponent, marker_1.Marker, info_window_1.InfoWindow]

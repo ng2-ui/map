@@ -14,4 +14,10 @@ export const routes: Routes = [
 ];
 
 export const APP_ROUTER_PROVIDERS: ModuleWithProviders = RouterModule.forRoot(routes);
+export const APP_ROUTER_COMPONENTS = [
+  SimpleInfoWindowComponent,
+  SimpleMapComponent,
+  SimpleMarkerComponent,
+  MarkerNgForComponent
+]
 
