@@ -25,8 +25,8 @@ const INPUTS = `
   zoomControlOptions`.split(',').map(el => el.trim());
 
 const OUTPUTS = `
-  bounds_changed, center_changed, click, dblclick, drag, dragend, dragstart, heading_changed, idle
-  maptypeid_changed, mousemove, mouseout, mouseover, projection_changed, resize, rightclick, 
+  bounds_changed, center_changed, click, dblclick, drag, dragend, dragstart, heading_changed, idle,
+  maptypeid_changed, mousemove, mouseout, mouseover, projection_changed, resize, rightclick,
   tilesloaded, tile_changed, zoom_changed`
   .split(',').map(el => `map${el.trim().replace(/^[a-z]/,x => x.toUpperCase())}`);
 
@@ -54,10 +54,10 @@ export class Ng2MapComponent implements OnChanges, OnDestroy {
 
   //map objects by group
   public infoWindows: any = {};
-  
+
   //map init path
   public mapInitPath: number; // 1: init after loading google api first, 2: init when view is initialized
-  
+
   constructor(
     private optionBuilder: OptionBuilder,
     private elementRef: ElementRef,
@@ -70,12 +70,12 @@ export class Ng2MapComponent implements OnChanges, OnDestroy {
       this.mapInitPath = 1;
       this.addGoogleMapsApi();
     }
-    
+
     // all outputs needs to be initialized,
     // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
     OUTPUTS.forEach(output => this[output] = new EventEmitter());
   }
-  
+
   ngAfterViewInit(): void {
     if (this.mapInitPath !== 1) {
       this.initializeMap();
@@ -102,7 +102,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy {
       document.querySelector('body').appendChild(script);
     }
   }
-  
+
   initializeMap(): void {
     this.el = this.elementRef.nativeElement.querySelector('.google-map');
     console.log('this.el...............', this.el);
@@ -112,7 +112,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy {
     this.mapOptions.zoom = this.mapOptions.zoom || 15;
     typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
     this.map = new google.maps.Map(this.el, this.mapOptions);
-    
+
     this.setCenter();
 
     //set google events listeners and emits to this outputs listeners
@@ -122,17 +122,17 @@ export class Ng2MapComponent implements OnChanges, OnDestroy {
     this.ng2Map.map = this.map;
     this.ng2Map.mapComponent = this;
     this.ng2Map.map['mapComponent'] = this;
-    
+
     // ........
     console.log('map is ready.......');
     this.ng2Map.mapReady$.next(this.map);
-    
+
     // update map when input changes
     this.inputChanges$
       .debounceTime(1000)
       .subscribe((changes: SimpleChange) =>this.ng2Map.updateGoogleObject(this.map, changes));
   }
-  
+
   setCenter(): void {
     if (!this['center']) {
       this.geolocation.getCurrentPosition().subscribe(position => {
