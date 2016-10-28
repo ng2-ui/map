@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   template: `
@@ -10,7 +10,7 @@ import {Component} from '@angular/core';
 
     <h1>Simple Map 2</h1>
     <ng2-map center="43.99, -78.79"></ng2-map>
-    
+
     <h1>Simple Map 3</h1>
     <ng2-map center="Brampton, Canada" scrollwheel="false">
       <marker position="Brampton, Canada"
@@ -18,15 +18,15 @@ import {Component} from '@angular/core';
         (markerDragend)="log('dragend')"
         draggable="true"></marker>
     </ng2-map>
-  `
+  `,
 })
-export class MultipleMapComponent{
+export class MultipleMapComponent {
   positions = [];
   showRandomMarkers() {
     let randomLat: number, randomLng: number;
 
     this.positions = [];
-    for (let i=0; i<9; i++) {
+    for (let i = 0; i < 9; i++) {
       randomLat = Math.random() * (43.7399 - 43.7300) + 43.7300;
       randomLng = Math.random() * (-79.7600 - -79.7699) + -79.7699;
       this.positions.push([randomLat, randomLng]);
