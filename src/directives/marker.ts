@@ -78,12 +78,14 @@ export class Marker implements OnChanges, OnDestroy {
         this.geolocation.getCurrentPosition().subscribe(position => {
           console.log('setting marker position from current location');
           let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          //console.log('this.marker', this.marker);
           this.marker.setPosition(latLng);
         });
       }
       else if (typeof this['position'] === 'string') {
         this.geoCoder.geocode({address: this['position']}).subscribe(results => {
           console.log('setting marker position from address', this['position']);
+          //console.log('this.marker', this.marker);
           this.marker.setPosition(results[0].geometry.location);
         })
       }
