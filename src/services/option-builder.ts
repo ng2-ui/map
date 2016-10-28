@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {getJSON, IJson} from './util';
-import {GeoCoder} from "./geo-coder";
+import { Injectable } from '@angular/core';
+import { getJSON, IJson } from './util';
+import { GeoCoder } from './geo-coder';
 
 /**
  * change any object to google object options
@@ -10,7 +10,7 @@ import {GeoCoder} from "./geo-coder";
 export class OptionBuilder {
 
   constructor(private geoCoder: GeoCoder) {}
-  
+
   googlizeAllInputs(definedInputs: string[], userInputs: any) {
     let options: google.maps.MarkerOptions = <google.maps.MarkerOptions>{};
 
@@ -24,7 +24,7 @@ export class OptionBuilder {
 
   googlizeMultiple(inputs: any[], options?: IJson): any {
     options =  options || {};
-    for(var key in inputs) {
+    for (let key in inputs) {
       let val = inputs[key];
       // (non-strings are fully converted)
       if (typeof val !== 'string') {
@@ -61,10 +61,10 @@ export class OptionBuilder {
 
 
     if (output instanceof Array) {
-      if (options['key'] === "bounds") {
+      if (options['key'] === 'bounds') {
         output = new google.maps.LatLngBounds(output[0], output[1]);
       }
-      else if (options['key'] === "icons") {
+      else if (options['key'] === 'icons') {
         output = this.getMapIcons(output);
       }
     }
@@ -81,9 +81,9 @@ export class OptionBuilder {
     return output;
   }
 
-  private getLatLng(input: any): google.maps.LatLng | Array<google.maps.LatLng>{
-    let output : google.maps.LatLng | Array<google.maps.LatLng>;
-    if (input[0].constructor == Array) { // [[1,2],[3,4]]
+  private getLatLng(input: any): google.maps.LatLng | Array<google.maps.LatLng> {
+    let output: google.maps.LatLng | Array<google.maps.LatLng>;
+    if (input[0].constructor === Array) { // [[1,2],[3,4]]
       output = (<any[]>input).map((el: number[]) => new google.maps.LatLng(el[0], el[1]));
     } else if (!isNaN(parseFloat(input[0])) && isFinite(input[0])) {
       output = new google.maps.LatLng(input[0], input[1]);
@@ -117,7 +117,8 @@ export class OptionBuilder {
     let output: any;
     if (input.match(/^[A-Z][a-zA-Z0-9]+\(.*\)$/)) {
       try {
-        let exp = "new google.maps." + input;
+        let exp = 'new google.maps.' + input;
+        // tslint:disable-next-line
         output = eval(exp);
       } catch (e) {}
     }
@@ -147,15 +148,15 @@ export class OptionBuilder {
    */
   private getMapControlOption(controlOptions: IJson): IJson {
     let newControlOptions: IJson = controlOptions;
-    
-    for (let key in newControlOptions) { //assign the right values
+
+    for (let key in newControlOptions) { // assign the right values
       if (newControlOptions[key]) {
         let value = newControlOptions[key];
-        
+
         if (typeof value === 'string') {
           value = (<string>value).toUpperCase();
         }
-        else if (key === "mapTypeIds") {
+        else if (key === 'mapTypeIds') {
           value = (<any[]>value).map(function (str) {
             if (str.match(/^[A-Z]+$/)) { // if constant
               return google.maps.MapTypeId[str.toUpperCase()];
@@ -165,11 +166,11 @@ export class OptionBuilder {
           });
         }
 
-        if (key === "style") {
-          let objName = key.replace(/Options$/, '') + "Style";
+        if (key === 'style') {
+          let objName = key.replace(/Options$/, '') + 'Style';
           newControlOptions[key] = google.maps[objName][<any>value];
-        } 
-        else if (key === "position") {
+        }
+        else if (key === 'position') {
           newControlOptions[key] = google.maps.ControlPosition[<any>value];
         }
         else {
@@ -177,42 +178,42 @@ export class OptionBuilder {
         }
       }
     }
-      
+
     return newControlOptions;
   }
 
   private getDateObject(input: string): Date {
     let output: Date;
-    
+
     if (input.match(/^(\d{4}\-\d\d\-\d\d([tT][\d:\.]*)?)([zZ]|([+\-])(\d\d):?(\d\d))?$/)) {
       try {
         output = new Date(input);
-      } catch(e) {}
+      } catch (e) {}
     }
     return output;
   }
- 
+
   private getMapIcons(input: any[]): any[] {
     return input.map(el => {
       if (el.icon.path.match(/^[A-Z_]+$/)) {
         el.icon.path = google.maps.SymbolPath[el.icon.path];
       }
       return el;
-    })
+    });
   }
 
   private getMarkerIcon(input: any): any {
     let output = input;
 
-    if (("" + output.path).match(/^[A-Z_]+$/)) {
+    if (('' + output.path).match(/^[A-Z_]+$/)) {
       output.path = google.maps.SymbolPath[output.path];
     }
 
-    for (let key in output) { //jshint ignore:line
+    for (let key in output) {
       let arr = output[key];
-      if (key == "anchor" || key == "origin" || key == "labelOrigin") {
+      if (key === 'anchor' || key === 'origin' || key === 'labelOrigin') {
         output[key] = new google.maps.Point(arr[0], arr[1]);
-      } else if (key == "size" || key == "scaledSize") {
+    } else if (key === 'size' || key === 'scaledSize') {
         output[key] = new google.maps.Size(arr[0], arr[1]);
       }
     }

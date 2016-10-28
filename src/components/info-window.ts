@@ -1,18 +1,15 @@
 import {
   Component,
   ElementRef,
-  ViewEncapsulation,
   OnChanges,
   OnDestroy,
   EventEmitter,
   SimpleChange,
-  ChangeDetectorRef,
-  ChangeDetectionStrategy
 } from '@angular/core';
 
-import {OptionBuilder} from "../services/option-builder";
-import {Ng2Map} from "../services/ng2-map";
-import {Subject} from "rxjs/Rx";
+import { OptionBuilder } from '../services/option-builder';
+import { Ng2Map } from '../services/ng2-map';
+import { Subject } from 'rxjs/Rx';
 
 const INPUTS = `
   content, disableAutoPan, maxWidth, pixelOffset, position, zIndex
@@ -21,12 +18,12 @@ const INPUTS = `
 const OUTPUTS = `
   closeclick, content_changed, domready, position_changed, zindex_changed
   `.split(',').map(el => `infoWindow${el.trim().replace(/^[a-z]/,x => x.toUpperCase())}`);
-  
+
 @Component({
   selector: 'info-window',
   inputs: INPUTS,
   outputs: OUTPUTS,
-  template: `<ng-content></ng-content>`
+  template: `<ng-content></ng-content>`,
 })
 export class InfoWindow implements OnChanges, OnDestroy {
 
@@ -34,7 +31,7 @@ export class InfoWindow implements OnChanges, OnDestroy {
   public infoWindow: google.maps.InfoWindow;
   public options: google.maps.InfoWindowOptions = {};
   public inputChanges$ = new Subject();
-  
+
   public template: string;
 
   constructor(
@@ -44,12 +41,12 @@ export class InfoWindow implements OnChanges, OnDestroy {
   ) {
     this.elementRef.nativeElement.style.display = 'none';
 
-    if (this.ng2Map.map) { //map is ready already
+    if (this.ng2Map.map) { // map is ready already
       this.initialize(this.ng2Map.map);
     } else {
       this.ng2Map.mapReady$.subscribe((map: google.maps.Map) => this.initialize(map));
     }
-    
+
     // all outputs needs to be initialized,
     // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
     OUTPUTS.forEach(output => this[output] = new EventEmitter());
@@ -63,12 +60,12 @@ export class InfoWindow implements OnChanges, OnDestroy {
   initialize(map: google.maps.Map): void {
     console.log('infowindow is being initialized');
     this.template = this.elementRef.nativeElement.innerHTML;
-    
+
     this.options = this.optionBuilder.googlizeAllInputs(INPUTS, this);
     this.infoWindow = new google.maps.InfoWindow(this.options);
     console.log('INFOWINDOW options', this.options);
-    
-    //register infoWindow ids to Ng2Map, so that it can be opened by id
+
+    // register infoWindow ids to Ng2Map, so that it can be opened by id
     this.el = this.elementRef.nativeElement;
     if (this.el.id) {
       this.ng2Map.mapComponent.infoWindows[this.el.id] = this;
@@ -76,24 +73,24 @@ export class InfoWindow implements OnChanges, OnDestroy {
       console.error('An InfoWindow must have an id. e.g. id="detail"');
     }
 
-    //set google events listeners and emits to this outputs listeners
+    // set google events listeners and emits to this outputs listeners
     this.ng2Map.setObjectEvents(OUTPUTS, this, 'infoWindow');
 
     // update object when input changes
     this.inputChanges$
       .debounceTime(1000)
-      .subscribe((changes: SimpleChange) =>this.ng2Map.updateGoogleObject(this.infoWindow, changes));
+      .subscribe((changes: SimpleChange) => this.ng2Map.updateGoogleObject(this.infoWindow, changes));
   }
 
   open(anchor: google.maps.MVCObject, data: any) {
     let html = this.template;
-    
-    for(var key in data) {
+
+    for (let key in data) {
       this[key] = data[key];
       html = html.replace(`[[${key}]]`, data[key]);
     }
-    
-    //set content and open it
+
+    // set content and open it
     this.infoWindow.setContent(html);
     this.infoWindow.open(this.ng2Map.map, anchor);
   }

@@ -6,15 +6,16 @@ import {
   OnChanges,
   OnDestroy,
   EventEmitter,
-  SimpleChange
-} from '@angular/core';
+  SimpleChange,
+  AfterViewInit,
+ } from '@angular/core';
 
-import {OptionBuilder} from "../services/option-builder";
-import {NavigatorGeolocation} from "../services/navigator-geolocation";
-import {GeoCoder} from "../services/geo-coder";
-import {Ng2Map} from "../services/ng2-map";
-import {Subject} from "rxjs/Rx";
-import {IJson} from "../services/util";
+import { OptionBuilder } from '../services/option-builder';
+import { NavigatorGeolocation } from '../services/navigator-geolocation';
+import { GeoCoder } from '../services/geo-coder';
+import { Ng2Map } from '../services/ng2-map';
+import { Subject } from 'rxjs/Rx';
+import { IJson } from '../services/util';
 
 const INPUTS = `
   backgroundColor, center, disableDefaultUI, disableDoubleClickZoom, draggable, draggableCursor,
@@ -43,19 +44,19 @@ const OUTPUTS = `
   template: `
     <div class="google-map"></div>
     <ng-content></ng-content>
-  `
+  `,
 })
-export class Ng2MapComponent implements OnChanges, OnDestroy {
+export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
 
   public el: HTMLElement;
   public map: google.maps.Map;
   public mapOptions: google.maps.MapOptions = {};
   public inputChanges$ = new Subject();
 
-  //map objects by group
+  // map objects by group
   public infoWindows: any = {};
 
-  //map init path
+  // map init path
   public mapInitPath: number; // 1: init after loading google api first, 2: init when view is initialized
 
   constructor(
@@ -89,16 +90,16 @@ export class Ng2MapComponent implements OnChanges, OnDestroy {
   addGoogleMapsApi(): void {
     window['ng2MapComponentRef'] = { zone: this.zone, componentFn: () => this.initializeMap()};
     window['initNg2Map'] = function() {
-      window['ng2MapComponentRef'].zone.run(function() {window['ng2MapComponentRef'].componentFn();})
+      window['ng2MapComponentRef'].zone.run(function() { window['ng2MapComponentRef'].componentFn(); });
     };
     if (!window['google'] && !document.querySelector('#ng2-map-api')) {
-      var script = document.createElement( 'script' );
-      script.id ="ng2-map-api";
+      let script = document.createElement( 'script' );
+      script.id = 'ng2-map-api';
 
       // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
-      let apiUrl = Ng2MapComponent['apiUrl'] || "https://maps.google.com/maps/api/js";
+      let apiUrl = Ng2MapComponent['apiUrl'] || 'https://maps.google.com/maps/api/js';
       apiUrl += apiUrl.indexOf('?') ? '&' : '?';
-      script.src = apiUrl + "callback=initNg2Map";
+      script.src = apiUrl + 'callback=initNg2Map';
       document.querySelector('body').appendChild(script);
     }
   }
@@ -115,7 +116,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy {
 
     this.setCenter();
 
-    //set google events listeners and emits to this outputs listeners
+    // set google events listeners and emits to this outputs listeners
     this.ng2Map.setObjectEvents(OUTPUTS, this, 'map');
 
     // broadcast map ready message
@@ -130,7 +131,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy {
     // update map when input changes
     this.inputChanges$
       .debounceTime(1000)
-      .subscribe((changes: SimpleChange) =>this.ng2Map.updateGoogleObject(this.map, changes));
+      .subscribe((changes: SimpleChange) => this.ng2Map.updateGoogleObject(this.map, changes));
   }
 
   setCenter(): void {
@@ -145,7 +146,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy {
       this.geoCoder.geocode({address: this['center']}).subscribe(results => {
         console.log('setting map center from address', this['center']);
         this.map.setCenter(results[0].geometry.location);
-      })
+      });
     }
   }
 

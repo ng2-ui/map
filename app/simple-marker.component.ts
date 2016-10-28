@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   template: `
@@ -14,9 +14,9 @@ import {Component} from '@angular/core';
   &lt;marker position="Brampton, Canada" draggable="true">&lt;/marker>
 &lt;/ng2-map>
     </pre>
-  `
+  `,
 })
-export class SimpleMarkerComponent{
+export class SimpleMarkerComponent {
   log(str) {
     console.log('event .... >', str);
   }

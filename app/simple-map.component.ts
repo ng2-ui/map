@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   template: `
@@ -11,7 +11,7 @@ import {Component} from '@angular/core';
       <li> an address. e.g. Brampton, Canada
       <li> or, none(for the current position)
     </ul>
-  `
+  `,
 })
-export class SimpleMapComponent{
+export class SimpleMapComponent {
 }

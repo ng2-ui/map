@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   template: `
@@ -18,12 +18,12 @@ import {Component} from '@angular/core';
 &lt;/ng2-map>
     </pre>
     Please click the marker to see a info window
-  `
+  `,
 })
-export class SimpleInfoWindowComponent{
+export class SimpleInfoWindowComponent {
   clicked(marker) {
     marker.map.mapComponent.openInfoWindow('iw', marker, {
-      lat: marker.getPosition().lat(), lng: marker.getPosition().lng()
-    })
+      lat: marker.getPosition().lat(), lng: marker.getPosition().lng(),
+    });
   }
 }
