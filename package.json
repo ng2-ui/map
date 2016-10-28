@@ -1,6 +1,6 @@
 {
   "name": "ng2-map",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Angular2 Google Map`",
   "license": "MIT",
   "main": "dist/ng2-map.umd.js",
@@ -40,19 +40,20 @@
     "@angular/platform-browser-dynamic": "^2.1.1",
     "@angular/router": "3.1.1",
     "@angular/upgrade": "2.1.1",
-    "core-js": "^2.4.1",
-    "reflect-metadata": "^0.1.3",
-    "rxjs": "5.0.0-rc.1",
-    "systemjs": "0.19.40",
-    "zone.js": "^0.6.21",
     "@types/googlemaps": "^3.20.32",
     "@types/hammerjs": "^2.0.32",
     "@types/node": "^6.0.31",
     "angular2-template-loader": "^0.5.0",
+    "core-js": "^2.4.1",
+    "http-server": "^0.9.0",
     "npm-run-all": "^3.1.0",
+    "reflect-metadata": "^0.1.3",
     "rimraf": "^2.5.3",
+    "rxjs": "5.0.0-rc.1",
+    "systemjs": "0.19.40",
     "ts-loader": "^0.9.5",
     "typescript": "^2.0.0",
-    "webpack": "^1.13.0"
+    "webpack": "^1.13.0",
+    "zone.js": "^0.6.21"
   }
 }

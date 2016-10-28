@@ -22,7 +22,8 @@
     "baseUrl": "src"
   },
   "files": [
-    "src/index.ts"
+    "src/index.ts",
+    "node_modules/@types/googlemaps/index.d.ts"
   ],
   "exclude": [
     "node_modules"

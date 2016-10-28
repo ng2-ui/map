@@ -65,12 +65,14 @@ var Marker = (function () {
                 _this.geolocation.getCurrentPosition().subscribe(function (position) {
                     console.log('setting marker position from current location');
                     var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    //console.log('this.marker', this.marker);
                     _this.marker.setPosition(latLng);
                 });
             }
             else if (typeof _this['position'] === 'string') {
                 _this.geoCoder.geocode({ address: _this['position'] }).subscribe(function (results) {
                     console.log('setting marker position from address', _this['position']);
+                    //console.log('this.marker', this.marker);
                     _this.marker.setPosition(results[0].geometry.location);
                 });
             }

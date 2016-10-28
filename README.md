@@ -148,4 +148,8 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
     $ npm install
     $ npm start
 
+## To see all runnable npm packate
+   
+    $ npm run
+
 

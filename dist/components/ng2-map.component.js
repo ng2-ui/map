@@ -15,7 +15,7 @@ var geo_coder_1 = require("../services/geo-coder");
 var ng2_map_1 = require("../services/ng2-map");
 var Rx_1 = require("rxjs/Rx");
 var INPUTS = "\n  backgroundColor, center, disableDefaultUI, disableDoubleClickZoom, draggable, draggableCursor,\n  draggingCursor, heading, keyboardShortcuts, mapMaker, mapTypeControl, mapTypeId, maxZoom, minZoom,\n  noClear, overviewMapControl, panControl, panControlOptions, rotateControl, scaleControl, scrollwheel,\n  streetView, styles, tilt, zoom, streetViewControl, zoomControl, mapTypeControlOptions,\n  overviewMapControlOptions, rotateControlOptions, scaleControlOptions, streetViewControlOptions,\n  zoomControlOptions".split(',').map(function (el) { return el.trim(); });
-var OUTPUTS = "\n  bounds_changed, center_changed, click, dblclick, drag, dragend, dragstart, heading_changed, idle\n  maptypeid_changed, mousemove, mouseout, mouseover, projection_changed, resize, rightclick, \n  tilesloaded, tile_changed, zoom_changed"
+var OUTPUTS = "\n  bounds_changed, center_changed, click, dblclick, drag, dragend, dragstart, heading_changed, idle,\n  maptypeid_changed, mousemove, mouseout, mouseover, projection_changed, resize, rightclick,\n  tilesloaded, tile_changed, zoom_changed"
     .split(',').map(function (el) { return ("map" + el.trim().replace(/^[a-z]/, function (x) { return x.toUpperCase(); })); });
 var Ng2MapComponent = (function () {
     function Ng2MapComponent(optionBuilder, elementRef, zone, geolocation, geoCoder, ng2Map) {
