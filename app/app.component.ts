@@ -3,7 +3,7 @@ import { Ng2MapComponent } from 'ng2-map';
 
 @Component({
   selector: 'my-app',
-  templateUrl: 'app/app.tpl.html',
+  templateUrl: './app.html',
 })
 export class AppComponent {
   public center = 'Brampton, Canada';

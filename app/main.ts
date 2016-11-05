@@ -1,3 +1,8 @@
+// polyfills
+import 'core-js/es6';
+import 'core-js/es7/reflect';
+import 'zone.js/dist/zone';
+
 // The browser platform with a compiler
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 

@@ -19,7 +19,10 @@
     "suppressExcessPropertyErrors": true,
     "suppressImplicitAnyIndexErrors": true,
     "outDir": "dist",
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "paths": {
+      "ng2-map": ["./index"]
+    }
   },
   "files": [
     "src/index.ts",
