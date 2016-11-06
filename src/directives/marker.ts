@@ -16,7 +16,7 @@ const OUTPUTS = `
   `.split(',').map(el => `marker${el.trim().replace(/^[a-z]/,x => x.toUpperCase())}`);
 
 @Directive({
-  selector: 'marker',
+  selector: 'ng2-map>marker',
   inputs: INPUTS,
   outputs: OUTPUTS,
 })

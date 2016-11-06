@@ -24,6 +24,6 @@ export {
   imports: [ CommonModule ],
   declarations: [Ng2MapComponent, Marker, InfoWindow],
   providers: [GeoCoder, NavigatorGeolocation, Ng2Map, OptionBuilder],
-  exports:  [Ng2MapComponent, Marker, InfoWindow],
+  exports: [Ng2MapComponent, Marker, InfoWindow],
 })
 export class Ng2MapModule {}

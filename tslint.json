@@ -1,7 +1,7 @@
 {
   "rulesDirectory": "node_modules/codelyzer",
   "rules": {
-    "directive-selector-name": [true, "camelCase"],
+    "directive-selector-name": [false, "camelCase"],
     "component-selector-name": [false, "kebab-case"],
     "directive-selector-type": [false, "attribute"],
     "component-selector-type": [true, "element"],
