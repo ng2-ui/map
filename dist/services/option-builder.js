@@ -1,16 +1,7 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var core_1 = require('@angular/core');
 var util_1 = require('./util');
-var geo_coder_1 = require("./geo-coder");
+var geo_coder_1 = require('./geo-coder');
 /**
  * change any object to google object options
  * e.g. [1,2] -> new google.maps.LatLng(1,2);
@@ -58,13 +49,14 @@ var OptionBuilder = (function () {
                 this.getJSONParsed(input, options)
                     || this.getAnyMapObject(input)
                     || this.getAnyMapConstant(input, options)
-                    || this.getDateObject(input);
+                    || this.getDateObject(input)
+                    || input;
         }
         if (output instanceof Array) {
-            if (options['key'] === "bounds") {
+            if (options['key'] === 'bounds') {
                 output = new google.maps.LatLngBounds(output[0], output[1]);
             }
-            else if (options['key'] === "icons") {
+            else if (options['key'] === 'icons') {
                 output = this.getMapIcons(output);
             }
         }
@@ -80,7 +72,7 @@ var OptionBuilder = (function () {
     };
     OptionBuilder.prototype.getLatLng = function (input) {
         var output;
-        if (input[0].constructor == Array) {
+        if (input[0].constructor === Array) {
             output = input.map(function (el) { return new google.maps.LatLng(el[0], el[1]); });
         }
         else if (!isNaN(parseFloat(input[0])) && isFinite(input[0])) {
@@ -113,7 +105,8 @@ var OptionBuilder = (function () {
         var output;
         if (input.match(/^[A-Z][a-zA-Z0-9]+\(.*\)$/)) {
             try {
-                var exp = "new google.maps." + input;
+                var exp = 'new google.maps.' + input;
+                // tslint:disable-next-line
                 output = eval(exp);
             }
             catch (e) { }
@@ -150,7 +143,7 @@ var OptionBuilder = (function () {
                 if (typeof value === 'string') {
                     value = value.toUpperCase();
                 }
-                else if (key === "mapTypeIds") {
+                else if (key === 'mapTypeIds') {
                     value = value.map(function (str) {
                         if (str.match(/^[A-Z]+$/)) {
                             return google.maps.MapTypeId[str.toUpperCase()];
@@ -160,11 +153,11 @@ var OptionBuilder = (function () {
                         }
                     });
                 }
-                if (key === "style") {
-                    var objName = key.replace(/Options$/, '') + "Style";
+                if (key === 'style') {
+                    var objName = key.replace(/Options$/, '') + 'Style';
                     newControlOptions[key] = google.maps[objName][value];
                 }
-                else if (key === "position") {
+                else if (key === 'position') {
                     newControlOptions[key] = google.maps.ControlPosition[value];
                 }
                 else {
@@ -194,24 +187,27 @@ var OptionBuilder = (function () {
     };
     OptionBuilder.prototype.getMarkerIcon = function (input) {
         var output = input;
-        if (("" + output.path).match(/^[A-Z_]+$/)) {
+        if (('' + output.path).match(/^[A-Z_]+$/)) {
             output.path = google.maps.SymbolPath[output.path];
         }
         for (var key in output) {
             var arr = output[key];
-            if (key == "anchor" || key == "origin" || key == "labelOrigin") {
+            if (key === 'anchor' || key === 'origin' || key === 'labelOrigin') {
                 output[key] = new google.maps.Point(arr[0], arr[1]);
             }
-            else if (key == "size" || key == "scaledSize") {
+            else if (key === 'size' || key === 'scaledSize') {
                 output[key] = new google.maps.Size(arr[0], arr[1]);
             }
         }
         return output;
     };
-    OptionBuilder = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [geo_coder_1.GeoCoder])
-    ], OptionBuilder);
+    OptionBuilder.decorators = [
+        { type: core_1.Injectable },
+    ];
+    /** @nocollapse */
+    OptionBuilder.ctorParameters = [
+        { type: geo_coder_1.GeoCoder, },
+    ];
     return OptionBuilder;
 }());
 exports.OptionBuilder = OptionBuilder;

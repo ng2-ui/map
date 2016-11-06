@@ -25,9 +25,9 @@ exports.jsonize = jsonize;
  */
 var getJSON = function (input) {
     if (typeof input === 'string') {
-        var re = /^[\+\-]?[0-9\.]+,[ ]*\ ?[\+\-]?[0-9\.]+$/; //lat,lng
+        var re = /^[\+\-]?[0-9\.]+,[ ]*\ ?[\+\-]?[0-9\.]+$/; // lat,lng
         if (input.match(re)) {
-            input = "[" + input + "]";
+            input = '[' + input + ']';
         }
         return JSON.parse(jsonize(input));
     }

@@ -21,49 +21,50 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
         $ npm install ng2-map @types/google-maps --save
 
-2. Update `system.config.js` to recognize ng2-map.
+2. For SystemJs users only, update `system.config.js` to recognize ng2-map.
 
         map['ng2-map'] = 'node_modules/ng2-map/dist';
-        packages['ng2-map'] = { main: 'index.js', defaultExtension: 'js' }
+        packages['ng2-map'] = { main: 'ng2-map.umd.js', defaultExtension: 'js' }
 
-3. import Ng2AutoCompleteModule to your AppModule
+3. import Ng2MapeModule to your AppModule
 
         import { NgModule } from '@angular/core';
         import { FormsModule } from "@angular/forms";
         import { BrowserModule  } from '@angular/platform-browser';
+        
         import { AppComponent } from './app.component';
-        import { Ng2Map} from 'ng2-map';
+        import { Ng2MapModule} from 'ng2-map';
 
         @NgModule({
-          imports: [BrowserModule, FormsModule, Ng2Map],
+          imports: [BrowserModule, FormsModule, Ng2MapModule],
           declarations: [AppComponent],
           bootstrap: [ AppComponent ]
         })
         export class AppModule { }
 
+4. Your Google maps may require API key, then override `apiUrl`
+
+        import { Component } from '@angular/core';
+        import { Ng2MapComponent } from 'ng2-map';
+
+        @Component({ ... })
+        export class AppComponent {
+
+          constructor() {
+            Ng2MapComponent['apiUrl'] = 'https://maps.google.com/maps/api/js?key=XXXXXXXXXXXXXXXXXXXXXXXXXX';
+          }
+        }
+
 ## Use it in your template
 
-       <ng2-map  [center]="Brampton, Canada"></ng2-map>
+       <ng2-map [center]="Brampton, Canada"></ng2-map>
 
-For full example, please check out `test` directory to see the example of;
+For full example, please check out `app` directory to see the example of;
 
-  - `systemjs.config.js`
-  - `app.module.ts`
+  - `main.ts`
   -  and `app.component.ts`.
 
-  NOTE: if you domain is new, and you are having api key error, please specify your api key like the following
-
-      import { NG2_MAP_DIRECTIVES, Ng2MapComponent } from "ng2-map";  // <--- this
-      // Ng2MapComponent['apiUrl'] = "https://maps.google.com/maps/api/js?key=YOUR_KEY";  // ???
-
-      @Component({ ... })
-      export class AppComponent {
-        constructor() {
-          Ng2MapComponent['apiUrl'] = "https://maps.google.com/maps/api/js?key=YOUR_KEY";
-        }
-      }
-
-This module is only improved and maintained by contributors like you;
+This `ng2-map` module is only improved and maintained by contributors like you;
 
 As a contributor, it's NOT required to be skilled in Javascript nor Angular2.
 It’s required to be open-minded and interested in helping others.
@@ -119,43 +120,20 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
 
 ### For Developers
 
-  * To run index.html in `test` directory
-
-          $ cd test
-          $ python -mSimpleHTTPServer
-
-  * To test with src, update `systemjs.config.ts` to use `src` directory
-
-          // For Development tet
-          map['ng2-map'] = 'src';
-          packages['ng2-map'] = { main: 'index.ts', defaultExtension: 'ts' };
-
-  * To publish npm package
-
-          $ npm run build
-          * npm publish
-
-  * To test with npm package,  update `systemjs.config.ts` to use `dist` directory
-
-          // For node_modules test
-          // map['ng2-map'] = 'dist';
-          // packages['ng2-map'] = { main: 'index.js', defaultExtension: 'js' };
-
-
-## For Developers
-
 ### To start
 
     $ git clone https://github.com/ng2-ui/ng2-map.git
-    $ cd ng2-popup
+    $ cd ng2-map
     $ npm install
     $ npm start
+    
+### List of available npm tasks
 
-## To see all runnable npm packate
-
-    $ npm run
-
-## List of available npm tasks
+  * `npm run` : List all available tasks
+  * `npm start`: Run `app` directory for development using `webpack-dev-server` with port 9001
+  * `npm run clean`: Remove dist folder
   * `npm run lint`: Lint TypeScript code
-  * `npm run clean`: Clean dist folder
-  * `npm run build`: Production build (umd + ngc + app)
+  * `npm run build:ngc`: ???????????????????
+  * `npm run build:umd`: Build `ng2-map.umd.js`
+  * `npm run build:app`: Build `app/build/app.js` for runnable examples
+  * `npm run build`: Build all(build:ngc, build:umc, and build:app)
