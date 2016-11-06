@@ -4,7 +4,6 @@ import { OptionBuilder } from './option-builder';
 import { GeoCoder } from './geo-coder';
 import { Ng2MapComponent } from '../components/ng2-map.component';
 
-
 /**
  * collection of map instance-related properties and methods
  */

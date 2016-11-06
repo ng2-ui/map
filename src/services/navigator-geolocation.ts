@@ -16,11 +16,8 @@ export class NavigatorGeolocation {
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        function(position) {
-          getCurrentPosition$.next(position);
-        }, function(evt) {
-          getCurrentPosition$.error(evt);
-        },
+        (position) => getCurrentPosition$.next(position),
+        (evt) => getCurrentPosition$.error(evt),
         geoLocationOptions
       );
     } else {
