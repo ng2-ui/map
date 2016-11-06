@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
         [strokeColor]="'#FF0000'"
         [strokeOpacity]="0.8"
         [strokeWeight]="2"
+        [editable]="true"
         (circleDragstart)="log('dragstart')"
         (circleDragend)="log('dragend')"
         radius="100"
