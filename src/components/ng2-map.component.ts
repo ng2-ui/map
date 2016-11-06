@@ -47,7 +47,6 @@ const OUTPUTS = `
   `,
 })
 export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
-
   public el: HTMLElement;
   public map: google.maps.Map;
   public mapOptions: google.maps.MapOptions = {};

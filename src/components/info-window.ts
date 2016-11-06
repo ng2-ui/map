@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  OnInit,
   OnChanges,
   OnDestroy,
   EventEmitter,
@@ -25,8 +26,7 @@ const OUTPUTS = `
   outputs: OUTPUTS,
   template: `<ng-content></ng-content>`,
 })
-export class InfoWindow implements OnChanges, OnDestroy {
-
+export class InfoWindow implements OnInit, OnChanges, OnDestroy {
   public el: HTMLElement;
   public infoWindow: google.maps.InfoWindow;
   public options: google.maps.InfoWindowOptions = {};
@@ -40,16 +40,17 @@ export class InfoWindow implements OnChanges, OnDestroy {
     private ng2Map: Ng2Map
   ) {
     this.elementRef.nativeElement.style.display = 'none';
+    // all outputs needs to be initialized,
+    // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
+    OUTPUTS.forEach(output => this[output] = new EventEmitter());
+  }
 
+  ngOnInit() {
     if (this.ng2Map.map) { // map is ready already
       this.initialize(this.ng2Map.map);
     } else {
       this.ng2Map.mapReady$.subscribe((map: google.maps.Map) => this.initialize(map));
     }
-
-    // all outputs needs to be initialized,
-    // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
-    OUTPUTS.forEach(output => this[output] = new EventEmitter());
   }
 
   ngOnChanges(changes: {[key: string]: SimpleChange}) {

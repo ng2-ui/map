@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, SimpleChange, OnChanges, OnDestroy } from '@angular/core';
+import { Directive, EventEmitter, SimpleChange, OnInit, OnChanges, OnDestroy } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
@@ -20,7 +20,7 @@ const OUTPUTS = `
   inputs: INPUTS,
   outputs: OUTPUTS,
 })
-export class Marker implements OnChanges, OnDestroy {
+export class Marker implements OnInit, OnChanges, OnDestroy {
   private marker: google.maps.Marker;
   private options: google.maps.MarkerOptions = <google.maps.MarkerOptions>{};
   private inputChanges$ = new Subject();
@@ -31,15 +31,17 @@ export class Marker implements OnChanges, OnDestroy {
     private geolocation: NavigatorGeolocation,
     private geoCoder: GeoCoder
   ) {
+    // all outputs needs to be initialized,
+    // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
+    OUTPUTS.forEach(output => this[output] = new EventEmitter());
+  }
+
+  ngOnInit() {
     if (this.ng2Map.map) { // map is ready already
       this.initialize(this.ng2Map.map);
     } else {
       this.ng2Map.mapReady$.subscribe((map: google.maps.Map) => this.initialize(map));
     }
-
-    // all outputs needs to be initialized,
-    // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
-    OUTPUTS.forEach(output => this[output] = new EventEmitter());
   }
 
   ngOnChanges(changes: {[key: string]: SimpleChange}) {
@@ -72,23 +74,20 @@ export class Marker implements OnChanges, OnDestroy {
   }
 
   setPosition(): void {
-    setTimeout(() => {  // *ngFor position=".." does not refelect its value immediately
-      if (!this['position']) {
-        this.geolocation.getCurrentPosition().subscribe(position => {
-          console.log('setting marker position from current location');
-          let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-          // console.log('this.marker', this.marker);
-          this.marker.setPosition(latLng);
-        });
-      }
-      else if (typeof this['position'] === 'string') {
-        this.geoCoder.geocode({address: this['position']}).subscribe(results => {
-          console.log('setting marker position from address', this['position']);
-          // console.log('this.marker', this.marker);
-          this.marker.setPosition(results[0].geometry.location);
-        });
-      }
-    }, 500);
+    if (!this['position']) {
+      this.geolocation.getCurrentPosition().subscribe(position => {
+        console.log('setting marker position from current location');
+        let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        // console.log('this.marker', this.marker);
+        this.marker.setPosition(latLng);
+      });
+    } else if (typeof this['position'] === 'string') {
+      this.geoCoder.geocode({address: this['position']}).subscribe(results => {
+        console.log('setting marker position from address', this['position']);
+        // console.log('this.marker', this.marker);
+        this.marker.setPosition(results[0].geometry.location);
+      });
+    }
   }
 
   ngOnDestroy() {
