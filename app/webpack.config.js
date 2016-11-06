@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const DashboardPlugin = require('webpack-dashboard/plugin');
 
-module.exports = {
+const config = {
   resolve: {
     extensions: ['', '.ts', '.webpack.js', '.web.js', '.js'],
     alias: {
@@ -16,15 +16,23 @@ module.exports = {
       { test: /\.html$/, loader: 'raw' },
     ]
   },
+  plugins: [],
   ts: {
     include: ['src/**/*.ts', 'app/**/*.ts'],
   },
-  plugins: [
-    new DashboardPlugin()
-  ],
   output: {
     path: `${__dirname}/build/`,
     publicPath: '/build/',
     filename: 'app.js',
   },
 };
+
+if (process.env.NODE_ENV !== 'prod') {
+  config.plugins = [new DashboardPlugin()];
+} else {
+  config.plugins = [
+    new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
+  ];
+}
+
+module.exports = config;

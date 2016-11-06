@@ -10,9 +10,10 @@
     "start": "NODE_ENV=dev node node_modules/.bin/webpack-dashboard --title ng2-map -- node_modules/.bin/webpack-dev-server --quiet --port 9001 --content-base app --config app/webpack.config --open",
     "lint": "./node_modules/.bin/tslint 'src/**/*.ts' 'app/**/*.ts'",
     "clean": "rimraf dist",
-    "build": "npm-run-all --serial clean build:ts build:umd",
+    "build": "npm-run-all --serial clean build:ts build:umd build:app",
     "build:ts": "tsc --declaration",
-    "build:umd": "webpack"
+    "build:umd": "webpack",
+    "build:app": "NODE_ENV=prod webpack --config app/webpack.config"
   },
   "repository": {
     "type": "git",
