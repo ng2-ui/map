@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base href="/">
   <title>Angular2 Npm Package Example</title>
   <style>
     ng2-map {
@@ -20,7 +19,13 @@
 </head>
 
 <body>
-<my-app>Loading...</my-app>
-<script src="/build/app.js"></script>
+  <my-app>Loading...</my-app>
+  <script>
+    document.write('<base href="' + document.location + '" />');
+
+    var script = document.createElement("script");
+    script.src = location.pathname.replace('index.html', '') + 'build/app.js';
+    (document.body).appendChild(script);
+  </script>
 </body>
 </html>
