@@ -92,9 +92,10 @@ export class Marker implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    OUTPUTS.forEach(output => google.maps.event.clearListeners(this.marker, output));
-    delete this.marker.setMap(null);
-    delete this.marker;
+    if (this.marker) {
+      OUTPUTS.forEach(output => google.maps.event.clearListeners(this.marker, output));
+      delete this.marker.setMap(null);
+      delete this.marker;
+    }
   }
-
 }
