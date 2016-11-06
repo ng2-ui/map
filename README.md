@@ -8,9 +8,9 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
 1. **All google properties must be able to be defined in html without Javascript.**
 
-   Thus, basic users don't even have to know what Javascript is. 
+   Thus, basic users don't even have to know what Javascript is.
 
-2. **Expose all original Google Maps V3 api to the user without any exception.** 
+2. **Expose all original Google Maps V3 api to the user without any exception.**
 
    No hiding, nor manipulation. By doing so, programmers don't need to learnthis module.
    If you know Google Maps V3 API, there shouldn't be no problem using this module.
@@ -33,7 +33,7 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
         import { BrowserModule  } from '@angular/platform-browser';
         import { AppComponent } from './app.component';
         import { Ng2Map} from 'ng2-map';
-        
+
         @NgModule({
           imports: [BrowserModule, FormsModule, Ng2Map],
           declarations: [AppComponent],
@@ -52,7 +52,7 @@ For full example, please check out `test` directory to see the example of;
   -  and `app.component.ts`.
 
   NOTE: if you domain is new, and you are having api key error, please specify your api key like the following
-  
+
       import { NG2_MAP_DIRECTIVES, Ng2MapComponent } from "ng2-map";  // <--- this
       // Ng2MapComponent['apiUrl'] = "https://maps.google.com/maps/api/js?key=YOUR_KEY";  // ???
 
@@ -65,7 +65,7 @@ For full example, please check out `test` directory to see the example of;
 
 This module is only improved and maintained by contributors like you;
 
-As a contributor, it's NOT required to be skilled in Javascript nor Angular2. 
+As a contributor, it's NOT required to be skilled in Javascript nor Angular2.
 It’s required to be open-minded and interested in helping others.
 You can contribute to the following;
 
@@ -79,7 +79,7 @@ In result of your active contribution, you will be listed as a core contributor
 on https://ng2-ui.github.io, and a member of ng2-ui too.
 
 If you are interested in becoming a contributor and/or a member of ng-ui,
-please send me email to `allenhwkim AT gmail.com` with your github id. 
+please send me email to `allenhwkim AT gmail.com` with your github id.
 
 ### Google Maps V3 Compatibility Table
 
@@ -97,7 +97,10 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindowOptions">InfoWindowOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindow">InfoWindow Events</a>
       <td> supported as `info-window`
-  <tr><td> Circle        <td> CircleOptions            <td> Circle Events        <td> Coming soon
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Circle">Circle</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#CircleOptions">CircleOptions</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Circle">Circle Events</a>
+      <td> supported as `circle`
   <tr><td> Polygon       <td> PolygonOptions           <td> Polygon Events       <td> Coming Soon
   <tr><td> Polyline      <td> PolylineOptions          <td> Polyline Events      <td> Coming Soon
   <tr><td> GroundOverlay <td> GroundOverlayOptions     <td> GroundOverlay Events <td> Coming Soon
@@ -105,9 +108,9 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   <tr><td> HeatMapLayer  <td> HeatMapLayerLayerOptions <td> HeatMapLayer Events      <td> Coming Soon
   <tr><td> KmlLayer      <td> KmlLayerLayerOptions     <td> KmlLayer Events          <td> Coming Soon
   <tr><td> Data          <td> DataOptions              <td> Data Events              <td> Coming Soon `map-data`
-  <tr><td> BicyclingLayer  <td> BicyclingLayerOptins    <td> BicyclingLayer Events   <td> Coming Soon 
-  <tr><td> MapsEngineLayer <td> MapsEngineLayerOptins   <td> MapsEngineLayer Events  <td> Coming Soon 
-  <tr><td> TrafficLayer    <td> TrafficLayerOptions     <td> TrafficLayer Events     <td> Coming Soon 
+  <tr><td> BicyclingLayer  <td> BicyclingLayerOptins    <td> BicyclingLayer Events   <td> Coming Soon
+  <tr><td> MapsEngineLayer <td> MapsEngineLayerOptins   <td> MapsEngineLayer Events  <td> Coming Soon
+  <tr><td> TrafficLayer    <td> TrafficLayerOptions     <td> TrafficLayer Events     <td> Coming Soon
   <tr><td> StreetViewPanorama  <td> StreetViewPanoramaOptions     <td> StreetViewPanorama Events  <td> Coming Soon
   <tr><td> DrawingManager  <td> DrawingManagerOptions   <td> Drawing Manager Events <td> Coming Soon
   <tr><td> Autocomplete    <td> AutocompleteOptions     <td> Autocomplete Events    <td> Coming Soon
@@ -117,28 +120,28 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
 ### For Developers
 
   * To run index.html in `test` directory
-  
+
           $ cd test
           $ python -mSimpleHTTPServer
 
   * To test with src, update `systemjs.config.ts` to use `src` directory
-  
+
           // For Development tet
           map['ng2-map'] = 'src';
           packages['ng2-map'] = { main: 'index.ts', defaultExtension: 'ts' };
 
   * To publish npm package
-  
+
           $ npm run build
           * npm publish
-          
+
   * To test with npm package,  update `systemjs.config.ts` to use `dist` directory
-  
+
           // For node_modules test
           // map['ng2-map'] = 'dist';
           // packages['ng2-map'] = { main: 'index.js', defaultExtension: 'js' };
-  
-  
+
+
 ## For Developers
 
 ### To start
@@ -149,7 +152,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
     $ npm start
 
 ## To see all runnable npm packate
-   
+
     $ npm run
 
 ## List of available npm tasks

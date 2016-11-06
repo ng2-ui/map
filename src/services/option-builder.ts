@@ -12,7 +12,7 @@ export class OptionBuilder {
   constructor(private geoCoder: GeoCoder) {}
 
   googlizeAllInputs(definedInputs: string[], userInputs: any) {
-    let options: google.maps.MarkerOptions = <google.maps.MarkerOptions>{};
+    let options: any = {};
 
     definedInputs.forEach(input => {
       if (userInputs[input] !== undefined)  {
@@ -56,7 +56,9 @@ export class OptionBuilder {
         || this.getAnyMapConstant(input, options)
 
         /*  2016-06-20 -> new Date('2016-06-20') */
-        || this.getDateObject(input);
+        || this.getDateObject(input)
+
+        || input;
     }
 
 
