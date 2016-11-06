@@ -13,13 +13,12 @@ import { Ng2Map } from '../services/ng2-map';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 
-const INPUTS = `
-  content, disableAutoPan, maxWidth, pixelOffset, position, zIndex
-  `.split(',').map(el => el.trim());
-
-const OUTPUTS = `
-  closeclick, content_changed, domready, position_changed, zindex_changed
-  `.split(',').map(el => `infoWindow${el.trim().replace(/^[a-z]/,x => x.toUpperCase())}`);
+const INPUTS = [
+  'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex',
+];
+const OUTPUTS = [
+  'infoWindowCloseclick', 'infoWindowContentChanged', 'infoWindowDomready', 'infoWindowPositionChanged', 'infoWindowZindexChanged',
+];
 
 @Component({
   selector: 'ng2-map>info-window',
