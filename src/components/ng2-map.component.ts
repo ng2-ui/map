@@ -156,6 +156,8 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    OUTPUTS.forEach(output => google.maps.event.clearListeners(this.map, output));
+    if (this.el) {
+      OUTPUTS.forEach(output => google.maps.event.clearListeners(this.map, output));
+    }
   }
 }

@@ -97,7 +97,9 @@ export class InfoWindow implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    OUTPUTS.forEach(output => google.maps.event.clearListeners(this.infoWindow, output));
-    delete this.infoWindow;
+    if (this.infoWindow) {
+      OUTPUTS.forEach(output => google.maps.event.clearListeners(this.infoWindow, output));
+      delete this.infoWindow;
+    }
   }
 }
