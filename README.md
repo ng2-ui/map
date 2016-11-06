@@ -4,6 +4,8 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
 * **[![Imgur](http://i.imgur.com/O2EOCxf.png)](https://ng2map.github.io)**
 
+* **[Examples](https://rawgit.com/ng2-ui/ng2-map/master/app/index.html)**
+
 ### Design Principle
 
 1. **All google properties must be able to be defined in html without Javascript.**
