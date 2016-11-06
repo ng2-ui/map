@@ -1,5 +1,5 @@
 import { Injectable, SimpleChange } from '@angular/core';
-import { Subject } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
 import { OptionBuilder } from './option-builder';
 import { GeoCoder } from './geo-coder';
 import { Ng2MapComponent } from '../components/ng2-map.component';

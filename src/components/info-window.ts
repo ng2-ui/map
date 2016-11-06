@@ -9,7 +9,8 @@ import {
 
 import { OptionBuilder } from '../services/option-builder';
 import { Ng2Map } from '../services/ng2-map';
-import { Subject } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/debounceTime';
 
 const INPUTS = `
   content, disableAutoPan, maxWidth, pixelOffset, position, zIndex

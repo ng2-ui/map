@@ -4,7 +4,7 @@ import { OptionBuilder } from '../services/option-builder';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
 import { GeoCoder } from '../services/geo-coder';
 import { Ng2Map } from '../services/ng2-map';
-import { Subject } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
 
 const INPUTS = `
   anchorPoint, animation, clickable, cursor, draggable, icon, label, opacity

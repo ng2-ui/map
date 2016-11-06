@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
 
 /**
  *   Provides [defered/promise API](https://docs.angularjs.org/api/ng/service/$q)
