@@ -6,14 +6,15 @@ import { GeoCoder } from '../services/geo-coder';
 import { Ng2Map } from '../services/ng2-map';
 import { Subject } from 'rxjs/Subject';
 
-const INPUTS = `
-  anchorPoint, animation, clickable, cursor, draggable, icon, label, opacity
-  ,optimized,place, position, shape, title, visible, zIndex`.split(',').map(el => el.trim());
-const OUTPUTS = `
-  animation_changed, click, clickable_changed, cursor_changed, dblclick, drag, dragend, draggable_changed,
-  dragstart, flat_changed, icon_changed, mousedown, mouseout, mouseover, mouseup, position_changed, rightclick,
-  shape_changed, title_changed, visible_changed, zindex_changed
-  `.split(',').map(el => `marker${el.trim().replace(/^[a-z]/,x => x.toUpperCase())}`);
+const INPUTS = [
+  'anchorPoint', 'animation', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity',
+  'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex',
+];
+const OUTPUTS = [
+  'markerAnimationChanged', 'markerClick', 'markerClickableChanged', 'markerCursorChanged', 'markerDblclick', 'markerDrag', 'markerDragend', 'markerDraggableChanged',
+  'markerDragstart', 'markerFlatChanged', 'markerIconChanged', 'markerMousedown', 'markerMouseout', 'markerMouseover', 'markerMouseup', 'markerPositionChanged', 'markerRightclick',
+  'markerShapeChanged', 'markerTitleChanged', 'markerVisibleChanged', 'markerZindexChanged',
+];
 
 @Directive({
   selector: 'ng2-map>marker',

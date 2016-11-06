@@ -18,19 +18,19 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import { IJson } from '../services/util';
 
-const INPUTS = `
-  backgroundColor, center, disableDefaultUI, disableDoubleClickZoom, draggable, draggableCursor,
-  draggingCursor, heading, keyboardShortcuts, mapMaker, mapTypeControl, mapTypeId, maxZoom, minZoom,
-  noClear, overviewMapControl, panControl, panControlOptions, rotateControl, scaleControl, scrollwheel,
-  streetView, styles, tilt, zoom, streetViewControl, zoomControl, mapTypeControlOptions,
-  overviewMapControlOptions, rotateControlOptions, scaleControlOptions, streetViewControlOptions,
-  zoomControlOptions`.split(',').map(el => el.trim());
+const INPUTS = [
+  'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
+  'draggingCursor', 'heading', 'keyboardShortcuts', 'mapMaker', 'mapTypeControl', 'mapTypeId', 'maxZoom', 'minZoom',
+  'noClear', 'overviewMapControl', 'panControl', 'panControlOptions', 'rotateControl', 'scaleControl', 'scrollwheel',
+  'streetView', 'styles', 'tilt', 'zoom', 'streetViewControl', 'zoomControl', 'mapTypeControlOptions',
+  'overviewMapControlOptions', 'rotateControlOptions', 'scaleControlOptions', 'streetViewControlOptions',
+];
 
-const OUTPUTS = `
-  bounds_changed, center_changed, click, dblclick, drag, dragend, dragstart, heading_changed, idle,
-  maptypeid_changed, mousemove, mouseout, mouseover, projection_changed, resize, rightclick,
-  tilesloaded, tile_changed, zoom_changed`
-  .split(',').map(el => `map${el.trim().replace(/^[a-z]/,x => x.toUpperCase())}`);
+const OUTPUTS = [
+  'mapBoundsChanged', 'mapCenterChanged', 'mapClick', 'mapDblclick', 'mapDrag', 'mapDragend', 'mapDragstart', 'mapHeadingChanged', 'mapIdle',
+  'mapTypeidChanged', 'mapMousemove', 'mapMouseout', 'mapMouseover', 'mapProjectionChanged', 'mapResize', 'mapRightclick',
+  'mapTilesloaded', 'mapTileChanged', 'mapZoomChanged',
+];
 
 @Component({
   selector: 'ng2-map',
