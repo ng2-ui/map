@@ -20,7 +20,7 @@ const OUTPUTS = `
   `.split(',').map(el => `infoWindow${el.trim().replace(/^[a-z]/,x => x.toUpperCase())}`);
 
 @Component({
-  selector: 'info-window',
+  selector: 'ng2-map>info-window',
   inputs: INPUTS,
   outputs: OUTPUTS,
   template: `<ng-content></ng-content>`,

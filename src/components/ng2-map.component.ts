@@ -32,7 +32,7 @@ const OUTPUTS = `
   .split(',').map(el => `map${el.trim().replace(/^[a-z]/,x => x.toUpperCase())}`);
 
 @Component({
-  selector: 'ng2-map, jui-map',
+  selector: 'ng2-map',
   providers: [Ng2Map, OptionBuilder, GeoCoder, NavigatorGeolocation],
   styles: [`
     ng2-map {display: block; height: 300px;}
