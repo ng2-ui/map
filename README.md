@@ -152,4 +152,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
    
     $ npm run
 
-
+## List of available npm tasks
+  * `npm run lint`: Lint TypeScript code
+  * `npm run clean`: Clean dist folder
+  * `npm run build`: Production build (umd + ngc + app)
