@@ -33,7 +33,7 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
         import { NgModule } from '@angular/core';
         import { FormsModule } from "@angular/forms";
         import { BrowserModule  } from '@angular/platform-browser';
-        
+
         import { AppComponent } from './app.component';
         import { Ng2MapModule} from 'ng2-map';
 
@@ -128,14 +128,14 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
     $ cd ng2-map
     $ npm install
     $ npm start
-    
+
 ### List of available npm tasks
 
   * `npm run` : List all available tasks
   * `npm start`: Run `app` directory for development using `webpack-dev-server` with port 9001
   * `npm run clean`: Remove dist folder
   * `npm run lint`: Lint TypeScript code
-  * `npm run build:ngc`: ???????????????????
-  * `npm run build:umd`: Build `ng2-map.umd.js`
+  * `npm run build:ngc`: build ES module
+  * `npm run build:umd`: Build UMD module `ng2-map.umd.js`
   * `npm run build:app`: Build `app/build/app.js` for runnable examples
   * `npm run build`: Build all(build:ngc, build:umc, and build:app)
