@@ -11,8 +11,8 @@ const INPUTS = [
   'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex',
 ];
 const OUTPUTS = [
-  'circleCenterChanged', 'circleClick', 'circleDblclick', 'circleDrag', 'circleDragend', 'circleDragstart',
-  'circleMousedown', 'circleMousemove', 'circleMouseout', 'circleMouseover', 'circleMouseup', 'circleRadiusChanged', 'circleRightclick',
+  'centerChanged', 'click', 'dblclick', 'drag', 'dragend', 'dragstart',
+  'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'radiusChanged', 'rightclick',
 ];
 
 @Directive({

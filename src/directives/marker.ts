@@ -11,9 +11,9 @@ const INPUTS = [
   'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex',
 ];
 const OUTPUTS = [
-  'markerAnimationChanged', 'markerClick', 'markerClickableChanged', 'markerCursorChanged', 'markerDblclick', 'markerDrag', 'markerDragend', 'markerDraggableChanged',
-  'markerDragstart', 'markerFlatChanged', 'markerIconChanged', 'markerMousedown', 'markerMouseout', 'markerMouseover', 'markerMouseup', 'markerPositionChanged', 'markerRightclick',
-  'markerShapeChanged', 'markerTitleChanged', 'markerVisibleChanged', 'markerZindexChanged',
+  'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
+  'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
+  'dhapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged',
 ];
 
 @Directive({

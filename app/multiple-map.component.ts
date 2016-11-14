@@ -14,8 +14,8 @@ import { Component } from '@angular/core';
     <h1>Simple Map 3</h1>
     <ng2-map center="Brampton, Canada" scrollwheel="false">
       <marker position="Brampton, Canada"
-        (markerDragstart)="log('dragstart')"
-        (markerDragend)="log('dragend')"
+        (dragstart)="log('dragstart')"
+        (dragend)="log('dragend')"
         draggable="true"></marker>
     </ng2-map>
   `,
