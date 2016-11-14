@@ -6,6 +6,7 @@ import { SimpleCircleComponent } from './simple-circle.component';
 import { SimpleMarkerComponent } from './simple-marker.component';
 import { MarkerNgForComponent } from './marker-ng-for.component';
 import { MultipleMapComponent } from './multiple-map.component';
+import { PolygonComponent } from './polygon.component';
 
 export const routes: Routes = [
   { path: 'simple-info-window', component: SimpleInfoWindowComponent },
@@ -14,6 +15,7 @@ export const routes: Routes = [
   { path: 'simple-marker', component: SimpleMarkerComponent },
   { path: 'marker-ng-for', component: MarkerNgForComponent },
   { path: 'multiple-map', component: MultipleMapComponent },
+  { path: 'polygon', component: PolygonComponent },
   { path: '',  redirectTo: '/simple-marker', pathMatch: 'full' },
 ];
 
@@ -25,4 +27,5 @@ export const APP_ROUTER_COMPONENTS = [
   SimpleMarkerComponent,
   MarkerNgForComponent,
   MultipleMapComponent,
+  PolygonComponent,
 ];

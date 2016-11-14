@@ -106,15 +106,18 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
 
   initializeMap(): void {
     this.el = this.elementRef.nativeElement.querySelector('.google-map');
-    console.log('this.el...............', this.el);
     this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-    console.log('this.mapOptions', this.mapOptions);
+    console.log('ng2-map mapOptions', this.mapOptions);
 
     this.mapOptions.zoom = this.mapOptions.zoom || 15;
     typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
-    this.map = new google.maps.Map(this.el, this.mapOptions);
 
-    this.setCenter();
+    this.map = new google.maps.Map(this.el, this.mapOptions);
+    this.map['mapObjectName'] = this.constructor['name'];
+
+    if (!this.mapOptions.center) { // if center is not given as lat/lng
+      this.setCenter();
+    }
 
     // set google events listeners and emits to this outputs listeners
     this.ng2Map.setObjectEvents(OUTPUTS, this, 'map');
@@ -135,7 +138,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   }
 
   setCenter(): void {
-    if (!this['center']) {
+    if (!this['center']) { // center is not from user. Thus, we set the current location
       this.geolocation.getCurrentPosition().subscribe(position => {
         console.log('setting map center from current location');
         let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);

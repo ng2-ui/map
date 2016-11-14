@@ -1,4 +1,13 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var core_1 = require('@angular/core');
 var util_1 = require('./util');
 var geo_coder_1 = require('./geo-coder');
@@ -36,21 +45,23 @@ var OptionBuilder = (function () {
     };
     OptionBuilder.prototype.googlize = function (input, options) {
         options = options || {};
-        var output;
-        if (input === 'false' || input === false) {
-            output = false;
-        }
-        else if (input === '0' || input === 0) {
-            output = 0;
-        }
-        else {
-            output =
-                // -> googlize -> getJsonParsed -> googlizeMultiple -> googlize until all elements are parsed
-                this.getJSONParsed(input, options)
-                    || this.getAnyMapObject(input)
-                    || this.getAnyMapConstant(input, options)
-                    || this.getDateObject(input)
-                    || input;
+        var output = input;
+        if (typeof input === 'string') {
+            if (input === 'false') {
+                output = false;
+            }
+            else if (input === '0') {
+                output = 0;
+            }
+            else {
+                output =
+                    // -> googlize -> getJsonParsed -> googlizeMultiple -> googlize until all elements are parsed
+                    this.getJSONParsed(input, options)
+                        || this.getAnyMapObject(input)
+                        || this.getAnyMapConstant(input, options)
+                        || this.getDateObject(input)
+                        || input;
+            }
         }
         if (output instanceof Array) {
             if (options['key'] === 'bounds') {
@@ -59,8 +70,12 @@ var OptionBuilder = (function () {
             else if (options['key'] === 'icons') {
                 output = this.getMapIcons(output);
             }
+            else if (options['key'] === 'position') {
+                output = this.getLatLng(output);
+                console.log('xxxxxxxxxxxxxxx position', output);
+            }
         }
-        if (options['key'] && output instanceof Object) {
+        else if (options['key'] && output instanceof Object) {
             if (options['key'] === 'icon') {
                 output = this.getMarkerIcon(output);
             }
@@ -201,13 +216,10 @@ var OptionBuilder = (function () {
         }
         return output;
     };
-    OptionBuilder.decorators = [
-        { type: core_1.Injectable },
-    ];
-    /** @nocollapse */
-    OptionBuilder.ctorParameters = [
-        { type: geo_coder_1.GeoCoder, },
-    ];
+    OptionBuilder = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [geo_coder_1.GeoCoder])
+    ], OptionBuilder);
     return OptionBuilder;
 }());
 exports.OptionBuilder = OptionBuilder;

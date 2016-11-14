@@ -59,6 +59,7 @@ export class Circle implements OnInit, OnChanges, OnDestroy {
     // will be set after geocoded
     typeof this.options.center === 'string' && (delete this.options.center);
     this.circle = new google.maps.Circle(this.options);
+    this.circle['mapObjectName'] = this.constructor['name'];
 
     this.setCenter();
 
