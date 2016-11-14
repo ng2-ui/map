@@ -1,4 +1,13 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var core_1 = require('@angular/core');
 var option_builder_1 = require('../services/option-builder');
 var navigator_geolocation_1 = require('../services/navigator-geolocation');
@@ -48,6 +57,7 @@ var Circle = (function () {
         // will be set after geocoded
         typeof this.options.center === 'string' && (delete this.options.center);
         this.circle = new google.maps.Circle(this.options);
+        this.circle['mapObjectName'] = this.constructor['name'];
         this.setCenter();
         // set google events listeners and emits to this outputs listeners
         this.ng2Map.setObjectEvents(OUTPUTS, this, 'circle');
@@ -82,20 +92,14 @@ var Circle = (function () {
             delete this.circle;
         }
     };
-    Circle.decorators = [
-        { type: core_1.Directive, args: [{
-                    selector: 'ng2-map>circle',
-                    inputs: INPUTS,
-                    outputs: OUTPUTS,
-                },] },
-    ];
-    /** @nocollapse */
-    Circle.ctorParameters = [
-        { type: ng2_map_1.Ng2Map, },
-        { type: option_builder_1.OptionBuilder, },
-        { type: navigator_geolocation_1.NavigatorGeolocation, },
-        { type: geo_coder_1.GeoCoder, },
-    ];
+    Circle = __decorate([
+        core_1.Directive({
+            selector: 'ng2-map>circle',
+            inputs: INPUTS,
+            outputs: OUTPUTS,
+        }), 
+        __metadata('design:paramtypes', [ng2_map_1.Ng2Map, option_builder_1.OptionBuilder, navigator_geolocation_1.NavigatorGeolocation, geo_coder_1.GeoCoder])
+    ], Circle);
     return Circle;
 }());
 exports.Circle = Circle;

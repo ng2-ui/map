@@ -60,6 +60,7 @@ export class Marker implements OnInit, OnChanges, OnDestroy {
     // will be set after geocoded
     typeof this.options.position === 'string' && (delete this.options.position);
     this.marker = new google.maps.Marker(this.options);
+    this.marker['mapObjectName'] = this.constructor['name'];
 
     this.setPosition();
 

@@ -39,39 +39,42 @@ export class OptionBuilder {
 
   googlize(input: any, options?: IJson): any {
     options = options || {};
-    let output: any;
-    if (input === 'false' || input === false) {
-      output = false;
-    } else if (input === '0' || input === 0) {
-      output = 0;
-    } else {
-      output =
-        // -> googlize -> getJsonParsed -> googlizeMultiple -> googlize until all elements are parsed
-        this.getJSONParsed(input, options)
+    let output: any = input;
+    if (typeof input === 'string') { //convert string to a google object
+      if (input === 'false') {
+        output = false;
+      } else if (input === '0') {
+        output = 0;
+      } else {
+        output =
+          // -> googlize -> getJsonParsed -> googlizeMultiple -> googlize until all elements are parsed
+          this.getJSONParsed(input, options)
 
-        /* Foo.Bar(...) -> new google.maps.Foo.Bar(...) */
-        || this.getAnyMapObject(input)
+          /* Foo.Bar(...) -> new google.maps.Foo.Bar(...) */
+          || this.getAnyMapObject(input)
 
-        /*  MapTypeID.HYBRID -> new google.maps.MapTypeID.HYBRID */
-        || this.getAnyMapConstant(input, options)
+          /*  MapTypeID.HYBRID -> new google.maps.MapTypeID.HYBRID */
+          || this.getAnyMapConstant(input, options)
 
-        /*  2016-06-20 -> new Date('2016-06-20') */
-        || this.getDateObject(input)
+          /*  2016-06-20 -> new Date('2016-06-20') */
+          || this.getDateObject(input)
 
-        || input;
+          || input;
+      }
     }
 
-
-    if (output instanceof Array) {
+    if (output instanceof Array) { //e.g., [1, 2]
       if (options['key'] === 'bounds') {
         output = new google.maps.LatLngBounds(output[0], output[1]);
       }
       else if (options['key'] === 'icons') {
         output = this.getMapIcons(output);
       }
-    }
-
-    if (options['key'] && output instanceof Object) {
+      else if (options['key'] === 'position') {
+        output = this.getLatLng(output);
+        console.log('xxxxxxxxxxxxxxx position', output)
+      }
+    } else if (options['key'] && output instanceof Object) {
       if (options['key'] === 'icon') {
         output = this.getMarkerIcon(output);
       }
@@ -99,6 +102,7 @@ export class OptionBuilder {
       output = getJSON(input);
       if (output instanceof Array) {
         // [{a:1}] : not lat/lng ones
+
         if (output[0].constructor !== Object) { // [[1,2],[3,4]] or [1,2]
           output = this.getLatLng(output);
         }

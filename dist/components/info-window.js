@@ -1,4 +1,13 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 var core_1 = require('@angular/core');
 var option_builder_1 = require('../services/option-builder');
 var ng2_map_1 = require('../services/ng2-map');
@@ -42,6 +51,7 @@ var InfoWindow = (function () {
         this.template = this.elementRef.nativeElement.innerHTML;
         this.options = this.optionBuilder.googlizeAllInputs(INPUTS, this);
         this.infoWindow = new google.maps.InfoWindow(this.options);
+        this.infoWindow['mapObjectName'] = this.constructor['name'];
         console.log('INFOWINDOW options', this.options);
         // register infoWindow ids to Ng2Map, so that it can be opened by id
         this.el = this.elementRef.nativeElement;
@@ -75,20 +85,15 @@ var InfoWindow = (function () {
             delete this.infoWindow;
         }
     };
-    InfoWindow.decorators = [
-        { type: core_1.Component, args: [{
-                    selector: 'ng2-map>info-window',
-                    inputs: INPUTS,
-                    outputs: OUTPUTS,
-                    template: "<ng-content></ng-content>",
-                },] },
-    ];
-    /** @nocollapse */
-    InfoWindow.ctorParameters = [
-        { type: option_builder_1.OptionBuilder, },
-        { type: core_1.ElementRef, },
-        { type: ng2_map_1.Ng2Map, },
-    ];
+    InfoWindow = __decorate([
+        core_1.Component({
+            selector: 'ng2-map>info-window',
+            inputs: INPUTS,
+            outputs: OUTPUTS,
+            template: "<ng-content></ng-content>",
+        }), 
+        __metadata('design:paramtypes', [option_builder_1.OptionBuilder, core_1.ElementRef, ng2_map_1.Ng2Map])
+    ], InfoWindow);
     return InfoWindow;
 }());
 exports.InfoWindow = InfoWindow;

@@ -80,7 +80,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.Marker = marker_1.Marker;
 	var circle_1 = __webpack_require__(12);
 	exports.Circle = circle_1.Circle;
-	var info_window_1 = __webpack_require__(13);
+	var polygon_1 = __webpack_require__(13);
+	exports.Polygon = polygon_1.Polygon;
+	var info_window_1 = __webpack_require__(14);
 	exports.InfoWindow = info_window_1.InfoWindow;
 	var Ng2MapModule = (function () {
 	    function Ng2MapModule() {
@@ -88,9 +90,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Ng2MapModule = __decorate([
 	        core_1.NgModule({
 	            imports: [common_1.CommonModule],
-	            declarations: [ng2_map_component_1.Ng2MapComponent, marker_1.Marker, circle_1.Circle, info_window_1.InfoWindow],
+	            declarations: [ng2_map_component_1.Ng2MapComponent, marker_1.Marker, circle_1.Circle, polygon_1.Polygon, info_window_1.InfoWindow],
 	            providers: [geo_coder_1.GeoCoder, navigator_geolocation_1.NavigatorGeolocation, ng2_map_1.Ng2Map, option_builder_1.OptionBuilder],
-	            exports: [ng2_map_component_1.Ng2MapComponent, marker_1.Marker, circle_1.Circle, info_window_1.InfoWindow],
+	            exports: [ng2_map_component_1.Ng2MapComponent, marker_1.Marker, circle_1.Circle, polygon_1.Polygon, info_window_1.InfoWindow],
 	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Ng2MapModule);
@@ -162,21 +164,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    OptionBuilder.prototype.googlize = function (input, options) {
 	        options = options || {};
-	        var output;
-	        if (input === 'false' || input === false) {
-	            output = false;
-	        }
-	        else if (input === '0' || input === 0) {
-	            output = 0;
-	        }
-	        else {
-	            output =
-	                // -> googlize -> getJsonParsed -> googlizeMultiple -> googlize until all elements are parsed
-	                this.getJSONParsed(input, options)
-	                    || this.getAnyMapObject(input)
-	                    || this.getAnyMapConstant(input, options)
-	                    || this.getDateObject(input)
-	                    || input;
+	        var output = input;
+	        if (typeof input === 'string') {
+	            if (input === 'false') {
+	                output = false;
+	            }
+	            else if (input === '0') {
+	                output = 0;
+	            }
+	            else {
+	                output =
+	                    // -> googlize -> getJsonParsed -> googlizeMultiple -> googlize until all elements are parsed
+	                    this.getJSONParsed(input, options)
+	                        || this.getAnyMapObject(input)
+	                        || this.getAnyMapConstant(input, options)
+	                        || this.getDateObject(input)
+	                        || input;
+	            }
 	        }
 	        if (output instanceof Array) {
 	            if (options['key'] === 'bounds') {
@@ -185,8 +189,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            else if (options['key'] === 'icons') {
 	                output = this.getMapIcons(output);
 	            }
+	            else if (options['key'] === 'position') {
+	                output = this.getLatLng(output);
+	                console.log('xxxxxxxxxxxxxxx position', output);
+	            }
 	        }
-	        if (options['key'] && output instanceof Object) {
+	        else if (options['key'] && output instanceof Object) {
 	            if (options['key'] === 'icon') {
 	                output = this.getMarkerIcon(output);
 	            }
@@ -634,13 +642,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Ng2MapComponent.prototype.initializeMap = function () {
 	        var _this = this;
 	        this.el = this.elementRef.nativeElement.querySelector('.google-map');
-	        console.log('this.el...............', this.el);
 	        this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-	        console.log('this.mapOptions', this.mapOptions);
+	        console.log('ng2-map mapOptions', this.mapOptions);
 	        this.mapOptions.zoom = this.mapOptions.zoom || 15;
 	        typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
 	        this.map = new google.maps.Map(this.el, this.mapOptions);
-	        this.setCenter();
+	        this.map['mapObjectName'] = this.constructor['name'];
+	        if (!this.mapOptions.center) {
+	            this.setCenter();
+	        }
 	        // set google events listeners and emits to this outputs listeners
 	        this.ng2Map.setObjectEvents(OUTPUTS, this, 'map');
 	        // broadcast map ready message
@@ -767,6 +777,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // will be set after geocoded
 	        typeof this.options.position === 'string' && (delete this.options.position);
 	        this.marker = new google.maps.Marker(this.options);
+	        this.marker['mapObjectName'] = this.constructor['name'];
 	        this.setPosition();
 	        // set google events listeners and emits to this outputs listeners
 	        this.ng2Map.setObjectEvents(OUTPUTS, this, 'marker');
@@ -879,6 +890,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // will be set after geocoded
 	        typeof this.options.center === 'string' && (delete this.options.center);
 	        this.circle = new google.maps.Circle(this.options);
+	        this.circle['mapObjectName'] = this.constructor['name'];
 	        this.setCenter();
 	        // set google events listeners and emits to this outputs listeners
 	        this.ng2Map.setObjectEvents(OUTPUTS, this, 'circle');
@@ -944,6 +956,91 @@ return /******/ (function(modules) { // webpackBootstrap
 	var option_builder_1 = __webpack_require__(3);
 	var ng2_map_1 = __webpack_require__(8);
 	var Subject_1 = __webpack_require__(6);
+	var INPUTS = [
+	    'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'geodesic', 'paths',
+	    'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex'
+	];
+	var OUTPUTS = [
+	    'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'mousedown',
+	    'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick'
+	];
+	var Polygon = (function () {
+	    function Polygon(ng2Map, optionBuilder) {
+	        var _this = this;
+	        this.ng2Map = ng2Map;
+	        this.optionBuilder = optionBuilder;
+	        this.options = {};
+	        this.inputChanges$ = new Subject_1.Subject();
+	        // all outputs needs to be initialized, http://stackoverflow.com/questions/37765519
+	        OUTPUTS.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
+	    }
+	    Polygon.prototype.ngOnInit = function () {
+	        var _this = this;
+	        if (this.ng2Map.map) {
+	            this.initialize(this.ng2Map.map);
+	        }
+	        else {
+	            this.ng2Map.mapReady$.subscribe(function (map) { return _this.initialize(map); });
+	        }
+	    };
+	    Polygon.prototype.ngOnChanges = function (changes) {
+	        this.inputChanges$.next(changes);
+	    };
+	    // called when map is ready
+	    Polygon.prototype.initialize = function (map) {
+	        var _this = this;
+	        this.options = this.optionBuilder.googlizeAllInputs(INPUTS, this);
+	        console.log('Polygon initialization options', this.options.paths);
+	        //noinspection TypeScriptUnresolvedFunction
+	        this.polygon = new google.maps.Polygon(Object.assign({}, this.options, { map: map }));
+	        this.polygon['mapObjectName'] = this.constructor['name'];
+	        // set google events listeners and emits to this outputs listeners
+	        this.ng2Map.setObjectEvents(OUTPUTS, this, 'polygon');
+	        // update pologon when input changes
+	        this.inputChanges$.subscribe(function (changes) {
+	            console.log('polygon options are changed', changes);
+	            _this.ng2Map.updateGoogleObject(_this.polygon, changes);
+	        });
+	    };
+	    Polygon.prototype.ngOnDestroy = function () {
+	        var _this = this;
+	        if (this.polygon) {
+	            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.polygon, output); });
+	            delete this.polygon.setMap(null);
+	            delete this.polygon;
+	        }
+	    };
+	    Polygon = __decorate([
+	        core_1.Directive({
+	            selector: 'ng2-map>polygon',
+	            inputs: INPUTS,
+	            outputs: OUTPUTS,
+	        }), 
+	        __metadata('design:paramtypes', [ng2_map_1.Ng2Map, option_builder_1.OptionBuilder])
+	    ], Polygon);
+	    return Polygon;
+	}());
+	exports.Polygon = Polygon;
+
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var option_builder_1 = __webpack_require__(3);
+	var ng2_map_1 = __webpack_require__(8);
+	var Subject_1 = __webpack_require__(6);
 	__webpack_require__(10);
 	var INPUTS = [
 	    'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex',
@@ -983,6 +1080,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.template = this.elementRef.nativeElement.innerHTML;
 	        this.options = this.optionBuilder.googlizeAllInputs(INPUTS, this);
 	        this.infoWindow = new google.maps.InfoWindow(this.options);
+	        this.infoWindow['mapObjectName'] = this.constructor['name'];
 	        console.log('INFOWINDOW options', this.options);
 	        // register infoWindow ids to Ng2Map, so that it can be opened by id
 	        this.el = this.elementRef.nativeElement;
