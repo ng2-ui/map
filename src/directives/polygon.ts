@@ -6,11 +6,11 @@ import { Subject } from 'rxjs/Subject';
 
 const INPUTS = [
   'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'geodesic', 'paths',
-  'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex'
+  'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex',
 ];
 const OUTPUTS = [
   'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'mousedown',
-  'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick'
+  'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick',
 ];
 
 @Directive({
@@ -49,7 +49,7 @@ export class Polygon implements OnInit, OnChanges, OnDestroy {
     this.options = this.optionBuilder.googlizeAllInputs(INPUTS, this);
     console.log('Polygon initialization options', this.options.paths);
 
-    //noinspection TypeScriptUnresolvedFunction
+    // noinspection TypeScriptUnresolvedFunction
     this.polygon = new google.maps.Polygon(Object.assign({}, this.options, {map: map}));
     this.polygon['mapObjectName'] = this.constructor['name'];
 

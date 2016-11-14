@@ -4,14 +4,14 @@ import { Component } from '@angular/core';
   template: `
     <h1>Simple InfoWindow</h1>
     <ng2-map center="Brampton, Canada">
-      <marker position="Brampton, Canada" draggable="true" (markerClick)="clicked($event)"></marker>
+      <marker position="Brampton, Canada" draggable="true" (click)="clicked($event)"></marker>
       <info-window id="iw">
         lat: [[lat]], lng: [[lng]]
       </info-window>
     </ng2-map>
     <pre>
 &lt;ng2-map center="Brampton, Canada">
-  &lt;marker position="Brampton, Canada" draggable="true" (markerClick)="clicked($event)">&lt;/marker>
+  &lt;marker position="Brampton, Canada" draggable="true" (click)="clicked($event)">&lt;/marker>
   &lt;info-window id="iw">
     lat: [[lat]], lng: [[lng]]
   &lt;/info-window>
