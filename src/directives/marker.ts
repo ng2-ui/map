@@ -8,12 +8,12 @@ import { Subject } from 'rxjs/Subject';
 
 const INPUTS = [
   'anchorPoint', 'animation', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity',
-  'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex',
+  'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex', 'options'
 ];
 const OUTPUTS = [
   'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
   'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
-  'dhapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged',
+  'dhapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged'
 ];
 
 @Directive({
@@ -23,7 +23,7 @@ const OUTPUTS = [
 })
 export class Marker implements OnInit, OnChanges, OnDestroy {
   private marker: google.maps.Marker;
-  private options: google.maps.MarkerOptions = <google.maps.MarkerOptions>{};
+  private objectOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{};
   private inputChanges$ = new Subject();
 
   constructor(
@@ -53,13 +53,13 @@ export class Marker implements OnInit, OnChanges, OnDestroy {
   initialize(map: google.maps.Map): void {
     console.log('marker is being initialized');
 
-    this.options = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-    console.log('MARKER options', this.options);
+    this.objectOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
+    console.log('MARKER objectOptions', this.objectOptions);
 
-    this.options.map = map;
+    this.objectOptions.map = map;
     // will be set after geocoded
-    typeof this.options.position === 'string' && (delete this.options.position);
-    this.marker = new google.maps.Marker(this.options);
+    typeof this.objectOptions.position === 'string' && (delete this.objectOptions.position);
+    this.marker = new google.maps.Marker(this.objectOptions);
     this.marker['mapObjectName'] = this.constructor['name'];
 
     this.setPosition();
@@ -70,7 +70,7 @@ export class Marker implements OnInit, OnChanges, OnDestroy {
     // update marker when input changes
     this.inputChanges$
       .subscribe((changes: SimpleChange) => {
-        console.log('marker options are changed', changes);
+        console.log('marker objectOptions are changed', changes);
         this.ng2Map.updateGoogleObject(this.marker, changes);
       });
   }

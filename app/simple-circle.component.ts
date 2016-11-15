@@ -16,7 +16,15 @@ import { Component } from '@angular/core';
     </ng2-map>
     <pre>
 &lt;ng2-map center="Brampton, Canada">
-  &lt;circle center="Brampton, Canada" draggable="true" radius="100">&lt;/circle>
+  &lt;circle center="Brampton, Canada"
+    [strokeColor]="'#FF0000'"
+    [strokeOpacity]="0.8"
+    [strokeWeight]="2"
+    [editable]="true"
+    (dragstart)="log('dragstart')"
+    (dragend)="log('dragend')"
+    radius="100"
+    draggable="true">&lt;/circle>
 &lt;/ng2-map>
     </pre>
   `,

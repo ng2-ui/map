@@ -59,8 +59,14 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
 ## Use it in your template
 
-       <ng2-map [center]="Brampton, Canada"></ng2-map>
-
+```
+<ng2-map center="Brampton, Canada"></ng2-map>
+```
+or, 
+```
+<ng2-map [options]="mapOptions"></ng2-map>
+```
+       
 For full example, please check out `app` directory to see the example of;
 
   - `main.ts`
@@ -104,7 +110,10 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#CircleOptions">CircleOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Circle">Circle Events</a>
       <td> supported as `circle`
-  <tr><td> Polygon       <td> PolygonOptions           <td> Polygon Events       <td> Coming Soon
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Polygon">Polygon</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#PolygonOptions">PolygonOptions</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Polygon">Polygon Events</a>
+      <td> supported as `polygon`
   <tr><td> Polyline      <td> PolylineOptions          <td> Polyline Events      <td> Coming Soon
   <tr><td> GroundOverlay <td> GroundOverlayOptions     <td> GroundOverlay Events <td> Coming Soon
   <tr><td> FusionTablesLayer <td> FusionTablesLayerOptions <td> FusionTablesLayer Events <td>  Coming Soon

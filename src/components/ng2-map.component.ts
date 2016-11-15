@@ -24,12 +24,13 @@ const INPUTS = [
   'noClear', 'overviewMapControl', 'panControl', 'panControlOptions', 'rotateControl', 'scaleControl', 'scrollwheel',
   'streetView', 'styles', 'tilt', 'zoom', 'streetViewControl', 'zoomControl', 'mapTypeControlOptions',
   'overviewMapControlOptions', 'rotateControlOptions', 'scaleControlOptions', 'streetViewControlOptions',
+  'options'
 ];
 
 const OUTPUTS = [
   'mapBoundsChanged', 'mapCenterChanged', 'mapClick', 'mapDblclick', 'mapDrag', 'mapDragend', 'mapDragstart', 'mapHeadingChanged', 'mapIdle',
   'mapTypeidChanged', 'mapMousemove', 'mapMouseout', 'mapMouseover', 'mapProjectionChanged', 'mapResize', 'mapRightclick',
-  'mapTilesloaded', 'mapTileChanged', 'mapZoomChanged',
+  'mapTilesloaded', 'mapTileChanged', 'mapZoomChanged'
 ];
 
 @Component({
