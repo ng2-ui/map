@@ -1,18 +1,18 @@
-import { Directive, EventEmitter, SimpleChange, OnInit, OnChanges, OnDestroy } from '@angular/core';
+import { Directive } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
 import { GeoCoder } from '../services/geo-coder';
 import { Ng2Map } from '../services/ng2-map';
-import { Subject } from 'rxjs/Subject';
+import { BaseMapDirective } from './base-map-directive';
 
 const INPUTS = [
   'center', 'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'map', 'radius',
-  'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex', 'options'
+  'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex', 'options',
 ];
 const OUTPUTS = [
   'centerChanged', 'click', 'dblclick', 'drag', 'dragend', 'dragstart',
-  'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'radiusChanged', 'rightclick'
+  'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'radiusChanged', 'rightclick',
 ];
 
 @Directive({
@@ -20,58 +20,22 @@ const OUTPUTS = [
   inputs: INPUTS,
   outputs: OUTPUTS,
 })
-export class Circle implements OnInit, OnChanges, OnDestroy {
-  private circle: google.maps.Circle;
-  private objectOptions: google.maps.CircleOptions = <google.maps.CircleOptions>{};
-  private inputChanges$ = new Subject();
+export class Circle extends BaseMapDirective {
+  protected mapObject: google.maps.Circle;
+  protected objectOptions: google.maps.CircleOptions = <google.maps.CircleOptions>{};
 
   constructor(
-    public ng2Map: Ng2Map,
-    private optionBuilder: OptionBuilder,
+    ng2Map: Ng2Map,
+    optionBuilder: OptionBuilder,
     private geolocation: NavigatorGeolocation,
     private geoCoder: GeoCoder
   ) {
-    // all outputs needs to be initialized,
-    // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
-    OUTPUTS.forEach(output => this[output] = new EventEmitter());
+    super(ng2Map, optionBuilder, INPUTS, OUTPUTS);
   }
 
-  ngOnInit() {
-    if (this.ng2Map.map) { // map is ready already
-      this.initialize(this.ng2Map.map);
-    } else {
-      this.ng2Map.mapReady$.subscribe((map: google.maps.Map) => this.initialize(map));
-    }
-  }
-
-  ngOnChanges(changes: {[key: string]: SimpleChange}) {
-    this.inputChanges$.next(changes);
-  }
-
-  // called when map is ready
   initialize(map: google.maps.Map): void {
-    console.log('circle is being initialized');
-
-    this.objectOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-    console.log('CIRCLE objectOptions', this.objectOptions);
-
-    this.objectOptions.map = map;
-    // will be set after geocoded
-    typeof this.objectOptions.center === 'string' && (delete this.objectOptions.center);
-    this.circle = new google.maps.Circle(this.objectOptions);
-    this.circle['mapObjectName'] = this.constructor['name'];
-
+    super.initialize(map);
     this.setCenter();
-
-    // set google events listeners and emits to this outputs listeners
-    this.ng2Map.setObjectEvents(OUTPUTS, this, 'circle');
-
-    // update circle when input changes
-    this.inputChanges$
-      .subscribe((changes: SimpleChange) => {
-        console.log('circle objectOptions are changed', changes);
-        this.ng2Map.updateGoogleObject(this.circle, changes);
-      });
   }
 
   setCenter(): void {
@@ -79,21 +43,13 @@ export class Circle implements OnInit, OnChanges, OnDestroy {
       this.geolocation.getCurrentPosition().subscribe(center => {
         console.log('setting circle center from current location');
         let latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
-        this.circle.setCenter(latLng);
+        this.mapObject.setCenter(latLng);
       });
     } else if (typeof this['center'] === 'string') {
       this.geoCoder.geocode({address: this['center']}).subscribe(results => {
         console.log('setting circle center from address', this['center']);
-        this.circle.setCenter(results[0].geometry.location);
+        this.mapObject.setCenter(results[0].geometry.location);
       });
-    }
-  }
-
-  ngOnDestroy() {
-    if (this.circle) {
-      OUTPUTS.forEach(output => google.maps.event.clearListeners(this.circle, output));
-      delete this.circle.setMap(null);
-      delete this.circle;
     }
   }
 }
