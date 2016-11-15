@@ -6,11 +6,11 @@ import { Subject } from 'rxjs/Subject';
 
 const INPUTS = [
   'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'geodesic', 'paths',
-  'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex',
+  'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex', 'options'
 ];
 const OUTPUTS = [
   'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'mousedown',
-  'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick',
+  'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick'
 ];
 
 @Directive({
@@ -20,7 +20,7 @@ const OUTPUTS = [
 })
 export class Polygon implements OnInit, OnChanges, OnDestroy {
   private polygon: google.maps.Polygon;
-  private options: google.maps.PolygonOptions = <google.maps.PolygonOptions>{};
+  private objectOptions: google.maps.PolygonOptions = <google.maps.PolygonOptions>{};
 
   private inputChanges$ = new Subject();
 
@@ -46,11 +46,11 @@ export class Polygon implements OnInit, OnChanges, OnDestroy {
 
   // called when map is ready
   initialize(map: google.maps.Map): void {
-    this.options = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-    console.log('Polygon initialization options', this.options.paths);
+    this.objectOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
+    console.log('Polygon initialization objectOptions', this.objectOptions.paths);
 
     // noinspection TypeScriptUnresolvedFunction
-    this.polygon = new google.maps.Polygon(Object.assign({}, this.options, {map: map}));
+    this.polygon = new google.maps.Polygon(Object.assign({}, this.objectOptions, {map: map}));
     this.polygon['mapObjectName'] = this.constructor['name'];
 
     // set google events listeners and emits to this outputs listeners
@@ -58,7 +58,7 @@ export class Polygon implements OnInit, OnChanges, OnDestroy {
 
     // update pologon when input changes
     this.inputChanges$.subscribe((changes: SimpleChange) => {
-      console.log('polygon options are changed', changes);
+      console.log('polygon objectOptions are changed', changes);
       this.ng2Map.updateGoogleObject(this.polygon, changes);
     });
   }

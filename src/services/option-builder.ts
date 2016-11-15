@@ -14,11 +14,20 @@ export class OptionBuilder {
   googlizeAllInputs(definedInputs: string[], userInputs: any) {
     let options: any = {};
 
-    definedInputs.forEach(input => {
-      if (userInputs[input] !== undefined)  {
-        options[input] = this.googlize(userInputs[input], {key: input});
+    // if options given from user, only take options and ignore other inputs
+    if (userInputs.options) {
+      console.log('userInputs.options .................', userInputs.options);
+      options = userInputs.options;
+      if (!this.onlyOptionsGiven(definedInputs, userInputs)) {
+        console.error('when "options" are used, other options are ignored');
       }
-    });
+    } else { // if options not given, process all user inputs
+      definedInputs.forEach(input => {
+        if (userInputs[input] !== undefined)  {
+          options[input] = this.googlize(userInputs[input], {key: input});
+        }
+      });
+    }
     return options;
   }
 
@@ -72,7 +81,6 @@ export class OptionBuilder {
       }
       else if (options['key'] === 'position') {
         output = this.getLatLng(output);
-        console.log('xxxxxxxxxxxxxxx position', output)
       }
     } else if (options['key'] && output instanceof Object) {
       if (options['key'] === 'icon') {
@@ -227,4 +235,13 @@ export class OptionBuilder {
     return output;
   }
 
+  private onlyOptionsGiven(definedInputs: string[], userInputs: any): boolean {
+    for (let i = 0; i< definedInputs.length; i++) {
+      let input = definedInputs[i];
+      if (input !== 'options' && typeof userInputs[input] !== 'undefined') {
+        return false;
+      }
+    }
+    return true;
+  }
 }

@@ -14,10 +14,11 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 
 const INPUTS = [
-  'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex',
+  'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
 ];
 const OUTPUTS = [
-  'infoWindowCloseclick', 'infoWindowContentChanged', 'infoWindowDomready', 'infoWindowPositionChanged', 'infoWindowZindexChanged',
+  'infoWindowCloseclick', 'infoWindowContentChanged', 'infoWindowDomready',
+  'infoWindowPositionChanged', 'infoWindowZindexChanged'
 ];
 
 @Component({
@@ -29,7 +30,7 @@ const OUTPUTS = [
 export class InfoWindow implements OnInit, OnChanges, OnDestroy {
   public el: HTMLElement;
   public infoWindow: google.maps.InfoWindow;
-  public options: google.maps.InfoWindowOptions = {};
+  public objectOptions: google.maps.InfoWindowOptions = {};
   public inputChanges$ = new Subject();
 
   public template: string;
@@ -62,10 +63,10 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     console.log('infowindow is being initialized');
     this.template = this.elementRef.nativeElement.innerHTML;
 
-    this.options = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-    this.infoWindow = new google.maps.InfoWindow(this.options);
+    this.objectOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
+    this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
     this.infoWindow['mapObjectName'] = this.constructor['name'];
-    console.log('INFOWINDOW options', this.options);
+    console.log('INFOWINDOW objectOptions', this.objectOptions);
 
     // register infoWindow ids to Ng2Map, so that it can be opened by id
     this.el = this.elementRef.nativeElement;

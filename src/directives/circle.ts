@@ -8,11 +8,11 @@ import { Subject } from 'rxjs/Subject';
 
 const INPUTS = [
   'center', 'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'map', 'radius',
-  'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex',
+  'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex', 'options'
 ];
 const OUTPUTS = [
   'centerChanged', 'click', 'dblclick', 'drag', 'dragend', 'dragstart',
-  'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'radiusChanged', 'rightclick',
+  'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'radiusChanged', 'rightclick'
 ];
 
 @Directive({
@@ -22,7 +22,7 @@ const OUTPUTS = [
 })
 export class Circle implements OnInit, OnChanges, OnDestroy {
   private circle: google.maps.Circle;
-  private options: google.maps.CircleOptions = <google.maps.CircleOptions>{};
+  private objectOptions: google.maps.CircleOptions = <google.maps.CircleOptions>{};
   private inputChanges$ = new Subject();
 
   constructor(
@@ -52,13 +52,13 @@ export class Circle implements OnInit, OnChanges, OnDestroy {
   initialize(map: google.maps.Map): void {
     console.log('circle is being initialized');
 
-    this.options = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-    console.log('CIRCLE options', this.options);
+    this.objectOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
+    console.log('CIRCLE objectOptions', this.objectOptions);
 
-    this.options.map = map;
+    this.objectOptions.map = map;
     // will be set after geocoded
-    typeof this.options.center === 'string' && (delete this.options.center);
-    this.circle = new google.maps.Circle(this.options);
+    typeof this.objectOptions.center === 'string' && (delete this.objectOptions.center);
+    this.circle = new google.maps.Circle(this.objectOptions);
     this.circle['mapObjectName'] = this.constructor['name'];
 
     this.setCenter();
@@ -69,7 +69,7 @@ export class Circle implements OnInit, OnChanges, OnDestroy {
     // update circle when input changes
     this.inputChanges$
       .subscribe((changes: SimpleChange) => {
-        console.log('circle options are changed', changes);
+        console.log('circle objectOptions are changed', changes);
         this.ng2Map.updateGoogleObject(this.circle, changes);
       });
   }
