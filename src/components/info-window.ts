@@ -5,7 +5,7 @@ import {
   OnChanges,
   OnDestroy,
   EventEmitter,
-  SimpleChange,
+  SimpleChanges,
 } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
@@ -54,7 +54,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnChanges(changes: {[key: string]: SimpleChange}) {
+  ngOnChanges(changes: SimpleChanges) {
     this.inputChanges$.next(changes);
   }
 
@@ -82,7 +82,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     // update object when input changes
     this.inputChanges$
       .debounceTime(1000)
-      .subscribe((changes: SimpleChange) => this.ng2Map.updateGoogleObject(this.infoWindow, changes));
+      .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.infoWindow, changes));
   }
 
   open(anchor: google.maps.MVCObject, data: any) {

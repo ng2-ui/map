@@ -6,7 +6,7 @@ import {
   OnChanges,
   OnDestroy,
   EventEmitter,
-  SimpleChange,
+  SimpleChanges,
   AfterViewInit,
  } from '@angular/core';
 
@@ -84,7 +84,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     }
   }
 
-  ngOnChanges(changes: {[key: string]: SimpleChange}) {
+  ngOnChanges(changes: SimpleChanges) {
     this.inputChanges$.next(changes);
   }
 
@@ -135,7 +135,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     // update map when input changes
     this.inputChanges$
       .debounceTime(1000)
-      .subscribe((changes: SimpleChange) => this.ng2Map.updateGoogleObject(this.map, changes));
+      .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.map, changes));
   }
 
   setCenter(): void {

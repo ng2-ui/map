@@ -1,4 +1,4 @@
-import { Injectable, SimpleChange } from '@angular/core';
+import { Injectable, SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { OptionBuilder } from './option-builder';
 import { GeoCoder } from './geo-coder';
@@ -30,7 +30,7 @@ export class Ng2Map {
     });
   }
 
-  updateGoogleObject(object: any, changes: SimpleChange) {
+  updateGoogleObject(object: any, changes: SimpleChanges) {
     let val: any, currentValue: any, setMethodName: string;
     if (object) {
       for (let key in changes) {
