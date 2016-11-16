@@ -21,4 +21,5 @@ export declare class OptionBuilder {
     private getDateObject(input);
     private getMapIcons(input);
     private getMarkerIcon(input);
+    private onlyOptionsGiven(definedInputs, userInputs);
 }

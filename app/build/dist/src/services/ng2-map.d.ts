@@ -1,5 +1,5 @@
 /// <reference types="googlemaps" />
-import { SimpleChange } from '@angular/core';
+import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { OptionBuilder } from './option-builder';
 import { GeoCoder } from './geo-coder';
@@ -15,6 +15,6 @@ export declare class Ng2Map {
     mapReady$: Subject<any>;
     constructor(geoCoder: GeoCoder, optionBuilder: OptionBuilder);
     setObjectEvents(definedEvents: string[], thisObj: any, prefix: string): void;
-    updateGoogleObject(object: any, changes: SimpleChange): void;
+    updateGoogleObject(object: any, changes: SimpleChanges): void;
     updateProperty(object: any, key: string, currentValue: any): void;
 }

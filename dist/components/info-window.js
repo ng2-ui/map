@@ -14,10 +14,11 @@ var ng2_map_1 = require('../services/ng2-map');
 var Subject_1 = require('rxjs/Subject');
 require('rxjs/add/operator/debounceTime');
 var INPUTS = [
-    'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex',
+    'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
 ];
 var OUTPUTS = [
-    'infoWindowCloseclick', 'infoWindowContentChanged', 'infoWindowDomready', 'infoWindowPositionChanged', 'infoWindowZindexChanged',
+    'infoWindowCloseclick', 'infoWindowContentChanged', 'infoWindowDomready',
+    'infoWindowPositionChanged', 'infoWindowZindexChanged'
 ];
 var InfoWindow = (function () {
     function InfoWindow(optionBuilder, elementRef, ng2Map) {
@@ -25,7 +26,7 @@ var InfoWindow = (function () {
         this.optionBuilder = optionBuilder;
         this.elementRef = elementRef;
         this.ng2Map = ng2Map;
-        this.options = {};
+        this.objectOptions = {};
         this.inputChanges$ = new Subject_1.Subject();
         this.elementRef.nativeElement.style.display = 'none';
         // all outputs needs to be initialized,
@@ -49,10 +50,10 @@ var InfoWindow = (function () {
         var _this = this;
         console.log('infowindow is being initialized');
         this.template = this.elementRef.nativeElement.innerHTML;
-        this.options = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-        this.infoWindow = new google.maps.InfoWindow(this.options);
+        this.objectOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
+        this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
         this.infoWindow['mapObjectName'] = this.constructor['name'];
-        console.log('INFOWINDOW options', this.options);
+        console.log('INFOWINDOW objectOptions', this.objectOptions);
         // register infoWindow ids to Ng2Map, so that it can be opened by id
         this.el = this.elementRef.nativeElement;
         if (this.el.id) {

@@ -22,11 +22,21 @@ var OptionBuilder = (function () {
     OptionBuilder.prototype.googlizeAllInputs = function (definedInputs, userInputs) {
         var _this = this;
         var options = {};
-        definedInputs.forEach(function (input) {
-            if (userInputs[input] !== undefined) {
-                options[input] = _this.googlize(userInputs[input], { key: input });
+        // if options given from user, only take options and ignore other inputs
+        if (userInputs.options) {
+            console.log('userInputs.options .................', userInputs.options);
+            options = userInputs.options;
+            if (!this.onlyOptionsGiven(definedInputs, userInputs)) {
+                console.error('when "options" are used, other options are ignored');
             }
-        });
+        }
+        else {
+            definedInputs.forEach(function (input) {
+                if (userInputs[input] !== undefined) {
+                    options[input] = _this.googlize(userInputs[input], { key: input });
+                }
+            });
+        }
         return options;
     };
     OptionBuilder.prototype.googlizeMultiple = function (inputs, options) {
@@ -72,7 +82,6 @@ var OptionBuilder = (function () {
             }
             else if (options['key'] === 'position') {
                 output = this.getLatLng(output);
-                console.log('xxxxxxxxxxxxxxx position', output);
             }
         }
         else if (options['key'] && output instanceof Object) {
@@ -215,6 +224,15 @@ var OptionBuilder = (function () {
             }
         }
         return output;
+    };
+    OptionBuilder.prototype.onlyOptionsGiven = function (definedInputs, userInputs) {
+        for (var i = 0; i < definedInputs.length; i++) {
+            var input = definedInputs[i];
+            if (input !== 'options' && typeof userInputs[input] !== 'undefined') {
+                return false;
+            }
+        }
+        return true;
     };
     OptionBuilder = __decorate([
         core_1.Injectable(), 

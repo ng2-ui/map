@@ -1,4 +1,9 @@
 "use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13,61 +18,27 @@ var option_builder_1 = require('../services/option-builder');
 var navigator_geolocation_1 = require('../services/navigator-geolocation');
 var geo_coder_1 = require('../services/geo-coder');
 var ng2_map_1 = require('../services/ng2-map');
-var Subject_1 = require('rxjs/Subject');
+var base_map_directive_1 = require('./base-map-directive');
 var INPUTS = [
     'anchorPoint', 'animation', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity',
-    'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex',
+    'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex', 'options'
 ];
 var OUTPUTS = [
-    'markerAnimationChanged', 'markerClick', 'markerClickableChanged', 'markerCursorChanged', 'markerDblclick', 'markerDrag', 'markerDragend', 'markerDraggableChanged',
-    'markerDragstart', 'markerFlatChanged', 'markerIconChanged', 'markerMousedown', 'markerMouseout', 'markerMouseover', 'markerMouseup', 'markerPositionChanged', 'markerRightclick',
-    'markerShapeChanged', 'markerTitleChanged', 'markerVisibleChanged', 'markerZindexChanged',
+    'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
+    'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
+    'dhapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged'
 ];
-var Marker = (function () {
+var Marker = (function (_super) {
+    __extends(Marker, _super);
     function Marker(ng2Map, optionBuilder, geolocation, geoCoder) {
-        var _this = this;
-        this.ng2Map = ng2Map;
-        this.optionBuilder = optionBuilder;
+        _super.call(this, ng2Map, optionBuilder, INPUTS, OUTPUTS);
         this.geolocation = geolocation;
         this.geoCoder = geoCoder;
-        this.options = {};
-        this.inputChanges$ = new Subject_1.Subject();
-        // all outputs needs to be initialized,
-        // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
-        OUTPUTS.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
+        this.objectOptions = {};
     }
-    Marker.prototype.ngOnInit = function () {
-        var _this = this;
-        if (this.ng2Map.map) {
-            this.initialize(this.ng2Map.map);
-        }
-        else {
-            this.ng2Map.mapReady$.subscribe(function (map) { return _this.initialize(map); });
-        }
-    };
-    Marker.prototype.ngOnChanges = function (changes) {
-        this.inputChanges$.next(changes);
-    };
-    // called when map is ready
     Marker.prototype.initialize = function (map) {
-        var _this = this;
-        console.log('marker is being initialized');
-        this.options = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-        console.log('MARKER options', this.options);
-        this.options.map = map;
-        // will be set after geocoded
-        typeof this.options.position === 'string' && (delete this.options.position);
-        this.marker = new google.maps.Marker(this.options);
-        this.marker['mapObjectName'] = this.constructor['name'];
+        _super.prototype.initialize.call(this, map);
         this.setPosition();
-        // set google events listeners and emits to this outputs listeners
-        this.ng2Map.setObjectEvents(OUTPUTS, this, 'marker');
-        // update marker when input changes
-        this.inputChanges$
-            .subscribe(function (changes) {
-            console.log('marker options are changed', changes);
-            _this.ng2Map.updateGoogleObject(_this.marker, changes);
-        });
     };
     Marker.prototype.setPosition = function () {
         var _this = this;
@@ -76,23 +47,15 @@ var Marker = (function () {
                 console.log('setting marker position from current location');
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 // console.log('this.marker', this.marker);
-                _this.marker.setPosition(latLng);
+                _this.mapObject.setPosition(latLng);
             });
         }
         else if (typeof this['position'] === 'string') {
             this.geoCoder.geocode({ address: this['position'] }).subscribe(function (results) {
                 console.log('setting marker position from address', _this['position']);
                 // console.log('this.marker', this.marker);
-                _this.marker.setPosition(results[0].geometry.location);
+                _this.mapObject.setPosition(results[0].geometry.location);
             });
-        }
-    };
-    Marker.prototype.ngOnDestroy = function () {
-        var _this = this;
-        if (this.marker) {
-            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.marker, output); });
-            delete this.marker.setMap(null);
-            delete this.marker;
         }
     };
     Marker = __decorate([
@@ -104,6 +67,6 @@ var Marker = (function () {
         __metadata('design:paramtypes', [ng2_map_1.Ng2Map, option_builder_1.OptionBuilder, navigator_geolocation_1.NavigatorGeolocation, geo_coder_1.GeoCoder])
     ], Marker);
     return Marker;
-}());
+}(base_map_directive_1.BaseMapDirective));
 exports.Marker = Marker;
 //# sourceMappingURL=marker.js.map

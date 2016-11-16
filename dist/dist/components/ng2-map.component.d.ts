@@ -1,5 +1,5 @@
 /// <reference types="googlemaps" />
-import { ElementRef, NgZone, OnChanges, OnDestroy, SimpleChange, AfterViewInit } from '@angular/core';
+import { ElementRef, NgZone, OnChanges, OnDestroy, SimpleChanges, AfterViewInit } from '@angular/core';
 import { OptionBuilder } from '../services/option-builder';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
 import { GeoCoder } from '../services/geo-coder';
@@ -22,9 +22,7 @@ export declare class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewI
     mapInitPath: number;
     constructor(optionBuilder: OptionBuilder, elementRef: ElementRef, zone: NgZone, geolocation: NavigatorGeolocation, geoCoder: GeoCoder, ng2Map: Ng2Map);
     ngAfterViewInit(): void;
-    ngOnChanges(changes: {
-        [key: string]: SimpleChange;
-    }): void;
+    ngOnChanges(changes: SimpleChanges): void;
     addGoogleMapsApi(): void;
     initializeMap(): void;
     setCenter(): void;
