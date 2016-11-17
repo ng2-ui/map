@@ -7,13 +7,13 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   protected abstract mapObject: any; // e.g. google.maps.Marker
   protected abstract objectOptions: any; // e.g. google.maps.MarkerOptions
 
-  private mapObjectName: string ; // e.g. Marker
+  protected mapObjectName: string ; // e.g. Marker
 
   constructor(
     public ng2Map: Ng2Map,
-    private optionBuilder: OptionBuilder,
-    private inputs: string[],
-    private outputs: string[],
+    protected optionBuilder: OptionBuilder,
+    protected inputs: string[],
+    protected outputs: string[],
   ) {
     this.outputs.forEach(output => this[output] = new EventEmitter());
     this.mapObjectName = this.constructor['name'];

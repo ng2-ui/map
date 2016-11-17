@@ -112,8 +112,14 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#PolygonOptions">PolygonOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Polygon">Polygon Events</a>
       <td> supported as `polygon`
-  <tr><td> Polyline      <td> PolylineOptions          <td> Polyline Events      <td> Coming Soon
-  <tr><td> GroundOverlay <td> GroundOverlayOptions     <td> GroundOverlay Events <td> Coming Soon
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Polyline">Polyline</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#PolylineOptions">PolylineOptions</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Polyline">Polyline Events</a>
+      <td> supported as `polyline`
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#GroundOverlay">GroundOverlay</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#GroundOverlayOptions">GroundOverlayOptions</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#GroundOverlay">GroundOverlay Events</a>
+      <td> supported as `ground-overlay`
   <tr><td> FusionTablesLayer <td> FusionTablesLayerOptions <td> FusionTablesLayer Events <td>  Coming Soon
   <tr><td> HeatMapLayer  <td> HeatMapLayerLayerOptions <td> HeatMapLayer Events      <td> Coming Soon
   <tr><td> KmlLayer      <td> KmlLayerLayerOptions     <td> KmlLayer Events          <td> Coming Soon

@@ -11,6 +11,8 @@ import { Marker } from './directives/marker';
 import { Circle } from './directives/circle';
 import { Polygon } from './directives/polygon';
 import { InfoWindow } from './components/info-window';
+import { Polyline } from './directives/polyline';
+import { GroundOverlay } from './directives/ground-overlay';
 
 export {
   OptionBuilder,
@@ -21,13 +23,15 @@ export {
   Marker,
   Circle,
   Polygon,
-  InfoWindow
+  InfoWindow,
+  Polyline,
+  GroundOverlay
 };
 
 @NgModule({
   imports: [ CommonModule ],
-  declarations: [Ng2MapComponent, Marker, Circle, Polygon, InfoWindow],
+  declarations: [Ng2MapComponent, Marker, Circle, Polygon, InfoWindow, Polyline, GroundOverlay],
   providers: [GeoCoder, NavigatorGeolocation, Ng2Map, OptionBuilder],
-  exports: [Ng2MapComponent, Marker, Circle, Polygon, InfoWindow],
+  exports: [Ng2MapComponent, Marker, Circle, Polygon, InfoWindow, Polyline, GroundOverlay],
 })
 export class Ng2MapModule {}
