@@ -1,35 +1,41 @@
-import { EventEmitter, SimpleChanges, OnInit, OnChanges, OnDestroy } from '@angular/core';
+import { EventEmitter, SimpleChanges, ReflectiveInjector, OnInit, OnChanges, OnDestroy } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
 import { Ng2Map } from '../services/ng2-map';
+import { GeoCoder } from '../services/geo-coder';
+import { Ng2MapComponent } from '../components/ng2-map.component';
 
 export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
-  protected abstract mapObject: any; // e.g. google.maps.Marker
-  protected abstract objectOptions: any; // e.g. google.maps.MarkerOptions
+  public mapObject: any; // e.g. google.maps.Marker
+  public objectOptions: any; // e.g. google.maps.MarkerOptions
+  public mapObjectName: string ; // e.g. Marker
 
-  protected mapObjectName: string ; // e.g. Marker
+  public ng2Map: Ng2Map;
+  public optionBuilder: OptionBuilder;
+  public initialized$: EventEmitter<any> = new EventEmitter();
 
   constructor(
-    public ng2Map: Ng2Map,
-    protected optionBuilder: OptionBuilder,
+    protected ng2MapComponent: Ng2MapComponent,
     protected inputs: string[],
-    protected outputs: string[],
+    protected outputs: string[]
   ) {
+    this.ng2Map = this.ng2MapComponent['ng2Map'];
+    this.optionBuilder = this.ng2MapComponent['optionBuilder'];
     this.outputs.forEach(output => this[output] = new EventEmitter());
     this.mapObjectName = this.constructor['name'];
   }
 
   // Initialize this map object when map is ready
   ngOnInit() {
-    if (this.ng2Map.map) { // map is ready already
-      this.initialize(this.ng2Map.map);
+    if (this.ng2MapComponent.mapIdledOnce) { // map is ready already
+      this.initialize();
     } else {
-      this.ng2Map.mapReady$.subscribe(map => this.initialize(map));
+      this.ng2MapComponent.mapReady$.subscribe(map => this.initialize());
     }
   }
 
-  // called when map is ready
-  initialize(map: google.maps.Map): void {
+  // only called when map is ready
+  initialize(): void {
     this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
     console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
 
@@ -38,11 +44,15 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
     typeof this.objectOptions.center === 'string' && (delete this.objectOptions.center);
 
     // noinspection TypeScriptUnresolvedFunction
-    this.mapObject = new google.maps[this.mapObjectName](Object.assign({}, this.objectOptions, {map: map}));
+    this.mapObject = new google.maps[this.mapObjectName](Object.assign({}, this.objectOptions));
+    this.mapObject.setMap(this.ng2MapComponent.map);
     this.mapObject['mapObjectName'] = this.mapObjectName;
+    this.mapObject['ng2MapComponent'] = this.ng2MapComponent;
 
     // set google events listeners and emits to this outputs listeners
     this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
+
+    this.initialized$.emit(this.mapObject);
   }
 
   // When input is changed, update object too.

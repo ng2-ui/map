@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   template: `
     <h1>Simple Marker</h1>
-    <ng2-map center="Brampton, Canada" scrollwheel="false">
+    <ng2-map center="Brampton, Canada" [scrollwheel]="false">
       <marker position="Brampton, Canada"
         (dragstart)="log('dragstart')"
         (dragend)="log('dragend')"

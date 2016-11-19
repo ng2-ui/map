@@ -22,7 +22,7 @@ import { Component } from '@angular/core';
 })
 export class SimpleInfoWindowComponent {
   clicked(marker) {
-    marker.map.mapComponent.openInfoWindow('iw', marker, {
+    marker.ng2MapComponent.openInfoWindow('iw', marker, {
       lat: marker.getPosition().lat(), lng: marker.getPosition().lng(),
     });
   }

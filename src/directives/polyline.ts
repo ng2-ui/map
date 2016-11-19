@@ -1,8 +1,7 @@
 import { Directive } from '@angular/core';
 
-import { OptionBuilder } from '../services/option-builder';
-import { Ng2Map } from '../services/ng2-map';
 import { BaseMapDirective } from './base-map-directive';
+import { Ng2MapComponent } from '../components/ng2-map.component';
 
 const INPUTS = [
   'clickable', 'draggable', 'editable', 'geodesic', 'icons', 'path', 'strokeColor',
@@ -19,11 +18,8 @@ const OUTPUTS = [
   outputs: OUTPUTS,
 })
 export class Polyline extends BaseMapDirective {
-  protected mapObject: google.maps.Polyline;
-  protected objectOptions: google.maps.PolylineOptions = <google.maps.PolylineOptions>{};
-
-  constructor(ng2Map: Ng2Map, optionBuilder: OptionBuilder) {
-    super(ng2Map, optionBuilder, INPUTS, OUTPUTS);
+  constructor(ng2MapComp: Ng2MapComponent) {
+    super(ng2MapComp, INPUTS, OUTPUTS);
   }
 }
 

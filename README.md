@@ -120,7 +120,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#GroundOverlayOptions">GroundOverlayOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#GroundOverlay">GroundOverlay Events</a>
       <td> supported as `ground-overlay`
-  <tr><td> FusionTablesLayer <td> FusionTablesLayerOptions <td> FusionTablesLayer Events <td>  Coming Soon
+  <tr><td> FusionTablesLayer <td> FusionTablesLayerOptions <td> FusionTablesLayer Events <td> Experimental Status
   <tr><td> HeatMapLayer  <td> HeatMapLayerLayerOptions <td> HeatMapLayer Events      <td> Coming Soon
   <tr><td> KmlLayer      <td> KmlLayerLayerOptions     <td> KmlLayer Events          <td> Coming Soon
   <tr><td> Data          <td> DataOptions              <td> Data Events              <td> Coming Soon `map-data`

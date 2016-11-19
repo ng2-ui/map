@@ -1,8 +1,7 @@
 import { Directive } from '@angular/core';
 
-import { OptionBuilder } from '../services/option-builder';
-import { Ng2Map } from '../services/ng2-map';
 import { BaseMapDirective } from './base-map-directive';
+import { Ng2MapComponent } from '../components/ng2-map.component';
 
 const INPUTS = [ 'url', 'bounds', 'clickable', 'opacity' ];
 const OUTPUTS = [ 'click', 'dblclick' ];
@@ -13,25 +12,22 @@ const OUTPUTS = [ 'click', 'dblclick' ];
   outputs: OUTPUTS,
 })
 export class GroundOverlay extends BaseMapDirective {
-  protected mapObject: google.maps.GroundOverlay;
-  protected objectOptions: google.maps.GroundOverlayOptions = <google.maps.GroundOverlayOptions>{};
+  public mapObject: google.maps.GroundOverlay;
+  public objectOptions: google.maps.GroundOverlayOptions = <google.maps.GroundOverlayOptions>{};
 
-  constructor(ng2Map: Ng2Map, optionBuilder: OptionBuilder) {
-    super(ng2Map, optionBuilder, INPUTS, OUTPUTS);
+  constructor(ng2MapComp: Ng2MapComponent) {
+    super(ng2MapComp, INPUTS, OUTPUTS);
   }
 
   // re-declaring initialize function. called when map is ready
-  initialize(map: google.maps.Map): void {
+  initialize(): void {
     // url, bounds are not the options of GroundOverlay
     this.objectOptions = this.optionBuilder.googlizeAllInputs(['clickable', 'opacity'], this);
     console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
 
     // noinspection TypeScriptUnresolvedFunction
-    this.mapObject = new google.maps.GroundOverlay(
-      this['url'],
-      this['bounds'],
-      Object.assign({}, this.objectOptions, {map: map})
-    );
+    this.mapObject = new google.maps.GroundOverlay(this['url'], this['bounds'], this.objectOptions);
+    this.mapObject.setMap(this.ng2MapComponent.map);
     this.mapObject['mapObjectName'] = this.mapObjectName;
 
     // set google events listeners and emits to this outputs listeners

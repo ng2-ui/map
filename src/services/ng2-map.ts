@@ -9,9 +9,6 @@ import { Ng2MapComponent } from '../components/ng2-map.component';
  */
 @Injectable()
 export class Ng2Map {
-  public map: google.maps.Map;
-  public mapComponent: Ng2MapComponent;
-  public mapReady$: Subject<any> = new Subject();
 
   constructor(
     private geoCoder: GeoCoder,
