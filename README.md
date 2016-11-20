@@ -64,12 +64,65 @@ or,
 ```
 <ng2-map [options]="mapOptions"></ng2-map>
 ```
-       
+
 For full example, please check out `app` directory to see the example of;
 
   - `main.ts`
   -  and `app.component.ts`.
 
+## How to get instance of a map
+ 
+When map is ready Ng2MapComonent fires mapReady$ event with `map` object
+
+```HTML
+<ng2-map zoom="13" center="37.775, -122.434" mapTypeId="satellite">
+</ng2-map>
+```
+
+In your app component, 
+
+```TypeScript
+import {Ng2MapComponent} from "ng2-map";
+
+export class MyAppComponent {
+  @ViewChild(Ng2MapComponent) ng2MapComponent: Ng2MapComponent;
+  pulic map: google.maps.Map;
+  ngOnInit() {
+    this.ng2MapComponent.mapReady$.subscribe(map => {
+      this.map = map;
+    })
+  }
+}
+```
+
+## How to get instance of a map object
+
+When any map directive is initialized, each directive  fires initialized$ event with its object.
+For HTML like the following, 
+```HTML
+<ng2-map zoom="13" center="37.775, -122.434" mapTypeId="satellite">
+  <marker position="37.775, -122.434"></marker>
+</ng2-map>
+```
+
+In your app component, use initialized$ event of a map object component, which is a ViewChild
+
+```TypeScript
+import {Marker} from "ng2-map";
+
+export class MyAppComponent {
+  @ViewChild(Marker) marker: Marker;
+  pulic marker: google.maps.Marker;
+  ngOnInit() {
+    this.Maker.initialized$.subscribe(marker => {
+      this.marker = marker;
+    })
+  }
+}
+```
+
+## Need Contributors
+ 
 This `ng2-map` module is only improved and maintained by contributors like you;
 
 As a contributor, it's NOT required to be skilled in Javascript nor Angular2.
