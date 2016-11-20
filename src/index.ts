@@ -15,9 +15,9 @@ import { Polyline } from './directives/polyline';
 import { GroundOverlay } from './directives/ground-overlay';
 import { KmlLayer } from "./directives/kml-layer";
 import { BicyclingLayer } from "./directives/bicycling-layer";
-import { HeatmapLayer } from "./directives/heatmap-layer";
 import { TransitLayer } from "./directives/transit-layer";
 import { TrafficLayer } from "./directives/traffic-layer";
+import { HeatmapLayer } from "./directives/heatmap-layer";
 
 export {
   OptionBuilder, GeoCoder, NavigatorGeolocation, Ng2Map,

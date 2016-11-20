@@ -13,6 +13,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   public ng2Map: Ng2Map;
   public optionBuilder: OptionBuilder;
   public initialized$: EventEmitter<any> = new EventEmitter();
+  public libraryName: string;
 
   constructor(
     protected ng2MapComponent: Ng2MapComponent,
@@ -44,7 +45,11 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
     typeof this.objectOptions.center === 'string' && (delete this.objectOptions.center);
 
     // noinspection TypeScriptUnresolvedFunction
-    this.mapObject = new google.maps[this.mapObjectName](Object.assign({}, this.objectOptions));
+    if (this.libraryName) {
+      this.mapObject = new google.maps[this.libraryName][this.mapObjectName](this.objectOptions);
+    } else {
+      this.mapObject = new google.maps[this.mapObjectName](this.objectOptions);
+    }
     this.mapObject.setMap(this.ng2MapComponent.map);
     this.mapObject['mapObjectName'] = this.mapObjectName;
     this.mapObject['ng2MapComponent'] = this.ng2MapComponent;

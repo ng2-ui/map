@@ -10,9 +10,11 @@ import { PolygonComponent } from './polygon.component';
 import { MapWithOptionsComponent } from "./map-with-options.component";
 import { SimplePolylineComponent } from "./simple-polyline.component";
 import { SimpleGroundOverlayComponent } from "./simple-ground-overlay.component";
-import {BicyclingLayerComponent} from "./bicycling-layer.component";
-import {TrafficLayerComponent} from "./traffic-layer.component";
-import {TransitLayerComponent} from "./transit-layer.component";
+import { BicyclingLayerComponent } from "./bicycling-layer.component";
+import { TrafficLayerComponent } from "./traffic-layer.component";
+import { TransitLayerComponent } from "./transit-layer.component";
+import { HeatmapLayerComponent } from "./heatmap-layer.component";
+import { KmlLayerComponent } from "./kml-layer.component";
 
 export const routes: Routes = [
   { path: 'simple-info-window', component: SimpleInfoWindowComponent },
@@ -28,6 +30,8 @@ export const routes: Routes = [
   { path: 'traffic-layer', component: TrafficLayerComponent },
   { path: 'bicycling-layer', component: BicyclingLayerComponent },
   { path: 'transit-layer', component: TransitLayerComponent },
+  { path: 'heatmap-layer', component: HeatmapLayerComponent },
+  { path: 'kml-layer', component: KmlLayerComponent },
   { path: '',  redirectTo: '/simple-marker', pathMatch: 'full' },
 ];
 
@@ -45,6 +49,8 @@ export const APP_ROUTER_COMPONENTS = [
   SimpleGroundOverlayComponent,
   BicyclingLayerComponent,
   TrafficLayerComponent,
-  TransitLayerComponent
+  TransitLayerComponent,
+  HeatmapLayerComponent,
+  KmlLayerComponent
 ];
 

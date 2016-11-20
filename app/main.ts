@@ -11,6 +11,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+//noinspection TypeScriptCheckImport
 import { Ng2MapModule } from 'ng2-map';
 
 import { AppComponent } from './app.component';
