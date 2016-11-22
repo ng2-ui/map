@@ -13,25 +13,29 @@ import { Polygon } from './directives/polygon';
 import { InfoWindow } from './components/info-window';
 import { Polyline } from './directives/polyline';
 import { GroundOverlay } from './directives/ground-overlay';
+import { KmlLayer } from "./directives/kml-layer";
+import { BicyclingLayer } from "./directives/bicycling-layer";
+import { TransitLayer } from "./directives/transit-layer";
+import { TrafficLayer } from "./directives/traffic-layer";
+import { HeatmapLayer } from "./directives/heatmap-layer";
 
 export {
-  OptionBuilder,
-  GeoCoder,
-  NavigatorGeolocation,
-  Ng2Map,
-  Ng2MapComponent,
-  Marker,
-  Circle,
-  Polygon,
-  InfoWindow,
-  Polyline,
-  GroundOverlay
+  OptionBuilder, GeoCoder, NavigatorGeolocation, Ng2Map,
+  Ng2MapComponent, InfoWindow,
+  Marker, Circle, Polygon, Polyline, GroundOverlay,
+  TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer
 };
+
+const COMPONENTS_DIRECTIVES = [
+  Ng2MapComponent, InfoWindow,
+  Marker, Circle, Polygon, InfoWindow, Polyline, GroundOverlay,
+  TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer
+];
 
 @NgModule({
   imports: [ CommonModule ],
-  declarations: [Ng2MapComponent, Marker, Circle, Polygon, InfoWindow, Polyline, GroundOverlay],
+  declarations: COMPONENTS_DIRECTIVES,
   providers: [GeoCoder, NavigatorGeolocation, Ng2Map, OptionBuilder],
-  exports: [Ng2MapComponent, Marker, Circle, Polygon, InfoWindow, Polyline, GroundOverlay],
+  exports: [COMPONENTS_DIRECTIVES]
 })
 export class Ng2MapModule {}

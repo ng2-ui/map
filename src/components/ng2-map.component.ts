@@ -52,7 +52,9 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   public el: HTMLElement;
   public map: google.maps.Map;
   public mapOptions: google.maps.MapOptions = {};
+
   public inputChanges$ = new Subject();
+  public mapReady$: EventEmitter<any> = new EventEmitter();
 
   // map objects by group
   public infoWindows: any = {};
@@ -60,13 +62,16 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   // map init path
   public mapInitPath: number; // 1: init after loading google api first, 2: init when view is initialized
 
+  // map has been fully initialized
+  public mapIdledOnce: boolean = false;
+
   constructor(
-    private optionBuilder: OptionBuilder,
-    private elementRef: ElementRef,
-    private zone: NgZone,
-    private geolocation: NavigatorGeolocation,
-    private geoCoder: GeoCoder,
-    private ng2Map: Ng2Map
+    public optionBuilder: OptionBuilder,
+    public elementRef: ElementRef,
+    public zone: NgZone,
+    public geolocation: NavigatorGeolocation,
+    public geoCoder: GeoCoder,
+    public ng2Map: Ng2Map
   ) {
     if (typeof google === 'undefined' || !google.maps.Map) {
       this.mapInitPath = 1;
@@ -123,14 +128,12 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     // set google events listeners and emits to this outputs listeners
     this.ng2Map.setObjectEvents(OUTPUTS, this, 'map');
 
-    // broadcast map ready message
-    this.ng2Map.map = this.map;
-    this.ng2Map.mapComponent = this;
-    this.ng2Map.map['mapComponent'] = this;
-
-    // ........
-    console.log('map is ready.......');
-    this.ng2Map.mapReady$.next(this.map);
+    this.map.addListener('idle', () => {
+      if (!this.mapIdledOnce) {
+        this.mapReady$.emit(this.map);
+        this.mapIdledOnce = true;
+      }
+    });
 
     // update map when input changes
     this.inputChanges$

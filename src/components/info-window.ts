@@ -7,11 +7,13 @@ import {
   EventEmitter,
   SimpleChanges,
 } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/debounceTime';
 
 import { OptionBuilder } from '../services/option-builder';
 import { Ng2Map } from '../services/ng2-map';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/debounceTime';
+import { Ng2MapComponent } from './ng2-map.component';
+
 
 const INPUTS = [
   'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
@@ -34,23 +36,23 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
   public inputChanges$ = new Subject();
 
   public template: string;
+  public initialized$: EventEmitter<any> = new EventEmitter();
 
   constructor(
-    private optionBuilder: OptionBuilder,
+    private ng2MapComponent: Ng2MapComponent,
     private elementRef: ElementRef,
     private ng2Map: Ng2Map
   ) {
     this.elementRef.nativeElement.style.display = 'none';
-    // all outputs needs to be initialized,
-    // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
     OUTPUTS.forEach(output => this[output] = new EventEmitter());
   }
 
+  // Initialize this map object when map is ready
   ngOnInit() {
-    if (this.ng2Map.map) { // map is ready already
-      this.initialize(this.ng2Map.map);
+    if (this.ng2MapComponent.mapIdledOnce) { // map is ready already
+      this.initialize();
     } else {
-      this.ng2Map.mapReady$.subscribe((map: google.maps.Map) => this.initialize(map));
+      this.ng2MapComponent.mapReady$.subscribe(map => this.initialize());
     }
   }
 
@@ -59,11 +61,11 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
   }
 
   // called when map is ready
-  initialize(map: google.maps.Map): void {
+  initialize(): void {
     console.log('infowindow is being initialized');
     this.template = this.elementRef.nativeElement.innerHTML;
 
-    this.objectOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
+    this.objectOptions = this.ng2MapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
     this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
     this.infoWindow['mapObjectName'] = this.constructor['name'];
     console.log('INFOWINDOW objectOptions', this.objectOptions);
@@ -71,7 +73,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     // register infoWindow ids to Ng2Map, so that it can be opened by id
     this.el = this.elementRef.nativeElement;
     if (this.el.id) {
-      this.ng2Map.mapComponent.infoWindows[this.el.id] = this;
+      this.ng2MapComponent.infoWindows[this.el.id] = this;
     } else {
       console.error('An InfoWindow must have an id. e.g. id="detail"');
     }
@@ -83,6 +85,8 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     this.inputChanges$
       .debounceTime(1000)
       .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.infoWindow, changes));
+
+    this.initialized$.emit(this.infoWindow);
   }
 
   open(anchor: google.maps.MVCObject, data: any) {
@@ -95,7 +99,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
 
     // set content and open it
     this.infoWindow.setContent(html);
-    this.infoWindow.open(this.ng2Map.map, anchor);
+    this.infoWindow.open(this.ng2MapComponent.map, anchor);
   }
 
   ngOnDestroy() {

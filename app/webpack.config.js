@@ -13,18 +13,18 @@ const config = {
   module: {
     loaders: [
       { test: /\.ts$/, loaders: ['ts', 'angular2-template-loader'] },
-      { test: /\.html$/, loader: 'raw' },
+      { test: /\.html$/, loader: 'raw' }
     ]
   },
   plugins: [],
   ts: {
-    include: ['src/**/*.ts', 'app/**/*.ts'],
+    include: ['src/**/*.ts', 'app/**/*.ts']
   },
   output: {
     path: `${__dirname}/build/`,
     publicPath: '/build/',
-    filename: 'app.js',
-  },
+    filename: 'app.js'
+  }
 };
 
 if (process.env.NODE_ENV !== 'prod') {

@@ -1,8 +1,7 @@
 import { Directive } from '@angular/core';
 
-import { OptionBuilder } from '../services/option-builder';
-import { Ng2Map } from '../services/ng2-map';
 import { BaseMapDirective } from './base-map-directive';
+import { Ng2MapComponent } from '../components/ng2-map.component';
 
 const INPUTS = [
   'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'geodesic', 'paths',
@@ -19,10 +18,8 @@ const OUTPUTS = [
   outputs: OUTPUTS,
 })
 export class Polygon extends BaseMapDirective {
-  protected mapObject: google.maps.Polygon;
-  protected objectOptions: google.maps.PolygonOptions = <google.maps.PolygonOptions>{};
 
-  constructor(ng2Map: Ng2Map, optionBuilder: OptionBuilder) {
-    super(ng2Map, optionBuilder, INPUTS, OUTPUTS);
+  constructor(ng2MapComp: Ng2MapComponent) {
+    super(ng2MapComp, INPUTS, OUTPUTS);
   }
 }
