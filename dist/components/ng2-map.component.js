@@ -1,13 +1,4 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var core_1 = require('@angular/core');
 var option_builder_1 = require('../services/option-builder');
 var navigator_geolocation_1 = require('../services/navigator-geolocation');
@@ -39,8 +30,11 @@ var Ng2MapComponent = (function () {
         this.ng2Map = ng2Map;
         this.mapOptions = {};
         this.inputChanges$ = new Subject_1.Subject();
+        this.mapReady$ = new core_1.EventEmitter();
         // map objects by group
         this.infoWindows = {};
+        // map has been fully initialized
+        this.mapIdledOnce = false;
         if (typeof google === 'undefined' || !google.maps.Map) {
             this.mapInitPath = 1;
             this.addGoogleMapsApi();
@@ -87,13 +81,12 @@ var Ng2MapComponent = (function () {
         }
         // set google events listeners and emits to this outputs listeners
         this.ng2Map.setObjectEvents(OUTPUTS, this, 'map');
-        // broadcast map ready message
-        this.ng2Map.map = this.map;
-        this.ng2Map.mapComponent = this;
-        this.ng2Map.map['mapComponent'] = this;
-        // ........
-        console.log('map is ready.......');
-        this.ng2Map.mapReady$.next(this.map);
+        this.map.addListener('idle', function () {
+            if (!_this.mapIdledOnce) {
+                _this.mapReady$.emit(_this.map);
+                _this.mapIdledOnce = true;
+            }
+        });
         // update map when input changes
         this.inputChanges$
             .debounceTime(1000)
@@ -124,18 +117,26 @@ var Ng2MapComponent = (function () {
             OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.map, output); });
         }
     };
-    Ng2MapComponent = __decorate([
-        core_1.Component({
-            selector: 'ng2-map',
-            providers: [ng2_map_1.Ng2Map, option_builder_1.OptionBuilder, geo_coder_1.GeoCoder, navigator_geolocation_1.NavigatorGeolocation],
-            styles: ["\n    ng2-map {display: block; height: 300px;}\n    .google-map {width: 100%; height: 100%}\n  "],
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-            encapsulation: core_1.ViewEncapsulation.None,
-            template: "\n    <div class=\"google-map\"></div>\n    <ng-content></ng-content>\n  ",
-        }), 
-        __metadata('design:paramtypes', [option_builder_1.OptionBuilder, core_1.ElementRef, core_1.NgZone, navigator_geolocation_1.NavigatorGeolocation, geo_coder_1.GeoCoder, ng2_map_1.Ng2Map])
-    ], Ng2MapComponent);
+    Ng2MapComponent.decorators = [
+        { type: core_1.Component, args: [{
+                    selector: 'ng2-map',
+                    providers: [ng2_map_1.Ng2Map, option_builder_1.OptionBuilder, geo_coder_1.GeoCoder, navigator_geolocation_1.NavigatorGeolocation],
+                    styles: ["\n    ng2-map {display: block; height: 300px;}\n    .google-map {width: 100%; height: 100%}\n  "],
+                    inputs: INPUTS,
+                    outputs: OUTPUTS,
+                    encapsulation: core_1.ViewEncapsulation.None,
+                    template: "\n    <div class=\"google-map\"></div>\n    <ng-content></ng-content>\n  ",
+                },] },
+    ];
+    /** @nocollapse */
+    Ng2MapComponent.ctorParameters = [
+        { type: option_builder_1.OptionBuilder, },
+        { type: core_1.ElementRef, },
+        { type: core_1.NgZone, },
+        { type: navigator_geolocation_1.NavigatorGeolocation, },
+        { type: geo_coder_1.GeoCoder, },
+        { type: ng2_map_1.Ng2Map, },
+    ];
     return Ng2MapComponent;
 }());
 exports.Ng2MapComponent = Ng2MapComponent;

@@ -4,19 +4,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var core_1 = require('@angular/core');
-var option_builder_1 = require('../services/option-builder');
-var ng2_map_1 = require('../services/ng2-map');
 var base_map_directive_1 = require('./base-map-directive');
+var ng2_map_component_1 = require('../components/ng2-map.component');
 var INPUTS = [
     'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'geodesic', 'paths',
     'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex', 'options',
@@ -27,18 +17,20 @@ var OUTPUTS = [
 ];
 var Polygon = (function (_super) {
     __extends(Polygon, _super);
-    function Polygon(ng2Map, optionBuilder) {
-        _super.call(this, ng2Map, optionBuilder, INPUTS, OUTPUTS);
-        this.objectOptions = {};
+    function Polygon(ng2MapComp) {
+        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
     }
-    Polygon = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map>polygon',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_1.Ng2Map, option_builder_1.OptionBuilder])
-    ], Polygon);
+    Polygon.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: 'ng2-map>polygon',
+                    inputs: INPUTS,
+                    outputs: OUTPUTS,
+                },] },
+    ];
+    /** @nocollapse */
+    Polygon.ctorParameters = [
+        { type: ng2_map_component_1.Ng2MapComponent, },
+    ];
     return Polygon;
 }(base_map_directive_1.BaseMapDirective));
 exports.Polygon = Polygon;

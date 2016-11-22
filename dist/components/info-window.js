@@ -1,18 +1,9 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var core_1 = require('@angular/core');
-var option_builder_1 = require('../services/option-builder');
-var ng2_map_1 = require('../services/ng2-map');
 var Subject_1 = require('rxjs/Subject');
 require('rxjs/add/operator/debounceTime');
+var ng2_map_1 = require('../services/ng2-map');
+var ng2_map_component_1 = require('./ng2-map.component');
 var INPUTS = [
     'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
 ];
@@ -21,43 +12,43 @@ var OUTPUTS = [
     'infoWindowPositionChanged', 'infoWindowZindexChanged'
 ];
 var InfoWindow = (function () {
-    function InfoWindow(optionBuilder, elementRef, ng2Map) {
+    function InfoWindow(ng2MapComponent, elementRef, ng2Map) {
         var _this = this;
-        this.optionBuilder = optionBuilder;
+        this.ng2MapComponent = ng2MapComponent;
         this.elementRef = elementRef;
         this.ng2Map = ng2Map;
         this.objectOptions = {};
         this.inputChanges$ = new Subject_1.Subject();
+        this.initialized$ = new core_1.EventEmitter();
         this.elementRef.nativeElement.style.display = 'none';
-        // all outputs needs to be initialized,
-        // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
         OUTPUTS.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
     }
+    // Initialize this map object when map is ready
     InfoWindow.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.ng2Map.map) {
-            this.initialize(this.ng2Map.map);
+        if (this.ng2MapComponent.mapIdledOnce) {
+            this.initialize();
         }
         else {
-            this.ng2Map.mapReady$.subscribe(function (map) { return _this.initialize(map); });
+            this.ng2MapComponent.mapReady$.subscribe(function (map) { return _this.initialize(); });
         }
     };
     InfoWindow.prototype.ngOnChanges = function (changes) {
         this.inputChanges$.next(changes);
     };
     // called when map is ready
-    InfoWindow.prototype.initialize = function (map) {
+    InfoWindow.prototype.initialize = function () {
         var _this = this;
         console.log('infowindow is being initialized');
         this.template = this.elementRef.nativeElement.innerHTML;
-        this.objectOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
+        this.objectOptions = this.ng2MapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
         this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
         this.infoWindow['mapObjectName'] = this.constructor['name'];
         console.log('INFOWINDOW objectOptions', this.objectOptions);
         // register infoWindow ids to Ng2Map, so that it can be opened by id
         this.el = this.elementRef.nativeElement;
         if (this.el.id) {
-            this.ng2Map.mapComponent.infoWindows[this.el.id] = this;
+            this.ng2MapComponent.infoWindows[this.el.id] = this;
         }
         else {
             console.error('An InfoWindow must have an id. e.g. id="detail"');
@@ -68,6 +59,7 @@ var InfoWindow = (function () {
         this.inputChanges$
             .debounceTime(1000)
             .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.infoWindow, changes); });
+        this.initialized$.emit(this.infoWindow);
     };
     InfoWindow.prototype.open = function (anchor, data) {
         var html = this.template;
@@ -77,7 +69,7 @@ var InfoWindow = (function () {
         }
         // set content and open it
         this.infoWindow.setContent(html);
-        this.infoWindow.open(this.ng2Map.map, anchor);
+        this.infoWindow.open(this.ng2MapComponent.map, anchor);
     };
     InfoWindow.prototype.ngOnDestroy = function () {
         var _this = this;
@@ -86,15 +78,20 @@ var InfoWindow = (function () {
             delete this.infoWindow;
         }
     };
-    InfoWindow = __decorate([
-        core_1.Component({
-            selector: 'ng2-map>info-window',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-            template: "<ng-content></ng-content>",
-        }), 
-        __metadata('design:paramtypes', [option_builder_1.OptionBuilder, core_1.ElementRef, ng2_map_1.Ng2Map])
-    ], InfoWindow);
+    InfoWindow.decorators = [
+        { type: core_1.Component, args: [{
+                    selector: 'ng2-map>info-window',
+                    inputs: INPUTS,
+                    outputs: OUTPUTS,
+                    template: "<ng-content></ng-content>",
+                },] },
+    ];
+    /** @nocollapse */
+    InfoWindow.ctorParameters = [
+        { type: ng2_map_component_1.Ng2MapComponent, },
+        { type: core_1.ElementRef, },
+        { type: ng2_map_1.Ng2Map, },
+    ];
     return InfoWindow;
 }());
 exports.InfoWindow = InfoWindow;

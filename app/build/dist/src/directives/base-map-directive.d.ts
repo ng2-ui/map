@@ -1,18 +1,21 @@
-/// <reference types="googlemaps" />
-import { SimpleChanges, OnInit, OnChanges, OnDestroy } from '@angular/core';
+import { EventEmitter, SimpleChanges, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { OptionBuilder } from '../services/option-builder';
 import { Ng2Map } from '../services/ng2-map';
+import { Ng2MapComponent } from '../components/ng2-map.component';
 export declare abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
+    protected ng2MapComponent: Ng2MapComponent;
+    protected inputs: string[];
+    protected outputs: string[];
+    mapObject: any;
+    objectOptions: any;
+    mapObjectName: string;
     ng2Map: Ng2Map;
-    private optionBuilder;
-    private inputs;
-    private outputs;
-    protected abstract mapObject: any;
-    protected abstract objectOptions: any;
-    private mapObjectName;
-    constructor(ng2Map: Ng2Map, optionBuilder: OptionBuilder, inputs: string[], outputs: string[]);
+    optionBuilder: OptionBuilder;
+    initialized$: EventEmitter<any>;
+    libraryName: string;
+    constructor(ng2MapComponent: Ng2MapComponent, inputs: string[], outputs: string[]);
     ngOnInit(): void;
-    initialize(map: google.maps.Map): void;
+    initialize(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
 }

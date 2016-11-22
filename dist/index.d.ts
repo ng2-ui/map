@@ -7,6 +7,13 @@ import { Marker } from './directives/marker';
 import { Circle } from './directives/circle';
 import { Polygon } from './directives/polygon';
 import { InfoWindow } from './components/info-window';
-export { OptionBuilder, GeoCoder, NavigatorGeolocation, Ng2Map, Ng2MapComponent, Marker, Circle, Polygon, InfoWindow };
+import { Polyline } from './directives/polyline';
+import { GroundOverlay } from './directives/ground-overlay';
+import { KmlLayer } from "./directives/kml-layer";
+import { BicyclingLayer } from "./directives/bicycling-layer";
+import { TransitLayer } from "./directives/transit-layer";
+import { TrafficLayer } from "./directives/traffic-layer";
+import { HeatmapLayer } from "./directives/heatmap-layer";
+export { OptionBuilder, GeoCoder, NavigatorGeolocation, Ng2Map, Ng2MapComponent, InfoWindow, Marker, Circle, Polygon, Polyline, GroundOverlay, TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer };
 export declare class Ng2MapModule {
 }

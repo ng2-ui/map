@@ -173,13 +173,28 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#GroundOverlayOptions">GroundOverlayOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#GroundOverlay">GroundOverlay Events</a>
       <td> supported as `ground-overlay`
-  <tr><td> FusionTablesLayer <td> FusionTablesLayerOptions <td> FusionTablesLayer Events <td> Experimental Status
-  <tr><td> HeatMapLayer  <td> HeatMapLayerLayerOptions <td> HeatMapLayer Events      <td> Coming Soon
-  <tr><td> KmlLayer      <td> KmlLayerLayerOptions     <td> KmlLayer Events          <td> Coming Soon
+  <tr><td> FusionTablesLayer <td> FusionTablesLayerOptions <td> FusionTablesLayer Events <td> No Plan - Experimental Status
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#HeatmapLayer">HeatmapLayer</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#HeatmapLayerOptions">HeatmapLayerOptions</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#HeatmapLayer">HeatmapLayer Events</a>
+      <td> supported as `heatmap-layer`
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#KmlLayer">KmlLayer</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#KmlLayerOptions">KmlLayerOptions</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#KmlLayer">KmlLayer Events</a>
+      <td> supported as `kml-layer`
   <tr><td> Data          <td> DataOptions              <td> Data Events              <td> Coming Soon `map-data`
-  <tr><td> BicyclingLayer  <td> BicyclingLayerOptins    <td> BicyclingLayer Events   <td> Coming Soon
-  <tr><td> MapsEngineLayer <td> MapsEngineLayerOptins   <td> MapsEngineLayer Events  <td> Coming Soon
-  <tr><td> TrafficLayer    <td> TrafficLayerOptions     <td> TrafficLayer Events     <td> Coming Soon
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayer">BicyclingLayer</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayerOptions">BicyclingLayerOptions</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayer">BicyclingLayer Events</a>
+      <td> supported as `bicycling-layer`
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TrafficLayer">TrafficLayer</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TrafficLayerOptions">TrafficLayerOptions</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TrafficLayer">TrafficLayer Events</a>
+      <td> supported as `traffic-layer`
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TransitLayer">TransitLayer</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TransitLayerOptions">TransitLayerOptions</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TransitLayer">TransitLayer Events</a>
+      <td> supported as `traffic-layer`
   <tr><td> StreetViewPanorama  <td> StreetViewPanoramaOptions     <td> StreetViewPanorama Events  <td> Coming Soon
   <tr><td> DrawingManager  <td> DrawingManagerOptions   <td> Drawing Manager Events <td> Coming Soon
   <tr><td> Autocomplete    <td> AutocompleteOptions     <td> Autocomplete Events    <td> Coming Soon
@@ -200,8 +215,9 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   * `npm run` : List all available tasks
   * `npm start`: Run `app` directory for development using `webpack-dev-server` with port 9001
   * `npm run clean`: Remove dist folder
+  * `npm run clean:dist`: Clean up unnecessary dist folder within dist and app directory
   * `npm run lint`: Lint TypeScript code
   * `npm run build:ngc`: build ES module
   * `npm run build:umd`: Build UMD module `ng2-map.umd.js`
   * `npm run build:app`: Build `app/build/app.js` for runnable examples
-  * `npm run build`: Build all(build:ngc, build:umc, and build:app)
+  * `npm run build`: Build all(build:ngc, build:umc, build:app, and clean:dist)

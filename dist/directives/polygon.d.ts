@@ -1,9 +1,5 @@
-/// <reference types="googlemaps" />
-import { OptionBuilder } from '../services/option-builder';
-import { Ng2Map } from '../services/ng2-map';
 import { BaseMapDirective } from './base-map-directive';
+import { Ng2MapComponent } from '../components/ng2-map.component';
 export declare class Polygon extends BaseMapDirective {
-    protected mapObject: google.maps.Polygon;
-    protected objectOptions: google.maps.PolygonOptions;
-    constructor(ng2Map: Ng2Map, optionBuilder: OptionBuilder);
+    constructor(ng2MapComp: Ng2MapComponent);
 }

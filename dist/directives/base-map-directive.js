@@ -1,37 +1,47 @@
 "use strict";
 var core_1 = require('@angular/core');
 var BaseMapDirective = (function () {
-    function BaseMapDirective(ng2Map, optionBuilder, inputs, outputs) {
+    function BaseMapDirective(ng2MapComponent, inputs, outputs) {
         var _this = this;
-        this.ng2Map = ng2Map;
-        this.optionBuilder = optionBuilder;
+        this.ng2MapComponent = ng2MapComponent;
         this.inputs = inputs;
         this.outputs = outputs;
+        this.initialized$ = new core_1.EventEmitter();
+        this.ng2Map = this.ng2MapComponent['ng2Map'];
+        this.optionBuilder = this.ng2MapComponent['optionBuilder'];
         this.outputs.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
         this.mapObjectName = this.constructor['name'];
     }
     // Initialize this map object when map is ready
     BaseMapDirective.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.ng2Map.map) {
-            this.initialize(this.ng2Map.map);
+        if (this.ng2MapComponent.mapIdledOnce) {
+            this.initialize();
         }
         else {
-            this.ng2Map.mapReady$.subscribe(function (map) { return _this.initialize(map); });
+            this.ng2MapComponent.mapReady$.subscribe(function (map) { return _this.initialize(); });
         }
     };
-    // called when map is ready
-    BaseMapDirective.prototype.initialize = function (map) {
+    // only called when map is ready
+    BaseMapDirective.prototype.initialize = function () {
         this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
         console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
         // will be set after geocoded
         typeof this.objectOptions.position === 'string' && (delete this.objectOptions.position);
         typeof this.objectOptions.center === 'string' && (delete this.objectOptions.center);
         // noinspection TypeScriptUnresolvedFunction
-        this.mapObject = new google.maps[this.mapObjectName](Object.assign({}, this.objectOptions, { map: map }));
+        if (this.libraryName) {
+            this.mapObject = new google.maps[this.libraryName][this.mapObjectName](this.objectOptions);
+        }
+        else {
+            this.mapObject = new google.maps[this.mapObjectName](this.objectOptions);
+        }
+        this.mapObject.setMap(this.ng2MapComponent.map);
         this.mapObject['mapObjectName'] = this.mapObjectName;
+        this.mapObject['ng2MapComponent'] = this.ng2MapComponent;
         // set google events listeners and emits to this outputs listeners
         this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
+        this.initialized$.emit(this.mapObject);
     };
     // When input is changed, update object too.
     // e.g., when map center is changed by user, update center on the map

@@ -1,13 +1,4 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var option_builder_1 = require('./services/option-builder');
@@ -28,18 +19,38 @@ var polygon_1 = require('./directives/polygon');
 exports.Polygon = polygon_1.Polygon;
 var info_window_1 = require('./components/info-window');
 exports.InfoWindow = info_window_1.InfoWindow;
+var polyline_1 = require('./directives/polyline');
+exports.Polyline = polyline_1.Polyline;
+var ground_overlay_1 = require('./directives/ground-overlay');
+exports.GroundOverlay = ground_overlay_1.GroundOverlay;
+var kml_layer_1 = require("./directives/kml-layer");
+exports.KmlLayer = kml_layer_1.KmlLayer;
+var bicycling_layer_1 = require("./directives/bicycling-layer");
+exports.BicyclingLayer = bicycling_layer_1.BicyclingLayer;
+var transit_layer_1 = require("./directives/transit-layer");
+exports.TransitLayer = transit_layer_1.TransitLayer;
+var traffic_layer_1 = require("./directives/traffic-layer");
+exports.TrafficLayer = traffic_layer_1.TrafficLayer;
+var heatmap_layer_1 = require("./directives/heatmap-layer");
+exports.HeatmapLayer = heatmap_layer_1.HeatmapLayer;
+var COMPONENTS_DIRECTIVES = [
+    ng2_map_component_1.Ng2MapComponent, info_window_1.InfoWindow,
+    marker_1.Marker, circle_1.Circle, polygon_1.Polygon, info_window_1.InfoWindow, polyline_1.Polyline, ground_overlay_1.GroundOverlay,
+    transit_layer_1.TransitLayer, traffic_layer_1.TrafficLayer, heatmap_layer_1.HeatmapLayer, bicycling_layer_1.BicyclingLayer, kml_layer_1.KmlLayer
+];
 var Ng2MapModule = (function () {
     function Ng2MapModule() {
     }
-    Ng2MapModule = __decorate([
-        core_1.NgModule({
-            imports: [common_1.CommonModule],
-            declarations: [ng2_map_component_1.Ng2MapComponent, marker_1.Marker, circle_1.Circle, polygon_1.Polygon, info_window_1.InfoWindow],
-            providers: [geo_coder_1.GeoCoder, navigator_geolocation_1.NavigatorGeolocation, ng2_map_1.Ng2Map, option_builder_1.OptionBuilder],
-            exports: [ng2_map_component_1.Ng2MapComponent, marker_1.Marker, circle_1.Circle, polygon_1.Polygon, info_window_1.InfoWindow],
-        }), 
-        __metadata('design:paramtypes', [])
-    ], Ng2MapModule);
+    Ng2MapModule.decorators = [
+        { type: core_1.NgModule, args: [{
+                    imports: [common_1.CommonModule],
+                    declarations: COMPONENTS_DIRECTIVES,
+                    providers: [geo_coder_1.GeoCoder, navigator_geolocation_1.NavigatorGeolocation, ng2_map_1.Ng2Map, option_builder_1.OptionBuilder],
+                    exports: [COMPONENTS_DIRECTIVES]
+                },] },
+    ];
+    /** @nocollapse */
+    Ng2MapModule.ctorParameters = [];
     return Ng2MapModule;
 }());
 exports.Ng2MapModule = Ng2MapModule;
