@@ -1,8 +1,6 @@
 import { Injectable, SimpleChanges } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
 import { OptionBuilder } from './option-builder';
 import { GeoCoder } from './geo-coder';
-import { Ng2MapComponent } from '../components/ng2-map.component';
 
 /**
  * collection of map instance-related properties and methods
@@ -18,8 +16,7 @@ export class Ng2Map {
   setObjectEvents(definedEvents: string[], thisObj: any, prefix: string) {
     definedEvents.forEach(definedEvent => {
       let eventName = definedEvent
-        .toLowerCase()
-        .replace(new RegExp('^' + prefix), '');
+        .replace(/([A-Z])/g, ($1) => `_${$1.toLowerCase()}`);
 
       thisObj[prefix].addListener(eventName, function(event: google.maps.event) {
         thisObj[definedEvent].emit(this);
