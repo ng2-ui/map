@@ -8,7 +8,6 @@ import { Ng2MapComponent } from '../components/ng2-map.component';
 export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   public mapObject: any; // e.g. google.maps.Marker
   public objectOptions: any; // e.g. google.maps.MarkerOptions
-  public mapObjectName: string ; // e.g. Marker
 
   public ng2Map: Ng2Map;
   public optionBuilder: OptionBuilder;
@@ -17,13 +16,14 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     protected ng2MapComponent: Ng2MapComponent,
+    public    mapObjectName: string,
     protected inputs: string[],
     protected outputs: string[]
   ) {
     this.ng2Map = this.ng2MapComponent['ng2Map'];
     this.optionBuilder = this.ng2MapComponent['optionBuilder'];
     this.outputs.forEach(output => this[output] = new EventEmitter());
-    this.mapObjectName = this.constructor['name'];
+    this.mapObjectName = mapObjectName;
   }
 
   // Initialize this map object when map is ready

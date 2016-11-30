@@ -13,6 +13,6 @@ const OUTPUTS = [ ];
 })
 export class BicyclingLayer extends BaseMapDirective {
   constructor(ng2MapComp: Ng2MapComponent) {
-    super(ng2MapComp, INPUTS, OUTPUTS);
+    super(ng2MapComp, 'BicyclingLayer', INPUTS, OUTPUTS);
   }
 }

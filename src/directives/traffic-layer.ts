@@ -12,6 +12,6 @@ const OUTPUTS = [ ];
 })
 export class TrafficLayer extends BaseMapDirective {
   constructor(ng2MapComp: Ng2MapComponent) {
-    super(ng2MapComp, INPUTS, OUTPUTS);
+    super(ng2MapComp, 'TrafficLayer', INPUTS, OUTPUTS);
   }
 }

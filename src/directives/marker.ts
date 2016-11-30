@@ -23,7 +23,7 @@ export class Marker extends BaseMapDirective {
   public objectOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{};
 
   constructor(private ng2MapComp: Ng2MapComponent) {
-    super(ng2MapComp, INPUTS, OUTPUTS);
+    super(ng2MapComp, 'Marker', INPUTS, OUTPUTS);
   }
 
   initialize(): void {

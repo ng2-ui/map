@@ -15,7 +15,7 @@ export class HeatmapLayer extends BaseMapDirective {
   public libraryName: string;
 
   constructor(ng2MapComp: Ng2MapComponent) {
-    super(ng2MapComp, INPUTS, OUTPUTS);
+    super(ng2MapComp, 'HeatmapLayer', INPUTS, OUTPUTS);
     this.libraryName = 'visualization';
   }
 }

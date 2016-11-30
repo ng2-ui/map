@@ -22,7 +22,7 @@ export class Circle extends BaseMapDirective {
   public objectOptions: google.maps.CircleOptions = <google.maps.CircleOptions>{};
 
   constructor(private ng2MapComp: Ng2MapComponent) {
-    super(ng2MapComp, INPUTS, OUTPUTS);
+    super(ng2MapComp, 'Circle', INPUTS, OUTPUTS);
   }
 
   initialize(): void {

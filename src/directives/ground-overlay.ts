@@ -16,7 +16,7 @@ export class GroundOverlay extends BaseMapDirective {
   public objectOptions: google.maps.GroundOverlayOptions = <google.maps.GroundOverlayOptions>{};
 
   constructor(ng2MapComp: Ng2MapComponent) {
-    super(ng2MapComp, INPUTS, OUTPUTS);
+    super(ng2MapComp, 'GroundOverlay', INPUTS, OUTPUTS);
   }
 
   // re-declaring initialize function. called when map is ready
