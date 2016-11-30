@@ -13,8 +13,7 @@ var Ng2Map = (function () {
     Ng2Map.prototype.setObjectEvents = function (definedEvents, thisObj, prefix) {
         definedEvents.forEach(function (definedEvent) {
             var eventName = definedEvent
-                .toLowerCase()
-                .replace(new RegExp('^' + prefix), '');
+                .replace(/([A-Z])/g, function ($1) { return ("_" + $1.toLowerCase()); });
             thisObj[prefix].addListener(eventName, function (event) {
                 thisObj[definedEvent].emit(this);
             });

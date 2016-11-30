@@ -12,7 +12,7 @@ var OUTPUTS = [];
 var TrafficLayer = (function (_super) {
     __extends(TrafficLayer, _super);
     function TrafficLayer(ng2MapComp) {
-        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+        _super.call(this, ng2MapComp, 'TrafficLayer', INPUTS, OUTPUTS);
     }
     TrafficLayer.decorators = [
         { type: core_1.Directive, args: [{

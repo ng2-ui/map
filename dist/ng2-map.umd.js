@@ -549,8 +549,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Ng2Map.prototype.setObjectEvents = function (definedEvents, thisObj, prefix) {
 	        definedEvents.forEach(function (definedEvent) {
 	            var eventName = definedEvent
-	                .toLowerCase()
-	                .replace(new RegExp('^' + prefix), '');
+	                .replace(/([A-Z])/g, function ($1) { return ("_" + $1.toLowerCase()); });
 	            thisObj[prefix].addListener(eventName, function (event) {
 	                thisObj[definedEvent].emit(this);
 	            });
@@ -785,7 +784,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Marker = (function (_super) {
 	    __extends(Marker, _super);
 	    function Marker(ng2MapComp) {
-	        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+	        _super.call(this, ng2MapComp, 'Marker', INPUTS, OUTPUTS);
 	        this.ng2MapComp = ng2MapComp;
 	        this.objectOptions = {};
 	    }
@@ -831,16 +830,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	var core_1 = __webpack_require__(1);
 	var BaseMapDirective = (function () {
-	    function BaseMapDirective(ng2MapComponent, inputs, outputs) {
+	    function BaseMapDirective(ng2MapComponent, mapObjectName, inputs, outputs) {
 	        var _this = this;
 	        this.ng2MapComponent = ng2MapComponent;
+	        this.mapObjectName = mapObjectName;
 	        this.inputs = inputs;
 	        this.outputs = outputs;
 	        this.initialized$ = new core_1.EventEmitter();
 	        this.ng2Map = this.ng2MapComponent['ng2Map'];
 	        this.optionBuilder = this.ng2MapComponent['optionBuilder'];
 	        this.outputs.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
-	        this.mapObjectName = this.constructor['name'];
+	        this.mapObjectName = mapObjectName;
 	    }
 	    // Initialize this map object when map is ready
 	    BaseMapDirective.prototype.ngOnInit = function () {
@@ -926,7 +926,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Circle = (function (_super) {
 	    __extends(Circle, _super);
 	    function Circle(ng2MapComp) {
-	        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+	        _super.call(this, ng2MapComp, 'Circle', INPUTS, OUTPUTS);
 	        this.ng2MapComp = ng2MapComp;
 	        this.objectOptions = {};
 	    }
@@ -996,7 +996,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Polygon = (function (_super) {
 	    __extends(Polygon, _super);
 	    function Polygon(ng2MapComp) {
-	        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+	        _super.call(this, ng2MapComp, 'Polygon', INPUTS, OUTPUTS);
 	    }
 	    Polygon = __decorate([
 	        core_1.Directive({
@@ -1151,7 +1151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Polyline = (function (_super) {
 	    __extends(Polyline, _super);
 	    function Polyline(ng2MapComp) {
-	        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+	        _super.call(this, ng2MapComp, 'Polyline', INPUTS, OUTPUTS);
 	    }
 	    Polyline = __decorate([
 	        core_1.Directive({
@@ -1193,7 +1193,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var GroundOverlay = (function (_super) {
 	    __extends(GroundOverlay, _super);
 	    function GroundOverlay(ng2MapComp) {
-	        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+	        _super.call(this, ng2MapComp, 'GroundOverlay', INPUTS, OUTPUTS);
 	        this.objectOptions = {};
 	    }
 	    // re-declaring initialize function. called when map is ready
@@ -1248,7 +1248,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var KmlLayer = (function (_super) {
 	    __extends(KmlLayer, _super);
 	    function KmlLayer(ng2MapComp) {
-	        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+	        _super.call(this, ng2MapComp, 'KmlLayer', INPUTS, OUTPUTS);
 	    }
 	    KmlLayer = __decorate([
 	        core_1.Directive({
@@ -1290,7 +1290,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var BicyclingLayer = (function (_super) {
 	    __extends(BicyclingLayer, _super);
 	    function BicyclingLayer(ng2MapComp) {
-	        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+	        _super.call(this, ng2MapComp, 'BicyclingLayer', INPUTS, OUTPUTS);
 	    }
 	    BicyclingLayer = __decorate([
 	        core_1.Directive({
@@ -1332,7 +1332,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var TransitLayer = (function (_super) {
 	    __extends(TransitLayer, _super);
 	    function TransitLayer(ng2MapComp) {
-	        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+	        _super.call(this, ng2MapComp, 'TransitLayer', INPUTS, OUTPUTS);
 	    }
 	    TransitLayer = __decorate([
 	        core_1.Directive({
@@ -1374,7 +1374,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var TrafficLayer = (function (_super) {
 	    __extends(TrafficLayer, _super);
 	    function TrafficLayer(ng2MapComp) {
-	        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+	        _super.call(this, ng2MapComp, 'TrafficLayer', INPUTS, OUTPUTS);
 	    }
 	    TrafficLayer = __decorate([
 	        core_1.Directive({
@@ -1416,7 +1416,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var HeatmapLayer = (function (_super) {
 	    __extends(HeatmapLayer, _super);
 	    function HeatmapLayer(ng2MapComp) {
-	        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+	        _super.call(this, ng2MapComp, 'HeatmapLayer', INPUTS, OUTPUTS);
 	        this.libraryName = 'visualization';
 	    }
 	    HeatmapLayer = __decorate([

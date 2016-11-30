@@ -12,7 +12,7 @@ var OUTPUTS = ['click', 'defaultviewport_changed', 'status_changed'];
 var KmlLayer = (function (_super) {
     __extends(KmlLayer, _super);
     function KmlLayer(ng2MapComp) {
-        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+        _super.call(this, ng2MapComp, 'KmlLayer', INPUTS, OUTPUTS);
     }
     KmlLayer.decorators = [
         { type: core_1.Directive, args: [{

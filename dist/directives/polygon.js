@@ -18,7 +18,7 @@ var OUTPUTS = [
 var Polygon = (function (_super) {
     __extends(Polygon, _super);
     function Polygon(ng2MapComp) {
-        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+        _super.call(this, ng2MapComp, 'Polygon', INPUTS, OUTPUTS);
     }
     Polygon.decorators = [
         { type: core_1.Directive, args: [{

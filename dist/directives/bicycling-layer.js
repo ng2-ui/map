@@ -12,7 +12,7 @@ var OUTPUTS = [];
 var BicyclingLayer = (function (_super) {
     __extends(BicyclingLayer, _super);
     function BicyclingLayer(ng2MapComp) {
-        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+        _super.call(this, ng2MapComp, 'BicyclingLayer', INPUTS, OUTPUTS);
     }
     BicyclingLayer.decorators = [
         { type: core_1.Directive, args: [{

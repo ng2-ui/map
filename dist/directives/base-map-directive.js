@@ -1,16 +1,17 @@
 "use strict";
 var core_1 = require('@angular/core');
 var BaseMapDirective = (function () {
-    function BaseMapDirective(ng2MapComponent, inputs, outputs) {
+    function BaseMapDirective(ng2MapComponent, mapObjectName, inputs, outputs) {
         var _this = this;
         this.ng2MapComponent = ng2MapComponent;
+        this.mapObjectName = mapObjectName;
         this.inputs = inputs;
         this.outputs = outputs;
         this.initialized$ = new core_1.EventEmitter();
         this.ng2Map = this.ng2MapComponent['ng2Map'];
         this.optionBuilder = this.ng2MapComponent['optionBuilder'];
         this.outputs.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
-        this.mapObjectName = this.constructor['name'];
+        this.mapObjectName = mapObjectName;
     }
     // Initialize this map object when map is ready
     BaseMapDirective.prototype.ngOnInit = function () {

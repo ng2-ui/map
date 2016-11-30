@@ -12,7 +12,7 @@ var OUTPUTS = [];
 var TransitLayer = (function (_super) {
     __extends(TransitLayer, _super);
     function TransitLayer(ng2MapComp) {
-        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+        _super.call(this, ng2MapComp, 'TransitLayer', INPUTS, OUTPUTS);
     }
     TransitLayer.decorators = [
         { type: core_1.Directive, args: [{

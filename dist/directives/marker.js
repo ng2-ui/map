@@ -19,7 +19,7 @@ var OUTPUTS = [
 var Marker = (function (_super) {
     __extends(Marker, _super);
     function Marker(ng2MapComp) {
-        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+        _super.call(this, ng2MapComp, 'Marker', INPUTS, OUTPUTS);
         this.ng2MapComp = ng2MapComp;
         this.objectOptions = {};
     }

@@ -18,7 +18,7 @@ var OUTPUTS = [
 var Circle = (function (_super) {
     __extends(Circle, _super);
     function Circle(ng2MapComp) {
-        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+        _super.call(this, ng2MapComp, 'Circle', INPUTS, OUTPUTS);
         this.ng2MapComp = ng2MapComp;
         this.objectOptions = {};
     }

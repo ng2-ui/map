@@ -12,7 +12,7 @@ var OUTPUTS = [];
 var HeatmapLayer = (function (_super) {
     __extends(HeatmapLayer, _super);
     function HeatmapLayer(ng2MapComp) {
-        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+        _super.call(this, ng2MapComp, 'HeatmapLayer', INPUTS, OUTPUTS);
         this.libraryName = 'visualization';
     }
     HeatmapLayer.decorators = [

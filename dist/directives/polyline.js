@@ -18,7 +18,7 @@ var OUTPUTS = [
 var Polyline = (function (_super) {
     __extends(Polyline, _super);
     function Polyline(ng2MapComp) {
-        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+        _super.call(this, ng2MapComp, 'Polyline', INPUTS, OUTPUTS);
     }
     Polyline.decorators = [
         { type: core_1.Directive, args: [{

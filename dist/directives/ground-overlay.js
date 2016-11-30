@@ -12,7 +12,7 @@ var OUTPUTS = ['click', 'dblclick'];
 var GroundOverlay = (function (_super) {
     __extends(GroundOverlay, _super);
     function GroundOverlay(ng2MapComp) {
-        _super.call(this, ng2MapComp, INPUTS, OUTPUTS);
+        _super.call(this, ng2MapComp, 'GroundOverlay', INPUTS, OUTPUTS);
         this.objectOptions = {};
     }
     // re-declaring initialize function. called when map is ready
