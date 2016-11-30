@@ -33,6 +33,9 @@ if (process.env.NODE_ENV !== 'prod') {
   config.plugins = [
     new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
   ];
+  config.module.loaders.push({
+    test: /\.ts$/, loader: 'strip-loader?strip[]=debug,strip[]=console.log'
+  });
 }
 
 module.exports = config;

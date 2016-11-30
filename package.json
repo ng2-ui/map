@@ -13,7 +13,7 @@
     "clean:dist": "rimraf dist/dist app/dist",
     "build": "npm-run-all --serial clean build:ngc build:umd build:app clean:dist",
     "build:ngc": "./node_modules/.bin/ngc",
-    "build:umd": "webpack",
+    "build:umd": "NODE_ENV=prod webpack",
     "build:app": "NODE_ENV=prod webpack --config app/webpack.config"
   },
   "repository": {
@@ -54,6 +54,7 @@
     "raw-loader": "^0.5.1",
     "rimraf": "^2.5.3",
     "rxjs": "^5.0.0-rc.1",
+    "strip-loader": "^0.1.2",
     "ts-loader": "^1.0.0",
     "tslint": "^3.15.1",
     "typescript": "^2.0.7",

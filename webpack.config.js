@@ -1,7 +1,7 @@
 var path = require("path");
 var webpack = require('webpack');
 
-module.exports = {
+var config = {
   entry: {
     'ng2-map': path.join(__dirname, 'src', 'index.ts')
   },
@@ -31,3 +31,13 @@ module.exports = {
     ]
   }
 };
+
+//Different Environment Setup
+
+if (process.env.NODE_ENV === 'prod') {
+  config.module.loaders.push({
+    test: /\.ts$/, loader: 'strip-loader?strip[]=debug,strip[]=console.log'
+  });
+}
+
+module.exports = config;

@@ -162,7 +162,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var options = {};
 	        // if options given from user, only take options and ignore other inputs
 	        if (userInputs.options) {
-	            console.log('userInputs.options .................', userInputs.options);
 	            options = userInputs.options;
 	            if (!this.onlyOptionsGiven(definedInputs, userInputs)) {
 	                console.error('when "options" are used, other options are ignored');
@@ -681,7 +680,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var _this = this;
 	        this.el = this.elementRef.nativeElement.querySelector('.google-map');
 	        this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-	        console.log('ng2-map mapOptions', this.mapOptions);
 	        this.mapOptions.zoom = this.mapOptions.zoom || 15;
 	        typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
 	        this.map = new google.maps.Map(this.el, this.mapOptions);
@@ -706,14 +704,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var _this = this;
 	        if (!this['center']) {
 	            this.geolocation.getCurrentPosition().subscribe(function (position) {
-	                console.log('setting map center from current location');
 	                var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 	                _this.map.setCenter(latLng);
 	            });
 	        }
 	        else if (typeof this['center'] === 'string') {
 	            this.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
-	                console.log('setting map center from address', _this['center']);
 	                _this.map.setCenter(results[0].geometry.location);
 	            });
 	        }
@@ -796,7 +792,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var _this = this;
 	        if (!this['position']) {
 	            this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (position) {
-	                console.log('setting marker position from current location');
 	                var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 	                // console.log('this.marker', this.marker);
 	                _this.mapObject.setPosition(latLng);
@@ -804,7 +799,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        else if (typeof this['position'] === 'string') {
 	            this.ng2MapComp.geoCoder.geocode({ address: this['position'] }).subscribe(function (results) {
-	                console.log('setting marker position from address', _this['position']);
 	                // console.log('this.marker', this.marker);
 	                _this.mapObject.setPosition(results[0].geometry.location);
 	            });
@@ -855,7 +849,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // only called when map is ready
 	    BaseMapDirective.prototype.initialize = function () {
 	        this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-	        console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
 	        // will be set after geocoded
 	        typeof this.objectOptions.position === 'string' && (delete this.objectOptions.position);
 	        typeof this.objectOptions.center === 'string' && (delete this.objectOptions.center);
@@ -876,7 +869,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // When input is changed, update object too.
 	    // e.g., when map center is changed by user, update center on the map
 	    BaseMapDirective.prototype.ngOnChanges = function (changes) {
-	        console.log(this.mapObjectName, 'objectOptions are changed', changes);
 	        this.ng2Map.updateGoogleObject(this.mapObject, changes);
 	    };
 	    // When destroyed, remove event listener, and delete this object to prevent memory leak
@@ -938,14 +930,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var _this = this;
 	        if (!this['center']) {
 	            this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (center) {
-	                console.log('setting circle center from current location');
 	                var latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
 	                _this.mapObject.setCenter(latLng);
 	            });
 	        }
 	        else if (typeof this['center'] === 'string') {
 	            this.ng2MapComp.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
-	                console.log('setting circle center from address', _this['center']);
 	                _this.mapObject.setCenter(results[0].geometry.location);
 	            });
 	        }
@@ -1065,12 +1055,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // called when map is ready
 	    InfoWindow.prototype.initialize = function () {
 	        var _this = this;
-	        console.log('infowindow is being initialized');
 	        this.template = this.elementRef.nativeElement.innerHTML;
 	        this.objectOptions = this.ng2MapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
 	        this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
 	        this.infoWindow['mapObjectName'] = this.constructor['name'];
-	        console.log('INFOWINDOW objectOptions', this.objectOptions);
 	        // register infoWindow ids to Ng2Map, so that it can be opened by id
 	        this.el = this.elementRef.nativeElement;
 	        if (this.el.id) {
@@ -1200,7 +1188,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    GroundOverlay.prototype.initialize = function () {
 	        // url, bounds are not the options of GroundOverlay
 	        this.objectOptions = this.optionBuilder.googlizeAllInputs(['clickable', 'opacity'], this);
-	        console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
 	        // noinspection TypeScriptUnresolvedFunction
 	        this.mapObject = new google.maps.GroundOverlay(this['url'], this['bounds'], this.objectOptions);
 	        this.mapObject.setMap(this.ng2MapComponent.map);
