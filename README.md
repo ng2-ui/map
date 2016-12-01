@@ -193,7 +193,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
            <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/heatmap-layer">ng2-map kml-layer example</a> 
   <tr><td> Data          <td> DataOptions              <td> Data Events              
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-data-simple">Google Layer Data Example</a> <br/> 
-           <a href="">ng2-map data example</a>
+           <xa href="">ng2-map data example</xa>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayer">BicyclingLayer</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayerOptions">BicyclingLayerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayer">BicyclingLayer Events</a>
@@ -211,13 +211,13 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
            <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/transit-layer">ng2-map transit-layer example</a>
   <tr><td> StreetViewPanorama  <td> StreetViewPanoramaOptions     <td> StreetViewPanorama Events  
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/streetview-embed">Google Streetview Example</a> <br/>
-           <a href="">ng2-map streetview-panorama example</a>
+           <xa href="">ng2-map streetview-panorama example</xa>
   <tr><td> Autocomplete    <td> AutocompleteOptions     <td> Autocomplete Events    
       <td><a href="https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete">Google Places Autocomplete Example</a> <br/>
-           <a href="">ng2-map streetview-panorama example</a>
+           <xa href="">ng2-map streetview-panorama example</xa>
   <tr><td> DirectionsRenderer <td> DirectionsRendererOptions     <td> DirectionsRenderer Events    
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/directions-complex">Google DirectionsExample</a> <br/>
-           <a href="">ng2-map directions-renderer example</a> 
+           <xa href="">ng2-map directions-renderer example</xa> 
 </table>
 
 ### For Developers
