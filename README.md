@@ -148,57 +148,60 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Map">Map</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions">MapOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Map">Map Events</a>
-      <td> supported as `ng2-map`
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/map-simple">Google Simple Map Example</a> <a href="">ng2-map example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Marker">Marker</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#MarkerOptions">MarkerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Marker">Marker Events</a>
-      <td> supported as `marker`
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/marker-simple">Google Simple Marker Example</a> <a href="">ng2-map marker example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindow">InfoWindow</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindowOptions">InfoWindowOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindow">InfoWindow Events</a>
-      <td> supported as `info-window`
+      <td>  <a href="https://developers.google.com/maps/documentation/javascript/examples/infowindow-simple">Google Infowindows Example</a> <a href="">ng2-map info-window example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Circle">Circle</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#CircleOptions">CircleOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Circle">Circle Events</a>
-      <td> supported as `circle`
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/circle-simple">Google Circle example</a> <a href="">ng2-map circle example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Polygon">Polygon</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#PolygonOptions">PolygonOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Polygon">Polygon Events</a>
-      <td> supported as `polygon`
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/polygon-hole">Google Polygon example</a> <a href="">ng2-map polygon example</a> 
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Polyline">Polyline</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#PolylineOptions">PolylineOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Polyline">Polyline Events</a>
-      <td> supported as `polyline`
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/polyline-simple">Google Polyline Example</a> <a href="">ng2-map polyline  example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#GroundOverlay">GroundOverlay</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#GroundOverlayOptions">GroundOverlayOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#GroundOverlay">GroundOverlay Events</a>
-      <td> supported as `ground-overlay`
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/groundoverlay-simple">Google Simple Ground Overlay Example</a> <a href="">ng2-map ground-overlay example</a>
   <tr><td> FusionTablesLayer <td> FusionTablesLayerOptions <td> FusionTablesLayer Events <td> No Plan - Experimental Status
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#HeatmapLayer">HeatmapLayer</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#HeatmapLayerOptions">HeatmapLayerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#HeatmapLayer">HeatmapLayer Events</a>
-      <td> supported as `heatmap-layer`
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap">Google Heatmap Layer</a> <a href="">ng2-map heatmap-layer example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#KmlLayer">KmlLayer</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#KmlLayerOptions">KmlLayerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#KmlLayer">KmlLayer Events</a>
-      <td> supported as `kml-layer`
-  <tr><td> Data          <td> DataOptions              <td> Data Events              <td> Coming Soon `map-data`
+      <td> https://developers.google.com/maps/documentation/javascript/examples/layer-kml
+  <tr><td> Data          <td> DataOptions              <td> Data Events              
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-data-simple">Google Layer Data Example</a> <a href="">ng2-map data example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayer">BicyclingLayer</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayerOptions">BicyclingLayerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayer">BicyclingLayer Events</a>
-      <td> supported as `bicycling-layer`
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-bicycling">Google Bycycling Layer Example</a> <a href="">ng2-map bicycling-layer example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TrafficLayer">TrafficLayer</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TrafficLayerOptions">TrafficLayerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TrafficLayer">TrafficLayer Events</a>
-      <td> supported as `traffic-layer`
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-traffic">Google Traffic Layer Example</a> <a href="">ng2-map traffic-layer example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TransitLayer">TransitLayer</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TransitLayerOptions">TransitLayerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TransitLayer">TransitLayer Events</a>
-      <td> supported as `traffic-layer`
-  <tr><td> StreetViewPanorama  <td> StreetViewPanoramaOptions     <td> StreetViewPanorama Events  <td> Coming Soon
-  <tr><td> DrawingManager  <td> DrawingManagerOptions   <td> Drawing Manager Events <td> Coming Soon
-  <tr><td> Autocomplete    <td> AutocompleteOptions     <td> Autocomplete Events    <td> Coming Soon
-  <tr><td> DirectionsRenderer <td> DirectionsRendererOptions     <td> DirectionsRenderer Events    <td> Coming Soon
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-transit">Google Transit Layer Example</a> <a href="">ng2-map transit-layer example</a>
+  <tr><td> StreetViewPanorama  <td> StreetViewPanoramaOptions     <td> StreetViewPanorama Events  
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/streetview-embed">Google Streetview Example</a> <a href="">ng2-map streetview-panorama example</a>
+  <tr><td> Autocomplete    <td> AutocompleteOptions     <td> Autocomplete Events    
+      <td><a href="https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete">Google Places Autocomplete Example</a> <a href="">ng2-map streetview-panorama example</a>
+  <tr><td> DirectionsRenderer <td> DirectionsRendererOptions     <td> DirectionsRenderer Events    
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/directions-complex">Google DirectionsExample</a> <a href="">ng2-map directions-renderer example</a> 
 </table>
 
 ### For Developers
