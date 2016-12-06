@@ -211,6 +211,9 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TransitLayer">TransitLayer Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-transit">Google Transit Layer Example</a> <br/>
            <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/transit-layer">ng2-map transit-layer example</a>
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#StreetViewPanorama">StreetViewPanorama</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#StreetViewPanoramaOptions">StreetViewPanoramaOptions</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#StreetViewPanorama">StreetViewPanorama Events</a>
   <tr><td> StreetViewPanorama
       <td> StreetViewPanoramaOptions
       <td> StreetViewPanorama Events  
