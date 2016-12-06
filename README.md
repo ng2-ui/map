@@ -191,7 +191,9 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#KmlLayer">KmlLayer Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-kml">Google Kml Layer</a> <br/> 
            <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/heatmap-layer">ng2-map kml-layer example</a> 
-  <tr><td> Data          <td> DataOptions              <td> Data Events              
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Data">Data</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DataOptions">DataOptions</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Data">Data Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-data-simple">Google Layer Data Example</a> <br/> 
            <xa href="">ng2-map data example</xa>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayer">BicyclingLayer</a>
@@ -209,7 +211,9 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TransitLayer">TransitLayer Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-transit">Google Transit Layer Example</a> <br/>
            <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/transit-layer">ng2-map transit-layer example</a>
-  <tr><td> StreetViewPanorama  <td> StreetViewPanoramaOptions     <td> StreetViewPanorama Events  
+  <tr><td> StreetViewPanorama
+      <td> StreetViewPanoramaOptions
+      <td> StreetViewPanorama Events  
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/streetview-embed">Google Streetview Example</a> <br/>
            <xa href="">ng2-map streetview-panorama example</xa>
   <tr><td> Autocomplete    <td> AutocompleteOptions     <td> Autocomplete Events    

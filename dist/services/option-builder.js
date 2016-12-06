@@ -83,6 +83,9 @@ var OptionBuilder = (function () {
                 output = this.getMapControlOption(output);
             }
         }
+        //delete keys only for processing, not used by google
+        delete output['doNotConverStringToNumber'];
+        delete output['key'];
         return output;
     };
     OptionBuilder.prototype.getLatLng = function (input) {

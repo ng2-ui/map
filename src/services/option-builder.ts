@@ -91,6 +91,10 @@ export class OptionBuilder {
       }
     }
 
+    //delete keys only for processing, not used by google
+    delete output['doNotConverStringToNumber'];
+    delete output['key'];
+
     return output;
   }
 

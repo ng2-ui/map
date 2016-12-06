@@ -12,7 +12,7 @@
     "clean": "rimraf dist",
     "clean:dist": "rimraf dist/dist app/dist",
     "build": "npm-run-all --serial clean build:ngc build:umd build:app clean:dist",
-    "build:ngc": "./node_modules/.bin/ngc",
+    "build:ngc": "./node_modules/.bin/ngc -p tsconfig.ngc.json",
     "build:umd": "NODE_ENV=prod webpack",
     "build:app": "NODE_ENV=prod webpack --config app/webpack.config"
   },

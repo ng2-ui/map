@@ -18,18 +18,22 @@ import { BicyclingLayer } from "./directives/bicycling-layer";
 import { TransitLayer } from "./directives/transit-layer";
 import { TrafficLayer } from "./directives/traffic-layer";
 import { HeatmapLayer } from "./directives/heatmap-layer";
+import { DataLayer } from "./directives/data-layer";
+import { StreetViewPanorama } from "./directives/street-view-panorama";
 
 export {
   OptionBuilder, GeoCoder, NavigatorGeolocation, Ng2Map,
   Ng2MapComponent, InfoWindow,
   Marker, Circle, Polygon, Polyline, GroundOverlay,
-  TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer
+  TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer, DataLayer,
+  StreetViewPanorama
 };
 
 const COMPONENTS_DIRECTIVES = [
   Ng2MapComponent, InfoWindow,
   Marker, Circle, Polygon, InfoWindow, Polyline, GroundOverlay,
-  TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer
+  TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer, DataLayer,
+  StreetViewPanorama
 ];
 
 @NgModule({

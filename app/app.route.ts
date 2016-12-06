@@ -15,6 +15,8 @@ import { TrafficLayerComponent } from "./traffic-layer.component";
 import { TransitLayerComponent } from "./transit-layer.component";
 import { HeatmapLayerComponent } from "./heatmap-layer.component";
 import { KmlLayerComponent } from "./kml-layer.component";
+import { DataLayerComponent } from "./data-layer.component";
+import { StreetViewPanoramaComponent } from "./street-view-panorama.component";
 
 export const routes: Routes = [
   { path: 'simple-info-window', component: SimpleInfoWindowComponent },
@@ -32,6 +34,8 @@ export const routes: Routes = [
   { path: 'transit-layer', component: TransitLayerComponent },
   { path: 'heatmap-layer', component: HeatmapLayerComponent },
   { path: 'kml-layer', component: KmlLayerComponent },
+  { path: 'data-layer', component: DataLayerComponent },
+  { path: 'street-view-panorama', component: StreetViewPanoramaComponent },
   { path: '',  redirectTo: '/simple-marker', pathMatch: 'full' },
 ];
 
@@ -51,6 +55,8 @@ export const APP_ROUTER_COMPONENTS = [
   TrafficLayerComponent,
   TransitLayerComponent,
   HeatmapLayerComponent,
-  KmlLayerComponent
+  DataLayerComponent,
+  KmlLayerComponent,
+  StreetViewPanoramaComponent
 ];
 

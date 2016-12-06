@@ -14,6 +14,8 @@ import { BicyclingLayer } from "./directives/bicycling-layer";
 import { TransitLayer } from "./directives/transit-layer";
 import { TrafficLayer } from "./directives/traffic-layer";
 import { HeatmapLayer } from "./directives/heatmap-layer";
-export { OptionBuilder, GeoCoder, NavigatorGeolocation, Ng2Map, Ng2MapComponent, InfoWindow, Marker, Circle, Polygon, Polyline, GroundOverlay, TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer };
+import { DataLayer } from "./directives/data-layer";
+import { StreetViewPanorama } from "./directives/street-view-panorama";
+export { OptionBuilder, GeoCoder, NavigatorGeolocation, Ng2Map, Ng2MapComponent, InfoWindow, Marker, Circle, Polygon, Polyline, GroundOverlay, TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer, DataLayer, StreetViewPanorama };
 export declare class Ng2MapModule {
 }
