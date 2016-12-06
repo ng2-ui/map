@@ -1,6 +1,6 @@
 {
   "name": "ng2-map",
-  "version": "0.9.2",
+  "version": "0.10.0",
   "description": "Angular2 Google Map`",
   "license": "MIT",
   "main": "dist/ng2-map.umd.js",
@@ -10,8 +10,7 @@
     "start": "NODE_ENV=dev node node_modules/.bin/webpack-dashboard --title ng2-map -- node_modules/.bin/webpack-dev-server --quiet --port 9001 --content-base app --config app/webpack.config --open",
     "lint": "./node_modules/.bin/tslint 'src/**/*.ts' 'app/**/*.ts'",
     "clean": "rimraf dist",
-    "clean:dist": "rimraf dist/dist app/dist",
-    "build": "npm-run-all --serial clean build:ngc build:umd build:app clean:dist",
+    "build": "npm-run-all --serial clean build:ngc build:umd build:app",
     "build:ngc": "./node_modules/.bin/ngc -p tsconfig.ngc.json",
     "build:umd": "NODE_ENV=prod webpack",
     "build:app": "NODE_ENV=prod webpack --config app/webpack.config"
