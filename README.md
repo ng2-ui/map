@@ -214,9 +214,6 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#StreetViewPanorama">StreetViewPanorama</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#StreetViewPanoramaOptions">StreetViewPanoramaOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#StreetViewPanorama">StreetViewPanorama Events</a>
-  <tr><td> StreetViewPanorama
-      <td> StreetViewPanoramaOptions
-      <td> StreetViewPanorama Events  
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/streetview-embed">Google Streetview Example</a> <br/>
            <xa href="">ng2-map streetview-panorama example</xa>
   <tr><td> Autocomplete    <td> AutocompleteOptions     <td> Autocomplete Events    
