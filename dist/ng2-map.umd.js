@@ -102,11 +102,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.DataLayer = data_layer_1.DataLayer;
 	var street_view_panorama_1 = __webpack_require__(24);
 	exports.StreetViewPanorama = street_view_panorama_1.StreetViewPanorama;
+	var places_auto_complete_1 = __webpack_require__(25);
+	exports.PlacesAutoComplete = places_auto_complete_1.PlacesAutoComplete;
 	var COMPONENTS_DIRECTIVES = [
 	    ng2_map_component_1.Ng2MapComponent, info_window_1.InfoWindow,
 	    marker_1.Marker, circle_1.Circle, polygon_1.Polygon, info_window_1.InfoWindow, polyline_1.Polyline, ground_overlay_1.GroundOverlay,
 	    transit_layer_1.TransitLayer, traffic_layer_1.TrafficLayer, heatmap_layer_1.HeatmapLayer, bicycling_layer_1.BicyclingLayer, kml_layer_1.KmlLayer, data_layer_1.DataLayer,
-	    street_view_panorama_1.StreetViewPanorama
+	    street_view_panorama_1.StreetViewPanorama, places_auto_complete_1.PlacesAutoComplete
 	];
 	var Ng2MapModule = (function () {
 	    function Ng2MapModule() {
@@ -1530,6 +1532,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
 	        var element;
 	        if (this.objectOptions.selector) {
+	            //noinspection TypeScriptValidateTypes
 	            element = document.querySelector(this['selector']);
 	            delete this.objectOptions.selector;
 	        }
@@ -1545,6 +1548,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
 	        this.initialized$.emit(this.mapObject);
 	    };
+	    // When destroyed, remove event listener, and delete this object to prevent memory leak
+	    StreetViewPanorama.prototype.ngOnDestroy = function () {
+	        var _this = this;
+	        if (this.ng2MapComponent.el) {
+	            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
+	        }
+	    };
 	    StreetViewPanorama = __decorate([
 	        core_1.Directive({
 	            selector: 'ng2-map > street-view-panorama',
@@ -1556,6 +1566,88 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return StreetViewPanorama;
 	}(base_map_directive_1.BaseMapDirective));
 	exports.StreetViewPanorama = StreetViewPanorama;
+
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var option_builder_1 = __webpack_require__(3);
+	var ng2_map_component_1 = __webpack_require__(9);
+	var PlacesAutoComplete = (function () {
+	    function PlacesAutoComplete(optionBuilder, elementRef) {
+	        var _this = this;
+	        this.optionBuilder = optionBuilder;
+	        this.elementRef = elementRef;
+	        this.place_changed = new core_1.EventEmitter();
+	        this.initialized$ = new core_1.EventEmitter();
+	        // only called when map is ready
+	        this.initialize = function () {
+	            _this.objectOptions =
+	                _this.optionBuilder.googlizeAllInputs(['bounds', 'componentRestrictions', 'types'], _this);
+	            _this.autocomplete = new google.maps.places.Autocomplete(_this.elementRef.nativeElement, _this.objectOptions);
+	            _this.initialized$.emit(_this.autocomplete);
+	            _this.autocomplete.addListener('place_changed', function (place) { return _this.place_changed.emit(); });
+	        };
+	        if (typeof google === 'undefined' || !google.maps.Map) {
+	            this.addGoogleMapsApi();
+	        }
+	        else {
+	            this.initialize();
+	        }
+	    }
+	    PlacesAutoComplete.prototype.addGoogleMapsApi = function () {
+	        window['initializePlacesAutoComplete'] = this.initialize;
+	        if (!window['google'] && !document.querySelector('#ng2-map-api')) {
+	            var script = document.createElement('script');
+	            script.id = 'ng2-map-api';
+	            // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
+	            var apiUrl = ng2_map_component_1.Ng2MapComponent['apiUrl'] || 'https://maps.google.com/maps/api/js';
+	            apiUrl += apiUrl.indexOf('?') ? '&' : '?';
+	            script.src = apiUrl + 'callback=initializePlacesAutoComplete';
+	            document.querySelector('body').appendChild(script);
+	        }
+	    };
+	    __decorate([
+	        core_1.Input('bounds'), 
+	        __metadata('design:type', Object)
+	    ], PlacesAutoComplete.prototype, "bounds", void 0);
+	    __decorate([
+	        core_1.Input('componentRestrictions'), 
+	        __metadata('design:type', Object)
+	    ], PlacesAutoComplete.prototype, "componentRestrictions", void 0);
+	    __decorate([
+	        core_1.Input('types'), 
+	        __metadata('design:type', Array)
+	    ], PlacesAutoComplete.prototype, "types", void 0);
+	    __decorate([
+	        core_1.Output('place_changed'), 
+	        __metadata('design:type', core_1.EventEmitter)
+	    ], PlacesAutoComplete.prototype, "place_changed", void 0);
+	    __decorate([
+	        core_1.Output('initialized$'), 
+	        __metadata('design:type', core_1.EventEmitter)
+	    ], PlacesAutoComplete.prototype, "initialized$", void 0);
+	    PlacesAutoComplete = __decorate([
+	        core_1.Directive({
+	            selector: '[places-auto-complete]'
+	        }), 
+	        __metadata('design:paramtypes', [option_builder_1.OptionBuilder, core_1.ElementRef])
+	    ], PlacesAutoComplete);
+	    return PlacesAutoComplete;
+	}());
+	exports.PlacesAutoComplete = PlacesAutoComplete;
 
 
 /***/ }

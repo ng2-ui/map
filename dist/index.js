@@ -37,11 +37,13 @@ var data_layer_1 = require("./directives/data-layer");
 exports.DataLayer = data_layer_1.DataLayer;
 var street_view_panorama_1 = require("./directives/street-view-panorama");
 exports.StreetViewPanorama = street_view_panorama_1.StreetViewPanorama;
+var places_auto_complete_1 = require("./directives/places-auto-complete");
+exports.PlacesAutoComplete = places_auto_complete_1.PlacesAutoComplete;
 var COMPONENTS_DIRECTIVES = [
     ng2_map_component_1.Ng2MapComponent, info_window_1.InfoWindow,
     marker_1.Marker, circle_1.Circle, polygon_1.Polygon, info_window_1.InfoWindow, polyline_1.Polyline, ground_overlay_1.GroundOverlay,
     transit_layer_1.TransitLayer, traffic_layer_1.TrafficLayer, heatmap_layer_1.HeatmapLayer, bicycling_layer_1.BicyclingLayer, kml_layer_1.KmlLayer, data_layer_1.DataLayer,
-    street_view_panorama_1.StreetViewPanorama
+    street_view_panorama_1.StreetViewPanorama, places_auto_complete_1.PlacesAutoComplete
 ];
 var Ng2MapModule = (function () {
     function Ng2MapModule() {

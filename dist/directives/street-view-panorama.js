@@ -29,6 +29,7 @@ var StreetViewPanorama = (function (_super) {
         console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
         var element;
         if (this.objectOptions.selector) {
+            //noinspection TypeScriptValidateTypes
             element = document.querySelector(this['selector']);
             delete this.objectOptions.selector;
         }
@@ -43,6 +44,13 @@ var StreetViewPanorama = (function (_super) {
         // set google events listeners and emits to this outputs listeners
         this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
         this.initialized$.emit(this.mapObject);
+    };
+    // When destroyed, remove event listener, and delete this object to prevent memory leak
+    StreetViewPanorama.prototype.ngOnDestroy = function () {
+        var _this = this;
+        if (this.ng2MapComponent.el) {
+            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
+        }
     };
     StreetViewPanorama.decorators = [
         { type: core_1.Directive, args: [{
