@@ -24,6 +24,9 @@
       "ng2-map": ["./index"]
     }
   },
+  "types": [
+    "googlemaps"
+  ],
   "files": [
     "src/index.ts",
     "node_modules/@types/googlemaps/index.d.ts"

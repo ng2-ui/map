@@ -17,6 +17,7 @@ import { HeatmapLayerComponent } from "./heatmap-layer.component";
 import { KmlLayerComponent } from "./kml-layer.component";
 import { DataLayerComponent } from "./data-layer.component";
 import { StreetViewPanoramaComponent } from "./street-view-panorama.component";
+import { PlacesAutoCompleteComponent } from "./places-auto-compolete.component";
 
 export const routes: Routes = [
   { path: 'simple-info-window', component: SimpleInfoWindowComponent },
@@ -36,6 +37,7 @@ export const routes: Routes = [
   { path: 'kml-layer', component: KmlLayerComponent },
   { path: 'data-layer', component: DataLayerComponent },
   { path: 'street-view-panorama', component: StreetViewPanoramaComponent },
+  { path: 'places-auto-complete', component: PlacesAutoCompleteComponent },
   { path: '',  redirectTo: '/simple-marker', pathMatch: 'full' },
 ];
 
@@ -57,6 +59,7 @@ export const APP_ROUTER_COMPONENTS = [
   HeatmapLayerComponent,
   DataLayerComponent,
   KmlLayerComponent,
-  StreetViewPanoramaComponent
+  StreetViewPanoramaComponent,
+  PlacesAutoCompleteComponent
 ];
 

@@ -1,3 +1,7 @@
+# 0.11.0 (2016-12-6)
+
+  * new directive, places-auto-complete
+  
 # 0.10.0 (2016-12-6)
 
   * new directive, data-layer, street-view-panorama

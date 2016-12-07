@@ -195,7 +195,7 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DataOptions">DataOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Data">Data Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-data-simple">Google Layer Data Example</a> <br/> 
-           <xa href="">ng2-map data example</xa>
+           <xa href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/data-layer">ng2-map data example</xa>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayer">BicyclingLayer</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayerOptions">BicyclingLayerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayer">BicyclingLayer Events</a>
@@ -215,10 +215,12 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#StreetViewPanoramaOptions">StreetViewPanoramaOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#StreetViewPanorama">StreetViewPanorama Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/streetview-embed">Google Streetview Example</a> <br/>
-           <xa href="">ng2-map streetview-panorama example</xa>
-  <tr><td> Autocomplete    <td> AutocompleteOptions     <td> Autocomplete Events    
+           <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/street-view-panorama">ng2-map streetview-panorama example</a>
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#AutoComplete">AutoComplete</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#AutoCompleteOptions">AutoComplete</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#AutoComplete">AutoComplete Events</a>
       <td><a href="https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete">Google Places Autocomplete Example</a> <br/>
-           <xa href="">ng2-map streetview-panorama example</xa>
+           <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/palces-auto-complete">ng2-map places-auto-complete example</a>
   <tr><td> DirectionsRenderer <td> DirectionsRendererOptions     <td> DirectionsRenderer Events    
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/directions-complex">Google DirectionsExample</a> <br/>
            <xa href="">ng2-map directions-renderer example</xa> 

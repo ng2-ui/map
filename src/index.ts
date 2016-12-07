@@ -20,20 +20,21 @@ import { TrafficLayer } from "./directives/traffic-layer";
 import { HeatmapLayer } from "./directives/heatmap-layer";
 import { DataLayer } from "./directives/data-layer";
 import { StreetViewPanorama } from "./directives/street-view-panorama";
+import { PlacesAutoComplete } from "./directives/places-auto-complete";
 
 export {
   OptionBuilder, GeoCoder, NavigatorGeolocation, Ng2Map,
   Ng2MapComponent, InfoWindow,
   Marker, Circle, Polygon, Polyline, GroundOverlay,
   TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer, DataLayer,
-  StreetViewPanorama
+  StreetViewPanorama, PlacesAutoComplete
 };
 
 const COMPONENTS_DIRECTIVES = [
   Ng2MapComponent, InfoWindow,
   Marker, Circle, Polygon, InfoWindow, Polyline, GroundOverlay,
   TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer, DataLayer,
-  StreetViewPanorama
+  StreetViewPanorama, PlacesAutoComplete
 ];
 
 @NgModule({

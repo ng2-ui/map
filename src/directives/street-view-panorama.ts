@@ -32,6 +32,7 @@ export class StreetViewPanorama extends BaseMapDirective {
 
     let element: HTMLElement;
     if (this.objectOptions.selector) {
+      //noinspection TypeScriptValidateTypes
       element = document.querySelector(this['selector']);
       delete this.objectOptions.selector;
     } else {
@@ -49,5 +50,12 @@ export class StreetViewPanorama extends BaseMapDirective {
     this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
 
     this.initialized$.emit(this.mapObject);
+  }
+
+  // When destroyed, remove event listener, and delete this object to prevent memory leak
+  ngOnDestroy() {
+    if (this.ng2MapComponent.el) {
+      OUTPUTS.forEach(output => google.maps.event.clearListeners(this.mapObject, output));
+    }
   }
 }

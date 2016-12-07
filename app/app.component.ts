@@ -12,6 +12,6 @@ export class AppComponent {
 
   constructor() {
     Ng2MapComponent['apiUrl'] = 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +
-      '&libraries=visualization';
+      '&libraries=visualization,places';
   }
 }
