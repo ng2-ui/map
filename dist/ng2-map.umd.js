@@ -104,11 +104,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.StreetViewPanorama = street_view_panorama_1.StreetViewPanorama;
 	var places_auto_complete_1 = __webpack_require__(25);
 	exports.PlacesAutoComplete = places_auto_complete_1.PlacesAutoComplete;
+	var directions_renderer_1 = __webpack_require__(26);
+	exports.DirectionsRenderer = directions_renderer_1.DirectionsRenderer;
 	var COMPONENTS_DIRECTIVES = [
 	    ng2_map_component_1.Ng2MapComponent, info_window_1.InfoWindow,
 	    marker_1.Marker, circle_1.Circle, polygon_1.Polygon, info_window_1.InfoWindow, polyline_1.Polyline, ground_overlay_1.GroundOverlay,
 	    transit_layer_1.TransitLayer, traffic_layer_1.TrafficLayer, heatmap_layer_1.HeatmapLayer, bicycling_layer_1.BicyclingLayer, kml_layer_1.KmlLayer, data_layer_1.DataLayer,
-	    street_view_panorama_1.StreetViewPanorama, places_auto_complete_1.PlacesAutoComplete
+	    street_view_panorama_1.StreetViewPanorama, places_auto_complete_1.PlacesAutoComplete, directions_renderer_1.DirectionsRenderer
 	];
 	var Ng2MapModule = (function () {
 	    function Ng2MapModule() {
@@ -1648,6 +1650,91 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return PlacesAutoComplete;
 	}());
 	exports.PlacesAutoComplete = PlacesAutoComplete;
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var base_map_directive_1 = __webpack_require__(12);
+	var ng2_map_component_1 = __webpack_require__(9);
+	var navigator_geolocation_1 = __webpack_require__(7);
+	var INPUTS = [
+	    'directions', 'draggable', 'hideRouteList', 'infoWindow', 'panel', 'markerOptions',
+	    'polylineOptions', 'preserveViewport', 'routeIndex', 'suppressBicyclingLayer',
+	    'suppressInfoWindows', 'suppressMarkers', 'suppressPolylines'
+	];
+	var OUTPUTS = ['directions_changed'];
+	var DirectionsRenderer = (function (_super) {
+	    __extends(DirectionsRenderer, _super);
+	    function DirectionsRenderer(ng2MapComponent, geolocation) {
+	        _super.call(this, ng2MapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS);
+	        this.geolocation = geolocation;
+	    }
+	    // only called when map is ready
+	    DirectionsRenderer.prototype.initialize = function () {
+	        this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
+	        this.directionsService = new google.maps.DirectionsService();
+	        this.directionsRenderer = new google.maps.DirectionsRenderer(this.objectOptions);
+	        this.directionsRenderer.setMap(this.ng2MapComponent.map);
+	        // set google events listeners and emidirectionsRenderer to this outputs listeners
+	        this.showDirections(this.directionsRequest);
+	        this.ng2Map.setObjectEvents(this.outputs, this, 'directionsRenderer');
+	        this.initialized$.emit(this.directionsRenderer);
+	    };
+	    DirectionsRenderer.prototype.ngOnChanges = function (changes) {
+	        var newOptions = {};
+	        for (var key in changes) {
+	            if (this.inputs.indexOf(key) !== -1) {
+	                newOptions[key] = this.optionBuilder.googlize(changes[key].currentValue);
+	            }
+	        }
+	        if (changes['directionsRequest'] && this.directionsRenderer) {
+	            this.directionsService && this.showDirections(this.directionsRequest);
+	        }
+	    };
+	    DirectionsRenderer.prototype.showDirections = function (directionsRequest) {
+	        var _this = this;
+	        this.directionsService.route(directionsRequest, function (response, status) {
+	            if (status == google.maps.DirectionsStatus.OK) {
+	                _this.directionsRenderer.setDirections(response);
+	            }
+	            else {
+	                console.error('Directions request failed due to ' + status);
+	            }
+	        });
+	    };
+	    __decorate([
+	        core_1.Input('directions-request'), 
+	        __metadata('design:type', Object)
+	    ], DirectionsRenderer.prototype, "directionsRequest", void 0);
+	    DirectionsRenderer = __decorate([
+	        core_1.Directive({
+	            selector: 'ng2-map > directions-renderer',
+	            inputs: INPUTS,
+	            outputs: OUTPUTS,
+	        }), 
+	        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent, navigator_geolocation_1.NavigatorGeolocation])
+	    ], DirectionsRenderer);
+	    return DirectionsRenderer;
+	}(base_map_directive_1.BaseMapDirective));
+	exports.DirectionsRenderer = DirectionsRenderer;
 
 
 /***/ }

@@ -17,6 +17,7 @@ import { HeatmapLayer } from "./directives/heatmap-layer";
 import { DataLayer } from "./directives/data-layer";
 import { StreetViewPanorama } from "./directives/street-view-panorama";
 import { PlacesAutoComplete } from "./directives/places-auto-complete";
-export { OptionBuilder, GeoCoder, NavigatorGeolocation, Ng2Map, Ng2MapComponent, InfoWindow, Marker, Circle, Polygon, Polyline, GroundOverlay, TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer, DataLayer, StreetViewPanorama, PlacesAutoComplete };
+import { DirectionsRenderer } from "./directives/directions-renderer";
+export { OptionBuilder, GeoCoder, NavigatorGeolocation, Ng2Map, Ng2MapComponent, InfoWindow, Marker, Circle, Polygon, Polyline, GroundOverlay, TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer, DataLayer, StreetViewPanorama, PlacesAutoComplete, DirectionsRenderer };
 export declare class Ng2MapModule {
 }

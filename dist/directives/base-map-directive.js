@@ -26,7 +26,7 @@ var BaseMapDirective = (function () {
     // only called when map is ready
     BaseMapDirective.prototype.initialize = function () {
         this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-        console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+        console.log(this.mapObjectName, 'initialization options', this.objectOptions);
         // will be set after geocoded
         typeof this.objectOptions.position === 'string' && (delete this.objectOptions.position);
         typeof this.objectOptions.center === 'string' && (delete this.objectOptions.center);
