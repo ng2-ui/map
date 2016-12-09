@@ -219,11 +219,13 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#AutoComplete">AutoComplete</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#AutoCompleteOptions">AutoComplete</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#AutoComplete">AutoComplete Events</a>
-      <td><a href="https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete">Google Places Autocomplete Example</a> <br/>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete">Google Places Autocomplete Example</a> <br/>
            <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/palces-auto-complete">ng2-map places-auto-complete example</a>
-  <tr><td> DirectionsRenderer <td> DirectionsRendererOptions     <td> DirectionsRenderer Events    
-      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/directions-complex">Google DirectionsExample</a> <br/>
-           <xa href="">ng2-map directions-renderer example</xa> 
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRenderer">DirectionsRenderer</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRendererOptions">DirectionsRenderer</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRenderer">DirectionsRenderer Events</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/directions-complex">Google Directions Example</a> <br/>
+           <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/directions-renderer">ng2-map directions-renderer example</a> 
 </table>
 
 ### For Developers

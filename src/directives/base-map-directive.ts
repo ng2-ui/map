@@ -38,7 +38,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   // only called when map is ready
   initialize(): void {
     this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-    console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+    console.log(this.mapObjectName, 'initialization options', this.objectOptions);
 
     // will be set after geocoded
     typeof this.objectOptions.position === 'string' && (delete this.objectOptions.position);

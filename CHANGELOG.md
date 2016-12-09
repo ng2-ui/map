@@ -1,3 +1,7 @@
+# 0.12.0 (2016-12-9)
+
+  * new directive, directions-renderer
+  
 # 0.11.0 (2016-12-6)
 
   * new directive, places-auto-complete
