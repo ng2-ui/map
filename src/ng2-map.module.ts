@@ -1,14 +1,17 @@
-import { BicyclingLayer } from "./directives/bicycling-layer";
-import { NavigatorGeolocation } from './services/navigator-geolocation';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { OptionBuilder } from './services/option-builder';
+import { GeoCoder } from './services/geo-coder';
+import { NavigatorGeolocation } from './services/navigator-geolocation';
 
 import { Ng2MapComponent } from './components/ng2-map.component';
 import { InfoWindow } from './components/info-window';
 
+import { BicyclingLayer } from "./directives/bicycling-layer";
 import { Circle } from './directives/circle';
 import { DataLayer } from "./directives/data-layer";
 import { DirectionsRenderer } from "./directives/directions-renderer";
-import { GeoCoder } from './services/geo-coder';
 import { GroundOverlay } from './directives/ground-overlay';
 import { HeatmapLayer } from "./directives/heatmap-layer";
 import { KmlLayer } from "./directives/kml-layer";
@@ -21,28 +24,17 @@ import { StreetViewPanorama } from "./directives/street-view-panorama";
 import { TrafficLayer } from "./directives/traffic-layer";
 import { TransitLayer } from "./directives/transit-layer";
 
-import { Ng2MapModule } from "./ng2-map.module";
+const COMPONENTS_DIRECTIVES = [
+  Ng2MapComponent, InfoWindow,
+  Marker, Circle, Polygon, InfoWindow, Polyline, GroundOverlay,
+  TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer, DataLayer,
+  StreetViewPanorama, PlacesAutoComplete, DirectionsRenderer
+];
 
-export {
-  BicyclingLayer,
-  Circle,
-  DataLayer,
-  DirectionsRenderer,
-  GeoCoder,
-  GroundOverlay,
-  HeatmapLayer,
-  InfoWindow,
-  KmlLayer,
-  Marker,
-  NavigatorGeolocation,
-  Ng2Map,
-  Ng2MapComponent,
-  Ng2MapModule,
-  OptionBuilder,
-  PlacesAutoComplete,
-  Polygon,
-  Polyline,
-  StreetViewPanorama,
-  TrafficLayer,
-  TransitLayer
-};
+@NgModule({
+  imports: [ CommonModule ],
+  declarations: COMPONENTS_DIRECTIVES,
+  providers: [GeoCoder, NavigatorGeolocation, Ng2Map, OptionBuilder],
+  exports: [COMPONENTS_DIRECTIVES]
+})
+export class Ng2MapModule {}
