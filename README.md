@@ -71,7 +71,7 @@ For full example, please check out `app` directory to see the example of;
   -  and `app.component.ts`.
 
 ## How to get instance of a map
- 
+
 When map is ready Ng2MapComonent fires mapReady$ event with `map` object
 
 ```HTML
@@ -97,6 +97,8 @@ export class MyAppComponent {
 
 ## How to get instance of a map object
 
+### To get it from `@ViewChild` instance
+
 When any map directive is initialized, each directive  fires initialized$ event with its object.
 For HTML like the following, 
 ```HTML
@@ -121,11 +123,25 @@ export class MyAppComponent {
 }
 ```
 
+### To get it from a map instance
+
+```TypeScript
+import {Ng2MapComponent} from "ng2-map";
+
+export class MyAppComponent {
+  ngOnInit() {
+    this.ng2MapComponent.mapReady$.subscribe(map => {
+      console.log('all markers', map.markers);
+    })
+  }
+}
+```
+
 ## Need Contributors
  
-This `ng2-map` module is only improved and maintained by contributors like you;
+This `ng2-map` module is only improved and maintained by volunteers like you;
 
-As a contributor, it's NOT required to be skilled in Javascript nor Angular2.
+As a volunteer, it's NOT required to be skilled in Javascript nor Angular2.
 It’s required to be open-minded and interested in helping others.
 You can contribute to the following;
 

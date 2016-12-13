@@ -86,6 +86,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
       .debounceTime(1000)
       .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.infoWindow, changes));
 
+    this.ng2MapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
     this.initialized$.emit(this.infoWindow);
   }
 

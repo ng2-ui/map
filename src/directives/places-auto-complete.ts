@@ -41,8 +41,9 @@ export class PlacesAutoComplete  {
     );
     console.log('this.autocomplete', this.autocomplete);
 
-    this.initialized$.emit(this.autocomplete);
     this.autocomplete.addListener('place_changed', place => this.place_changed.emit());
+
+    this.initialized$.emit(this.autocomplete);
   };
 
   addGoogleMapsApi(): void {

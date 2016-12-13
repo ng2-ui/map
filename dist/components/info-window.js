@@ -59,6 +59,7 @@ var InfoWindow = (function () {
         this.inputChanges$
             .debounceTime(1000)
             .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.infoWindow, changes); });
+        this.ng2MapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
         this.initialized$.emit(this.infoWindow);
     };
     InfoWindow.prototype.open = function (anchor, data) {

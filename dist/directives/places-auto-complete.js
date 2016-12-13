@@ -16,8 +16,8 @@ var PlacesAutoComplete = (function () {
             console.log('places autocomplete options', _this.objectOptions);
             _this.autocomplete = new google.maps.places.Autocomplete(_this.elementRef.nativeElement, _this.objectOptions);
             console.log('this.autocomplete', _this.autocomplete);
-            _this.initialized$.emit(_this.autocomplete);
             _this.autocomplete.addListener('place_changed', function (place) { return _this.place_changed.emit(); });
+            _this.initialized$.emit(_this.autocomplete);
         };
         if (typeof google === 'undefined' || !google.maps.Map) {
             this.addGoogleMapsApi();

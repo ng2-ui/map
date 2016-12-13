@@ -43,6 +43,8 @@ export class DirectionsRenderer extends BaseMapDirective {
     this.showDirections(this.directionsRequest);
 
     this.ng2Map.setObjectEvents(this.outputs, this, 'directionsRenderer');
+
+    this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
     this.initialized$.emit(this.directionsRenderer);
   }
 

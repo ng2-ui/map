@@ -43,6 +43,7 @@ var StreetViewPanorama = (function (_super) {
         this.mapObject['ng2MapComponent'] = this.ng2MapComponent;
         // set google events listeners and emits to this outputs listeners
         this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
+        this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
         this.initialized$.emit(this.mapObject);
     };
     // When destroyed, remove event listener, and delete this object to prevent memory leak

@@ -30,6 +30,7 @@ var DirectionsRenderer = (function (_super) {
         // set google events listeners and emidirectionsRenderer to this outputs listeners
         this.showDirections(this.directionsRequest);
         this.ng2Map.setObjectEvents(this.outputs, this, 'directionsRenderer');
+        this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
         this.initialized$.emit(this.directionsRenderer);
     };
     DirectionsRenderer.prototype.ngOnChanges = function (changes) {

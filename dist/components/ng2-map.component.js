@@ -6,6 +6,7 @@ var geo_coder_1 = require('../services/geo-coder');
 var ng2_map_1 = require('../services/ng2-map');
 var Subject_1 = require('rxjs/Subject');
 require('rxjs/add/operator/debounceTime');
+var util_1 = require('../services/util');
 var INPUTS = [
     'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
     'draggingCursor', 'heading', 'keyboardShortcuts', 'mapMaker', 'mapTypeControl', 'mapTypeId', 'maxZoom', 'minZoom',
@@ -53,9 +54,9 @@ var Ng2MapComponent = (function () {
     };
     Ng2MapComponent.prototype.addGoogleMapsApi = function () {
         var _this = this;
-        window['ng2MapComponentRef'] = { zone: this.zone, componentFn: function () { return _this.initializeMap(); } };
+        window['ng2MapRef'] = { zone: this.zone, componentFn: function () { return _this.initializeMap(); }, map: null };
         window['initNg2Map'] = function () {
-            window['ng2MapComponentRef'].zone.run(function () { window['ng2MapComponentRef'].componentFn(); });
+            window['ng2MapRef'].zone.run(function () { window['ng2MapRef'].componentFn(); });
         };
         if (!window['google'] && !document.querySelector('#ng2-map-api')) {
             var script = document.createElement('script');
@@ -91,6 +92,8 @@ var Ng2MapComponent = (function () {
         this.inputChanges$
             .debounceTime(1000)
             .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.map, changes); });
+        //expose map object for test and debugging on window
+        window['ng2MapRef'].map = this.map;
     };
     Ng2MapComponent.prototype.setCenter = function () {
         var _this = this;
@@ -116,6 +119,12 @@ var Ng2MapComponent = (function () {
         if (this.el) {
             OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.map, output); });
         }
+    };
+    //map.markers, map.circles, map.heatmapLayers.. etc
+    Ng2MapComponent.prototype.addToMapObjectGroup = function (mapObjectName, mapObject) {
+        var groupName = util_1.toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
+        this.map[groupName] = this.map[groupName] || [];
+        this.map[groupName].push(mapObject);
     };
     Ng2MapComponent.decorators = [
         { type: core_1.Component, args: [{

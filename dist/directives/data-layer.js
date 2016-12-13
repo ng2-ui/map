@@ -32,6 +32,7 @@ var DataLayer = (function (_super) {
         this.mapObject = this.ng2MapComponent.map.data;
         // set google events listeners and emits to this outputs listeners
         this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
+        this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
         this.initialized$.emit(this.mapObject);
     };
     DataLayer.decorators = [

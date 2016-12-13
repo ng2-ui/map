@@ -16,7 +16,7 @@ import { GeoCoder } from '../services/geo-coder';
 import { Ng2Map } from '../services/ng2-map';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
-import { IJson } from '../services/util';
+import { IJson, toCamelCase } from '../services/util';
 
 const INPUTS = [
   'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
@@ -94,9 +94,9 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   }
 
   addGoogleMapsApi(): void {
-    window['ng2MapComponentRef'] = { zone: this.zone, componentFn: () => this.initializeMap()};
+    window['ng2MapRef'] = { zone: this.zone, componentFn: () => this.initializeMap(), map: null};
     window['initNg2Map'] = function() {
-      window['ng2MapComponentRef'].zone.run(function() { window['ng2MapComponentRef'].componentFn(); });
+      window['ng2MapRef'].zone.run(function() { window['ng2MapRef'].componentFn(); });
     };
     if (!window['google'] && !document.querySelector('#ng2-map-api')) {
       let script = document.createElement( 'script' );
@@ -139,6 +139,9 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     this.inputChanges$
       .debounceTime(1000)
       .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.map, changes));
+
+    //expose map object for test and debugging on window
+    window['ng2MapRef'].map = this.map;
   }
 
   setCenter(): void {
@@ -165,5 +168,19 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     if (this.el) {
       OUTPUTS.forEach(output => google.maps.event.clearListeners(this.map, output));
     }
+  }
+
+  //map.markers, map.circles, map.heatmapLayers.. etc
+  addToMapObjectGroup(mapObjectName: string, mapObject: any) {
+    let groupName = toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
+    this.map[groupName] = this.map[groupName] || [];
+    this.map[groupName].push(mapObject);
+  }
+
+  removeFromMapObjectGroup(mapObjectName: string, mapObject: any) {
+    let groupName = toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
+    let index = this.map[groupName].indexOf(mapObject);
+    console.log('index', mapObject, index);
+    (index > -1) && this.map[groupName].splice(index, 1);
   }
 }

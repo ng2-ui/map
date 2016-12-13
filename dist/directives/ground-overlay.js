@@ -26,6 +26,8 @@ var GroundOverlay = (function (_super) {
         this.mapObject['mapObjectName'] = this.mapObjectName;
         // set google events listeners and emits to this outputs listeners
         this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
+        this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
+        this.initialized$.emit(this.mapObject);
     };
     GroundOverlay.decorators = [
         { type: core_1.Directive, args: [{

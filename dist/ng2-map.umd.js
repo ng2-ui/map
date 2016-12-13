@@ -435,6 +435,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	exports.getJSON = getJSON;
 	/* tslint:enable */
+	/**
+	 * Returns camel-cased from string 'Foo Bar' to 'fooBar'
+	 */
+	var toCamelCase = function (str) {
+	    return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
+	        return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+	    }).replace(/\s+/g, '');
+	};
+	exports.toCamelCase = toCamelCase;
 
 
 /***/ },
@@ -627,6 +636,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ng2_map_1 = __webpack_require__(8);
 	var Subject_1 = __webpack_require__(6);
 	__webpack_require__(10);
+	var util_1 = __webpack_require__(4);
 	var INPUTS = [
 	    'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
 	    'draggingCursor', 'heading', 'keyboardShortcuts', 'mapMaker', 'mapTypeControl', 'mapTypeId', 'maxZoom', 'minZoom',
@@ -674,9 +684,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    Ng2MapComponent.prototype.addGoogleMapsApi = function () {
 	        var _this = this;
-	        window['ng2MapComponentRef'] = { zone: this.zone, componentFn: function () { return _this.initializeMap(); } };
+	        window['ng2MapRef'] = { zone: this.zone, componentFn: function () { return _this.initializeMap(); }, map: null };
 	        window['initNg2Map'] = function () {
-	            window['ng2MapComponentRef'].zone.run(function () { window['ng2MapComponentRef'].componentFn(); });
+	            window['ng2MapRef'].zone.run(function () { window['ng2MapRef'].componentFn(); });
 	        };
 	        if (!window['google'] && !document.querySelector('#ng2-map-api')) {
 	            var script = document.createElement('script');
@@ -711,6 +721,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.inputChanges$
 	            .debounceTime(1000)
 	            .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.map, changes); });
+	        //expose map object for test and debugging on window
+	        window['ng2MapRef'].map = this.map;
 	    };
 	    Ng2MapComponent.prototype.setCenter = function () {
 	        var _this = this;
@@ -734,6 +746,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (this.el) {
 	            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.map, output); });
 	        }
+	    };
+	    //map.markers, map.circles, map.heatmapLayers.. etc
+	    Ng2MapComponent.prototype.addToMapObjectGroup = function (mapObjectName, mapObject) {
+	        var groupName = util_1.toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
+	        this.map[groupName] = this.map[groupName] || [];
+	        this.map[groupName].push(mapObject);
 	    };
 	    Ng2MapComponent = __decorate([
 	        core_1.Component({
@@ -876,6 +894,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.mapObject['ng2MapComponent'] = this.ng2MapComponent;
 	        // set google events listeners and emits to this outputs listeners
 	        this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
+	        this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
 	        this.initialized$.emit(this.mapObject);
 	    };
 	    // When input is changed, update object too.
@@ -1085,6 +1104,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.inputChanges$
 	            .debounceTime(1000)
 	            .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.infoWindow, changes); });
+	        this.ng2MapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
 	        this.initialized$.emit(this.infoWindow);
 	    };
 	    InfoWindow.prototype.open = function (anchor, data) {
@@ -1206,6 +1226,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.mapObject['mapObjectName'] = this.mapObjectName;
 	        // set google events listeners and emits to this outputs listeners
 	        this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
+	        this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
+	        this.initialized$.emit(this.mapObject);
 	    };
 	    GroundOverlay = __decorate([
 	        core_1.Directive({
@@ -1476,6 +1498,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.mapObject = this.ng2MapComponent.map.data;
 	        // set google events listeners and emits to this outputs listeners
 	        this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
+	        this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
 	        this.initialized$.emit(this.mapObject);
 	    };
 	    DataLayer = __decorate([
@@ -1548,6 +1571,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.mapObject['ng2MapComponent'] = this.ng2MapComponent;
 	        // set google events listeners and emits to this outputs listeners
 	        this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
+	        this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
 	        this.initialized$.emit(this.mapObject);
 	    };
 	    // When destroyed, remove event listener, and delete this object to prevent memory leak
@@ -1599,8 +1623,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            _this.objectOptions =
 	                _this.optionBuilder.googlizeAllInputs(['bounds', 'componentRestrictions', 'types'], _this);
 	            _this.autocomplete = new google.maps.places.Autocomplete(_this.elementRef.nativeElement, _this.objectOptions);
-	            _this.initialized$.emit(_this.autocomplete);
 	            _this.autocomplete.addListener('place_changed', function (place) { return _this.place_changed.emit(); });
+	            _this.initialized$.emit(_this.autocomplete);
 	        };
 	        if (typeof google === 'undefined' || !google.maps.Map) {
 	            this.addGoogleMapsApi();
@@ -1696,6 +1720,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // set google events listeners and emidirectionsRenderer to this outputs listeners
 	        this.showDirections(this.directionsRequest);
 	        this.ng2Map.setObjectEvents(this.outputs, this, 'directionsRenderer');
+	        this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
 	        this.initialized$.emit(this.directionsRenderer);
 	    };
 	    DirectionsRenderer.prototype.ngOnChanges = function (changes) {

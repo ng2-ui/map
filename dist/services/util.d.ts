@@ -12,4 +12,8 @@ declare const getJSON: (input: any) => any;
 interface IJson {
     [x: string]: string | number | boolean | Date | IJson | Array<string | number | boolean | Date | IJson>;
 }
-export { jsonize, getJSON, IJson };
+/**
+ * Returns camel-cased from string 'Foo Bar' to 'fooBar'
+ */
+declare const toCamelCase: (str: string) => string;
+export { jsonize, getJSON, IJson, toCamelCase };

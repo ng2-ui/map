@@ -57,6 +57,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
     // set google events listeners and emits to this outputs listeners
     this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
 
+    this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
     this.initialized$.emit(this.mapObject);
   }
 
@@ -69,6 +70,8 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
 
   // When destroyed, remove event listener, and delete this object to prevent memory leak
   ngOnDestroy() {
+    this.ng2MapComponent.removeFromMapObjectGroup(this.mapObjectName, this.mapObject);
+
     if (this.mapObject) {
       this.outputs.forEach(output => google.maps.event.clearListeners(this.mapObject, output));
       delete this.mapObject['setMap'](null);
