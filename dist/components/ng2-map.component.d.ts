@@ -30,5 +30,6 @@ export declare class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewI
     setCenter(): void;
     openInfoWindow(id: string, anchor: google.maps.MVCObject, data: IJson): void;
     ngOnDestroy(): void;
-    groupMapObjects(mapObjectName: string, mapObject: any): void;
+    addToMapObjectGroup(mapObjectName: string, mapObject: any): void;
+    removeFromMapObjectGroup(mapObjectName: string, mapObject: any): void;
 }

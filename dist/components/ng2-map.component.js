@@ -126,6 +126,12 @@ var Ng2MapComponent = (function () {
         this.map[groupName] = this.map[groupName] || [];
         this.map[groupName].push(mapObject);
     };
+    Ng2MapComponent.prototype.removeFromMapObjectGroup = function (mapObjectName, mapObject) {
+        var groupName = util_1.toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
+        var index = this.map[groupName].indexOf(mapObject);
+        console.log('index', mapObject, index);
+        (index > -1) && this.map[groupName].splice(index, 1);
+    };
     Ng2MapComponent.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'ng2-map',

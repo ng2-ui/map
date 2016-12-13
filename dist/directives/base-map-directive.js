@@ -54,6 +54,7 @@ var BaseMapDirective = (function () {
     // When destroyed, remove event listener, and delete this object to prevent memory leak
     BaseMapDirective.prototype.ngOnDestroy = function () {
         var _this = this;
+        this.ng2MapComponent.removeFromMapObjectGroup(this.mapObjectName, this.mapObject);
         if (this.mapObject) {
             this.outputs.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
             delete this.mapObject['setMap'](null);
