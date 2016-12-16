@@ -16,10 +16,11 @@ export class Ng2Map {
   setObjectEvents(definedEvents: string[], thisObj: any, prefix: string) {
     definedEvents.forEach(definedEvent => {
       let eventName = definedEvent
-        .replace(/([A-Z])/g, ($1) => `_${$1.toLowerCase()}`);
+        .replace(/([A-Z])/g, ($1) => `_${$1.toLowerCase()}`)
+          .replace(prefix + '_','');
 
       thisObj[prefix].addListener(eventName, function(event: google.maps.event) {
-        thisObj[definedEvent].emit(this);
+        thisObj[definedEvent].emit(event);
       });
     });
   }
