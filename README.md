@@ -86,7 +86,7 @@ import {Ng2MapComponent} from "ng2-map";
 
 export class MyAppComponent {
   @ViewChild(Ng2MapComponent) ng2MapComponent: Ng2MapComponent;
-  pulic map: google.maps.Map;
+  public map: google.maps.Map;
   ngOnInit() {
     this.ng2MapComponent.mapReady$.subscribe(map => {
       this.map = map;
@@ -114,9 +114,9 @@ import {Marker} from "ng2-map";
 
 export class MyAppComponent {
   @ViewChild(Marker) marker: Marker;
-  pulic marker: google.maps.Marker;
+  public marker: google.maps.Marker;
   ngOnInit() {
-    this.Maker.initialized$.subscribe(marker => {
+    this.Marker.initialized$.subscribe(marker => {
       this.marker = marker;
     })
   }
