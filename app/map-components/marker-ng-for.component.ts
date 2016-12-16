@@ -1,22 +1,25 @@
 import { Component } from '@angular/core';
 
+let templateStr = `
+  <h1>Marker Wigh *ngFor</h1>
+  <ng2-map zoom="13" center="Brampton, Canada">
+    <marker *ngFor="let pos of positions" [position]="pos"></marker>
+  </ng2-map>
+  <button (click)="showRandomMarkers()">Show Random Markers</button>
+  <code>
+   <br/><b>HTML</b>
+    <pre>{{templateStr | htmlCode:'-code'}}</pre>
+    <b>function showRandomMarkers</b> 
+    <pre>{{showRandomMarkers | jsCode}}</pre>
+  </code>
+`;
 @Component({
-  template: `
-    <h1>Marker Wigh *ngFor</h1>
-    <ng2-map zoom="13" center="Brampton, Canada">
-      <marker *ngFor="let pos of positions" [position]="pos"></marker>
-    </ng2-map>
-    <button (click)="showRandomMarkers()">Show Random Markers</button>
-    <pre>
-  &lt;ng2-map zoom="13" center="Brampton, Canada">
-    &lt;marker *ngFor="let pos of positions" [position]="pos">&lt;/marker>
-  &lt;/ng2-map>
-    </pre>
-  `,
+  template: templateStr
 })
 export class MarkerNgForComponent {
   public positions= [];
 
+  templateStr: string = templateStr;
   constructor() {
     this.showRandomMarkers();
   }

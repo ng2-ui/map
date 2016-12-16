@@ -1,20 +1,30 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
 
+let templateStr = `
+  <h1>Place Autocomplete Address Form</h1>
+  <input places-auto-complete
+    (initialized$)="initialized($event)"
+    (place_changed)="placeChanged(place)"
+    [types]="['geocode']" />
+  <code>
+    <br/><b>HTML</b>
+    <pre>{{templateStr | htmlCode:'-code'}}</pre>
+    
+    <b>function initialized</b> 
+    <pre>{{initialized | jsCode}}</pre>
+    
+    <b>function placeChanged</b> 
+    <pre>{{placeChanged | jsCode}}</pre>
+  </code>
+`;
+
 @Component({
-  template: `
-    <h1>Place Autocomplete Address Form</h1>
-    <input places-auto-complete
-      (initialized$)="initialized($event)"
-      (place_changed)="placeChanged(place)"
-      [types]="['geocode']" />
-    <pre>
-    {{address | json}}
-    </pre>
-  `,
+  template: templateStr
 })
 export class PlacesAutoCompleteComponent {
   autocomplete: google.maps.places.Autocomplete;
   address: any = {};
+  templateStr: string = templateStr;
 
   constructor(private ref: ChangeDetectorRef) {}
 

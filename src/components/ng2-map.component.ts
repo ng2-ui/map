@@ -28,9 +28,9 @@ const INPUTS = [
 ];
 
 const OUTPUTS = [
-  'mapBoundsChanged', 'mapCenterChanged', 'mapClick', 'mapDblclick', 'mapDrag', 'mapDragend', 'mapDragstart', 'mapHeadingChanged', 'mapIdle',
-  'mapTypeidChanged', 'mapMousemove', 'mapMouseout', 'mapMouseover', 'mapProjectionChanged', 'mapResize', 'mapRightclick',
-  'mapTilesloaded', 'mapTileChanged', 'mapZoomChanged'
+  'bounds_changed', 'center_changed', 'click', 'bblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
+  'typeid_changed', 'mousemove', 'mouseout', 'mouseover', 'projection_changed', 'resize', 'rightclick',
+  'tilesloaded', 'tile_changed', 'zoom_changed'
 ];
 
 @Component({

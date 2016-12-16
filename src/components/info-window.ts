@@ -19,12 +19,11 @@ const INPUTS = [
   'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
 ];
 const OUTPUTS = [
-  'infoWindowCloseclick', 'infoWindowContentChanged', 'infoWindowDomready',
-  'infoWindowPositionChanged', 'infoWindowZindexChanged'
+  'closeclick', 'content_changed', 'domready', 'position_changed', 'zindex_changed'
 ];
 
 @Component({
-  selector: 'ng2-map>info-window',
+  selector: 'ng2-map > info-window',
   inputs: INPUTS,
   outputs: OUTPUTS,
   template: `<ng-content></ng-content>`,

@@ -1,10 +1,11 @@
+var path = require('path');
 const webpack = require('webpack');
 
 const config = {
   resolve: {
     extensions: ['', '.ts', '.webpack.js', '.web.js', '.js'],
     alias: {
-      'ng2-map': '../src/index.ts'
+      'ng2-map': path.join(__dirname, '..', 'src', 'index')
     }
   },
   devtool: 'source-map',

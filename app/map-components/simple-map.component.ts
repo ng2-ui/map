@@ -1,0 +1,29 @@
+import { Component } from '@angular/core';
+
+let templateStr: string = `
+  <h1>Simple Map</h1>
+  <ng2-map center="Brampton, Canada" (mousedown)="onClick()"></ng2-map>
+  "center" can be an;
+  <ul>
+    <li>lat/lng array e.g., [42.99, -77.79]
+    <li> an address. e.g. Brampton, Canada
+    <li> or, none(for the current position)
+  </ul>
+  
+  <code>
+    <br/><b>HTML</b>
+    <pre>{{templateStr | htmlCode:'-code'}}</pre>
+    
+    <b>function onClick</b> 
+    <pre>{{onClick | jsCode}}</pre>
+  </code>
+`;
+@Component({
+  template: templateStr
+})
+export class SimpleMapComponent {
+  templateStr: string = templateStr;
+  onClick() {
+    alert('map is clicked');
+  }
+}

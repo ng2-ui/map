@@ -11,16 +11,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import {Ng2UtilsModule} from "ng2-utils";
 //noinspection TypeScriptCheckImport
 import { Ng2MapModule } from 'ng2-map';
 
 import { AppComponent } from './app.component';
 
 import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app.route';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 @NgModule({
-  imports: [BrowserModule, FormsModule, HttpModule, APP_ROUTER_PROVIDERS, Ng2MapModule ],
+  imports: [BrowserModule, FormsModule, HttpModule, APP_ROUTER_PROVIDERS, Ng2MapModule, Ng2UtilsModule ],
   declarations: [AppComponent, APP_ROUTER_COMPONENTS],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

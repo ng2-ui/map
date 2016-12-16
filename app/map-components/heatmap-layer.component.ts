@@ -1,19 +1,37 @@
 import {Component, ViewChild} from '@angular/core';
+//noinspection TypeScriptCheckImport
 import {HeatmapLayer} from "ng2-map";
 
+let templateStr = `
+  <h1>Heatmap Layer</h1>
+  <ng2-map zoom="13" center="37.775, -122.434" mapTypeId="satellite">
+    <div id="floating-panel">
+      <button (click)="toggleHeatmap()">Toggle Heatmap</button>
+      <button (click)="changeGradient()">Change gradient</button>
+      <button (click)="changeRadius()">Change radius</button>
+      <button (click)="changeOpacity()">Change opacity</button>
+    </div>
+    <heatmap-layer [data]="points"></heatmap-layer>
+  </ng2-map>
+  <code>
+    <br/><b>HTML</b>
+    <pre>{{templateStr | htmlCode:'-code'}}</pre>
+    
+    <b>function ngOnInit</b> 
+    <pre>{{ ngOnInit | jsCode}}</pre>
+    
+    <b>function toggleHeatmap</b> 
+    <pre>{{ toggleHeatmap | jsCode}}</pre>
+    
+    <b>function changeGradient</b> 
+    <pre>{{ changeGradient | jsCode}}</pre>
+    
+    <b>function changeOpacity</b> 
+    <pre>{{ changeOpacity | jsCode}}</pre>
+  </code>
+`;
 @Component({
-  template: `
-    <h1>Heatmap Layer</h1>
-    <ng2-map zoom="13" center="37.775, -122.434" mapTypeId="satellite">
-      <div id="floating-panel">
-        <button (click)="toggleHeatmap()">Toggle Heatmap</button>
-        <button (click)="changeGradient()">Change gradient</button>
-        <button (click)="changeRadius()">Change radius</button>
-        <button (click)="changeOpacity()">Change opacity</button>
-      </div>
-      <heatmap-layer [data]="points"></heatmap-layer>
-    </ng2-map>
-  `,
+  template: templateStr,
   styles: [`
     #floating-panel {
       position: absolute;
@@ -32,10 +50,12 @@ import {HeatmapLayer} from "ng2-map";
 })
 export class HeatmapLayerComponent {
   @ViewChild(HeatmapLayer) heatmapLayer: HeatmapLayer;
+  
+  templateStr: string = templateStr;
   heatmap: google.maps.visualization.HeatmapLayer;
   map: google.maps.Map;
   ngOnInit() {
-    this.heatmapLayer.initialized$.subscribe(heatmap => {
+    this.heatmapLayer['initialized$'].subscribe(heatmap => {
       this.heatmap = heatmap;
       this.map = this.heatmap.getMap();
     })
