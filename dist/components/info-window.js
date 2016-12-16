@@ -8,8 +8,7 @@ var INPUTS = [
     'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
 ];
 var OUTPUTS = [
-    'infoWindowCloseclick', 'infoWindowContentChanged', 'infoWindowDomready',
-    'infoWindowPositionChanged', 'infoWindowZindexChanged'
+    'closeclick', 'content_changed', 'domready', 'position_changed', 'zindex_changed'
 ];
 var InfoWindow = (function () {
     function InfoWindow(ng2MapComponent, elementRef, ng2Map) {
@@ -81,7 +80,7 @@ var InfoWindow = (function () {
     };
     InfoWindow.decorators = [
         { type: core_1.Component, args: [{
-                    selector: 'ng2-map>info-window',
+                    selector: 'ng2-map > info-window',
                     inputs: INPUTS,
                     outputs: OUTPUTS,
                     template: "<ng-content></ng-content>",

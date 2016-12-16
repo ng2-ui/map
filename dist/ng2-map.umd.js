@@ -248,9 +248,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'options'
 	];
 	var OUTPUTS = [
-	    'mapBoundsChanged', 'mapCenterChanged', 'mapClick', 'mapDblclick', 'mapDrag', 'mapDragend', 'mapDragstart', 'mapHeadingChanged', 'mapIdle',
-	    'mapTypeidChanged', 'mapMousemove', 'mapMouseout', 'mapMouseover', 'mapProjectionChanged', 'mapResize', 'mapRightclick',
-	    'mapTilesloaded', 'mapTileChanged', 'mapZoomChanged'
+	    'bounds_changed', 'center_changed', 'click', 'bblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
+	    'typeid_changed', 'mousemove', 'mouseout', 'mouseover', 'projection_changed', 'resize', 'rightclick',
+	    'tilesloaded', 'tile_changed', 'zoom_changed'
 	];
 	var Ng2MapComponent = (function () {
 	    function Ng2MapComponent(optionBuilder, elementRef, zone, geolocation, geoCoder, ng2Map) {
@@ -880,8 +880,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
 	];
 	var OUTPUTS = [
-	    'infoWindowCloseclick', 'infoWindowContentChanged', 'infoWindowDomready',
-	    'infoWindowPositionChanged', 'infoWindowZindexChanged'
+	    'closeclick', 'content_changed', 'domready', 'position_changed', 'zindex_changed'
 	];
 	var InfoWindow = (function () {
 	    function InfoWindow(ng2MapComponent, elementRef, ng2Map) {
@@ -951,7 +950,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    InfoWindow = __decorate([
 	        core_1.Component({
-	            selector: 'ng2-map>info-window',
+	            selector: 'ng2-map > info-window',
 	            inputs: INPUTS,
 	            outputs: OUTPUTS,
 	            template: "<ng-content></ng-content>",
