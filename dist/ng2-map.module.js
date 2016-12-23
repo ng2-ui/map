@@ -10,6 +10,7 @@ var bicycling_layer_1 = require("./directives/bicycling-layer");
 var circle_1 = require('./directives/circle');
 var data_layer_1 = require("./directives/data-layer");
 var directions_renderer_1 = require("./directives/directions-renderer");
+var drawing_manager_1 = require("./directives/drawing-manager");
 var ground_overlay_1 = require('./directives/ground-overlay');
 var heatmap_layer_1 = require("./directives/heatmap-layer");
 var kml_layer_1 = require("./directives/kml-layer");
@@ -25,7 +26,8 @@ var COMPONENTS_DIRECTIVES = [
     ng2_map_component_1.Ng2MapComponent, info_window_1.InfoWindow,
     marker_1.Marker, circle_1.Circle, polygon_1.Polygon, info_window_1.InfoWindow, polyline_1.Polyline, ground_overlay_1.GroundOverlay,
     transit_layer_1.TransitLayer, traffic_layer_1.TrafficLayer, heatmap_layer_1.HeatmapLayer, bicycling_layer_1.BicyclingLayer, kml_layer_1.KmlLayer, data_layer_1.DataLayer,
-    street_view_panorama_1.StreetViewPanorama, places_auto_complete_1.PlacesAutoComplete, directions_renderer_1.DirectionsRenderer
+    street_view_panorama_1.StreetViewPanorama, places_auto_complete_1.PlacesAutoComplete, directions_renderer_1.DirectionsRenderer,
+    drawing_manager_1.DrawingManager
 ];
 var Ng2MapModule = (function () {
     function Ng2MapModule() {

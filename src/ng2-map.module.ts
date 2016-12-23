@@ -12,6 +12,7 @@ import { BicyclingLayer } from "./directives/bicycling-layer";
 import { Circle } from './directives/circle';
 import { DataLayer } from "./directives/data-layer";
 import { DirectionsRenderer } from "./directives/directions-renderer";
+import { DrawingManager } from "./directives/drawing-manager";
 import { GroundOverlay } from './directives/ground-overlay';
 import { HeatmapLayer } from "./directives/heatmap-layer";
 import { KmlLayer } from "./directives/kml-layer";
@@ -28,7 +29,8 @@ const COMPONENTS_DIRECTIVES = [
   Ng2MapComponent, InfoWindow,
   Marker, Circle, Polygon, InfoWindow, Polyline, GroundOverlay,
   TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer, DataLayer,
-  StreetViewPanorama, PlacesAutoComplete, DirectionsRenderer
+  StreetViewPanorama, PlacesAutoComplete, DirectionsRenderer,
+  DrawingManager
 ];
 
 @NgModule({

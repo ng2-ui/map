@@ -233,15 +233,20 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/streetview-embed">Google Streetview Example</a> <br/>
            <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/street-view-panorama">ng2-map streetview-panorama example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#AutoComplete">AutoComplete</a>
-      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#AutoCompleteOptions">AutoComplete</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#AutoCompleteOptions">AutoComplete Options</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#AutoComplete">AutoComplete Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete">Google Places Autocomplete Example</a> <br/>
            <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/palces-auto-complete">ng2-map places-auto-complete example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRenderer">DirectionsRenderer</a>
-      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRendererOptions">DirectionsRenderer</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRendererOptions">DirectionsRenderer Options</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRenderer">DirectionsRenderer Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/directions-complex">Google Directions Example</a> <br/>
            <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/directions-renderer">ng2-map directions-renderer example</a> 
+  <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DrawingManager">DrawingManager</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DrawingManagerOptions">DrawingManager Options</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DrawingManager">DrawingManager Events</a>
+      <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/drawing-tools">Google Drawing Manager Example</a> <br/>
+           <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/drawing-manager">ng2-map drawing-manager example</a> 
 </table>
 
 ### For Developers

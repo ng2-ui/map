@@ -7,7 +7,7 @@
 		exports["ng2-map"] = factory(require("@angular/core"), require("rxjs/Subject"), require("rxjs/add/operator/debounceTime"), require("@angular/common"));
 	else
 		root["ng2-map"] = factory(root["@angular/core"], root["rxjs/Subject"], root["rxjs/add/operator/debounceTime"], root["@angular/common"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_11__, __WEBPACK_EXTERNAL_MODULE_27__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_11__, __WEBPACK_EXTERNAL_MODULE_28__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -71,31 +71,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.DataLayer = data_layer_1.DataLayer;
 	var directions_renderer_1 = __webpack_require__(15);
 	exports.DirectionsRenderer = directions_renderer_1.DirectionsRenderer;
+	var drawing_manager_1 = __webpack_require__(16);
+	exports.DrawingManager = drawing_manager_1.DrawingManager;
 	var geo_coder_1 = __webpack_require__(7);
 	exports.GeoCoder = geo_coder_1.GeoCoder;
-	var ground_overlay_1 = __webpack_require__(16);
+	var ground_overlay_1 = __webpack_require__(17);
 	exports.GroundOverlay = ground_overlay_1.GroundOverlay;
-	var heatmap_layer_1 = __webpack_require__(17);
+	var heatmap_layer_1 = __webpack_require__(18);
 	exports.HeatmapLayer = heatmap_layer_1.HeatmapLayer;
-	var kml_layer_1 = __webpack_require__(18);
+	var kml_layer_1 = __webpack_require__(19);
 	exports.KmlLayer = kml_layer_1.KmlLayer;
-	var marker_1 = __webpack_require__(19);
+	var marker_1 = __webpack_require__(20);
 	exports.Marker = marker_1.Marker;
 	var ng2_map_1 = __webpack_require__(10);
 	exports.Ng2Map = ng2_map_1.Ng2Map;
-	var places_auto_complete_1 = __webpack_require__(20);
+	var places_auto_complete_1 = __webpack_require__(21);
 	exports.PlacesAutoComplete = places_auto_complete_1.PlacesAutoComplete;
-	var polygon_1 = __webpack_require__(21);
+	var polygon_1 = __webpack_require__(22);
 	exports.Polygon = polygon_1.Polygon;
-	var polyline_1 = __webpack_require__(22);
+	var polyline_1 = __webpack_require__(23);
 	exports.Polyline = polyline_1.Polyline;
-	var street_view_panorama_1 = __webpack_require__(23);
+	var street_view_panorama_1 = __webpack_require__(24);
 	exports.StreetViewPanorama = street_view_panorama_1.StreetViewPanorama;
-	var traffic_layer_1 = __webpack_require__(24);
+	var traffic_layer_1 = __webpack_require__(25);
 	exports.TrafficLayer = traffic_layer_1.TrafficLayer;
-	var transit_layer_1 = __webpack_require__(25);
+	var transit_layer_1 = __webpack_require__(26);
 	exports.TransitLayer = transit_layer_1.TransitLayer;
-	var ng2_map_module_1 = __webpack_require__(26);
+	var ng2_map_module_1 = __webpack_require__(27);
 	exports.Ng2MapModule = ng2_map_module_1.Ng2MapModule;
 
 
@@ -1199,6 +1201,56 @@ return /******/ (function(modules) { // webpackBootstrap
 	var core_1 = __webpack_require__(2);
 	var base_map_directive_1 = __webpack_require__(3);
 	var ng2_map_component_1 = __webpack_require__(4);
+	var INPUTS = [
+	    'options',
+	    'circleOptions', 'drawingControl', 'drawingControlOptions', 'drawingMode',
+	    'map', 'markerOptions', 'polygonOptions', 'polylineOptions', 'rectangleOptions'
+	];
+	var OUTPUTS = [
+	    'circlecomplete', 'markercomplete', 'overlaycomplete',
+	    'polygoncomplete', 'polylinecomplete', 'rectanglecomplete'
+	];
+	var DrawingManager = (function (_super) {
+	    __extends(DrawingManager, _super);
+	    function DrawingManager(ng2MapComp) {
+	        _super.call(this, ng2MapComp, 'DrawingManager', INPUTS, OUTPUTS);
+	        this.libraryName = 'drawing';
+	    }
+	    DrawingManager = __decorate([
+	        core_1.Directive({
+	            selector: 'ng2-map > drawing-manager',
+	            inputs: INPUTS,
+	            outputs: OUTPUTS,
+	        }), 
+	        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
+	    ], DrawingManager);
+	    return DrawingManager;
+	}(base_map_directive_1.BaseMapDirective));
+	exports.DrawingManager = DrawingManager;
+
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(2);
+	var base_map_directive_1 = __webpack_require__(3);
+	var ng2_map_component_1 = __webpack_require__(4);
 	var INPUTS = ['url', 'bounds', 'clickable', 'opacity'];
 	var OUTPUTS = ['click', 'dblclick'];
 	var GroundOverlay = (function (_super) {
@@ -1234,7 +1286,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1277,7 +1329,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1319,7 +1371,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1390,7 +1442,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1472,7 +1524,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1520,7 +1572,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1568,7 +1620,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1648,7 +1700,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1690,7 +1742,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1732,7 +1784,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1746,7 +1798,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(2);
-	var common_1 = __webpack_require__(27);
+	var common_1 = __webpack_require__(28);
 	var option_builder_1 = __webpack_require__(5);
 	var geo_coder_1 = __webpack_require__(7);
 	var navigator_geolocation_1 = __webpack_require__(9);
@@ -1756,22 +1808,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	var circle_1 = __webpack_require__(13);
 	var data_layer_1 = __webpack_require__(14);
 	var directions_renderer_1 = __webpack_require__(15);
-	var ground_overlay_1 = __webpack_require__(16);
-	var heatmap_layer_1 = __webpack_require__(17);
-	var kml_layer_1 = __webpack_require__(18);
-	var marker_1 = __webpack_require__(19);
+	var drawing_manager_1 = __webpack_require__(16);
+	var ground_overlay_1 = __webpack_require__(17);
+	var heatmap_layer_1 = __webpack_require__(18);
+	var kml_layer_1 = __webpack_require__(19);
+	var marker_1 = __webpack_require__(20);
 	var ng2_map_1 = __webpack_require__(10);
-	var places_auto_complete_1 = __webpack_require__(20);
-	var polygon_1 = __webpack_require__(21);
-	var polyline_1 = __webpack_require__(22);
-	var street_view_panorama_1 = __webpack_require__(23);
-	var traffic_layer_1 = __webpack_require__(24);
-	var transit_layer_1 = __webpack_require__(25);
+	var places_auto_complete_1 = __webpack_require__(21);
+	var polygon_1 = __webpack_require__(22);
+	var polyline_1 = __webpack_require__(23);
+	var street_view_panorama_1 = __webpack_require__(24);
+	var traffic_layer_1 = __webpack_require__(25);
+	var transit_layer_1 = __webpack_require__(26);
 	var COMPONENTS_DIRECTIVES = [
 	    ng2_map_component_1.Ng2MapComponent, info_window_1.InfoWindow,
 	    marker_1.Marker, circle_1.Circle, polygon_1.Polygon, info_window_1.InfoWindow, polyline_1.Polyline, ground_overlay_1.GroundOverlay,
 	    transit_layer_1.TransitLayer, traffic_layer_1.TrafficLayer, heatmap_layer_1.HeatmapLayer, bicycling_layer_1.BicyclingLayer, kml_layer_1.KmlLayer, data_layer_1.DataLayer,
-	    street_view_panorama_1.StreetViewPanorama, places_auto_complete_1.PlacesAutoComplete, directions_renderer_1.DirectionsRenderer
+	    street_view_panorama_1.StreetViewPanorama, places_auto_complete_1.PlacesAutoComplete, directions_renderer_1.DirectionsRenderer,
+	    drawing_manager_1.DrawingManager
 	];
 	var Ng2MapModule = (function () {
 	    function Ng2MapModule() {
@@ -1791,10 +1845,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_27__;
+	module.exports = __WEBPACK_EXTERNAL_MODULE_28__;
 
 /***/ }
 /******/ ])

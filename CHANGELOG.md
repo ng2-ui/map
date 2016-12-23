@@ -1,3 +1,7 @@
+# 0.13.0 (2016-12-23)
+
+  * new directive, drawing-manager
+  
 # 0.12.0 (2016-12-9)
 
   * new directive, directions-renderer

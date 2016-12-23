@@ -8,6 +8,7 @@ import { InfoWindow } from './components/info-window';
 import { Circle } from './directives/circle';
 import { DataLayer } from "./directives/data-layer";
 import { DirectionsRenderer } from "./directives/directions-renderer";
+import { DrawingManager } from "./directives/drawing-manager";
 import { GeoCoder } from './services/geo-coder';
 import { GroundOverlay } from './directives/ground-overlay';
 import { HeatmapLayer } from "./directives/heatmap-layer";
@@ -28,6 +29,7 @@ export {
   Circle,
   DataLayer,
   DirectionsRenderer,
+  DrawingManager,
   GeoCoder,
   GroundOverlay,
   HeatmapLayer,
