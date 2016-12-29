@@ -16,7 +16,7 @@ var INPUTS = [
     'options'
 ];
 var OUTPUTS = [
-    'bounds_changed', 'center_changed', 'click', 'bblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
+    'bounds_changed', 'center_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
     'typeid_changed', 'mousemove', 'mouseout', 'mouseover', 'projection_changed', 'resize', 'rightclick',
     'tilesloaded', 'tile_changed', 'zoom_changed'
 ];

@@ -165,6 +165,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.initialized$ = new core_1.EventEmitter();
 	        this.ng2Map = this.ng2MapComponent['ng2Map'];
 	        this.optionBuilder = this.ng2MapComponent['optionBuilder'];
+	        //all outputs must be initialized
 	        this.outputs.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
 	        this.mapObjectName = mapObjectName;
 	    }
@@ -250,7 +251,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'options'
 	];
 	var OUTPUTS = [
-	    'bounds_changed', 'center_changed', 'click', 'bblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
+	    'bounds_changed', 'center_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
 	    'typeid_changed', 'mousemove', 'mouseout', 'mouseover', 'projection_changed', 'resize', 'rightclick',
 	    'tilesloaded', 'tile_changed', 'zoom_changed'
 	];
@@ -809,7 +810,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var eventName = definedEvent
 	                .replace(/([A-Z])/g, function ($1) { return ("_" + $1.toLowerCase()); });
 	            thisObj[prefix].addListener(eventName, function (event) {
-	                thisObj[definedEvent].emit(this);
+	                var param = event ? event : {};
+	                param.target = this;
+	                thisObj[definedEvent].emit(param);
 	            });
 	        });
 	    };

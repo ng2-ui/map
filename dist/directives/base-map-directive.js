@@ -10,6 +10,7 @@ var BaseMapDirective = (function () {
         this.initialized$ = new core_1.EventEmitter();
         this.ng2Map = this.ng2MapComponent['ng2Map'];
         this.optionBuilder = this.ng2MapComponent['optionBuilder'];
+        //all outputs must be initialized
         this.outputs.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
         this.mapObjectName = mapObjectName;
     }
