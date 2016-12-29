@@ -1,3 +1,7 @@
+# 0.13.2 (2016-12-20)
+
+  * event parameter is changed from object to event. event.target is a google map object from now on.
+
 # 0.13.0 (2016-12-23)
 
   * new directive, drawing-manager
