@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 let templateStr: string = `
   <h1>Simple Map</h1>
-  <ng2-map center="Brampton, Canada" (mousedown)="onClick()"></ng2-map>
+  <ng2-map center="Brampton, Canada" (click)="onClick($event)"></ng2-map>
   "center" can be an;
   <ul>
     <li>lat/lng array e.g., [42.99, -77.79]
@@ -23,7 +23,10 @@ let templateStr: string = `
 })
 export class SimpleMapComponent {
   templateStr: string = templateStr;
-  onClick() {
-    alert('map is clicked');
+  onClick(event) {
+    if (event instanceof MouseEvent)  {
+      return false;
+    }
+    console.log('map is clicked', event, event.target);
   }
 }

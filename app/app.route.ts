@@ -20,6 +20,7 @@ import { StreetViewPanoramaComponent } from "./map-components/street-view-panora
 import { PlacesAutoCompleteComponent } from "./map-components/places-auto-compolete.component";
 import { DirectionsRendererComponent } from "./map-components/directions-renderer.component";
 import { DrawingManagerComponent } from "./map-components/drawing-manager.component";
+import { EventArgumentsComponent } from "./map-components/event-arguments.component";
 
 export const routes: Routes = [
   { path: 'bicycling-layer', component: BicyclingLayerComponent },
@@ -42,6 +43,7 @@ export const routes: Routes = [
   { path: 'street-view-panorama', component: StreetViewPanoramaComponent },
   { path: 'traffic-layer', component: TrafficLayerComponent },
   { path: 'transit-layer', component: TransitLayerComponent },
+  { path: 'event-arguments', component: EventArgumentsComponent },
   { path: '',  redirectTo: '/simple-marker', pathMatch: 'full' },
 ];
 
@@ -51,6 +53,7 @@ export const APP_ROUTER_COMPONENTS = [
   DataLayerComponent,
   DirectionsRendererComponent,
   DrawingManagerComponent,
+  EventArgumentsComponent,
   HeatmapLayerComponent,
   KmlLayerComponent,
   MapWithOptionsComponent,

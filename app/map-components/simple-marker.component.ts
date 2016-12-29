@@ -2,10 +2,12 @@ import { Component, ElementRef } from '@angular/core';
 
 let templateStr: string = `
   <h1>Simple Marker</h1>
-  <ng2-map center="Brampton, Canada" [scrollwheel]="false">
+  <ng2-map center="Brampton, Canada" 
+    (click)="log($event)"
+    [scrollwheel]="false">
     <marker position="Brampton, Canada"
-      (dragstart)="log('dragstart')"
-      (dragend)="log('dragend')"
+      (dragstart)="log($event, 'dragstart')"
+      (dragend)="log($event, 'dragend')"
       draggable="true"></marker>
   </ng2-map>
   <code>
@@ -19,7 +21,10 @@ let templateStr: string = `
 @Component({ template: templateStr })
 export class SimpleMarkerComponent {
   templateStr: string = templateStr;
-  log(str) {
-    console.log('event .... >', str);
+  log(event, str) {
+    if (event instanceof MouseEvent) {
+      return false;
+    }
+    console.log('event .... >', event, str);
   }
 }

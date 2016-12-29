@@ -19,7 +19,9 @@ export class Ng2Map {
         .replace(/([A-Z])/g, ($1) => `_${$1.toLowerCase()}`);
 
       thisObj[prefix].addListener(eventName, function(event: google.maps.event) {
-        thisObj[definedEvent].emit(this);
+        let param: any = event ? event : {};
+        param.target = this;
+        thisObj[definedEvent].emit(param);
       });
     });
   }

@@ -123,7 +123,7 @@ export class MyAppComponent {
 }
 ```
 
-### To get it from a map instance
+### To get grouped instances from a map instance
 
 ```TypeScript
 import {Ng2MapComponent} from "ng2-map";
@@ -135,6 +135,25 @@ export class MyAppComponent {
     })
   }
 }
+```
+
+## How to access event of an object
+Every event has a google map event as a parameter. 
+In addition, event also has a target, which is a google map object.
+
+HTML Example
+```
+  <ng2-map zoom="4" center="-25.363882, 131.044922" (click)="onClick($event)">
+    <marker *ngFor="let pos of positions" [position]="pos"></marker>
+  </ng2-map>
+```
+Javascript Example
+```
+  onClick(event) {
+    if (event instanceof MouseEvent) return;
+    this.positions.push(event.latLng);
+    event.target.panTo(event.latLng);
+  }
 ```
 
 ## Need Contributors

@@ -23,7 +23,8 @@ let templateStr: string = `
 })
 export class SimpleInfoWindowComponent {
   templateStr: string = templateStr;
-  clicked(marker) {
+  clicked(event) {
+    let marker = event.target;
     marker.ng2MapComponent.openInfoWindow('iw', marker, {
       lat: marker.getPosition().lat(), lng: marker.getPosition().lng(),
     });
