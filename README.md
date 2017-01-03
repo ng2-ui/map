@@ -3,6 +3,7 @@
 Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
 * **[![Imgur](http://i.imgur.com/O2EOCxf.png)](https://rawgit.com/ng2-ui/ng2-map/master/app/index.html)**		
+* [Plunker Example](https://plnkr.co/edit/6e1qWK?p=preview)
 
 ### Design Principle
 
