@@ -1134,6 +1134,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // only called when map is ready
 	    DirectionsRenderer.prototype.initialize = function () {
 	        this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
+	        if (typeof this.objectOptions['panel'] === 'string') {
+	            this.objectOptions['panel'] = document.querySelector(this.objectOptions['panel']);
+	        }
 	        this.directionsService = new google.maps.DirectionsService();
 	        this.directionsRenderer = new google.maps.DirectionsRenderer(this.objectOptions);
 	        this.directionsRenderer.setMap(this.ng2MapComponent.map);
