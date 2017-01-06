@@ -23,10 +23,12 @@ let templateStr = `
     <directions-renderer
       [suppressMarkers]="true"
       [draggable]="true"
+      panel="#my-panel"
       (directions_changed)="directionsChanged()"
       [directions-request]="direction">
     </directions-renderer>
   </ng2-map>
+  <div id="my-panel"></div>
   <code>
     <br/><b>HTML</b>
     <pre>{{templateStr | htmlCode:'-code'}}</pre>
