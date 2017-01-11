@@ -36,7 +36,7 @@ var Ng2MapComponent = (function () {
         this.infoWindows = {};
         // map has been fully initialized
         this.mapIdledOnce = false;
-        if (typeof google === 'undefined' || !google.maps.Map) {
+        if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
             this.mapInitPath = 1;
             this.addGoogleMapsApi();
         }
@@ -58,7 +58,7 @@ var Ng2MapComponent = (function () {
         window['initNg2Map'] = function () {
             window['ng2MapRef'].zone.run(function () { window['ng2MapRef'].componentFn(); });
         };
-        if (!window['google'] && !document.querySelector('#ng2-map-api')) {
+        if (!window['google.maps'] && !document.querySelector('#ng2-map-api')) {
             var script = document.createElement('script');
             script.id = 'ng2-map-api';
             // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
@@ -144,14 +144,14 @@ var Ng2MapComponent = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2MapComponent.ctorParameters = [
+    Ng2MapComponent.ctorParameters = function () { return [
         { type: option_builder_1.OptionBuilder, },
         { type: core_1.ElementRef, },
         { type: core_1.NgZone, },
         { type: navigator_geolocation_1.NavigatorGeolocation, },
         { type: geo_coder_1.GeoCoder, },
         { type: ng2_map_1.Ng2Map, },
-    ];
+    ]; };
     return Ng2MapComponent;
 }());
 exports.Ng2MapComponent = Ng2MapComponent;

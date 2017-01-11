@@ -22,9 +22,9 @@ var BicyclingLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    BicyclingLayer.ctorParameters = [
+    BicyclingLayer.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
     return BicyclingLayer;
 }(base_map_directive_1.BaseMapDirective));
 exports.BicyclingLayer = BicyclingLayer;

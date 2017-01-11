@@ -19,7 +19,7 @@ var PlacesAutoComplete = (function () {
             _this.autocomplete.addListener('place_changed', function (place) { return _this.place_changed.emit(); });
             _this.initialized$.emit(_this.autocomplete);
         };
-        if (typeof google === 'undefined' || !google.maps.Map) {
+        if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
             this.addGoogleMapsApi();
         }
         else {
@@ -28,7 +28,7 @@ var PlacesAutoComplete = (function () {
     }
     PlacesAutoComplete.prototype.addGoogleMapsApi = function () {
         window['initializePlacesAutoComplete'] = this.initialize;
-        if (!window['google'] && !document.querySelector('#ng2-map-api')) {
+        if (!window['google.maps'] && !document.querySelector('#ng2-map-api')) {
             var script = document.createElement('script');
             script.id = 'ng2-map-api';
             // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
@@ -44,10 +44,10 @@ var PlacesAutoComplete = (function () {
                 },] },
     ];
     /** @nocollapse */
-    PlacesAutoComplete.ctorParameters = [
+    PlacesAutoComplete.ctorParameters = function () { return [
         { type: option_builder_1.OptionBuilder, },
         { type: core_1.ElementRef, },
-    ];
+    ]; };
     PlacesAutoComplete.propDecorators = {
         'bounds': [{ type: core_1.Input, args: ['bounds',] },],
         'componentRestrictions': [{ type: core_1.Input, args: ['componentRestrictions',] },],
