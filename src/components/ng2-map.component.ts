@@ -73,7 +73,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     public geoCoder: GeoCoder,
     public ng2Map: Ng2Map
   ) {
-    if (typeof google === 'undefined' || !google.maps.Map) {
+    if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
       this.mapInitPath = 1;
       this.addGoogleMapsApi();
     }
@@ -98,7 +98,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     window['initNg2Map'] = function() {
       window['ng2MapRef'].zone.run(function() { window['ng2MapRef'].componentFn(); });
     };
-    if (!window['google'] && !document.querySelector('#ng2-map-api')) {
+    if (!window['google.maps'] && !document.querySelector('#ng2-map-api')) {
       let script = document.createElement( 'script' );
       script.id = 'ng2-map-api';
 

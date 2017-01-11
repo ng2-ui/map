@@ -23,9 +23,9 @@ var HeatmapLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    HeatmapLayer.ctorParameters = [
+    HeatmapLayer.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
     return HeatmapLayer;
 }(base_map_directive_1.BaseMapDirective));
 exports.HeatmapLayer = HeatmapLayer;

@@ -53,9 +53,9 @@ var Marker = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    Marker.ctorParameters = [
+    Marker.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
     return Marker;
 }(base_map_directive_1.BaseMapDirective));
 exports.Marker = Marker;

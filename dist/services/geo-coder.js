@@ -26,7 +26,7 @@ var GeoCoder = (function () {
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    GeoCoder.ctorParameters = [];
+    GeoCoder.ctorParameters = function () { return []; };
     return GeoCoder;
 }());
 exports.GeoCoder = GeoCoder;

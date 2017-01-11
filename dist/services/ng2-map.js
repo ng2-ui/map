@@ -56,10 +56,10 @@ var Ng2Map = (function () {
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    Ng2Map.ctorParameters = [
+    Ng2Map.ctorParameters = function () { return [
         { type: geo_coder_1.GeoCoder, },
         { type: option_builder_1.OptionBuilder, },
-    ];
+    ]; };
     return Ng2Map;
 }());
 exports.Ng2Map = Ng2Map;
