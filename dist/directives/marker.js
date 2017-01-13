@@ -14,7 +14,7 @@ var INPUTS = [
 var OUTPUTS = [
     'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
     'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
-    'dhapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged'
+    'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged'
 ];
 var Marker = (function (_super) {
     __extends(Marker, _super);

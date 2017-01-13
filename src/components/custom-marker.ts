@@ -17,7 +17,7 @@ const INPUTS = [
 const OUTPUTS = [
   'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
   'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
-  'dhapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged',
+  'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged'
 ];
 
 interface IInternalMarker extends google.maps.OverlayView { }
@@ -95,26 +95,29 @@ export class CustomMarker implements OnInit, OnChanges, OnDestroy {
    * Otherwise throws a google is unknown error.
    */
   private classLoader(): IInternalMarker {
-    let obj = this;
 
     class InternalMarker extends google.maps.OverlayView implements IInternalMarker {
 
+      private htmlEl: HTMLElement;
+      private position: any;
       private zIndex: string;
       private visible: boolean = true;
 
-      constructor() {
+      constructor(htmlEl: HTMLElement, position: any) {
         super();
+        this.htmlEl = htmlEl;
+        this.position = position;
       }
 
       onAdd(): void {
-        this.getPanes().overlayMouseTarget.appendChild(obj.el);
+        this.getPanes().overlayMouseTarget.appendChild(this.htmlEl);
 
         // required for correct display inside google maps container
-        obj.el.style.position = 'absolute';
+        this.htmlEl.style.position = 'absolute';
       }
 
       draw(): void {
-        this.setPosition(obj['position']);
+        this.setPosition(this.position);
         this.setZIndex(this.zIndex);
         this.setVisible(this.visible);
       }
@@ -127,18 +130,24 @@ export class CustomMarker implements OnInit, OnChanges, OnDestroy {
 
         let _setPosition = (latLng: google.maps.LatLng) => {
           let posPixel = this.getProjection().fromLatLngToDivPixel(latLng);
-          let x = Math.round(posPixel.x - (obj.el.offsetWidth / 2));
-          let y = Math.round(posPixel.y - (obj.el.offsetHeight / 2));
-          obj.el.style.left = x + 'px';
-          obj.el.style.top = y + 'px';
-          obj.el.style.visibility = 'visible';
+          let x = Math.round(posPixel.x - (this.htmlEl.offsetWidth / 2));
+          let y = Math.round(posPixel.y - (this.htmlEl.offsetHeight / 2));
+          this.htmlEl.style.left = x + 'px';
+          this.htmlEl.style.top = y + 'px';
+          this.htmlEl.style.visibility = 'visible';
         };
 
         if (typeof position === 'string') {
           // geocode it
-          obj.ng2MapComponent.geoCoder.geocode({ address: position }).subscribe((results: google.maps.GeocoderResult) => {
-            console.log('setting marker position from address', position);
-            _setPosition(results[0].geometry.location);
+          let geocoder = new google.maps.Geocoder();
+
+          geocoder.geocode({ address: position }, (results, status) => {
+            if (status === google.maps.GeocoderStatus.OK) {
+              console.log('setting custom marker position from address', position);
+              _setPosition(results[0].geometry.location);
+            } else {
+              //
+            }
           });
         } else {
           // assume array format [lat, lng]
@@ -149,15 +158,15 @@ export class CustomMarker implements OnInit, OnChanges, OnDestroy {
 
       setZIndex(zIndex: string): void {
         zIndex && (this.zIndex = zIndex); /* jshint ignore:line */
-        obj.el.style.zIndex = this.zIndex;
+        this.htmlEl.style.zIndex = this.zIndex;
       }
 
       setVisible(visible: boolean) {
-        obj.el.style.display = visible ? 'inline-block' : 'none';
+        this.htmlEl.style.display = visible ? 'inline-block' : 'none';
         this.visible = visible;
       };
     };
-    return new InternalMarker();
+    return new InternalMarker(this.el, this['position']);
   }
 }
 

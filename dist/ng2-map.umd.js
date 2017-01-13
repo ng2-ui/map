@@ -1405,7 +1405,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var OUTPUTS = [
 	    'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
 	    'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
-	    'dhapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged'
+	    'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged'
 	];
 	var Marker = (function (_super) {
 	    __extends(Marker, _super);
@@ -1810,6 +1810,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var navigator_geolocation_1 = __webpack_require__(9);
 	var ng2_map_component_1 = __webpack_require__(4);
 	var info_window_1 = __webpack_require__(12);
+	var custom_marker_1 = __webpack_require__(29);
 	var bicycling_layer_1 = __webpack_require__(1);
 	var circle_1 = __webpack_require__(13);
 	var data_layer_1 = __webpack_require__(14);
@@ -1828,10 +1829,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var transit_layer_1 = __webpack_require__(26);
 	var COMPONENTS_DIRECTIVES = [
 	    ng2_map_component_1.Ng2MapComponent, info_window_1.InfoWindow,
-	    marker_1.Marker, circle_1.Circle, polygon_1.Polygon, info_window_1.InfoWindow, polyline_1.Polyline, ground_overlay_1.GroundOverlay,
+	    marker_1.Marker, circle_1.Circle, custom_marker_1.CustomMarker, polygon_1.Polygon, info_window_1.InfoWindow, polyline_1.Polyline, ground_overlay_1.GroundOverlay,
 	    transit_layer_1.TransitLayer, traffic_layer_1.TrafficLayer, heatmap_layer_1.HeatmapLayer, bicycling_layer_1.BicyclingLayer, kml_layer_1.KmlLayer, data_layer_1.DataLayer,
 	    street_view_panorama_1.StreetViewPanorama, places_auto_complete_1.PlacesAutoComplete, directions_renderer_1.DirectionsRenderer,
-	    drawing_manager_1.DrawingManager
+	    drawing_manager_1.DrawingManager,
 	];
 	var Ng2MapModule = (function () {
 	    function Ng2MapModule() {
@@ -1855,6 +1856,166 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_28__;
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(2);
+	var Subject_1 = __webpack_require__(8);
+	var ng2_map_1 = __webpack_require__(10);
+	var ng2_map_component_1 = __webpack_require__(4);
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"@types/googlemaps\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var INPUTS = [
+	    'position'
+	];
+	var OUTPUTS = [
+	    'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
+	    'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
+	    'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged'
+	];
+	//interface IInternalMarker extends google.maps.OverlayView { }
+	var CustomMarkerOverlayView = (function (_super) {
+	    __extends(CustomMarkerOverlayView, _super);
+	    function CustomMarkerOverlayView(htmlEl, position) {
+	        _super.call(this);
+	        this.visible = true;
+	        this.htmlEl = htmlEl;
+	        this.position = position;
+	    }
+	    CustomMarkerOverlayView.prototype.onAdd = function () {
+	        this.getPanes().overlayMouseTarget.appendChild(this.htmlEl);
+	        // required for correct display inside google maps container
+	        this.htmlEl.style.position = 'absolute';
+	    };
+	    CustomMarkerOverlayView.prototype.draw = function () {
+	        this.setPosition(this.position);
+	        this.setZIndex(this.zIndex);
+	        this.setVisible(this.visible);
+	    };
+	    CustomMarkerOverlayView.prototype.onRemove = function () {
+	        //
+	    };
+	    CustomMarkerOverlayView.prototype.setPosition = function (position) {
+	        var _this = this;
+	        var _setPosition = function (latLng) {
+	            var posPixel = _this.getProjection().fromLatLngToDivPixel(latLng);
+	            var x = Math.round(posPixel.x - (_this.htmlEl.offsetWidth / 2));
+	            var y = Math.round(posPixel.y - (_this.htmlEl.offsetHeight / 2));
+	            _this.htmlEl.style.left = x + 'px';
+	            _this.htmlEl.style.top = y + 'px';
+	            _this.htmlEl.style.visibility = 'visible';
+	        };
+	        if (typeof position === 'string') {
+	            // geocode it
+	            var geocoder = new google.maps.Geocoder();
+	            geocoder.geocode({ address: position }, function (results, status) {
+	                if (status === google.maps.GeocoderStatus.OK) {
+	                    _setPosition(results[0].geometry.location);
+	                }
+	                else {
+	                }
+	            });
+	        }
+	        else {
+	            // assume array format [lat, lng]
+	            var latLng = new google.maps.LatLng(position[0], position[1]);
+	            _setPosition(latLng);
+	        }
+	    };
+	    CustomMarkerOverlayView.prototype.setZIndex = function (zIndex) {
+	        zIndex && (this.zIndex = zIndex); /* jshint ignore:line */
+	        this.htmlEl.style.zIndex = this.zIndex;
+	    };
+	    CustomMarkerOverlayView.prototype.setVisible = function (visible) {
+	        this.htmlEl.style.display = visible ? 'inline-block' : 'none';
+	        this.visible = visible;
+	    };
+	    ;
+	    return CustomMarkerOverlayView;
+	}(google.maps.OverlayView));
+	var CustomMarker = (function () {
+	    function CustomMarker(ng2MapComponent, elementRef, ng2Map) {
+	        var _this = this;
+	        this.ng2MapComponent = ng2MapComponent;
+	        this.elementRef = elementRef;
+	        this.ng2Map = ng2Map;
+	        this.inputChanges$ = new Subject_1.Subject();
+	        this.initialized$ = new core_1.EventEmitter();
+	        this.elementRef.nativeElement.style.display = 'none';
+	        OUTPUTS.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
+	    }
+	    // Initialize this map object when map is ready
+	    CustomMarker.prototype.ngOnInit = function () {
+	        var _this = this;
+	        if (this.ng2MapComponent.mapIdledOnce) {
+	            this.initialize();
+	        }
+	        else {
+	            this.ng2MapComponent.mapReady$.subscribe(function (map) { return _this.initialize(); });
+	        }
+	    };
+	    CustomMarker.prototype.ngOnChanges = function (changes) {
+	        this.inputChanges$.next(changes);
+	    };
+	    CustomMarker.prototype.ngOnDestroy = function () {
+	        var _this = this;
+	        this.ng2MapComponent.removeFromMapObjectGroup('CustomMarker', this.mapObject);
+	        if (this.mapObject) {
+	            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
+	            this.mapObject.setMap(null);
+	            delete this.mapObject;
+	        }
+	    };
+	    CustomMarker.prototype.initialize = function () {
+	        var _this = this;
+	        this.el = this.elementRef.nativeElement;
+	        this.mapObject = this.classLoader();
+	        this.mapObject.setMap(this.ng2MapComponent.map);
+	        // set google events listeners and emits to this outputs listeners
+	        this.ng2Map.setObjectEvents(OUTPUTS, this, 'mapObject');
+	        // update object when input changes
+	        this.inputChanges$
+	            .debounceTime(1000)
+	            .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.mapObject, changes); });
+	        this.ng2MapComponent.addToMapObjectGroup('CustomMarker', this.mapObject);
+	        this.initialized$.emit(this.mapObject);
+	    };
+	    /**
+	     * Wrapper to a create extend OverlayView at runtime, only after google maps is loaded.
+	     * Otherwise throws a google is unknown error.
+	     */
+	    CustomMarker.prototype.classLoader = function () {
+	        return new CustomMarkerOverlayView(this.el, this['position']);
+	    };
+	    CustomMarker = __decorate([
+	        core_1.Component({
+	            selector: 'ng2-map > custom-marker',
+	            inputs: INPUTS,
+	            outputs: OUTPUTS,
+	            template: "\n    <ng-content></ng-content>\n  ",
+	        }), 
+	        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent, core_1.ElementRef, ng2_map_1.Ng2Map])
+	    ], CustomMarker);
+	    return CustomMarker;
+	}());
+	exports.CustomMarker = CustomMarker;
+
 
 /***/ }
 /******/ ])

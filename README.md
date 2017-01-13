@@ -269,6 +269,12 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
            <a href="https://rawgit.com/ng2-ui/ng2-map/master/app/index.html#/drawing-manager">ng2-map drawing-manager example</a> 
 </table>
 
+### Custom Directives
+
+* custom-marker
+  * properties: position
+  * event: all marker events.
+
 ### For Developers
 
 ### To start

@@ -1,3 +1,7 @@
+# 0.14.0 (2017-01-12)
+
+  * new diective, custom-marker
+
 # 0.13.2 (2016-12-20)
 
   * event parameter is changed from object to event. event.target is a google map object from now on.
@@ -5,7 +9,7 @@
 # 0.13.0 (2016-12-23)
 
   * new directive, drawing-manager
-  
+
 # 0.12.0 (2016-12-9)
 
   * new directive, directions-renderer
