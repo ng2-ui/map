@@ -21,6 +21,8 @@ import { PlacesAutoCompleteComponent } from "./map-components/places-auto-compol
 import { DirectionsRendererComponent } from "./map-components/directions-renderer.component";
 import { DrawingManagerComponent } from "./map-components/drawing-manager.component";
 import { EventArgumentsComponent } from "./map-components/event-arguments.component";
+import { CustomMarkerComponent } from './map-components/custom-marker.component';
+import { CustomMarkerNgForComponent } from './map-components/custom-marker-ng-for.component';
 
 export const routes: Routes = [
   { path: 'bicycling-layer', component: BicyclingLayerComponent },
@@ -44,6 +46,8 @@ export const routes: Routes = [
   { path: 'traffic-layer', component: TrafficLayerComponent },
   { path: 'transit-layer', component: TransitLayerComponent },
   { path: 'event-arguments', component: EventArgumentsComponent },
+  { path: 'custom-marker', component: CustomMarkerComponent },
+  { path: 'custom-marker-ng-for', component: CustomMarkerNgForComponent },
   { path: '',  redirectTo: '/simple-marker', pathMatch: 'full' },
 ];
 
@@ -69,6 +73,8 @@ export const APP_ROUTER_COMPONENTS = [
   SimplePolylineComponent,
   StreetViewPanoramaComponent,
   TrafficLayerComponent,
-  TransitLayerComponent
+  TransitLayerComponent,
+  CustomMarkerComponent,
+  CustomMarkerNgForComponent
 ];
 
