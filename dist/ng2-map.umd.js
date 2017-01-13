@@ -1880,7 +1880,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Subject_1 = __webpack_require__(8);
 	var ng2_map_1 = __webpack_require__(10);
 	var ng2_map_component_1 = __webpack_require__(4);
-	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"@types/googlemaps\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var INPUTS = [
 	    'position'
 	];
@@ -1889,66 +1888,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
 	    'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged'
 	];
-	//interface IInternalMarker extends google.maps.OverlayView { }
-	var CustomMarkerOverlayView = (function (_super) {
-	    __extends(CustomMarkerOverlayView, _super);
-	    function CustomMarkerOverlayView(htmlEl, position) {
-	        _super.call(this);
-	        this.visible = true;
-	        this.htmlEl = htmlEl;
-	        this.position = position;
-	    }
-	    CustomMarkerOverlayView.prototype.onAdd = function () {
-	        this.getPanes().overlayMouseTarget.appendChild(this.htmlEl);
-	        // required for correct display inside google maps container
-	        this.htmlEl.style.position = 'absolute';
-	    };
-	    CustomMarkerOverlayView.prototype.draw = function () {
-	        this.setPosition(this.position);
-	        this.setZIndex(this.zIndex);
-	        this.setVisible(this.visible);
-	    };
-	    CustomMarkerOverlayView.prototype.onRemove = function () {
-	        //
-	    };
-	    CustomMarkerOverlayView.prototype.setPosition = function (position) {
-	        var _this = this;
-	        var _setPosition = function (latLng) {
-	            var posPixel = _this.getProjection().fromLatLngToDivPixel(latLng);
-	            var x = Math.round(posPixel.x - (_this.htmlEl.offsetWidth / 2));
-	            var y = Math.round(posPixel.y - (_this.htmlEl.offsetHeight / 2));
-	            _this.htmlEl.style.left = x + 'px';
-	            _this.htmlEl.style.top = y + 'px';
-	            _this.htmlEl.style.visibility = 'visible';
-	        };
-	        if (typeof position === 'string') {
-	            // geocode it
-	            var geocoder = new google.maps.Geocoder();
-	            geocoder.geocode({ address: position }, function (results, status) {
-	                if (status === google.maps.GeocoderStatus.OK) {
-	                    _setPosition(results[0].geometry.location);
-	                }
-	                else {
-	                }
-	            });
-	        }
-	        else {
-	            // assume array format [lat, lng]
-	            var latLng = new google.maps.LatLng(position[0], position[1]);
-	            _setPosition(latLng);
-	        }
-	    };
-	    CustomMarkerOverlayView.prototype.setZIndex = function (zIndex) {
-	        zIndex && (this.zIndex = zIndex); /* jshint ignore:line */
-	        this.htmlEl.style.zIndex = this.zIndex;
-	    };
-	    CustomMarkerOverlayView.prototype.setVisible = function (visible) {
-	        this.htmlEl.style.display = visible ? 'inline-block' : 'none';
-	        this.visible = visible;
-	    };
-	    ;
-	    return CustomMarkerOverlayView;
-	}(google.maps.OverlayView));
 	var CustomMarker = (function () {
 	    function CustomMarker(ng2MapComponent, elementRef, ng2Map) {
 	        var _this = this;
@@ -2001,7 +1940,67 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Otherwise throws a google is unknown error.
 	     */
 	    CustomMarker.prototype.classLoader = function () {
-	        return new CustomMarkerOverlayView(this.el, this['position']);
+	        var InternalMarker = (function (_super) {
+	            __extends(InternalMarker, _super);
+	            function InternalMarker(htmlEl, position) {
+	                _super.call(this);
+	                this.visible = true;
+	                this.htmlEl = htmlEl;
+	                this.position = position;
+	            }
+	            InternalMarker.prototype.onAdd = function () {
+	                this.getPanes().overlayMouseTarget.appendChild(this.htmlEl);
+	                // required for correct display inside google maps container
+	                this.htmlEl.style.position = 'absolute';
+	            };
+	            InternalMarker.prototype.draw = function () {
+	                this.setPosition(this.position);
+	                this.setZIndex(this.zIndex);
+	                this.setVisible(this.visible);
+	            };
+	            InternalMarker.prototype.onRemove = function () {
+	                //
+	            };
+	            InternalMarker.prototype.setPosition = function (position) {
+	                var _this = this;
+	                var _setPosition = function (latLng) {
+	                    var posPixel = _this.getProjection().fromLatLngToDivPixel(latLng);
+	                    var x = Math.round(posPixel.x - (_this.htmlEl.offsetWidth / 2));
+	                    var y = Math.round(posPixel.y - (_this.htmlEl.offsetHeight / 2));
+	                    _this.htmlEl.style.left = x + 'px';
+	                    _this.htmlEl.style.top = y + 'px';
+	                    _this.htmlEl.style.visibility = 'visible';
+	                };
+	                if (typeof position === 'string') {
+	                    // geocode it
+	                    var geocoder = new google.maps.Geocoder();
+	                    geocoder.geocode({ address: position }, function (results, status) {
+	                        if (status === google.maps.GeocoderStatus.OK) {
+	                            _setPosition(results[0].geometry.location);
+	                        }
+	                        else {
+	                        }
+	                    });
+	                }
+	                else {
+	                    // assume array format [lat, lng]
+	                    var latLng = new google.maps.LatLng(position[0], position[1]);
+	                    _setPosition(latLng);
+	                }
+	            };
+	            InternalMarker.prototype.setZIndex = function (zIndex) {
+	                zIndex && (this.zIndex = zIndex); /* jshint ignore:line */
+	                this.htmlEl.style.zIndex = this.zIndex;
+	            };
+	            InternalMarker.prototype.setVisible = function (visible) {
+	                this.htmlEl.style.display = visible ? 'inline-block' : 'none';
+	                this.visible = visible;
+	            };
+	            ;
+	            return InternalMarker;
+	        }(google.maps.OverlayView));
+	        ;
+	        return new InternalMarker(this.el, this['position']);
 	    };
 	    CustomMarker = __decorate([
 	        core_1.Component({
