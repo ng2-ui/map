@@ -36,6 +36,7 @@ var Ng2MapComponent = (function () {
         this.infoWindows = {};
         // map has been fully initialized
         this.mapIdledOnce = false;
+        window['ng2MapRef'] = { zone: this.zone, componentFn: function () { return _this.initializeMap(); }, map: null };
         if (typeof google === 'undefined' || !google.maps.Map) {
             this.mapInitPath = 1;
             this.addGoogleMapsApi();
@@ -53,8 +54,6 @@ var Ng2MapComponent = (function () {
         this.inputChanges$.next(changes);
     };
     Ng2MapComponent.prototype.addGoogleMapsApi = function () {
-        var _this = this;
-        window['ng2MapRef'] = { zone: this.zone, componentFn: function () { return _this.initializeMap(); }, map: null };
         window['initNg2Map'] = function () {
             window['ng2MapRef'].zone.run(function () { window['ng2MapRef'].componentFn(); });
         };
