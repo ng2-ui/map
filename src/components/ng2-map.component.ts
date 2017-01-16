@@ -73,6 +73,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     public geoCoder: GeoCoder,
     public ng2Map: Ng2Map
   ) {
+    window['ng2MapRef'] = { zone: this.zone, componentFn: () => this.initializeMap(), map: null};
     if (typeof google === 'undefined' || !google.maps.Map) {
       this.mapInitPath = 1;
       this.addGoogleMapsApi();
@@ -94,7 +95,6 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   }
 
   addGoogleMapsApi(): void {
-    window['ng2MapRef'] = { zone: this.zone, componentFn: () => this.initializeMap(), map: null};
     window['initNg2Map'] = function() {
       window['ng2MapRef'].zone.run(function() { window['ng2MapRef'].componentFn(); });
     };
