@@ -58,7 +58,7 @@ var Ng2MapComponent = (function () {
         window['initNg2Map'] = function () {
             window['ng2MapRef'].zone.run(function () { window['ng2MapRef'].componentFn(); });
         };
-        if (!window['google.maps'] && !document.querySelector('#ng2-map-api')) {
+        if (!window['google']['maps'] && !document.querySelector('#ng2-map-api')) {
             var script = document.createElement('script');
             script.id = 'ng2-map-api';
             // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";

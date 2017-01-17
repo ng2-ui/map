@@ -48,7 +48,7 @@ export class PlacesAutoComplete  {
 
   addGoogleMapsApi(): void {
     window['initializePlacesAutoComplete'] = this.initialize;
-    if (!window['google.maps'] && !document.querySelector('#ng2-map-api')) {
+    if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ng2-map-api')) {
       let script = document.createElement( 'script' );
       script.id = 'ng2-map-api';
 
