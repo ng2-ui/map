@@ -8,6 +8,13 @@ export declare class InfoWindow implements OnInit, OnChanges, OnDestroy {
     private ng2MapComponent;
     private elementRef;
     private ng2Map;
+    content: any;
+    disableAutoPan: any;
+    maxWidth: any;
+    pixelOffset: any;
+    position: any;
+    zIndex: any;
+    options: any;
     el: HTMLElement;
     infoWindow: google.maps.InfoWindow;
     objectOptions: google.maps.InfoWindowOptions;
