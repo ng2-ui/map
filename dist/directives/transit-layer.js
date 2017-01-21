@@ -22,9 +22,9 @@ var TransitLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    TransitLayer.ctorParameters = [
+    TransitLayer.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
     return TransitLayer;
 }(base_map_directive_1.BaseMapDirective));
 exports.TransitLayer = TransitLayer;

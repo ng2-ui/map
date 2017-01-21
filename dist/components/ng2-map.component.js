@@ -143,14 +143,14 @@ var Ng2MapComponent = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2MapComponent.ctorParameters = [
+    Ng2MapComponent.ctorParameters = function () { return [
         { type: option_builder_1.OptionBuilder, },
         { type: core_1.ElementRef, },
         { type: core_1.NgZone, },
         { type: navigator_geolocation_1.NavigatorGeolocation, },
         { type: geo_coder_1.GeoCoder, },
         { type: ng2_map_1.Ng2Map, },
-    ];
+    ]; };
     return Ng2MapComponent;
 }());
 exports.Ng2MapComponent = Ng2MapComponent;

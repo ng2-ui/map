@@ -3,3 +3,4 @@ typings
 *.log
 *.tgz
 .idea
+.tmp

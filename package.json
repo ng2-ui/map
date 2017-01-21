@@ -1,6 +1,6 @@
 {
   "name": "ng2-map",
-  "version": "0.14.1",
+  "version": "0.14.2",
   "description": "Angular2 Google Map`",
   "license": "MIT",
   "main": "dist/ng2-map.umd.js",
@@ -10,7 +10,8 @@
     "start": "NODE_ENV=dev webpack-dev-server --quiet --port 9001 --content-base app --config app/webpack.config --open",
     "lint": "tslint 'src/**/*.ts' 'app/**/*.ts'",
     "clean": "rimraf dist",
-    "build": "npm-run-all --serial clean build:ngc build:umd build:app",
+    "build": "npm-run-all --serial clean build:ngc:pre build:ngc build:umd build:app",
+    "build:ngc:pre": "node ngc-pre-compiler.js",
     "build:ngc": "ngc -p tsconfig.ngc.json",
     "build:umd": "NODE_ENV=prod webpack",
     "build:app": "NODE_ENV=prod webpack --config app/webpack.config"
@@ -45,6 +46,7 @@
     "angular2-template-loader": "^0.6.0",
     "codelyzer": "^1.0.0-beta.3",
     "core-js": "^2.4.1",
+    "fs-extra": "^2.0.0",
     "ng2-utils": "^0.5.0",
     "npm-run-all": "^3.1.0",
     "raw-loader": "^0.5.1",

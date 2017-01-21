@@ -22,9 +22,9 @@ var TrafficLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    TrafficLayer.ctorParameters = [
+    TrafficLayer.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
     return TrafficLayer;
 }(base_map_directive_1.BaseMapDirective));
 exports.TrafficLayer = TrafficLayer;
