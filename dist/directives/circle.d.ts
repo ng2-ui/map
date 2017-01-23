@@ -18,6 +18,7 @@ export declare class Circle extends BaseMapDirective {
     visible: any;
     zIndex: any;
     options: any;
+    geoFallbackCenter: any;
     mapObject: google.maps.Circle;
     objectOptions: google.maps.CircleOptions;
     constructor(ng2MapComp: Ng2MapComponent);

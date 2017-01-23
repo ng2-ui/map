@@ -1,3 +1,7 @@
+# 0.15.0 (2017-01-23)
+
+  * added geo fallback options for map and marker
+
 # 0.14.0 (2017-01-12)
 
   * new diective, custom-marker

@@ -13,7 +13,9 @@ var INPUTS = [
     'noClear', 'overviewMapControl', 'panControl', 'panControlOptions', 'rotateControl', 'scaleControl', 'scrollwheel',
     'streetView', 'styles', 'tilt', 'zoom', 'streetViewControl', 'zoomControl', 'mapTypeControlOptions',
     'overviewMapControlOptions', 'rotateControlOptions', 'scaleControlOptions', 'streetViewControlOptions',
-    'options'
+    'options',
+    // ng2-map-specific inputs
+    'geoFallbackCenter'
 ];
 var OUTPUTS = [
     'bounds_changed', 'center_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
@@ -103,12 +105,17 @@ var Ng2MapComponent = (function () {
                 console.log('setting map center from current location');
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 _this.map.setCenter(latLng);
+            }, function (error) {
+                console.error(error);
+                _this.map.setCenter(_this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
             });
         }
         else if (typeof this['center'] === 'string') {
             this.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
                 console.log('setting map center from address', _this['center']);
                 _this.map.setCenter(results[0].geometry.location);
+            }, function (error) {
+                _this.map.setCenter(_this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
             });
         }
     };

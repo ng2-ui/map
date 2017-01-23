@@ -10,6 +10,8 @@ var ng2_map_component_1 = require('../components/ng2-map.component');
 var INPUTS = [
     'center', 'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'map', 'radius',
     'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex', 'options',
+    //ng2-map specific inputs
+    'geoFallbackCenter'
 ];
 var OUTPUTS = [
     'centerChanged', 'click', 'dblclick', 'drag', 'dragend', 'dragstart',
@@ -33,12 +35,18 @@ var Circle = (function (_super) {
                 console.log('setting circle center from current location');
                 var latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
                 _this.mapObject.setCenter(latLng);
+            }, function (error) {
+                console.error(error);
+                _this.mapObject.setCenter(_this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
             });
         }
         else if (typeof this['center'] === 'string') {
             this.ng2MapComp.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
                 console.log('setting circle center from address', _this['center']);
                 _this.mapObject.setCenter(results[0].geometry.location);
+            }, function (error) {
+                console.error(error);
+                _this.mapObject.setCenter(_this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
             });
         }
     };

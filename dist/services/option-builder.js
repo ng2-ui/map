@@ -71,7 +71,7 @@ var OptionBuilder = (function () {
             else if (options['key'] === 'icons') {
                 output = this.getMapIcons(output);
             }
-            else if (options['key'] === 'position') {
+            else if (options['key'] === 'position' || options['key'].match(/^geoFallback/)) {
                 output = this.getLatLng(output);
             }
         }

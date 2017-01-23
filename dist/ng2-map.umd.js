@@ -248,7 +248,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    'noClear', 'overviewMapControl', 'panControl', 'panControlOptions', 'rotateControl', 'scaleControl', 'scrollwheel',
 	    'streetView', 'styles', 'tilt', 'zoom', 'streetViewControl', 'zoomControl', 'mapTypeControlOptions',
 	    'overviewMapControlOptions', 'rotateControlOptions', 'scaleControlOptions', 'streetViewControlOptions',
-	    'options'
+	    'options',
+	    // ng2-map-specific inputs
+	    'geoFallbackCenter'
 	];
 	var OUTPUTS = [
 	    'bounds_changed', 'center_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
@@ -336,11 +338,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.geolocation.getCurrentPosition().subscribe(function (position) {
 	                var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 	                _this.map.setCenter(latLng);
+	            }, function (error) {
+	                console.error(error);
+	                _this.map.setCenter(_this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
 	            });
 	        }
 	        else if (typeof this['center'] === 'string') {
 	            this.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
 	                _this.map.setCenter(results[0].geometry.location);
+	            }, function (error) {
+	                _this.map.setCenter(_this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
 	            });
 	        }
 	    };
@@ -466,7 +473,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            else if (options['key'] === 'icons') {
 	                output = this.getMapIcons(output);
 	            }
-	            else if (options['key'] === 'position') {
+	            else if (options['key'] === 'position' || options['key'].match(/^geoFallback/)) {
 	                output = this.getLatLng(output);
 	            }
 	        }
@@ -994,6 +1001,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	var INPUTS = [
 	    'center', 'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'map', 'radius',
 	    'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex', 'options',
+	    //ng2-map specific inputs
+	    'geoFallbackCenter'
 	];
 	var OUTPUTS = [
 	    'centerChanged', 'click', 'dblclick', 'drag', 'dragend', 'dragstart',
@@ -1016,11 +1025,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (center) {
 	                var latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
 	                _this.mapObject.setCenter(latLng);
+	            }, function (error) {
+	                console.error(error);
+	                _this.mapObject.setCenter(_this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
 	            });
 	        }
 	        else if (typeof this['center'] === 'string') {
 	            this.ng2MapComp.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
 	                _this.mapObject.setCenter(results[0].geometry.location);
+	            }, function (error) {
+	                console.error(error);
+	                _this.mapObject.setCenter(_this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
 	            });
 	        }
 	    };
@@ -1402,7 +1417,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var ng2_map_component_1 = __webpack_require__(4);
 	var INPUTS = [
 	    'anchorPoint', 'animation', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity',
-	    'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex', 'options'
+	    'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex', 'options',
+	    //ng2-map specific inputs
+	    'geoFallbackPosition'
 	];
 	var OUTPUTS = [
 	    'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
@@ -1425,14 +1442,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (!this['position']) {
 	            this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (position) {
 	                var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-	                // console.log('this.marker', this.marker);
 	                _this.mapObject.setPosition(latLng);
+	            }, function (error) {
+	                console.error(error);
+	                _this.mapObject.setPosition(_this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
 	            });
 	        }
 	        else if (typeof this['position'] === 'string') {
 	            this.ng2MapComp.geoCoder.geocode({ address: this['position'] }).subscribe(function (results) {
-	                // console.log('this.marker', this.marker);
 	                _this.mapObject.setPosition(results[0].geometry.location);
+	            }, function (error) {
+	                console.error(error);
+	                _this.mapObject.setPosition(_this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
 	            });
 	        }
 	    };

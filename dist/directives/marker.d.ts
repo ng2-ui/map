@@ -19,6 +19,7 @@ export declare class Marker extends BaseMapDirective {
     visible: any;
     zIndex: any;
     options: any;
+    geoFallbackPosition: any;
     mapObject: google.maps.Marker;
     objectOptions: google.maps.MarkerOptions;
     constructor(ng2MapComp: Ng2MapComponent);
