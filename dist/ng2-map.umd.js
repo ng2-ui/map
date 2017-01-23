@@ -274,7 +274,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // map has been fully initialized
 	        this.mapIdledOnce = false;
 	        window['ng2MapRef'] = { zone: this.zone, componentFn: function () { return _this.initializeMap(); }, map: null };
-	        if (typeof google === 'undefined' || !google.maps.Map) {
+	        if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
 	            this.mapInitPath = 1;
 	            this.addGoogleMapsApi();
 	        }
@@ -294,7 +294,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        window['initNg2Map'] = function () {
 	            window['ng2MapRef'].zone.run(function () { window['ng2MapRef'].componentFn(); });
 	        };
-	        if (!window['google'] && !document.querySelector('#ng2-map-api')) {
+	        if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ng2-map-api')) {
 	            var script = document.createElement('script');
 	            script.id = 'ng2-map-api';
 	            // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
@@ -1481,7 +1481,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            _this.autocomplete.addListener('place_changed', function (place) { return _this.place_changed.emit(); });
 	            _this.initialized$.emit(_this.autocomplete);
 	        };
-	        if (typeof google === 'undefined' || !google.maps.Map) {
+	        if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
 	            this.addGoogleMapsApi();
 	        }
 	        else {
@@ -1490,7 +1490,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    PlacesAutoComplete.prototype.addGoogleMapsApi = function () {
 	        window['initializePlacesAutoComplete'] = this.initialize;
-	        if (!window['google'] && !document.querySelector('#ng2-map-api')) {
+	        if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ng2-map-api')) {
 	            var script = document.createElement('script');
 	            script.id = 'ng2-map-api';
 	            // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
