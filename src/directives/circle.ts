@@ -13,7 +13,7 @@ const OUTPUTS = [
 ];
 
 @Directive({
-  selector: 'ng2-map>circle',
+  selector: 'ng2-map>circle, ng2-map>map-circle',
   inputs: INPUTS,
   outputs: OUTPUTS,
 })

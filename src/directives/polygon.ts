@@ -13,7 +13,7 @@ const OUTPUTS = [
 ];
 
 @Directive({
-  selector: 'ng2-map>polygon',
+  selector: 'ng2-map>polygon, ng2-map>map-polygon',
   inputs: INPUTS,
   outputs: OUTPUTS,
 })

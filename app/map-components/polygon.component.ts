@@ -11,6 +11,15 @@ let templateStr: string = `
       [fillColor]="'#FFC107'"
       [fillOpacity]="0.35"></polygon>
   </ng2-map>
+  <ng2-map zoom="5" center="24.886, -70.268" scrollwheel="false">
+    <map-polygon [editable]="true"
+      [paths]="paths"
+      [strokeColor]="'#FFC107'"
+      [strokeOpacity]="0.8"
+      [strokeWeight]="2"
+      [fillColor]="'#FFC107'"
+      [fillOpacity]="0.35"></map-polygon>
+  </ng2-map>
   <code>
     <br/><b>HTML</b>
     <pre>{{templateStr | htmlCode:'-code'}}</pre>
