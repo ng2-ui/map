@@ -79,7 +79,7 @@ export class OptionBuilder {
       else if (options['key'] === 'icons') {
         output = this.getMapIcons(output);
       }
-      else if (options['key'] === 'position') {
+      else if (options['key'] === 'position' || (<string>options['key']).match(/^geoFallback/) ) {
         output = this.getLatLng(output);
       }
     } else if (options['key'] && output instanceof Object) {

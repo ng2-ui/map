@@ -24,7 +24,9 @@ const INPUTS = [
   'noClear', 'overviewMapControl', 'panControl', 'panControlOptions', 'rotateControl', 'scaleControl', 'scrollwheel',
   'streetView', 'styles', 'tilt', 'zoom', 'streetViewControl', 'zoomControl', 'mapTypeControlOptions',
   'overviewMapControlOptions', 'rotateControlOptions', 'scaleControlOptions', 'streetViewControlOptions',
-  'options'
+  'options',
+  // ng2-map-specific inputs
+  'geoFallbackCenter'
 ];
 
 const OUTPUTS = [
@@ -148,17 +150,27 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
 
   setCenter(): void {
     if (!this['center']) { // center is not from user. Thus, we set the current location
-      this.geolocation.getCurrentPosition().subscribe(position => {
-        console.log('setting map center from current location');
-        let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        this.map.setCenter(latLng);
-      });
+      this.geolocation.getCurrentPosition().subscribe(
+        position => {
+          console.log('setting map center from current location');
+          let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          this.map.setCenter(latLng);
+        },
+        error => {
+          console.error(error);
+          this.map.setCenter(this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0,0));
+        }
+      );
     }
     else if (typeof this['center'] === 'string') {
-      this.geoCoder.geocode({address: this['center']}).subscribe(results => {
-        console.log('setting map center from address', this['center']);
-        this.map.setCenter(results[0].geometry.location);
-      });
+      this.geoCoder.geocode({address: this['center']}).subscribe(
+        results => {
+          console.log('setting map center from address', this['center']);
+          this.map.setCenter(results[0].geometry.location);
+        },
+        error => {
+          this.map.setCenter(this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0,0));
+        });
     }
   }
 

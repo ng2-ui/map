@@ -10,6 +10,8 @@ let templateStr: string = `
     <li> an address. e.g. Brampton, Canada
     <li> or, none(for the current position)
   </ul>
+  <ng2-map center="some-invalid-location"
+    [geoFallbackCenter]="[42.99, -77.79]"></ng2-map>
   
   <code>
     <br/><b>HTML</b>

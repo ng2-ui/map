@@ -5,7 +5,9 @@ import { Ng2MapComponent } from '../components/ng2-map.component';
 
 const INPUTS = [
   'anchorPoint', 'animation', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity',
-  'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex', 'options'
+  'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex', 'options',
+  //ng2-map specific inputs
+  'geoFallbackPosition'
 ];
 const OUTPUTS = [
   'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
@@ -33,18 +35,28 @@ export class Marker extends BaseMapDirective {
 
   setPosition(): void {
     if (!this['position']) {
-      this.ng2MapComp.geolocation.getCurrentPosition().subscribe(position => {
-        console.log('setting marker position from current location');
-        let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        // console.log('this.marker', this.marker);
-        this.mapObject.setPosition(latLng);
-      });
+      this.ng2MapComp.geolocation.getCurrentPosition().subscribe(
+        position => {
+          console.log('setting marker position from current location');
+          let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+          this.mapObject.setPosition(latLng);
+        },
+        error => {
+          console.error(error);
+          this.mapObject.setPosition(this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0,0));
+        }
+      );
     } else if (typeof this['position'] === 'string') {
-      this.ng2MapComp.geoCoder.geocode({address: this['position']}).subscribe(results => {
-        console.log('setting marker position from address', this['position']);
-        // console.log('this.marker', this.marker);
-        this.mapObject.setPosition(results[0].geometry.location);
-      });
+      this.ng2MapComp.geoCoder.geocode({address: this['position']}).subscribe(
+        results => {
+          console.log('setting marker position from address', this['position']);
+          this.mapObject.setPosition(results[0].geometry.location);
+        },
+        error => {
+          console.error(error);
+          this.mapObject.setPosition(this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0,0));
+        }
+      );
     }
   }
 }
