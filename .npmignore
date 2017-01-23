@@ -3,4 +3,4 @@ src
 tsconfig.json
 typings.json
 node_modules
-
+.tmp

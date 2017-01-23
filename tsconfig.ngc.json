@@ -20,13 +20,13 @@
     "suppressExcessPropertyErrors": true,
     "suppressImplicitAnyIndexErrors": true,
     "outDir": "dist",
-    "baseUrl": "src",
+    "baseUrl": "./tmp/src",
     "paths": {
       "ng2-map": ["./index"]
     }
   },
   "files": [
-    "src/index.ts",
+    ".tmp/src/index.ts",
     "node_modules/@types/googlemaps/index.d.ts"
   ],
   "exclude": [

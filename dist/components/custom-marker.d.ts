@@ -6,6 +6,7 @@ export declare class CustomMarker implements OnInit, OnChanges, OnDestroy {
     private ng2MapComponent;
     private elementRef;
     private ng2Map;
+    position: any;
     inputChanges$: Subject<{}>;
     initialized$: EventEmitter<any>;
     private el;
