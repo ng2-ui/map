@@ -17,7 +17,9 @@ const INPUTS = [
 const OUTPUTS = [
   'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
   'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
-  'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged'
+  'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged',
+  //to avoid DOM event conflicts
+  'map_click', 'map_mouseover', 'map_mouseout', 'map_mouseup', 'map_mousedown', 'map_drag', 'map_dragend'
 ];
 
 /**

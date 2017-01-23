@@ -16,7 +16,8 @@ export class Ng2Map {
   setObjectEvents(definedEvents: string[], thisObj: any, prefix: string) {
     definedEvents.forEach(definedEvent => {
       let eventName = definedEvent
-        .replace(/([A-Z])/g, ($1) => `_${$1.toLowerCase()}`);
+        .replace(/([A-Z])/g, ($1) => `_${$1.toLowerCase()}`) //positionChanged -> position_changed
+        .replace(/^map_/, '');                               //map_click -> click  to avoid DOM conflicts
 
       thisObj[prefix].addListener(eventName, function(event: google.maps.event) {
         let param: any = event ? event : {};

@@ -30,7 +30,9 @@ const INPUTS = [
 const OUTPUTS = [
   'bounds_changed', 'center_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
   'typeid_changed', 'mousemove', 'mouseout', 'mouseover', 'projection_changed', 'resize', 'rightclick',
-  'tilesloaded', 'tile_changed', 'zoom_changed'
+  'tilesloaded', 'tile_changed', 'zoom_changed',
+  //to avoid DOM event conflicts
+  'mapClick', 'mapMouseover', 'mapMouseout', 'mapMousemove', 'mapDrag', 'mapDragend', 'mapDragstart'
 ];
 
 @Component({

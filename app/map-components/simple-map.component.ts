@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 
 let templateStr: string = `
   <h1>Simple Map</h1>
-  <ng2-map center="Brampton, Canada" (click)="onClick($event)"></ng2-map>
+  <ng2-map center="Brampton, Canada" 
+    (mapClick)="onClick($event)"></ng2-map>
   "center" can be an;
   <ul>
     <li>lat/lng array e.g., [42.99, -77.79]
