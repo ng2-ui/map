@@ -22,15 +22,15 @@ var Polygon = (function (_super) {
     }
     Polygon.decorators = [
         { type: core_1.Directive, args: [{
-                    selector: 'ng2-map>polygon',
+                    selector: 'ng2-map>polygon, ng2-map>map-polygon',
                     inputs: INPUTS,
                     outputs: OUTPUTS,
                 },] },
     ];
     /** @nocollapse */
-    Polygon.ctorParameters = function () { return [
+    Polygon.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     return Polygon;
 }(base_map_directive_1.BaseMapDirective));
 exports.Polygon = Polygon;

@@ -232,9 +232,9 @@ var OptionBuilder = (function () {
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    OptionBuilder.ctorParameters = function () { return [
+    OptionBuilder.ctorParameters = [
         { type: geo_coder_1.GeoCoder, },
-    ]; };
+    ];
     return OptionBuilder;
 }());
 exports.OptionBuilder = OptionBuilder;

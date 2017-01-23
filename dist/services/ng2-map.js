@@ -13,7 +13,8 @@ var Ng2Map = (function () {
     Ng2Map.prototype.setObjectEvents = function (definedEvents, thisObj, prefix) {
         definedEvents.forEach(function (definedEvent) {
             var eventName = definedEvent
-                .replace(/([A-Z])/g, function ($1) { return ("_" + $1.toLowerCase()); });
+                .replace(/([A-Z])/g, function ($1) { return ("_" + $1.toLowerCase()); }) //positionChanged -> position_changed
+                .replace(/^map_/, ''); //map_click -> click  to avoid DOM conflicts
             thisObj[prefix].addListener(eventName, function (event) {
                 var param = event ? event : {};
                 param.target = this;
@@ -56,10 +57,10 @@ var Ng2Map = (function () {
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    Ng2Map.ctorParameters = function () { return [
+    Ng2Map.ctorParameters = [
         { type: geo_coder_1.GeoCoder, },
         { type: option_builder_1.OptionBuilder, },
-    ]; };
+    ];
     return Ng2Map;
 }());
 exports.Ng2Map = Ng2Map;

@@ -44,15 +44,15 @@ var Circle = (function (_super) {
     };
     Circle.decorators = [
         { type: core_1.Directive, args: [{
-                    selector: 'ng2-map>circle',
+                    selector: 'ng2-map>circle, ng2-map>map-circle',
                     inputs: INPUTS,
                     outputs: OUTPUTS,
                 },] },
     ];
     /** @nocollapse */
-    Circle.ctorParameters = function () { return [
+    Circle.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     return Circle;
 }(base_map_directive_1.BaseMapDirective));
 exports.Circle = Circle;

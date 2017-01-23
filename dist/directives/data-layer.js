@@ -43,9 +43,9 @@ var DataLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    DataLayer.ctorParameters = function () { return [
+    DataLayer.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     return DataLayer;
 }(base_map_directive_1.BaseMapDirective));
 exports.DataLayer = DataLayer;

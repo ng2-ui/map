@@ -14,7 +14,9 @@ var INPUTS = [
 var OUTPUTS = [
     'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
     'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
-    'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged'
+    'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged',
+    //to avoid DOM event conflicts
+    'map_click', 'map_mouseover', 'map_mouseout', 'map_mouseup', 'map_mousedown', 'map_drag', 'map_dragend'
 ];
 /**
  * Wrapper to a create extend OverlayView at runtime, only after google maps is loaded.
@@ -140,11 +142,11 @@ var CustomMarker = (function () {
                 },] },
     ];
     /** @nocollapse */
-    CustomMarker.ctorParameters = function () { return [
+    CustomMarker.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
         { type: core_1.ElementRef, },
         { type: ng2_map_1.Ng2Map, },
-    ]; };
+    ];
     return CustomMarker;
 }());
 exports.CustomMarker = CustomMarker;

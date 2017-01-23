@@ -18,7 +18,9 @@ var INPUTS = [
 var OUTPUTS = [
     'bounds_changed', 'center_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
     'typeid_changed', 'mousemove', 'mouseout', 'mouseover', 'projection_changed', 'resize', 'rightclick',
-    'tilesloaded', 'tile_changed', 'zoom_changed'
+    'tilesloaded', 'tile_changed', 'zoom_changed',
+    //to avoid DOM event conflicts
+    'mapClick', 'mapMouseover', 'mapMouseout', 'mapMousemove', 'mapDrag', 'mapDragend', 'mapDragstart'
 ];
 var Ng2MapComponent = (function () {
     function Ng2MapComponent(optionBuilder, elementRef, zone, geolocation, geoCoder, ng2Map) {
@@ -143,14 +145,14 @@ var Ng2MapComponent = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2MapComponent.ctorParameters = function () { return [
+    Ng2MapComponent.ctorParameters = [
         { type: option_builder_1.OptionBuilder, },
         { type: core_1.ElementRef, },
         { type: core_1.NgZone, },
         { type: navigator_geolocation_1.NavigatorGeolocation, },
         { type: geo_coder_1.GeoCoder, },
         { type: ng2_map_1.Ng2Map, },
-    ]; };
+    ];
     return Ng2MapComponent;
 }());
 exports.Ng2MapComponent = Ng2MapComponent;

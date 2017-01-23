@@ -28,9 +28,9 @@ var Polyline = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    Polyline.ctorParameters = function () { return [
+    Polyline.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     return Polyline;
 }(base_map_directive_1.BaseMapDirective));
 exports.Polyline = Polyline;

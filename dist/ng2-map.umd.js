@@ -253,7 +253,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var OUTPUTS = [
 	    'bounds_changed', 'center_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
 	    'typeid_changed', 'mousemove', 'mouseout', 'mouseover', 'projection_changed', 'resize', 'rightclick',
-	    'tilesloaded', 'tile_changed', 'zoom_changed'
+	    'tilesloaded', 'tile_changed', 'zoom_changed',
+	    //to avoid DOM event conflicts
+	    'mapClick', 'mapMouseover', 'mapMouseout', 'mapMousemove', 'mapDrag', 'mapDragend', 'mapDragstart'
 	];
 	var Ng2MapComponent = (function () {
 	    function Ng2MapComponent(optionBuilder, elementRef, zone, geolocation, geoCoder, ng2Map) {
@@ -807,7 +809,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Ng2Map.prototype.setObjectEvents = function (definedEvents, thisObj, prefix) {
 	        definedEvents.forEach(function (definedEvent) {
 	            var eventName = definedEvent
-	                .replace(/([A-Z])/g, function ($1) { return ("_" + $1.toLowerCase()); });
+	                .replace(/([A-Z])/g, function ($1) { return ("_" + $1.toLowerCase()); }) //positionChanged -> position_changed
+	                .replace(/^map_/, ''); //map_click -> click  to avoid DOM conflicts
 	            thisObj[prefix].addListener(eventName, function (event) {
 	                var param = event ? event : {};
 	                param.target = this;
@@ -1023,7 +1026,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    Circle = __decorate([
 	        core_1.Directive({
-	            selector: 'ng2-map>circle',
+	            selector: 'ng2-map>circle, ng2-map>map-circle',
 	            inputs: INPUTS,
 	            outputs: OUTPUTS,
 	        }), 
@@ -1565,7 +1568,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    Polygon = __decorate([
 	        core_1.Directive({
-	            selector: 'ng2-map>polygon',
+	            selector: 'ng2-map>polygon, ng2-map>map-polygon',
 	            inputs: INPUTS,
 	            outputs: OUTPUTS,
 	        }), 
@@ -1885,7 +1888,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var OUTPUTS = [
 	    'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
 	    'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
-	    'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged'
+	    'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged',
+	    //to avoid DOM event conflicts
+	    'map_click', 'map_mouseover', 'map_mouseout', 'map_mouseup', 'map_mousedown', 'map_drag', 'map_dragend'
 	];
 	/**
 	 * Wrapper to a create extend OverlayView at runtime, only after google maps is loaded.

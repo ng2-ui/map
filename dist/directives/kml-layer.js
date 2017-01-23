@@ -22,9 +22,9 @@ var KmlLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    KmlLayer.ctorParameters = function () { return [
+    KmlLayer.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     return KmlLayer;
 }(base_map_directive_1.BaseMapDirective));
 exports.KmlLayer = KmlLayer;
