@@ -1,5 +1,8 @@
 # ng2-map
 
+[![Build Status](https://travis-ci.org/ng2-ui/ng2-map.svg?branch=master)](https://travis-ci.org/ng2-ui/ng2-map)
+[![Join the chat at https://gitter.im/ng2-ui/ng2-map](https://badges.gitter.im/ng2-ui/ng2-map.svg)](https://gitter.im/ng2-ui/ng2-map?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
 * **[![Imgur](http://i.imgur.com/O2EOCxf.png)](https://rawgit.com/ng2-ui/ng2-map/master/app/index.html)**		
