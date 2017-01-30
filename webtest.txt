@@ -6,7 +6,6 @@ START
 
 Simple Map
   go to http://localhost:9001/#/simple-map
-  wait for page load
   verify script "ng2MapRef.map.getCenter()"
   verify script "ng2MapRef.map.getCenter().lat() === 42.99"
 
