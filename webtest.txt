@@ -1,0 +1,16 @@
+Ng2Map Test On Browser
+
+START
+  open browser
+  go to http://localhost:9001
+
+Simple Map
+  see "Simple Map"
+  click
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.getCenter().lat() === 42.99"
+
+END
+  close browser
+
+

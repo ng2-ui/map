@@ -1,6 +1,6 @@
 {
   "name": "ng2-map",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "description": "Angular2 Google Map`",
   "license": "MIT",
   "main": "dist/ng2-map.umd.js",
@@ -14,7 +14,12 @@
     "build:ngc:pre": "node ngc-pre-compiler.js",
     "build:ngc": "ngc -p tsconfig.ngc.json",
     "build:umd": "NODE_ENV=prod webpack",
-    "build:app": "NODE_ENV=prod webpack --config app/webpack.config"
+    "build:app": "NODE_ENV=prod webpack --config app/webpack.config",
+    "test": "npm-run-all --serial test:start test:webtest test:stop",
+    "test:start": "forever start --silent node_modules/.bin/webpack-dev-server --quiet --port 9002 --content-base app --config app/webpack.config",
+    "test:stop": "forever stop node_modules/.bin/webpack-dev-server --quiet --port 9002 --content-base app --config app/webpack.config",
+    "test:webtest": "webtest webtest.txt",
+    "upgrade": "npm-check-updates -a/--upgradeAll && npm i"
   },
   "repository": {
     "type": "git",
@@ -46,9 +51,10 @@
     "angular2-template-loader": "^0.6.0",
     "codelyzer": "^1.0.0-beta.3",
     "core-js": "^2.4.1",
+    "forever": "^0.15.3",
     "fs-extra": "^2.0.0",
     "ng2-utils": "^0.5.0",
-    "npm-run-all": "^3.1.0",
+    "npm-run-all": "^3.1.2",
     "raw-loader": "^0.5.1",
     "rimraf": "^2.5.3",
     "rxjs": "^5.0.0-rc.1",
@@ -58,6 +64,7 @@
     "typescript": "2.0.10",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.16.2",
+    "webtest": "^0.3.6",
     "zone.js": "^0.6.21"
   }
 }
