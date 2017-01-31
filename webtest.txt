@@ -5,11 +5,99 @@ START
   go to http://localhost:9001
 
 Simple Map
-  go to http://localhost:9001/#/simple-map
+  click "li[routerlink='/simple-map']"
   verify script "ng2MapRef.map.getCenter()"
   verify script "ng2MapRef.map.getCenter().lat() === 42.99"
 
-MORE TEST COMES HERE
+Simple Circle
+  click "li[routerlink='/simple-circle']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.circles"
+  verify script "ng2MapRef.map.circles.length == 1"
+
+Simple Marker
+  click "li[routerlink='/simple-marker']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.markers"
+  verify script "ng2MapRef.map.markers.length == 1"
+
+Marker With ngFor
+  click "li[routerlink='/marker-ng-for']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.markers"
+  verify script "ng2MapRef.map.markers.length == 9"
+  click button
+  verify script "ng2MapRef.map.markers.length == 9"
+
+Simple InfoWindow
+  click "li[routerlink='/simple-info-window']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.markers"
+  run script "google.maps.event.trigger(ng2MapRef.map.markers[0], 'click')"
+  verify script "ng2MapRef.map.infowindows"
+  verify script "ng2MapRef.map.infowindows[0].anchor"
+
+Polygon
+  click "li[routerlink='/polygon']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.polygons"
+
+Map With Options
+  click "li[routerlink='/map-with-options']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.getZoom() === 18"
+  verify script "ng2MapRef.map.getMapTypteId() === 'satellite'"
+  verify script "ng2MapRef.map.gettilt() === 45"
+
+Simple Polyline
+  click "li[routerlink='/simple-polyline']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.polylines"
+
+Simple Ground Overay
+  click "li[routerlink='/simple-ground-overlay']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.groundoverlays"
+
+Bicycling Layer
+  click "li[routerlink='/bicycling-layer']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.bicyclinglayers"
+
+Traffic Layer
+  click "li[routerlink='/traffic-layer']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.trafficlayers"
+
+Transit Layer
+  click "li[routerlink='/transit-layer']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.transitlayers"
+
+Heatmap Layer
+  click "li[routerlink='/heatmap-layer']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.heatmaplayers"
+
+Kml Layer
+  click "li[routerlink='/kml-layer']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.kmllayers"
+
+Data Layer
+  click "li[routerlink='/data-layer']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.datas
+
+Street View Panorama
+  click "li[routerlink='/data-layer']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.streetView"
+  verify script "ng2MapRef.map.streetviewpanoramas"
+
+Places Autocomplete
+  click "li[routerlink='/places-auto-complete']"
+  Enter text "Brampton, ON, Canada" into "Enter a location"
 
 END
   close browser
