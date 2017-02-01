@@ -46,8 +46,8 @@ Map With Options
   click "li[routerlink='/map-with-options']"
   verify script "ng2MapRef.map.getCenter()"
   verify script "ng2MapRef.map.getZoom() === 18"
-  verify script "ng2MapRef.map.getMapTypteId() === 'satellite'"
-  verify script "ng2MapRef.map.gettilt() === 45"
+  verify script "ng2MapRef.map.getMapTypeId() === 'satellite'"
+  verify script "ng2MapRef.map.getTilt() === 45"
 
 Simple Polyline
   click "li[routerlink='/simple-polyline']"
@@ -93,11 +93,41 @@ Street View Panorama
   click "li[routerlink='/data-layer']"
   verify script "ng2MapRef.map.getCenter()"
   verify script "ng2MapRef.map.streetView"
-  verify script "ng2MapRef.map.streetviewpanoramas"
+  --verify script "ng2MapRef.map.streetviewpanoramas"
 
 Places Autocomplete
   click "li[routerlink='/places-auto-complete']"
-  Enter text "Brampton, ON, Canada" into "Enter a location"
+  enter text "Brampton, ON" into "Enter a location"
+  click ".pac-item:nth-child(1)"
+  verify element "input" value is "Brampton, ON, Canada"
+
+Directions Renderer
+  click "li[routerlink='/directions-renderer']"
+  verify script "ng2MapRef.map.getCenter()"
+  see 'Pennsylvania Station, New York, NY 10119, USA'
+  enter text "Grand" into select
+  see 'Grand Central Terminal'
+
+Drawing Manager
+  click "li[routerlink='/drawing-manager']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.drawingmanagers"
+
+Event Arguments
+  click "li[routerlink='/event-arguments']"
+  verify script "ng2MapRef.map.getCenter()"
+
+Custom Marker
+  click "li[routerlink='/custom-marker']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.markers"
+  verify script "ng2MapRef.map.custommarkers"
+
+Custom Marker NgFor
+  click "li[routerlink='/custom-marker-ng-for']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.custommarkers"
+  verify script "ng2MapRef.map.custommarkers.length == 9"
 
 END
   close browser

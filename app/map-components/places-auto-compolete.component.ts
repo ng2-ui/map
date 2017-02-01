@@ -6,6 +6,9 @@ let templateStr = `
     (initialized$)="initialized($event)"
     (place_changed)="placeChanged(place)"
     [types]="['geocode']" />
+  <p>
+  place: {{address | json}}
+  </p>
   <code>
     <br/><b>HTML</b>
     <pre>{{templateStr | htmlCode:'-code'}}</pre>
