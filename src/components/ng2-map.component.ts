@@ -8,6 +8,8 @@ import {
   EventEmitter,
   SimpleChanges,
   AfterViewInit,
+  OpaqueToken,
+  Inject,
  } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
@@ -17,6 +19,8 @@ import { Ng2Map } from '../services/ng2-map';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import { IJson, toCamelCase } from '../services/util';
+
+export const NG_MAP_CONFIG_TOKEN = new OpaqueToken('NG_MAP_CONFIG_TOKEN');
 
 const INPUTS = [
   'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
@@ -75,7 +79,8 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     public zone: NgZone,
     public geolocation: NavigatorGeolocation,
     public geoCoder: GeoCoder,
-    public ng2Map: Ng2Map
+    public ng2Map: Ng2Map,
+    @Inject(NG_MAP_CONFIG_TOKEN) private config: { apiUrl: string }
   ) {
     window['ng2MapRef'] = { zone: this.zone, componentFn: () => this.initializeMap(), map: null};
     if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
@@ -107,8 +112,8 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
       script.id = 'ng2-map-api';
 
       // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
-      let apiUrl = Ng2MapComponent['apiUrl'] || 'https://maps.google.com/maps/api/js';
-      apiUrl += apiUrl.indexOf('?') ? '&' : '?';
+      let apiUrl = this.config.apiUrl || 'https://maps.google.com/maps/api/js';
+      apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
       script.src = apiUrl + 'callback=initNg2Map';
       document.querySelector('body').appendChild(script);
     }
