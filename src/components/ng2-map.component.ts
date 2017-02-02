@@ -123,7 +123,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
 
     this.map = new google.maps.Map(this.el, this.mapOptions);
-    this.map['mapObjectName'] = this.constructor['name'];
+    this.map['mapObjectName'] = 'Ng2MapComponent';
 
     if (!this.mapOptions.center) { // if center is not given as lat/lng
       this.setCenter();
