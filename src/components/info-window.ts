@@ -66,7 +66,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
 
     this.objectOptions = this.ng2MapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
     this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
-    this.infoWindow['mapObjectName'] = this.constructor['name'];
+    this.infoWindow['mapObjectName'] = 'InfoWindow';
     console.log('INFOWINDOW objectOptions', this.objectOptions);
 
     // register infoWindow ids to Ng2Map, so that it can be opened by id

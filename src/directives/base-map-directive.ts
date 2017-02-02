@@ -76,7 +76,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
 
     if (this.mapObject) {
       this.outputs.forEach(output => google.maps.event.clearListeners(this.mapObject, output));
-      delete this.mapObject['setMap'](null);
+      this.mapObject['setMap'](null);
       delete this.mapObject;
     }
   }
