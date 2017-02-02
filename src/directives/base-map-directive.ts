@@ -1,8 +1,7 @@
-import { EventEmitter, SimpleChanges, ReflectiveInjector, OnInit, OnChanges, OnDestroy } from '@angular/core';
+import { EventEmitter, SimpleChanges, OnInit, OnChanges, OnDestroy } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
 import { Ng2Map } from '../services/ng2-map';
-import { GeoCoder } from '../services/geo-coder';
 import { Ng2MapComponent } from '../components/ng2-map.component';
 
 export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
@@ -13,6 +12,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   public optionBuilder: OptionBuilder;
   public initialized$: EventEmitter<any> = new EventEmitter();
   public libraryName: string;
+  protected _subscriptions = [];
 
   constructor(
     protected ng2MapComponent: Ng2MapComponent,
@@ -22,7 +22,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   ) {
     this.ng2Map = this.ng2MapComponent['ng2Map'];
     this.optionBuilder = this.ng2MapComponent['optionBuilder'];
-    //all outputs must be initialized
+    // all outputs must be initialized
     this.outputs.forEach(output => this[output] = new EventEmitter());
     this.mapObjectName = mapObjectName;
   }
@@ -71,6 +71,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
 
   // When destroyed, remove event listener, and delete this object to prevent memory leak
   ngOnDestroy() {
+    this._subscriptions.map(subscription => subscription.unsubscribe());
     this.ng2MapComponent.removeFromMapObjectGroup(this.mapObjectName, this.mapObject);
 
     if (this.mapObject) {

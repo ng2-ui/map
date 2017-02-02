@@ -34,7 +34,7 @@ export class Circle extends BaseMapDirective {
 
   setCenter(): void {
     if (!this['center']) {
-      this.ng2MapComp.geolocation.getCurrentPosition().subscribe(
+      this._subscriptions.push(this.ng2MapComp.geolocation.getCurrentPosition().subscribe(
         center => {
           console.log('setting circle center from current location');
           let latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
@@ -44,9 +44,9 @@ export class Circle extends BaseMapDirective {
           console.error(error);
           this.mapObject.setCenter(this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0,0));
         }
-      );
+      ));
     } else if (typeof this['center'] === 'string') {
-      this.ng2MapComp.geoCoder.geocode({address: this['center']}).subscribe(
+      this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({address: this['center']}).subscribe(
         results => {
           console.log('setting circle center from address', this['center']);
           this.mapObject.setCenter(results[0].geometry.location);
@@ -55,7 +55,7 @@ export class Circle extends BaseMapDirective {
           console.error(error);
           this.mapObject.setCenter(this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0,0));
         }
-      );
+      ));
     }
   }
 }
