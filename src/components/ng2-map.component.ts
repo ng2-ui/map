@@ -8,19 +8,17 @@ import {
   EventEmitter,
   SimpleChanges,
   AfterViewInit,
-  OpaqueToken,
   Inject,
  } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
+import { NG_MAP_CONFIG_TOKEN } from '../services/config';
 import { GeoCoder } from '../services/geo-coder';
 import { Ng2Map } from '../services/ng2-map';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import { IJson, toCamelCase } from '../services/util';
-
-export const NG_MAP_CONFIG_TOKEN = new OpaqueToken('NG_MAP_CONFIG_TOKEN');
 
 const INPUTS = [
   'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
@@ -37,7 +35,7 @@ const OUTPUTS = [
   'bounds_changed', 'center_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
   'typeid_changed', 'mousemove', 'mouseout', 'mouseover', 'projection_changed', 'resize', 'rightclick',
   'tilesloaded', 'tile_changed', 'zoom_changed',
-  //to avoid DOM event conflicts
+  // to avoid DOM event conflicts
   'mapClick', 'mapMouseover', 'mapMouseout', 'mapMousemove', 'mapDrag', 'mapDragend', 'mapDragstart'
 ];
 
@@ -80,7 +78,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     public geolocation: NavigatorGeolocation,
     public geoCoder: GeoCoder,
     public ng2Map: Ng2Map,
-    @Inject(NG_MAP_CONFIG_TOKEN) private config: { apiUrl: string }
+    @Inject(NG_MAP_CONFIG_TOKEN) private config
   ) {
     window['ng2MapRef'] = { zone: this.zone, componentFn: () => this.initializeMap(), map: null};
     if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
@@ -149,7 +147,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
       .debounceTime(1000)
       .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.map, changes));
 
-    //expose map object for test and debugging on window
+    // expose map object for test and debugging on window
     window['ng2MapRef'].map = this.map;
   }
 
@@ -189,7 +187,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     }
   }
 
-  //map.markers, map.circles, map.heatmapLayers.. etc
+  // map.markers, map.circles, map.heatmapLayers.. etc
   addToMapObjectGroup(mapObjectName: string, mapObject: any) {
     let groupName = toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
     this.map[groupName] = this.map[groupName] || [];

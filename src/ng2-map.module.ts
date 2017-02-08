@@ -4,8 +4,9 @@ import { CommonModule } from '@angular/common';
 import { OptionBuilder } from './services/option-builder';
 import { GeoCoder } from './services/geo-coder';
 import { NavigatorGeolocation } from './services/navigator-geolocation';
+import { NG_MAP_CONFIG_TOKEN, ConfigOption } from './services/config';
 
-import { Ng2MapComponent, NG_MAP_CONFIG_TOKEN } from './components/ng2-map.component';
+import { Ng2MapComponent } from './components/ng2-map.component';
 import { InfoWindow } from './components/info-window';
 import { CustomMarker } from './components/custom-marker';
 
@@ -40,7 +41,7 @@ const COMPONENTS_DIRECTIVES = [
   exports: [COMPONENTS_DIRECTIVES],
 })
 export class Ng2MapModule {
-  static forRoot(config: { apiUrl?: string } = {}): ModuleWithProviders {
+  static forRoot(config: ConfigOption = {}): ModuleWithProviders {
     return {
       ngModule: Ng2MapModule,
       providers: [
