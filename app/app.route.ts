@@ -7,22 +7,23 @@ import { SimpleMarkerComponent } from './map-components/simple-marker.component'
 import { MarkerNgForComponent } from './map-components/marker-ng-for.component';
 import { MultipleMapComponent } from './map-components/multiple-map.component';
 import { PolygonComponent } from './map-components/polygon.component';
-import { MapWithOptionsComponent } from "./map-components/map-with-options.component";
-import { SimplePolylineComponent } from "./map-components/simple-polyline.component";
-import { SimpleGroundOverlayComponent } from "./map-components/simple-ground-overlay.component";
-import { BicyclingLayerComponent } from "./map-components/bicycling-layer.component";
-import { TrafficLayerComponent } from "./map-components/traffic-layer.component";
-import { TransitLayerComponent } from "./map-components/transit-layer.component";
-import { HeatmapLayerComponent } from "./map-components/heatmap-layer.component";
-import { KmlLayerComponent } from "./map-components/kml-layer.component";
-import { DataLayerComponent } from "./map-components/data-layer.component";
-import { StreetViewPanoramaComponent } from "./map-components/street-view-panorama.component";
-import { PlacesAutoCompleteComponent } from "./map-components/places-auto-compolete.component";
-import { DirectionsRendererComponent } from "./map-components/directions-renderer.component";
-import { DrawingManagerComponent } from "./map-components/drawing-manager.component";
-import { EventArgumentsComponent } from "./map-components/event-arguments.component";
+import { MapWithOptionsComponent } from './map-components/map-with-options.component';
+import { SimplePolylineComponent } from './map-components/simple-polyline.component';
+import { SimpleGroundOverlayComponent } from './map-components/simple-ground-overlay.component';
+import { BicyclingLayerComponent } from './map-components/bicycling-layer.component';
+import { TrafficLayerComponent } from './map-components/traffic-layer.component';
+import { TransitLayerComponent } from './map-components/transit-layer.component';
+import { HeatmapLayerComponent } from './map-components/heatmap-layer.component';
+import { KmlLayerComponent } from './map-components/kml-layer.component';
+import { DataLayerComponent } from './map-components/data-layer.component';
+import { StreetViewPanoramaComponent } from './map-components/street-view-panorama.component';
+import { PlacesAutoCompleteComponent } from './map-components/places-auto-compolete.component';
+import { DirectionsRendererComponent } from './map-components/directions-renderer.component';
+import { DrawingManagerComponent } from './map-components/drawing-manager.component';
+import { EventArgumentsComponent } from './map-components/event-arguments.component';
 import { CustomMarkerComponent } from './map-components/custom-marker.component';
 import { CustomMarkerNgForComponent } from './map-components/custom-marker-ng-for.component';
+import { MapWithStreetviewComponent } from './map-components/map-with-streetview';
 
 export const routes: Routes = [
   { path: 'bicycling-layer', component: BicyclingLayerComponent },
@@ -32,6 +33,7 @@ export const routes: Routes = [
   { path: 'heatmap-layer', component: HeatmapLayerComponent },
   { path: 'kml-layer', component: KmlLayerComponent },
   { path: 'map-with-options', component: MapWithOptionsComponent },
+  { path: 'map-with-streetview', component: MapWithStreetviewComponent },
   { path: 'marker-ng-for', component: MarkerNgForComponent },
   { path: 'multiple-map', component: MultipleMapComponent },
   { path: 'places-auto-complete', component: PlacesAutoCompleteComponent },
@@ -61,6 +63,7 @@ export const APP_ROUTER_COMPONENTS = [
   HeatmapLayerComponent,
   KmlLayerComponent,
   MapWithOptionsComponent,
+  MapWithStreetviewComponent,
   MarkerNgForComponent,
   MultipleMapComponent,
   PlacesAutoCompleteComponent,
