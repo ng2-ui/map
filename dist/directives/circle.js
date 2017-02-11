@@ -31,23 +31,23 @@ var Circle = (function (_super) {
     Circle.prototype.setCenter = function () {
         var _this = this;
         if (!this['center']) {
-            this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (center) {
+            this._subscriptions.push(this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (center) {
                 console.log('setting circle center from current location');
                 var latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
                 _this.mapObject.setCenter(latLng);
             }, function (error) {
                 console.error(error);
                 _this.mapObject.setCenter(_this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
-            });
+            }));
         }
         else if (typeof this['center'] === 'string') {
-            this.ng2MapComp.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
+            this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
                 console.log('setting circle center from address', _this['center']);
                 _this.mapObject.setCenter(results[0].geometry.location);
             }, function (error) {
                 console.error(error);
                 _this.mapObject.setCenter(_this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
-            });
+            }));
         }
     };
     Circle.decorators = [
@@ -58,9 +58,9 @@ var Circle = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    Circle.ctorParameters = [
+    Circle.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
     return Circle;
 }(base_map_directive_1.BaseMapDirective));
 exports.Circle = Circle;

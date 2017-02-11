@@ -61,9 +61,9 @@ var StreetViewPanorama = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    StreetViewPanorama.ctorParameters = [
+    StreetViewPanorama.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
     return StreetViewPanorama;
 }(base_map_directive_1.BaseMapDirective));
 exports.StreetViewPanorama = StreetViewPanorama;

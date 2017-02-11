@@ -2,6 +2,7 @@
 var core_1 = require('@angular/core');
 var option_builder_1 = require('../services/option-builder');
 var navigator_geolocation_1 = require('../services/navigator-geolocation');
+var config_1 = require('../services/config');
 var geo_coder_1 = require('../services/geo-coder');
 var ng2_map_1 = require('../services/ng2-map');
 var Subject_1 = require('rxjs/Subject');
@@ -21,11 +22,11 @@ var OUTPUTS = [
     'bounds_changed', 'center_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
     'typeid_changed', 'mousemove', 'mouseout', 'mouseover', 'projection_changed', 'resize', 'rightclick',
     'tilesloaded', 'tile_changed', 'zoom_changed',
-    //to avoid DOM event conflicts
+    // to avoid DOM event conflicts
     'mapClick', 'mapMouseover', 'mapMouseout', 'mapMousemove', 'mapDrag', 'mapDragend', 'mapDragstart'
 ];
 var Ng2MapComponent = (function () {
-    function Ng2MapComponent(optionBuilder, elementRef, zone, geolocation, geoCoder, ng2Map) {
+    function Ng2MapComponent(optionBuilder, elementRef, zone, geolocation, geoCoder, ng2Map, config) {
         var _this = this;
         this.optionBuilder = optionBuilder;
         this.elementRef = elementRef;
@@ -33,9 +34,10 @@ var Ng2MapComponent = (function () {
         this.geolocation = geolocation;
         this.geoCoder = geoCoder;
         this.ng2Map = ng2Map;
+        this.config = config;
+        this.mapReady$ = new core_1.EventEmitter();
         this.mapOptions = {};
         this.inputChanges$ = new Subject_1.Subject();
-        this.mapReady$ = new core_1.EventEmitter();
         // map objects by group
         this.infoWindows = {};
         // map has been fully initialized
@@ -65,8 +67,8 @@ var Ng2MapComponent = (function () {
             var script = document.createElement('script');
             script.id = 'ng2-map-api';
             // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
-            var apiUrl = Ng2MapComponent['apiUrl'] || 'https://maps.google.com/maps/api/js';
-            apiUrl += apiUrl.indexOf('?') ? '&' : '?';
+            var apiUrl = this.config.apiUrl || 'https://maps.google.com/maps/api/js';
+            apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
             script.src = apiUrl + 'callback=initNg2Map';
             document.querySelector('body').appendChild(script);
         }
@@ -79,7 +81,7 @@ var Ng2MapComponent = (function () {
         this.mapOptions.zoom = this.mapOptions.zoom || 15;
         typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
         this.map = new google.maps.Map(this.el, this.mapOptions);
-        this.map['mapObjectName'] = this.constructor['name'];
+        this.map['mapObjectName'] = 'Ng2MapComponent';
         if (!this.mapOptions.center) {
             this.setCenter();
         }
@@ -95,7 +97,7 @@ var Ng2MapComponent = (function () {
         this.inputChanges$
             .debounceTime(1000)
             .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.map, changes); });
-        //expose map object for test and debugging on window
+        // expose map object for test and debugging on window
         window['ng2MapRef'].map = this.map;
     };
     Ng2MapComponent.prototype.setCenter = function () {
@@ -128,7 +130,7 @@ var Ng2MapComponent = (function () {
             OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.map, output); });
         }
     };
-    //map.markers, map.circles, map.heatmapLayers.. etc
+    // map.markers, map.circles, map.heatmapLayers.. etc
     Ng2MapComponent.prototype.addToMapObjectGroup = function (mapObjectName, mapObject) {
         var groupName = util_1.toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
         this.map[groupName] = this.map[groupName] || [];
@@ -152,14 +154,18 @@ var Ng2MapComponent = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2MapComponent.ctorParameters = [
+    Ng2MapComponent.ctorParameters = function () { return [
         { type: option_builder_1.OptionBuilder, },
         { type: core_1.ElementRef, },
         { type: core_1.NgZone, },
         { type: navigator_geolocation_1.NavigatorGeolocation, },
         { type: geo_coder_1.GeoCoder, },
         { type: ng2_map_1.Ng2Map, },
-    ];
+        { type: undefined, decorators: [{ type: core_1.Inject, args: [config_1.NG_MAP_CONFIG_TOKEN,] },] },
+    ]; };
+    Ng2MapComponent.propDecorators = {
+        'mapReady$': [{ type: core_1.Output },],
+    };
     return Ng2MapComponent;
 }());
 exports.Ng2MapComponent = Ng2MapComponent;

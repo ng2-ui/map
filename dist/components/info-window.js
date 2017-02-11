@@ -42,7 +42,7 @@ var InfoWindow = (function () {
         this.template = this.elementRef.nativeElement.innerHTML;
         this.objectOptions = this.ng2MapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
         this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
-        this.infoWindow['mapObjectName'] = this.constructor['name'];
+        this.infoWindow['mapObjectName'] = 'InfoWindow';
         console.log('INFOWINDOW objectOptions', this.objectOptions);
         // register infoWindow ids to Ng2Map, so that it can be opened by id
         this.el = this.elementRef.nativeElement;
@@ -87,11 +87,11 @@ var InfoWindow = (function () {
                 },] },
     ];
     /** @nocollapse */
-    InfoWindow.ctorParameters = [
+    InfoWindow.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
         { type: core_1.ElementRef, },
         { type: ng2_map_1.Ng2Map, },
-    ];
+    ]; };
     return InfoWindow;
 }());
 exports.InfoWindow = InfoWindow;

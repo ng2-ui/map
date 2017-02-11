@@ -9,6 +9,5 @@ export declare class Ng2Map {
     private optionBuilder;
     constructor(geoCoder: GeoCoder, optionBuilder: OptionBuilder);
     setObjectEvents(definedEvents: string[], thisObj: any, prefix: string): void;
-    updateGoogleObject(object: any, changes: SimpleChanges): void;
-    updateProperty(object: any, key: string, currentValue: any): void;
+    updateGoogleObject: (object: any, changes: SimpleChanges) => void;
 }

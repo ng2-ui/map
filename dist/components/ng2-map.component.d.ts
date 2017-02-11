@@ -14,6 +14,7 @@ export declare class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewI
     geolocation: NavigatorGeolocation;
     geoCoder: GeoCoder;
     ng2Map: Ng2Map;
+    private config;
     backgroundColor: any;
     center: any;
     disableDefaultUI: any;
@@ -48,15 +49,15 @@ export declare class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewI
     streetViewControlOptions: any;
     options: any;
     geoFallbackCenter: any;
+    mapReady$: EventEmitter<any>;
     el: HTMLElement;
     map: google.maps.Map;
     mapOptions: google.maps.MapOptions;
     inputChanges$: Subject<{}>;
-    mapReady$: EventEmitter<any>;
     infoWindows: any;
     mapInitPath: number;
     mapIdledOnce: boolean;
-    constructor(optionBuilder: OptionBuilder, elementRef: ElementRef, zone: NgZone, geolocation: NavigatorGeolocation, geoCoder: GeoCoder, ng2Map: Ng2Map);
+    constructor(optionBuilder: OptionBuilder, elementRef: ElementRef, zone: NgZone, geolocation: NavigatorGeolocation, geoCoder: GeoCoder, ng2Map: Ng2Map, config: any);
     ngAfterViewInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     addGoogleMapsApi(): void;

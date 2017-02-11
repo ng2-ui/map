@@ -1,6 +1,11 @@
 # 0.15.0 (2017-01-23)
 
   * added geo fallback options for map and marker
+  * **0.15.1 (2017-01-29)**
+    * Added more webtest
+  * **0.15.2 (2017-02-11)**
+    * Fixed a bug of geocode callback losing setMethod name
+    * Exposed `mapReady$` and `initialized$` as an Output
 
 # 0.14.0 (2017-01-12)
 

@@ -23,7 +23,7 @@ var NavigatorGeolocation = (function () {
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    NavigatorGeolocation.ctorParameters = [];
+    NavigatorGeolocation.ctorParameters = function () { return []; };
     return NavigatorGeolocation;
 }());
 exports.NavigatorGeolocation = NavigatorGeolocation;

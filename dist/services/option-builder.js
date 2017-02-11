@@ -124,8 +124,7 @@ var OptionBuilder = (function () {
         if (input.match(/^[A-Z][a-zA-Z0-9]+\(.*\)$/)) {
             try {
                 var exp = 'new google.maps.' + input;
-                // tslint:disable-next-line
-                output = eval(exp);
+                output = Function("return new google.maps." + input + ";")();
             }
             catch (e) { }
         }
@@ -232,9 +231,9 @@ var OptionBuilder = (function () {
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    OptionBuilder.ctorParameters = [
+    OptionBuilder.ctorParameters = function () { return [
         { type: geo_coder_1.GeoCoder, },
-    ];
+    ]; };
     return OptionBuilder;
 }());
 exports.OptionBuilder = OptionBuilder;

@@ -4,6 +4,7 @@ var common_1 = require('@angular/common');
 var option_builder_1 = require('./services/option-builder');
 var geo_coder_1 = require('./services/geo-coder');
 var navigator_geolocation_1 = require('./services/navigator-geolocation');
+var config_1 = require('./services/config');
 var ng2_map_component_1 = require('./components/ng2-map.component');
 var info_window_1 = require('./components/info-window');
 var custom_marker_1 = require('./components/custom-marker');
@@ -33,16 +34,28 @@ var COMPONENTS_DIRECTIVES = [
 var Ng2MapModule = (function () {
     function Ng2MapModule() {
     }
+    Ng2MapModule.forRoot = function (config) {
+        if (config === void 0) { config = {}; }
+        return {
+            ngModule: Ng2MapModule,
+            providers: [
+                { provide: config_1.NG_MAP_CONFIG_TOKEN, useValue: config },
+                geo_coder_1.GeoCoder,
+                navigator_geolocation_1.NavigatorGeolocation,
+                ng2_map_1.Ng2Map,
+                option_builder_1.OptionBuilder,
+            ],
+        };
+    };
     Ng2MapModule.decorators = [
         { type: core_1.NgModule, args: [{
                     imports: [common_1.CommonModule],
                     declarations: COMPONENTS_DIRECTIVES,
-                    providers: [geo_coder_1.GeoCoder, navigator_geolocation_1.NavigatorGeolocation, ng2_map_1.Ng2Map, option_builder_1.OptionBuilder],
-                    exports: [COMPONENTS_DIRECTIVES]
+                    exports: [COMPONENTS_DIRECTIVES],
                 },] },
     ];
     /** @nocollapse */
-    Ng2MapModule.ctorParameters = [];
+    Ng2MapModule.ctorParameters = function () { return []; };
     return Ng2MapModule;
 }());
 exports.Ng2MapModule = Ng2MapModule;

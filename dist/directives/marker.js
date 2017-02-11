@@ -32,23 +32,23 @@ var Marker = (function (_super) {
     Marker.prototype.setPosition = function () {
         var _this = this;
         if (!this['position']) {
-            this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (position) {
+            this._subscriptions.push(this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (position) {
                 console.log('setting marker position from current location');
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 _this.mapObject.setPosition(latLng);
             }, function (error) {
                 console.error(error);
                 _this.mapObject.setPosition(_this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
-            });
+            }));
         }
         else if (typeof this['position'] === 'string') {
-            this.ng2MapComp.geoCoder.geocode({ address: this['position'] }).subscribe(function (results) {
+            this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({ address: this['position'] }).subscribe(function (results) {
                 console.log('setting marker position from address', _this['position']);
                 _this.mapObject.setPosition(results[0].geometry.location);
             }, function (error) {
                 console.error(error);
                 _this.mapObject.setPosition(_this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
-            });
+            }));
         }
     };
     Marker.decorators = [
@@ -59,9 +59,9 @@ var Marker = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    Marker.ctorParameters = [
+    Marker.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
     return Marker;
 }(base_map_directive_1.BaseMapDirective));
 exports.Marker = Marker;

@@ -8,9 +8,10 @@ var BaseMapDirective = (function () {
         this.inputs = inputs;
         this.outputs = outputs;
         this.initialized$ = new core_1.EventEmitter();
+        this._subscriptions = [];
         this.ng2Map = this.ng2MapComponent['ng2Map'];
         this.optionBuilder = this.ng2MapComponent['optionBuilder'];
-        //all outputs must be initialized
+        // all outputs must be initialized
         this.outputs.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
         this.mapObjectName = mapObjectName;
     }
@@ -55,12 +56,16 @@ var BaseMapDirective = (function () {
     // When destroyed, remove event listener, and delete this object to prevent memory leak
     BaseMapDirective.prototype.ngOnDestroy = function () {
         var _this = this;
+        this._subscriptions.map(function (subscription) { return subscription.unsubscribe(); });
         this.ng2MapComponent.removeFromMapObjectGroup(this.mapObjectName, this.mapObject);
         if (this.mapObject) {
             this.outputs.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
-            delete this.mapObject['setMap'](null);
+            this.mapObject['setMap'](null);
             delete this.mapObject;
         }
+    };
+    BaseMapDirective.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
     };
     return BaseMapDirective;
 }());

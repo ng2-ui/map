@@ -7,8 +7,30 @@ var geo_coder_1 = require('./geo-coder');
  */
 var Ng2Map = (function () {
     function Ng2Map(geoCoder, optionBuilder) {
+        var _this = this;
         this.geoCoder = geoCoder;
         this.optionBuilder = optionBuilder;
+        this.updateGoogleObject = function (object, changes) {
+            var val, currentValue, setMethodName;
+            if (object) {
+                for (var key in changes) {
+                    setMethodName = "set" + key.replace(/^[a-z]/, function (x) { return x.toUpperCase(); });
+                    currentValue = changes[key].currentValue;
+                    if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
+                        //To preserve setMethod name in Observable callback, wrap it as a function, then execute
+                        (function (setMethodName) {
+                            _this.geoCoder.geocode({ address: currentValue }).subscribe(function (results) {
+                                object[setMethodName](results[0].geometry.location);
+                            });
+                        })(setMethodName);
+                    }
+                    else {
+                        val = _this.optionBuilder.googlize(currentValue);
+                        object[setMethodName](val);
+                    }
+                }
+            }
+        };
     }
     Ng2Map.prototype.setObjectEvents = function (definedEvents, thisObj, prefix) {
         definedEvents.forEach(function (definedEvent) {
@@ -22,45 +44,31 @@ var Ng2Map = (function () {
             });
         });
     };
-    Ng2Map.prototype.updateGoogleObject = function (object, changes) {
-        var val, currentValue, setMethodName;
-        if (object) {
-            for (var key in changes) {
-                setMethodName = "set" + key.replace(/^[a-z]/, function (x) { return x.toUpperCase(); });
-                currentValue = changes[key].currentValue;
-                if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
-                    this.geoCoder.geocode({ address: currentValue }).subscribe(function (results) {
-                        object[setMethodName](results[0].geometry.location);
-                    });
-                }
-                else {
-                    val = this.optionBuilder.googlize(currentValue);
-                    object[setMethodName](val);
-                }
-            }
-        }
-    };
-    Ng2Map.prototype.updateProperty = function (object, key, currentValue) {
-        var val, setMethodName;
-        setMethodName = "set" + key.replace(/^[a-z]/, function (x) { return x.toUpperCase(); });
-        if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
-            this.geoCoder.geocode({ address: currentValue }).subscribe(function (results) {
-                object[setMethodName](results[0].geometry.location);
-            });
-        }
-        else {
-            val = this.optionBuilder.googlize(currentValue);
-            object[setMethodName](val);
-        }
-    };
+    //TODO: Is this ever used?, remove it if not used.
+    // updateProperty(object: any, key: string, currentValue: any): void {
+    //   console.log('updateProperty', 'object', object, 'currentValue', currentValue);
+    //
+    //   let val: any, setMethodName: string, that = this;
+    //   setMethodName = `set${key.replace(/^[a-z]/, x => x.toUpperCase()) }`;
+    //   if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
+    //     ((setMethodName) => {
+    //       that.geoCoder.geocode({address: currentValue}).subscribe(results => {
+    //         object[setMethodName](results[0].geometry.location);
+    //       });
+    //     })(setMethodName)
+    //   } else {
+    //     val =  this.optionBuilder.googlize(currentValue);
+    //     object[setMethodName](val);
+    //   }
+    // }
     Ng2Map.decorators = [
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    Ng2Map.ctorParameters = [
+    Ng2Map.ctorParameters = function () { return [
         { type: geo_coder_1.GeoCoder, },
         { type: option_builder_1.OptionBuilder, },
-    ];
+    ]; };
     return Ng2Map;
 }());
 exports.Ng2Map = Ng2Map;

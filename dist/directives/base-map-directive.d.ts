@@ -7,12 +7,13 @@ export declare abstract class BaseMapDirective implements OnInit, OnChanges, OnD
     mapObjectName: string;
     protected inputs: string[];
     protected outputs: string[];
+    initialized$: EventEmitter<any>;
     mapObject: any;
     objectOptions: any;
     ng2Map: Ng2Map;
     optionBuilder: OptionBuilder;
-    initialized$: EventEmitter<any>;
     libraryName: string;
+    protected _subscriptions: any[];
     constructor(ng2MapComponent: Ng2MapComponent, mapObjectName: string, inputs: string[], outputs: string[]);
     ngOnInit(): void;
     initialize(): void;

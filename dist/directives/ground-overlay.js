@@ -37,9 +37,9 @@ var GroundOverlay = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    GroundOverlay.ctorParameters = [
+    GroundOverlay.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
     return GroundOverlay;
 }(base_map_directive_1.BaseMapDirective));
 exports.GroundOverlay = GroundOverlay;
