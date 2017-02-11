@@ -9,6 +9,7 @@ import {
   SimpleChanges,
   AfterViewInit,
   Inject,
+  Output
  } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
@@ -60,7 +61,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   public mapOptions: google.maps.MapOptions = {};
 
   public inputChanges$ = new Subject();
-  public mapReady$: EventEmitter<any> = new EventEmitter();
+  @Output() public mapReady$: EventEmitter<any> = new EventEmitter();
 
   // map objects by group
   public infoWindows: any = {};

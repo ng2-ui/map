@@ -28,15 +28,17 @@ export class Ng2Map {
   }
 
   updateGoogleObject(object: any, changes: SimpleChanges) {
-    let val: any, currentValue: any, setMethodName: string;
+    let val: any, currentValue: any, setMethodName: string, that = this;
     if (object) {
       for (let key in changes) {
         setMethodName = `set${key.replace(/^[a-z]/, x => x.toUpperCase()) }`;
         currentValue = changes[key].currentValue;
         if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
-          this.geoCoder.geocode({address: currentValue}).subscribe(results => {
-            object[setMethodName](results[0].geometry.location);
-          });
+          ((setMethodName) => {
+            that.geoCoder.geocode({address: currentValue}).subscribe(results => {
+              object[setMethodName](results[0].geometry.location);
+            });
+          })(setMethodName)
         } else {
           val =  this.optionBuilder.googlize(currentValue);
           object[setMethodName](val);
@@ -46,12 +48,14 @@ export class Ng2Map {
   }
 
   updateProperty(object: any, key: string, currentValue: any): void {
-    let val: any, setMethodName: string;
+    let val: any, setMethodName: string, that = this;
     setMethodName = `set${key.replace(/^[a-z]/, x => x.toUpperCase()) }`;
     if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
-      this.geoCoder.geocode({address: currentValue}).subscribe(results => {
-        object[setMethodName](results[0].geometry.location);
-      });
+      ((setMethodName) => {
+        that.geoCoder.geocode({address: currentValue}).subscribe(results => {
+          object[setMethodName](results[0].geometry.location);
+        });
+      })(setMethodName)
     } else {
       val =  this.optionBuilder.googlize(currentValue);
       object[setMethodName](val);

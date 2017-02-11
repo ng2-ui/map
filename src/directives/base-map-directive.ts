@@ -1,4 +1,4 @@
-import { EventEmitter, SimpleChanges, OnInit, OnChanges, OnDestroy } from '@angular/core';
+import { EventEmitter, SimpleChanges, OnInit, OnChanges, OnDestroy, Output } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
 import { Ng2Map } from '../services/ng2-map';
@@ -10,7 +10,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
 
   public ng2Map: Ng2Map;
   public optionBuilder: OptionBuilder;
-  public initialized$: EventEmitter<any> = new EventEmitter();
+  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
   public libraryName: string;
   protected _subscriptions = [];
 
