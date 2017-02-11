@@ -56,12 +56,13 @@ const OUTPUTS = [
   `,
 })
 export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
+  @Output() public mapReady$: EventEmitter<any> = new EventEmitter();
+
   public el: HTMLElement;
   public map: google.maps.Map;
   public mapOptions: google.maps.MapOptions = {};
 
   public inputChanges$ = new Subject();
-  @Output() public mapReady$: EventEmitter<any> = new EventEmitter();
 
   // map objects by group
   public infoWindows: any = {};

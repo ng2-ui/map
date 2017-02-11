@@ -2,7 +2,7 @@ Ng2Map Test On Browser
 
 START
   open browser
-  go to http://localhost:9001
+  go to http://localhost:9239
 
 Simple Map
   click "li[routerlink='/simple-map']"
@@ -48,6 +48,15 @@ Map With Options
   verify script "ng2MapRef.map.getZoom() === 18"
   verify script "ng2MapRef.map.getMapTypeId() === 'satellite'"
   verify script "ng2MapRef.map.getTilt() === 45"
+
+Map -- Change Multiple Properties
+  click "li[routerlink='/map-change-multiple-properties']"
+  verify script "ng2MapRef.map.getCenter()"
+  verify script "ng2MapRef.map.getZoom() === 11"
+  verify script "ng2MapRef.map.getCenter().lat() == 42.99"
+  click button#change-props
+  verify script "ng2MapRef.map.getZoom() === 8"
+  verify script "ng2MapRef.map.getCenter().lat() == 40.7127837"
 
 Simple Polyline
   click "li[routerlink='/simple-polyline']"

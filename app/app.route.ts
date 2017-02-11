@@ -24,6 +24,7 @@ import { EventArgumentsComponent } from './map-components/event-arguments.compon
 import { CustomMarkerComponent } from './map-components/custom-marker.component';
 import { CustomMarkerNgForComponent } from './map-components/custom-marker-ng-for.component';
 import { MapWithStreetviewComponent } from './map-components/map-with-streetview';
+import { MapChangeMultiplePropertiesComponent } from "./map-components/map-change-multiple-properties.component";
 
 export const routes: Routes = [
   { path: 'bicycling-layer', component: BicyclingLayerComponent },
@@ -34,6 +35,7 @@ export const routes: Routes = [
   { path: 'kml-layer', component: KmlLayerComponent },
   { path: 'map-with-options', component: MapWithOptionsComponent },
   { path: 'map-with-streetview', component: MapWithStreetviewComponent },
+  { path: 'map-change-multiple-properties', component: MapChangeMultiplePropertiesComponent },
   { path: 'marker-ng-for', component: MarkerNgForComponent },
   { path: 'multiple-map', component: MultipleMapComponent },
   { path: 'places-auto-complete', component: PlacesAutoCompleteComponent },
@@ -64,6 +66,7 @@ export const APP_ROUTER_COMPONENTS = [
   KmlLayerComponent,
   MapWithOptionsComponent,
   MapWithStreetviewComponent,
+  MapChangeMultiplePropertiesComponent,
   MarkerNgForComponent,
   MultipleMapComponent,
   PlacesAutoCompleteComponent,

@@ -5,12 +5,13 @@ import { Ng2Map } from '../services/ng2-map';
 import { Ng2MapComponent } from '../components/ng2-map.component';
 
 export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
+  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
+
   public mapObject: any; // e.g. google.maps.Marker
   public objectOptions: any; // e.g. google.maps.MarkerOptions
 
   public ng2Map: Ng2Map;
   public optionBuilder: OptionBuilder;
-  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
   public libraryName: string;
   protected _subscriptions = [];
 
