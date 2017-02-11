@@ -10,6 +10,7 @@ import {
   AfterViewInit,
   OpaqueToken,
   Inject,
+  Output
  } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
@@ -37,7 +38,7 @@ const OUTPUTS = [
   'bounds_changed', 'center_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'heading_changed', 'idle',
   'typeid_changed', 'mousemove', 'mouseout', 'mouseover', 'projection_changed', 'resize', 'rightclick',
   'tilesloaded', 'tile_changed', 'zoom_changed',
-  //to avoid DOM event conflicts
+  // to avoid DOM event conflicts
   'mapClick', 'mapMouseover', 'mapMouseout', 'mapMousemove', 'mapDrag', 'mapDragend', 'mapDragstart'
 ];
 
@@ -62,7 +63,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   public mapOptions: google.maps.MapOptions = {};
 
   public inputChanges$ = new Subject();
-  public mapReady$: EventEmitter<any> = new EventEmitter();
+  @Output() public mapReady$: EventEmitter<any> = new EventEmitter();
 
   // map objects by group
   public infoWindows: any = {};
@@ -149,7 +150,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
       .debounceTime(1000)
       .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.map, changes));
 
-    //expose map object for test and debugging on window
+    // expose map object for test and debugging on window
     window['ng2MapRef'].map = this.map;
   }
 
@@ -189,7 +190,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     }
   }
 
-  //map.markers, map.circles, map.heatmapLayers.. etc
+  // map.markers, map.circles, map.heatmapLayers.. etc
   addToMapObjectGroup(mapObjectName: string, mapObject: any) {
     let groupName = toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
     this.map[groupName] = this.map[groupName] || [];
