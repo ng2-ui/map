@@ -42,7 +42,7 @@ export class Marker extends BaseMapDirective {
           this.mapObject.setPosition(latLng);
         },
         error => {
-          console.error(error);
+          console.error('ng2-map, error finding the current location');
           this.mapObject.setPosition(this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0,0));
         }
       ));
@@ -53,7 +53,7 @@ export class Marker extends BaseMapDirective {
           this.mapObject.setPosition(results[0].geometry.location);
         },
         error => {
-          console.error(error);
+          console.error('ng2-map, error finding the location from', this['position']);
           this.mapObject.setPosition(this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0,0));
         }
       ));

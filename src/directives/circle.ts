@@ -41,7 +41,7 @@ export class Circle extends BaseMapDirective {
           this.mapObject.setCenter(latLng);
         },
         error => {
-          console.error(error);
+          console.error('ng2-map, error in finding the current position');
           this.mapObject.setCenter(this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0,0));
         }
       ));
@@ -52,7 +52,7 @@ export class Circle extends BaseMapDirective {
           this.mapObject.setCenter(results[0].geometry.location);
         },
         error => {
-          console.error(error);
+          console.error('ng2-map, error in finding location from', this['center']);
           this.mapObject.setCenter(this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0,0));
         }
       ));

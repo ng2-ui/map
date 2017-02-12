@@ -9,8 +9,9 @@ import {
   SimpleChanges,
   AfterViewInit,
   Inject,
-  Output
- } from '@angular/core';
+  Output,
+  Optional
+} from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
@@ -80,8 +81,10 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     public geolocation: NavigatorGeolocation,
     public geoCoder: GeoCoder,
     public ng2Map: Ng2Map,
-    @Inject(NG_MAP_CONFIG_TOKEN) private config
+    @Optional() @Inject(NG_MAP_CONFIG_TOKEN) private config
   ) {
+    this.config = this.config || {apiUrl: 'https://maps.google.com/maps/api/js'};
+
     window['ng2MapRef'] = { zone: this.zone, componentFn: () => this.initializeMap(), map: null};
     if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
       this.mapInitPath = 1;
@@ -112,7 +115,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
       script.id = 'ng2-map-api';
 
       // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
-      let apiUrl = this.config.apiUrl || 'https://maps.google.com/maps/api/js';
+      let apiUrl = this.config.apiUrl ;
       apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
       script.src = apiUrl + 'callback=initNg2Map';
       document.querySelector('body').appendChild(script);
@@ -162,7 +165,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
           this.map.setCenter(latLng);
         },
         error => {
-          console.error(error);
+          console.error('ng2-map: Error finding the current position');
           this.map.setCenter(this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0,0));
         }
       );

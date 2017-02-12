@@ -39,17 +39,20 @@ const COMPONENTS_DIRECTIVES = [
   imports: [ CommonModule ],
   declarations: COMPONENTS_DIRECTIVES,
   exports: [COMPONENTS_DIRECTIVES],
+  providers: [
+    GeoCoder,
+    NavigatorGeolocation,
+    Ng2Map,
+    OptionBuilder
+  ]
 })
 export class Ng2MapModule {
   static forRoot(config: ConfigOption = {}): ModuleWithProviders {
+    console.debug('Ng2MapModule config', config);
     return {
       ngModule: Ng2MapModule,
       providers: [
-        { provide: NG_MAP_CONFIG_TOKEN, useValue: config },
-        GeoCoder,
-        NavigatorGeolocation,
-        Ng2Map,
-        OptionBuilder,
+        { provide: NG_MAP_CONFIG_TOKEN, useValue: config }
       ],
     };
   }

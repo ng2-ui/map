@@ -26,6 +26,7 @@ import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app.route';
     FormsModule,
     HttpModule,
     APP_ROUTER_PROVIDERS,
+    // Ng2MapModule,
     Ng2MapModule.forRoot({
       apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +
       '&libraries=visualization,places,drawing',
