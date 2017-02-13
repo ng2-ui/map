@@ -297,6 +297,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.infoWindows = {};
 	        // map has been fully initialized
 	        this.mapIdledOnce = false;
+	        this.config = this.config || { apiUrl: 'https://maps.google.com/maps/api/js' };
 	        window['ng2MapRef'] = { zone: this.zone, componentFn: function () { return _this.initializeMap(); }, map: null };
 	        if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
 	            this.mapInitPath = 1;
@@ -322,7 +323,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var script = document.createElement('script');
 	            script.id = 'ng2-map-api';
 	            // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
-	            var apiUrl = this.config.apiUrl || 'https://maps.google.com/maps/api/js';
+	            var apiUrl = this.config.apiUrl;
 	            apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
 	            script.src = apiUrl + 'callback=initNg2Map';
 	            document.querySelector('body').appendChild(script);
@@ -361,7 +362,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 	                _this.map.setCenter(latLng);
 	            }, function (error) {
-	                console.error(error);
+	                console.error('ng2-map: Error finding the current position');
 	                _this.map.setCenter(_this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
 	            });
 	        }
@@ -407,6 +408,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            encapsulation: core_1.ViewEncapsulation.None,
 	            template: "\n    <div class=\"google-map\"></div>\n    <ng-content></ng-content>\n  ",
 	        }),
+	        __param(6, core_1.Optional()),
 	        __param(6, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)), 
 	        __metadata('design:paramtypes', [option_builder_1.OptionBuilder, core_1.ElementRef, core_1.NgZone, navigator_geolocation_1.NavigatorGeolocation, geo_coder_1.GeoCoder, ng2_map_1.Ng2Map, Object])
 	    ], Ng2MapComponent);
@@ -1052,7 +1054,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
 	                _this.mapObject.setCenter(latLng);
 	            }, function (error) {
-	                console.error(error);
+	                console.error('ng2-map, error in finding the current position');
 	                _this.mapObject.setCenter(_this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
 	            }));
 	        }
@@ -1060,7 +1062,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
 	                _this.mapObject.setCenter(results[0].geometry.location);
 	            }, function (error) {
-	                console.error(error);
+	                console.error('ng2-map, error in finding location from', _this['center']);
 	                _this.mapObject.setCenter(_this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
 	            }));
 	        }
@@ -1470,7 +1472,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 	                _this.mapObject.setPosition(latLng);
 	            }, function (error) {
-	                console.error(error);
+	                console.error('ng2-map, error finding the current location');
 	                _this.mapObject.setPosition(_this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
 	            }));
 	        }
@@ -1478,7 +1480,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({ address: this['position'] }).subscribe(function (results) {
 	                _this.mapObject.setPosition(results[0].geometry.location);
 	            }, function (error) {
-	                console.error(error);
+	                console.error('ng2-map, error finding the location from', _this['position']);
 	                _this.mapObject.setPosition(_this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
 	            }));
 	        }
@@ -1889,14 +1891,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    Ng2MapModule.forRoot = function (config) {
 	        if (config === void 0) { config = {}; }
+	        console.debug('Ng2MapModule config', config);
 	        return {
 	            ngModule: Ng2MapModule,
 	            providers: [
-	                { provide: config_1.NG_MAP_CONFIG_TOKEN, useValue: config },
-	                geo_coder_1.GeoCoder,
-	                navigator_geolocation_1.NavigatorGeolocation,
-	                ng2_map_1.Ng2Map,
-	                option_builder_1.OptionBuilder,
+	                { provide: config_1.NG_MAP_CONFIG_TOKEN, useValue: config }
 	            ],
 	        };
 	    };
@@ -1905,6 +1904,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            imports: [common_1.CommonModule],
 	            declarations: COMPONENTS_DIRECTIVES,
 	            exports: [COMPONENTS_DIRECTIVES],
+	            providers: [
+	                geo_coder_1.GeoCoder,
+	                navigator_geolocation_1.NavigatorGeolocation,
+	                ng2_map_1.Ng2Map,
+	                option_builder_1.OptionBuilder
+	            ]
 	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Ng2MapModule);

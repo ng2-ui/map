@@ -36,7 +36,7 @@ var Circle = (function (_super) {
                 var latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
                 _this.mapObject.setCenter(latLng);
             }, function (error) {
-                console.error(error);
+                console.error('ng2-map, error in finding the current position');
                 _this.mapObject.setCenter(_this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
             }));
         }
@@ -45,7 +45,7 @@ var Circle = (function (_super) {
                 console.log('setting circle center from address', _this['center']);
                 _this.mapObject.setCenter(results[0].geometry.location);
             }, function (error) {
-                console.error(error);
+                console.error('ng2-map, error in finding location from', _this['center']);
                 _this.mapObject.setCenter(_this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
             }));
         }
@@ -58,9 +58,9 @@ var Circle = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    Circle.ctorParameters = function () { return [
+    Circle.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     return Circle;
 }(base_map_directive_1.BaseMapDirective));
 exports.Circle = Circle;

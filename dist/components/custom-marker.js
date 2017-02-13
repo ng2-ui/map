@@ -142,11 +142,11 @@ var CustomMarker = (function () {
                 },] },
     ];
     /** @nocollapse */
-    CustomMarker.ctorParameters = function () { return [
+    CustomMarker.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
         { type: core_1.ElementRef, },
         { type: ng2_map_1.Ng2Map, },
-    ]; };
+    ];
     return CustomMarker;
 }());
 exports.CustomMarker = CustomMarker;

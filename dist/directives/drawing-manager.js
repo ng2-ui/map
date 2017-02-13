@@ -30,9 +30,9 @@ var DrawingManager = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    DrawingManager.ctorParameters = function () { return [
+    DrawingManager.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     return DrawingManager;
 }(base_map_directive_1.BaseMapDirective));
 exports.DrawingManager = DrawingManager;

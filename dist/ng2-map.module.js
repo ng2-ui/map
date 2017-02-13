@@ -36,14 +36,11 @@ var Ng2MapModule = (function () {
     }
     Ng2MapModule.forRoot = function (config) {
         if (config === void 0) { config = {}; }
+        console.debug('Ng2MapModule config', config);
         return {
             ngModule: Ng2MapModule,
             providers: [
-                { provide: config_1.NG_MAP_CONFIG_TOKEN, useValue: config },
-                geo_coder_1.GeoCoder,
-                navigator_geolocation_1.NavigatorGeolocation,
-                ng2_map_1.Ng2Map,
-                option_builder_1.OptionBuilder,
+                { provide: config_1.NG_MAP_CONFIG_TOKEN, useValue: config }
             ],
         };
     };
@@ -52,10 +49,16 @@ var Ng2MapModule = (function () {
                     imports: [common_1.CommonModule],
                     declarations: COMPONENTS_DIRECTIVES,
                     exports: [COMPONENTS_DIRECTIVES],
+                    providers: [
+                        geo_coder_1.GeoCoder,
+                        navigator_geolocation_1.NavigatorGeolocation,
+                        ng2_map_1.Ng2Map,
+                        option_builder_1.OptionBuilder
+                    ]
                 },] },
     ];
     /** @nocollapse */
-    Ng2MapModule.ctorParameters = function () { return []; };
+    Ng2MapModule.ctorParameters = [];
     return Ng2MapModule;
 }());
 exports.Ng2MapModule = Ng2MapModule;

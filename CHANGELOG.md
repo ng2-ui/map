@@ -6,6 +6,8 @@
   * **0.15.2 (2017-02-11)**
     * Fixed a bug of geocode callback losing setMethod name
     * Exposed `mapReady$` and `initialized$` as an Output
+  * **0.15.3 (2017-02-13)**
+    * Made available for both imports of `Ng2MapModule` and `Ng2MapModule.forRoot()`
 
 # 0.14.0 (2017-01-12)
 

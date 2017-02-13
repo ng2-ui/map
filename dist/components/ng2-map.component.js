@@ -42,6 +42,7 @@ var Ng2MapComponent = (function () {
         this.infoWindows = {};
         // map has been fully initialized
         this.mapIdledOnce = false;
+        this.config = this.config || { apiUrl: 'https://maps.google.com/maps/api/js' };
         window['ng2MapRef'] = { zone: this.zone, componentFn: function () { return _this.initializeMap(); }, map: null };
         if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
             this.mapInitPath = 1;
@@ -67,7 +68,7 @@ var Ng2MapComponent = (function () {
             var script = document.createElement('script');
             script.id = 'ng2-map-api';
             // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
-            var apiUrl = this.config.apiUrl || 'https://maps.google.com/maps/api/js';
+            var apiUrl = this.config.apiUrl;
             apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
             script.src = apiUrl + 'callback=initNg2Map';
             document.querySelector('body').appendChild(script);
@@ -108,7 +109,7 @@ var Ng2MapComponent = (function () {
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 _this.map.setCenter(latLng);
             }, function (error) {
-                console.error(error);
+                console.error('ng2-map: Error finding the current position');
                 _this.map.setCenter(_this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
             });
         }
@@ -154,15 +155,15 @@ var Ng2MapComponent = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2MapComponent.ctorParameters = function () { return [
+    Ng2MapComponent.ctorParameters = [
         { type: option_builder_1.OptionBuilder, },
         { type: core_1.ElementRef, },
         { type: core_1.NgZone, },
         { type: navigator_geolocation_1.NavigatorGeolocation, },
         { type: geo_coder_1.GeoCoder, },
         { type: ng2_map_1.Ng2Map, },
-        { type: undefined, decorators: [{ type: core_1.Inject, args: [config_1.NG_MAP_CONFIG_TOKEN,] },] },
-    ]; };
+        { type: undefined, decorators: [{ type: core_1.Optional }, { type: core_1.Inject, args: [config_1.NG_MAP_CONFIG_TOKEN,] },] },
+    ];
     Ng2MapComponent.propDecorators = {
         'mapReady$': [{ type: core_1.Output },],
     };

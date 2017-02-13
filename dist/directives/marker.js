@@ -37,7 +37,7 @@ var Marker = (function (_super) {
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 _this.mapObject.setPosition(latLng);
             }, function (error) {
-                console.error(error);
+                console.error('ng2-map, error finding the current location');
                 _this.mapObject.setPosition(_this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
             }));
         }
@@ -46,7 +46,7 @@ var Marker = (function (_super) {
                 console.log('setting marker position from address', _this['position']);
                 _this.mapObject.setPosition(results[0].geometry.location);
             }, function (error) {
-                console.error(error);
+                console.error('ng2-map, error finding the location from', _this['position']);
                 _this.mapObject.setPosition(_this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
             }));
         }
@@ -59,9 +59,9 @@ var Marker = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    Marker.ctorParameters = function () { return [
+    Marker.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     return Marker;
 }(base_map_directive_1.BaseMapDirective));
 exports.Marker = Marker;

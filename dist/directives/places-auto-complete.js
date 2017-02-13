@@ -44,10 +44,10 @@ var PlacesAutoComplete = (function () {
                 },] },
     ];
     /** @nocollapse */
-    PlacesAutoComplete.ctorParameters = function () { return [
+    PlacesAutoComplete.ctorParameters = [
         { type: option_builder_1.OptionBuilder, },
         { type: core_1.ElementRef, },
-    ]; };
+    ];
     PlacesAutoComplete.propDecorators = {
         'bounds': [{ type: core_1.Input, args: ['bounds',] },],
         'componentRestrictions': [{ type: core_1.Input, args: ['componentRestrictions',] },],
