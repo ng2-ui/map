@@ -17,7 +17,7 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
 2. **Expose all original Google Maps V3 api to the user without any exception.**
 
-   No hiding, nor manipulation. By doing so, programmers don't need to learnthis module.
+   No hiding, nor manipulation. By doing so, programmers don't need to learn any about this convenient module.
    If you know Google Maps V3 API, there shouldn't be no problem using this module.
 
 ### Usage
@@ -26,7 +26,7 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
         $ npm install ng2-map @types/google-maps --save
 
-2. For SystemJs users only, update `system.config.js` to recognize ng2-map.
+2. _For SystemJs users only_, update `system.config.js` to recognize ng2-map.
 
         map['ng2-map'] = 'node_modules/ng2-map/dist';
         packages['ng2-map'] = { main: 'ng2-map.umd.js', defaultExtension: 'js' }
@@ -41,24 +41,16 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
         import { Ng2MapModule} from 'ng2-map';
 
         @NgModule({
-          imports: [BrowserModule, FormsModule, Ng2MapModule],
+          imports: [
+            BrowserModule, 
+            FormsModule, 
+            Ng2MapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=MY_GOOGLE_API_KEY')
+          ],
           declarations: [AppComponent],
           bootstrap: [ AppComponent ]
         })
         export class AppModule { }
 
-4. Your Google maps may require API key, then override `apiUrl`
-
-        import { Component } from '@angular/core';
-        import { Ng2MapComponent } from 'ng2-map';
-
-        @Component({ ... })
-        export class AppComponent {
-
-          constructor() {
-            Ng2MapComponent['apiUrl'] = 'https://maps.google.com/maps/api/js?key=XXXXXXXXXXXXXXXXXXXXXXXXXX';
-          }
-        }
 
 ## Use it in your template
 
@@ -73,92 +65,47 @@ or,
 For full example, please check out `app` directory to see the example of;
 
   - `main.ts`
-  -  and `app.component.ts`.
+  -  and `app/map-components`.
 
-## How to get instance of a map
+## How to get a instance(s) of a map or markers
 
-When map is ready Ng2MapComonent fires mapReady$ event with `map` object
+* Ng2MapComponent fires `mapReady$` event with `map` object
+* Each ng2-map directives fires `initialized$` event with its Google map object, e.g. google.maps.Marker
+* Other way is to get a map object is to any event. All event has `target` value, which is a Google map object.
 
 ```HTML
-<ng2-map zoom="13" center="37.775, -122.434" mapTypeId="satellite">
+<ng2-map 
+  zoom="13" 
+  center="37.775, -122.434" 
+  (mapReady$)="onMapReady($event)"
+  (mapClick)="onMapClick($event)"
+  (idle)="onIdle($event)"
+  mapTypeId="satellite">
+    <marker *ngFor="let pos of positions" 
+      [position]="pos"
+      (initialized$)="onMarkerInit($event)"></marker>
 </ng2-map>
 ```
 
 In your app component, 
 
 ```TypeScript
-import {Ng2MapComponent} from "ng2-map";
-
 export class MyAppComponent {
-  @ViewChild(Ng2MapComponent) ng2MapComponent: Ng2MapComponent;
-  public map: google.maps.Map;
-  ngOnInit() {
-    this.ng2MapComponent.mapReady$.subscribe(map => {
-      this.map = map;
-    })
+  onMapReady(map) {
+    console.log('map', map);
+    console.log('markers', map.markers);  // to get all markers as an array 
   }
-}
-```
-
-## How to get instance of a map object
-
-### To get it from `@ViewChild` instance
-
-When any map directive is initialized, each directive  fires initialized$ event with its object.
-For HTML like the following, 
-```HTML
-<ng2-map zoom="13" center="37.775, -122.434" mapTypeId="satellite">
-  <marker position="37.775, -122.434"></marker>
-</ng2-map>
-```
-
-In your app component, use initialized$ event of a map object component, which is a ViewChild
-
-```TypeScript
-import {Marker} from "ng2-map";
-
-export class MyAppComponent {
-  @ViewChild(Marker) marker: Marker;
-  public marker: google.maps.Marker;
-  ngOnInit() {
-    this.Marker.initialized$.subscribe(marker => {
-      this.marker = marker;
-    })
+  onIdle(event) {
+    console.log('map', event.target);
   }
-}
-```
-
-### To get grouped instances from a map instance
-
-```TypeScript
-import {Ng2MapComponent} from "ng2-map";
-
-export class MyAppComponent {
-  ngOnInit() {
-    this.ng2MapComponent.mapReady$.subscribe(map => {
-      console.log('all markers', map.markers);
-    })
+  onMarkerInit(marker) {
+    console.log('marker', marker);
   }
-}
-```
-
-## How to access event of an object
-Every event has a google map event as a parameter. 
-In addition, event also has a target, which is a google map object.
-
-HTML Example
-```
-  <ng2-map zoom="4" center="-25.363882, 131.044922" (click)="onClick($event)">
-    <marker *ngFor="let pos of positions" [position]="pos"></marker>
-  </ng2-map>
-```
-Javascript Example
-```
-  onClick(event) {
-    if (event instanceof MouseEvent) return;
+  onMapClick(event) {
     this.positions.push(event.latLng);
     event.target.panTo(event.latLng);
   }
+}
 ```
 
 ## Need Contributors
