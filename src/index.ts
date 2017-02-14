@@ -5,6 +5,7 @@ import { NG_MAP_CONFIG_TOKEN, ConfigOption } from './services/config';
 
 import { Ng2MapComponent } from './components/ng2-map.component';
 import { InfoWindow } from './components/info-window';
+import { CustomMarker } from './components/custom-marker';
 
 import { Circle } from './directives/circle';
 import { DataLayer } from './directives/data-layer';
@@ -28,6 +29,7 @@ import { Ng2MapModule } from './ng2-map.module';
 export {
   BicyclingLayer,
   Circle,
+  CustomMarker,
   DataLayer,
   DirectionsRenderer,
   DrawingManager,

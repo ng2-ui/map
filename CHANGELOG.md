@@ -11,7 +11,7 @@
 
 # 0.14.0 (2017-01-12)
 
-  * new diective, custom-marker
+  * new directive, custom-marker
 
 # 0.13.2 (2016-12-20)
 
