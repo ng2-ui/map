@@ -59,11 +59,11 @@
     "rimraf": "^2.5.3",
     "rxjs": "^5.0.0-rc.1",
     "strip-loader": "^0.1.2",
-    "ts-loader": "^1.0.0",
+    "ts-loader": "^2.0.0",
     "tslint": "^3.15.1",
     "typescript": "2.0.10",
-    "webpack": "^1.13.0",
-    "webpack-dev-server": "^1.16.2",
+    "webpack": "^2.2.0",
+    "webpack-dev-server": "^2.2.0",
     "webtest": "^0.3.6",
     "zone.js": "^0.6.21"
   }
