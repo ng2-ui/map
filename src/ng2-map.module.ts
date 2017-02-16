@@ -48,7 +48,6 @@ const COMPONENTS_DIRECTIVES = [
 })
 export class Ng2MapModule {
   static forRoot(config: ConfigOption = {}): ModuleWithProviders {
-    console.debug('Ng2MapModule config', config);
     return {
       ngModule: Ng2MapModule,
       providers: [
