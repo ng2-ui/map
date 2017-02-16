@@ -8,6 +8,9 @@
     * Exposed `mapReady$` and `initialized$` as an Output
   * **0.15.3 (2017-02-13)**
     * Made available for both imports of `Ng2MapModule` and `Ng2MapModule.forRoot()`
+  * **0.15.4 (2017-02-16)**
+    * Upgraded webpack from 1.* tp 2.*
+    * Fixed multiple map instance not loading on the first page.
 
 # 0.14.0 (2017-01-12)
 

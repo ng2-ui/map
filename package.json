@@ -1,6 +1,6 @@
 {
   "name": "ng2-map",
-  "version": "0.15.3",
+  "version": "0.15.4",
   "description": "Angular2 Google Map`",
   "license": "MIT",
   "main": "dist/ng2-map.umd.js",
@@ -64,7 +64,7 @@
     "typescript": "2.0.10",
     "webpack": "^2.2.0",
     "webpack-dev-server": "^2.2.0",
-    "webtest": "^0.3.6",
+    "webtest": "^0.3.8",
     "zone.js": "^0.6.21"
   }
 }

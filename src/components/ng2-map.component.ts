@@ -59,6 +59,7 @@ const OUTPUTS = [
 export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   @Output() public mapReady$: EventEmitter<any> = new EventEmitter();
 
+  public mapIndex: number;
   public el: HTMLElement;
   public map: google.maps.Map;
   public mapOptions: google.maps.MapOptions = {};
@@ -85,7 +86,9 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   ) {
     this.config = this.config || {apiUrl: 'https://maps.google.com/maps/api/js'};
 
-    window['ng2MapRef'] = { zone: this.zone, componentFn: () => this.initializeMap(), map: null};
+    window['ng2MapRef'] = window['ng2MapRef'] || [];
+    this.mapIndex = window['ng2MapRef'].length;
+    window['ng2MapRef'].push({ zone: this.zone, componentFn: () => this.initializeMap()});
     if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
       this.mapInitPath = 1;
       this.addGoogleMapsApi();
@@ -108,7 +111,10 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
 
   addGoogleMapsApi(): void {
     window['initNg2Map'] = function() {
-      window['ng2MapRef'].zone.run(function() { window['ng2MapRef'].componentFn(); });
+      window['ng2MapRef'].forEach( ng2MapRef => {
+        ng2MapRef.zone.run(function() { ng2MapRef.componentFn(); });
+      });
+      window['ng2MapRef'] = [];
     };
     if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ng2-map-api')) {
       let script = document.createElement( 'script' );
@@ -153,6 +159,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
       .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.map, changes));
 
     // expose map object for test and debugging on window
+    console.log('this.mapIndex', this.mapIndex);
     window['ng2MapRef'].map = this.map;
   }
 

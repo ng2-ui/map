@@ -50,6 +50,7 @@ export declare class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewI
     options: any;
     geoFallbackCenter: any;
     mapReady$: EventEmitter<any>;
+    mapIndex: number;
     el: HTMLElement;
     map: google.maps.Map;
     mapOptions: google.maps.MapOptions;
