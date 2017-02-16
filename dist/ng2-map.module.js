@@ -36,7 +36,6 @@ var Ng2MapModule = (function () {
     }
     Ng2MapModule.forRoot = function (config) {
         if (config === void 0) { config = {}; }
-        console.debug('Ng2MapModule config', config);
         return {
             ngModule: Ng2MapModule,
             providers: [
