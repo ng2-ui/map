@@ -2,7 +2,7 @@ import { Input, Directive, SimpleChanges } from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
-import { NavigatorGeolocation } from "../services/navigator-geolocation";
+import { NavigatorGeolocation } from '../services/navigator-geolocation';
 
 const INPUTS = [
   'directions', 'draggable', 'hideRouteList', 'infoWindow', 'panel', 'markerOptions',
@@ -55,7 +55,7 @@ export class DirectionsRenderer extends BaseMapDirective {
 
   ngOnChanges(changes: SimpleChanges) {
     let newOptions = {};
-    for(var key in changes) {
+    for (let key in changes) {
       if (this.inputs.indexOf(key) !== -1) {
         newOptions[key] = this.optionBuilder.googlize(changes[key].currentValue);
       }
@@ -68,7 +68,7 @@ export class DirectionsRenderer extends BaseMapDirective {
   showDirections(directionsRequest: google.maps.DirectionsRequest) {
     this.directionsService.route(directionsRequest,
       (response: any, status: any) =>  {
-        if (status == google.maps.DirectionsStatus.OK) {
+        if (status === google.maps.DirectionsStatus.OK) {
           this.directionsRenderer.setDirections(response);
         } else {
           console.error('Directions request failed due to ' + status);

@@ -19,7 +19,7 @@ import { NG_MAP_CONFIG_TOKEN } from '../services/config';
 import { GeoCoder } from '../services/geo-coder';
 import { Ng2Map } from '../services/ng2-map';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/debounceTime';
+import { debounceTime } from 'rxjs/operator/debounceTime';
 import { IJson, toCamelCase } from '../services/util';
 
 const INPUTS = [
@@ -154,8 +154,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     });
 
     // update map when input changes
-    this.inputChanges$
-      .debounceTime(1000)
+    debounceTime.call(this.inputChanges$, 1000)
       .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.map, changes));
 
     // expose map object for test and debugging on window
@@ -173,7 +172,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
         },
         error => {
           console.error('ng2-map: Error finding the current position');
-          this.map.setCenter(this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0,0));
+          this.map.setCenter(this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
         }
       );
     }
@@ -184,7 +183,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
           this.map.setCenter(results[0].geometry.location);
         },
         error => {
-          this.map.setCenter(this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0,0));
+          this.map.setCenter(this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
         });
     }
   }

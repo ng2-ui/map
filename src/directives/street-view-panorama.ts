@@ -32,7 +32,7 @@ export class StreetViewPanorama extends BaseMapDirective {
 
     let element: HTMLElement;
     if (this.objectOptions.selector) {
-      //noinspection TypeScriptValidateTypes
+      // noinspection TypeScriptValidateTypes
       element = document.querySelector(this['selector']);
       delete this.objectOptions.selector;
     } else {

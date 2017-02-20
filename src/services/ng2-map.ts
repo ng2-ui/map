@@ -34,7 +34,7 @@ export class Ng2Map {
         setMethodName = `set${key.replace(/^[a-z]/, x => x.toUpperCase()) }`;
         currentValue = changes[key].currentValue;
         if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
-          //To preserve setMethod name in Observable callback, wrap it as a function, then execute
+          // To preserve setMethod name in Observable callback, wrap it as a function, then execute
           ((setMethodName) => {
             this.geoCoder.geocode({address: currentValue}).subscribe(results => {
               object[setMethodName](results[0].geometry.location);

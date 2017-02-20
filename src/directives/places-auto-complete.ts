@@ -1,4 +1,4 @@
-import {Input, Output, Directive, EventEmitter, ElementRef, NgZone} from '@angular/core';
+import { Input, Output, Directive, EventEmitter, ElementRef } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
 import { Ng2MapComponent } from '../components/ng2-map.component';
@@ -30,7 +30,7 @@ export class PlacesAutoComplete  {
   }
 
   // only called when map is ready
-  initialize = ():void => {
+  initialize = (): void => {
     this.objectOptions =
       this.optionBuilder.googlizeAllInputs(['bounds', 'componentRestrictions', 'types'], this);
     console.log('places autocomplete options', this.objectOptions);

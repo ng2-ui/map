@@ -6,7 +6,7 @@ import { Ng2MapComponent } from '../components/ng2-map.component';
 const INPUTS = [
   'center', 'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'map', 'radius',
   'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex', 'options',
-  //ng2-map specific inputs
+  // ng2-map specific inputs
   'geoFallbackCenter'
 ];
 const OUTPUTS = [
@@ -42,7 +42,7 @@ export class Circle extends BaseMapDirective {
         },
         error => {
           console.error('ng2-map, error in finding the current position');
-          this.mapObject.setCenter(this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0,0));
+          this.mapObject.setCenter(this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
         }
       ));
     } else if (typeof this['center'] === 'string') {
@@ -53,7 +53,7 @@ export class Circle extends BaseMapDirective {
         },
         error => {
           console.error('ng2-map, error in finding location from', this['center']);
-          this.mapObject.setCenter(this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0,0));
+          this.mapObject.setCenter(this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
         }
       ));
     }

@@ -8,6 +8,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+import { debounceTime } from 'rxjs/operator/debounceTime';
 import { Ng2Map } from '../services/ng2-map';
 import { Ng2MapComponent } from './ng2-map.component';
 
@@ -18,7 +19,7 @@ const OUTPUTS = [
   'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
   'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
   'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged',
-  //to avoid DOM event conflicts
+  // to avoid DOM event conflicts
   'map_click', 'map_mouseover', 'map_mouseout', 'map_mouseup', 'map_mousedown', 'map_drag', 'map_dragend'
 ];
 
@@ -162,8 +163,7 @@ export class CustomMarker implements OnInit, OnChanges, OnDestroy {
     this.ng2Map.setObjectEvents(OUTPUTS, this, 'mapObject');
 
     // update object when input changes
-    this.inputChanges$
-      .debounceTime(1000)
+    debounceTime.call(this.inputChanges$, 1000)
       .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.mapObject, changes));
 
     this.ng2MapComponent.addToMapObjectGroup('CustomMarker', this.mapObject);
