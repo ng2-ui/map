@@ -6,7 +6,7 @@ import { Ng2MapComponent } from '../components/ng2-map.component';
 const INPUTS = [
   'anchorPoint', 'animation', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity',
   'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex', 'options',
-  //ng2-map specific inputs
+  // ng2-map specific inputs
   'geoFallbackPosition'
 ];
 const OUTPUTS = [
@@ -43,7 +43,7 @@ export class Marker extends BaseMapDirective {
         },
         error => {
           console.error('ng2-map, error finding the current location');
-          this.mapObject.setPosition(this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0,0));
+          this.mapObject.setPosition(this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
         }
       ));
     } else if (typeof this['position'] === 'string') {
@@ -54,7 +54,7 @@ export class Marker extends BaseMapDirective {
         },
         error => {
           console.error('ng2-map, error finding the location from', this['position']);
-          this.mapObject.setPosition(this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0,0));
+          this.mapObject.setPosition(this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
         }
       ));
     }

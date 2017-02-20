@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 
 /**
  *   Provides [defered/promise API](https://docs.angularjs.org/api/ng/service/$q)
@@ -10,19 +11,18 @@ import { Subject } from 'rxjs/Subject';
 export class GeoCoder {
 
   geocode(options: google.maps.GeocoderRequest) {
+    const geocoder = new google.maps.Geocoder();
 
-    let geocode$ = new Subject();
-    let geocoder = new google.maps.Geocoder();
-
-    geocoder.geocode(options, function (results, status) {
-      if (status === google.maps.GeocoderStatus.OK) {
-        geocode$.next(results);
-      } else {
-        geocode$.error(results);
-      }
+    return new Observable((responseObserver: Observer<any>) => {
+      geocoder.geocode(options, function (results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+          responseObserver.next(results);
+          responseObserver.complete();
+        } else {
+          responseObserver.error(results);
+        }
+      });
     });
-
-    return geocode$;
   };
 
 }

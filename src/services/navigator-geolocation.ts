@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 import { IJson } from './util';
 
 /**
@@ -12,19 +12,20 @@ export class NavigatorGeolocation {
   getCurrentPosition(geoLocationOptions?: IJson): Observable<any> {
     geoLocationOptions = geoLocationOptions || { timeout: 5000 };
 
-    let getCurrentPosition$ = new Subject();
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => getCurrentPosition$.next(position),
-        (evt) => getCurrentPosition$.error(evt),
-        geoLocationOptions
-      );
-    } else {
-      getCurrentPosition$.error('Browser Geolocation service failed.');
-    }
-
-    return getCurrentPosition$;
+    return new Observable<any>((responseObserver: Observer<any>) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            responseObserver.next(position);
+            responseObserver.complete();
+          },
+          (evt) => responseObserver.error(evt),
+          geoLocationOptions
+        );
+      } else {
+        responseObserver.error('Browser Geolocation service failed.');
+      }
+    });
   };
 
 }

@@ -8,12 +8,9 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/debounceTime';
-
-import { OptionBuilder } from '../services/option-builder';
+import { debounceTime } from 'rxjs/operator/debounceTime';
 import { Ng2Map } from '../services/ng2-map';
 import { Ng2MapComponent } from './ng2-map.component';
-
 
 const INPUTS = [
   'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
@@ -81,8 +78,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     this.ng2Map.setObjectEvents(OUTPUTS, this, 'infoWindow');
 
     // update object when input changes
-    this.inputChanges$
-      .debounceTime(1000)
+    debounceTime.call(this.inputChanges$, 1000)
       .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.infoWindow, changes));
 
     this.ng2MapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
