@@ -9,6 +9,10 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 * [Plunker Example](https://plnkr.co/edit/6e1qWK?p=preview)
 * [Place Auto Complete Plunker Example](https://plnkr.co/edit/n3aELSNoOZKThjkCHDJ3?p=preview)
 
+If you like this, you also may like these;
+* [ng-map](https://github.com/allenhwkim/angularjs-google-maps) Google Maps Wrapper for Angular 1.*
+* [react-openlayers](https://github.com/allenhwkim/react-openlayers) React + OpenLayers
+
 ### Design Principle
 
 1. **All google properties must be able to be defined in html without Javascript.**
