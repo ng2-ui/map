@@ -12,8 +12,9 @@
     * Upgraded webpack from 1.* tp 2.*
     * Fixed multiple map instance not loading on the first page.
   * **0.15.5 (2017-02-16)** Removed debug line
-  * **0.15.6 (2017-02-16)**
+  * **0.15.6/7 (2017-02-16)**
     * Fixed custom marker positioning
+    * issue #91, #92 fixed bug of not displaying map with places-autocomplete
 
 # 0.14.0 (2017-01-12)
 

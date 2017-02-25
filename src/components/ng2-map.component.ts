@@ -110,7 +110,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   }
 
   addGoogleMapsApi(): void {
-    window['initNg2Map'] = function() {
+    window['initNg2Map'] = window['initNg2Map'] || function() {
       window['ng2MapRef'].forEach( ng2MapRef => {
         ng2MapRef.zone.run(function() { ng2MapRef.componentFn(); });
       });

@@ -102,8 +102,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 var core_1 = __webpack_require__(0);
 var option_builder_1 = __webpack_require__(5);
-var navigator_geolocation_1 = __webpack_require__(6);
-var config_1 = __webpack_require__(7);
+var navigator_geolocation_1 = __webpack_require__(7);
+var config_1 = __webpack_require__(6);
 var geo_coder_1 = __webpack_require__(3);
 var ng2_map_1 = __webpack_require__(4);
 var Subject_1 = __webpack_require__(8);
@@ -728,6 +728,16 @@ exports.OptionBuilder = OptionBuilder;
 
 "use strict";
 
+var core_1 = __webpack_require__(0);
+exports.NG_MAP_CONFIG_TOKEN = new core_1.OpaqueToken('NG_MAP_CONFIG_TOKEN');
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -767,16 +777,6 @@ var NavigatorGeolocation = (function () {
     return NavigatorGeolocation;
 }());
 exports.NavigatorGeolocation = NavigatorGeolocation;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var core_1 = __webpack_require__(0);
-exports.NG_MAP_CONFIG_TOKEN = new core_1.OpaqueToken('NG_MAP_CONFIG_TOKEN');
 
 
 /***/ }),
@@ -1275,7 +1275,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = __webpack_require__(0);
 var base_map_directive_1 = __webpack_require__(2);
 var ng2_map_component_1 = __webpack_require__(1);
-var navigator_geolocation_1 = __webpack_require__(6);
+var navigator_geolocation_1 = __webpack_require__(7);
 var INPUTS = [
     'directions', 'draggable', 'hideRouteList', 'infoWindow', 'panel', 'markerOptions',
     'polylineOptions', 'preserveViewport', 'routeIndex', 'suppressBicyclingLayer',
@@ -1630,14 +1630,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var core_1 = __webpack_require__(0);
+var config_1 = __webpack_require__(6);
 var option_builder_1 = __webpack_require__(5);
-var ng2_map_component_1 = __webpack_require__(1);
 var PlacesAutoComplete = (function () {
-    function PlacesAutoComplete(optionBuilder, elementRef) {
+    function PlacesAutoComplete(optionBuilder, elementRef, zone, config) {
         var _this = this;
         this.optionBuilder = optionBuilder;
         this.elementRef = elementRef;
+        this.zone = zone;
+        this.config = config;
         this.place_changed = new core_1.EventEmitter();
         this.initialized$ = new core_1.EventEmitter();
         // only called when map is ready
@@ -1645,9 +1650,20 @@ var PlacesAutoComplete = (function () {
             _this.objectOptions =
                 _this.optionBuilder.googlizeAllInputs(['bounds', 'componentRestrictions', 'types'], _this);
             _this.autocomplete = new google.maps.places.Autocomplete(_this.elementRef.nativeElement, _this.objectOptions);
-            _this.autocomplete.addListener('place_changed', function (place) { return _this.place_changed.emit(); });
+            _this.autocomplete.addListener('place_changed', function (place) {
+                _this.place_changed.emit(_this.autocomplete.getPlace());
+            });
             _this.initialized$.emit(_this.autocomplete);
         };
+        this.config = this.config
+            || { apiUrl: 'https://maps.google.com/maps/api/js?libraries=places' };
+        //treat this as ng2Map because it requires google api on root level
+        window['ng2MapRef'] = window['ng2MapRef'] || [];
+        this.mapIndex = window['ng2MapRef'].length;
+        window['ng2MapRef'].push({
+            zone: this.zone,
+            componentFn: function () { return _this.initialize(); }
+        });
         if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
             this.addGoogleMapsApi();
         }
@@ -1656,14 +1672,19 @@ var PlacesAutoComplete = (function () {
         }
     }
     PlacesAutoComplete.prototype.addGoogleMapsApi = function () {
-        window['initializePlacesAutoComplete'] = this.initialize;
+        window['initNg2Map'] = window['initNg2Map'] || function () {
+            window['ng2MapRef'].forEach(function (ng2MapRef) {
+                ng2MapRef.zone.run(function () { ng2MapRef.componentFn(); });
+            });
+            window['ng2MapRef'] = [];
+        };
         if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ng2-map-api')) {
             var script = document.createElement('script');
             script.id = 'ng2-map-api';
             // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
-            var apiUrl = ng2_map_component_1.Ng2MapComponent['apiUrl'] || 'https://maps.google.com/maps/api/js';
+            var apiUrl = this.config.apiUrl;
             apiUrl += apiUrl.indexOf('?') ? '&' : '?';
-            script.src = apiUrl + 'callback=initializePlacesAutoComplete';
+            script.src = apiUrl + 'callback=initNg2Map';
             document.querySelector('body').appendChild(script);
         }
     };
@@ -1690,8 +1711,10 @@ var PlacesAutoComplete = (function () {
     PlacesAutoComplete = __decorate([
         core_1.Directive({
             selector: '[places-auto-complete]'
-        }), 
-        __metadata('design:paramtypes', [option_builder_1.OptionBuilder, core_1.ElementRef])
+        }),
+        __param(3, core_1.Optional()),
+        __param(3, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)), 
+        __metadata('design:paramtypes', [option_builder_1.OptionBuilder, core_1.ElementRef, core_1.NgZone, Object])
     ], PlacesAutoComplete);
     return PlacesAutoComplete;
 }());
@@ -2043,8 +2066,8 @@ var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(30);
 var option_builder_1 = __webpack_require__(5);
 var geo_coder_1 = __webpack_require__(3);
-var navigator_geolocation_1 = __webpack_require__(6);
-var config_1 = __webpack_require__(7);
+var navigator_geolocation_1 = __webpack_require__(7);
+var config_1 = __webpack_require__(6);
 var ng2_map_component_1 = __webpack_require__(1);
 var info_window_1 = __webpack_require__(11);
 var custom_marker_1 = __webpack_require__(10);
@@ -2116,11 +2139,11 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_30__;
 
 var bicycling_layer_1 = __webpack_require__(12);
 exports.BicyclingLayer = bicycling_layer_1.BicyclingLayer;
-var navigator_geolocation_1 = __webpack_require__(6);
+var navigator_geolocation_1 = __webpack_require__(7);
 exports.NavigatorGeolocation = navigator_geolocation_1.NavigatorGeolocation;
 var option_builder_1 = __webpack_require__(5);
 exports.OptionBuilder = option_builder_1.OptionBuilder;
-var config_1 = __webpack_require__(7);
+var config_1 = __webpack_require__(6);
 exports.NG_MAP_CONFIG_TOKEN = config_1.NG_MAP_CONFIG_TOKEN;
 var ng2_map_component_1 = __webpack_require__(1);
 exports.Ng2MapComponent = ng2_map_component_1.Ng2MapComponent;

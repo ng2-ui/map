@@ -1,9 +1,11 @@
 /// <reference types="googlemaps" />
-import { EventEmitter, ElementRef } from '@angular/core';
+import { EventEmitter, ElementRef, NgZone } from '@angular/core';
 import { OptionBuilder } from '../services/option-builder';
 export declare class PlacesAutoComplete {
     optionBuilder: OptionBuilder;
     elementRef: ElementRef;
+    zone: NgZone;
+    private config;
     bounds: any;
     componentRestrictions: any;
     types: string[];
@@ -11,7 +13,8 @@ export declare class PlacesAutoComplete {
     initialized$: EventEmitter<any>;
     objectOptions: any;
     autocomplete: google.maps.places.Autocomplete;
-    constructor(optionBuilder: OptionBuilder, elementRef: ElementRef);
-    initialize: () => void;
+    private mapIndex;
+    constructor(optionBuilder: OptionBuilder, elementRef: ElementRef, zone: NgZone, config: any);
     addGoogleMapsApi(): void;
+    initialize: () => void;
 }
