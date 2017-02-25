@@ -1,6 +1,6 @@
 "use strict";
 var core_1 = require('@angular/core');
-var Subject_1 = require('rxjs/Subject');
+var Observable_1 = require('rxjs/Observable');
 /**
  *  service for navigator.geolocation methods
  */
@@ -9,14 +9,17 @@ var NavigatorGeolocation = (function () {
     }
     NavigatorGeolocation.prototype.getCurrentPosition = function (geoLocationOptions) {
         geoLocationOptions = geoLocationOptions || { timeout: 5000 };
-        var getCurrentPosition$ = new Subject_1.Subject();
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) { return getCurrentPosition$.next(position); }, function (evt) { return getCurrentPosition$.error(evt); }, geoLocationOptions);
-        }
-        else {
-            getCurrentPosition$.error('Browser Geolocation service failed.');
-        }
-        return getCurrentPosition$;
+        return new Observable_1.Observable(function (responseObserver) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    responseObserver.next(position);
+                    responseObserver.complete();
+                }, function (evt) { return responseObserver.error(evt); }, geoLocationOptions);
+            }
+            else {
+                responseObserver.error('Browser Geolocation service failed.');
+            }
+        });
     };
     ;
     NavigatorGeolocation.decorators = [

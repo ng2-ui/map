@@ -7,7 +7,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var core_1 = require('@angular/core');
 var base_map_directive_1 = require('./base-map-directive');
 var ng2_map_component_1 = require('../components/ng2-map.component');
-var navigator_geolocation_1 = require("../services/navigator-geolocation");
+var navigator_geolocation_1 = require('../services/navigator-geolocation');
 var INPUTS = [
     'directions', 'draggable', 'hideRouteList', 'infoWindow', 'panel', 'markerOptions',
     'polylineOptions', 'preserveViewport', 'routeIndex', 'suppressBicyclingLayer',
@@ -50,7 +50,7 @@ var DirectionsRenderer = (function (_super) {
     DirectionsRenderer.prototype.showDirections = function (directionsRequest) {
         var _this = this;
         this.directionsService.route(directionsRequest, function (response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
+            if (status === google.maps.DirectionsStatus.OK) {
                 _this.directionsRenderer.setDirections(response);
             }
             else {

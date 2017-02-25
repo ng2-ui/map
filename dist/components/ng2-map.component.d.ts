@@ -5,7 +5,6 @@ import { NavigatorGeolocation } from '../services/navigator-geolocation';
 import { GeoCoder } from '../services/geo-coder';
 import { Ng2Map } from '../services/ng2-map';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/debounceTime';
 import { IJson } from '../services/util';
 export declare class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     optionBuilder: OptionBuilder;

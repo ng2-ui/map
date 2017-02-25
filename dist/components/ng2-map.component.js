@@ -6,7 +6,7 @@ var config_1 = require('../services/config');
 var geo_coder_1 = require('../services/geo-coder');
 var ng2_map_1 = require('../services/ng2-map');
 var Subject_1 = require('rxjs/Subject');
-require('rxjs/add/operator/debounceTime');
+var debounceTime_1 = require('rxjs/operator/debounceTime');
 var util_1 = require('../services/util');
 var INPUTS = [
     'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
@@ -100,8 +100,7 @@ var Ng2MapComponent = (function () {
             }
         });
         // update map when input changes
-        this.inputChanges$
-            .debounceTime(1000)
+        debounceTime_1.debounceTime.call(this.inputChanges$, 1000)
             .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.map, changes); });
         // expose map object for test and debugging on window
         console.log('this.mapIndex', this.mapIndex);

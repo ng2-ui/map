@@ -10,7 +10,7 @@ var ng2_map_component_1 = require('../components/ng2-map.component');
 var INPUTS = [
     'center', 'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'map', 'radius',
     'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex', 'options',
-    //ng2-map specific inputs
+    // ng2-map specific inputs
     'geoFallbackCenter'
 ];
 var OUTPUTS = [

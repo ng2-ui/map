@@ -2,7 +2,7 @@
 import { SimpleChanges } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
-import { NavigatorGeolocation } from "../services/navigator-geolocation";
+import { NavigatorGeolocation } from '../services/navigator-geolocation';
 export declare class DirectionsRenderer extends BaseMapDirective {
     geolocation: NavigatorGeolocation;
     directions: any;

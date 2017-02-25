@@ -10,7 +10,7 @@ var ng2_map_component_1 = require('../components/ng2-map.component');
 var INPUTS = [
     'anchorPoint', 'animation', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity',
     'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex', 'options',
-    //ng2-map specific inputs
+    // ng2-map specific inputs
     'geoFallbackPosition'
 ];
 var OUTPUTS = [

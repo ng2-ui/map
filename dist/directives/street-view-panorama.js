@@ -29,7 +29,7 @@ var StreetViewPanorama = (function (_super) {
         console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
         var element;
         if (this.objectOptions.selector) {
-            //noinspection TypeScriptValidateTypes
+            // noinspection TypeScriptValidateTypes
             element = document.querySelector(this['selector']);
             delete this.objectOptions.selector;
         }

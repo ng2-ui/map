@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@angular/core"), require("rxjs/Subject"), require("rxjs/add/operator/debounceTime"), require("@angular/common"));
+		module.exports = factory(require("@angular/core"), require("rxjs/Subject"), require("rxjs/operator/debounceTime"), require("rxjs/Observable"), require("@angular/common"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@angular/core", "rxjs/Subject", "rxjs/add/operator/debounceTime", "@angular/common"], factory);
+		define(["@angular/core", "rxjs/Subject", "rxjs/operator/debounceTime", "rxjs/Observable", "@angular/common"], factory);
 	else if(typeof exports === 'object')
-		exports["ng2-map"] = factory(require("@angular/core"), require("rxjs/Subject"), require("rxjs/add/operator/debounceTime"), require("@angular/common"));
+		exports["ng2-map"] = factory(require("@angular/core"), require("rxjs/Subject"), require("rxjs/operator/debounceTime"), require("rxjs/Observable"), require("@angular/common"));
 	else
-		root["ng2-map"] = factory(root["@angular/core"], root["rxjs/Subject"], root["rxjs/add/operator/debounceTime"], root["@angular/common"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_6__, __WEBPACK_EXTERNAL_MODULE_27__, __WEBPACK_EXTERNAL_MODULE_29__) {
+		root["ng2-map"] = factory(root["@angular/core"], root["rxjs/Subject"], root["rxjs/operator/debounceTime"], root["rxjs/Observable"], root["@angular/common"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_28__, __WEBPACK_EXTERNAL_MODULE_30__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 30);
+/******/ 	return __webpack_require__(__webpack_require__.s = 31);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -102,13 +102,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 var core_1 = __webpack_require__(0);
 var option_builder_1 = __webpack_require__(5);
-var navigator_geolocation_1 = __webpack_require__(7);
-var config_1 = __webpack_require__(8);
+var navigator_geolocation_1 = __webpack_require__(6);
+var config_1 = __webpack_require__(7);
 var geo_coder_1 = __webpack_require__(3);
 var ng2_map_1 = __webpack_require__(4);
-var Subject_1 = __webpack_require__(6);
-__webpack_require__(27);
-var util_1 = __webpack_require__(26);
+var Subject_1 = __webpack_require__(8);
+var debounceTime_1 = __webpack_require__(9);
+var util_1 = __webpack_require__(27);
 var INPUTS = [
     'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
     'draggingCursor', 'heading', 'keyboardShortcuts', 'mapMaker', 'mapTypeControl', 'mapTypeId', 'maxZoom', 'minZoom',
@@ -200,8 +200,7 @@ var Ng2MapComponent = (function () {
             }
         });
         // update map when input changes
-        this.inputChanges$
-            .debounceTime(1000)
+        debounceTime_1.debounceTime.call(this.inputChanges$, 1000)
             .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.map, changes); });
         // expose map object for test and debugging on window
         window['ng2MapRef'].map = this.map;
@@ -371,7 +370,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var Subject_1 = __webpack_require__(6);
+var Observable_1 = __webpack_require__(28);
 /**
  *   Provides [defered/promise API](https://docs.angularjs.org/api/ng/service/$q)
  *   service for Google Geocoder service
@@ -380,17 +379,18 @@ var GeoCoder = (function () {
     function GeoCoder() {
     }
     GeoCoder.prototype.geocode = function (options) {
-        var geocode$ = new Subject_1.Subject();
         var geocoder = new google.maps.Geocoder();
-        geocoder.geocode(options, function (results, status) {
-            if (status === google.maps.GeocoderStatus.OK) {
-                geocode$.next(results);
-            }
-            else {
-                geocode$.error(results);
-            }
+        return new Observable_1.Observable(function (responseObserver) {
+            geocoder.geocode(options, function (results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    responseObserver.next(results);
+                    responseObserver.complete();
+                }
+                else {
+                    responseObserver.error(results);
+                }
+            });
         });
-        return geocode$;
     };
     ;
     GeoCoder = __decorate([
@@ -435,7 +435,7 @@ var Ng2Map = (function () {
                     setMethodName = "set" + key.replace(/^[a-z]/, function (x) { return x.toUpperCase(); });
                     currentValue = changes[key].currentValue;
                     if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
-                        //To preserve setMethod name in Observable callback, wrap it as a function, then execute
+                        // To preserve setMethod name in Observable callback, wrap it as a function, then execute
                         (function (setMethodName) {
                             _this.geoCoder.geocode({ address: currentValue }).subscribe(function (results) {
                                 object[setMethodName](results[0].geometry.location);
@@ -487,7 +487,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var util_1 = __webpack_require__(26);
+var util_1 = __webpack_require__(27);
 var geo_coder_1 = __webpack_require__(3);
 /**
  * change any object to google object options
@@ -724,12 +724,6 @@ exports.OptionBuilder = OptionBuilder;
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -744,7 +738,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var Subject_1 = __webpack_require__(6);
+var Observable_1 = __webpack_require__(28);
 /**
  *  service for navigator.geolocation methods
  */
@@ -753,14 +747,17 @@ var NavigatorGeolocation = (function () {
     }
     NavigatorGeolocation.prototype.getCurrentPosition = function (geoLocationOptions) {
         geoLocationOptions = geoLocationOptions || { timeout: 5000 };
-        var getCurrentPosition$ = new Subject_1.Subject();
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) { return getCurrentPosition$.next(position); }, function (evt) { return getCurrentPosition$.error(evt); }, geoLocationOptions);
-        }
-        else {
-            getCurrentPosition$.error('Browser Geolocation service failed.');
-        }
-        return getCurrentPosition$;
+        return new Observable_1.Observable(function (responseObserver) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    responseObserver.next(position);
+                    responseObserver.complete();
+                }, function (evt) { return responseObserver.error(evt); }, geoLocationOptions);
+            }
+            else {
+                responseObserver.error('Browser Geolocation service failed.');
+            }
+        });
     };
     ;
     NavigatorGeolocation = __decorate([
@@ -773,7 +770,7 @@ exports.NavigatorGeolocation = NavigatorGeolocation;
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -783,7 +780,19 @@ exports.NG_MAP_CONFIG_TOKEN = new core_1.OpaqueToken('NG_MAP_CONFIG_TOKEN');
 
 
 /***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
+
+/***/ }),
 /* 9 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_9__;
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -803,7 +812,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var Subject_1 = __webpack_require__(6);
+var Subject_1 = __webpack_require__(8);
+var debounceTime_1 = __webpack_require__(9);
 var ng2_map_1 = __webpack_require__(4);
 var ng2_map_component_1 = __webpack_require__(1);
 var INPUTS = [
@@ -824,8 +834,44 @@ function getCustomMarkerOverlayView(htmlEl, position) {
     var CustomMarkerOverlayView = (function (_super) {
         __extends(CustomMarkerOverlayView, _super);
         function CustomMarkerOverlayView(htmlEl, position) {
+            var _this = this;
             _super.call(this);
             this.visible = true;
+            this.setPosition = function (position) {
+                _this.htmlEl.style.visibility = 'hidden';
+                if (position.constructor.name === "Array") {
+                    _this.position = new google.maps.LatLng(position[0], position[1]);
+                }
+                else if (typeof position === 'string') {
+                    var geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ address: position }, function (results, status) {
+                        if (status === google.maps.GeocoderStatus.OK) {
+                            _this.setPosition(results[0].geometry.location);
+                        }
+                        else {
+                        }
+                    });
+                }
+                else if (position && typeof position.lng == 'function') {
+                    _this.position = position;
+                }
+                if (_this.getProjection() && typeof _this.position.lng == 'function') {
+                    var positionOnMap_1 = function () {
+                        var posPixel = _this.getProjection().fromLatLngToDivPixel(_this.position);
+                        var x = Math.round(posPixel.x - (_this.htmlEl.offsetWidth / 2));
+                        var y = Math.round(posPixel.y - _this.htmlEl.offsetHeight / 2);
+                        _this.htmlEl.style.left = x + 'px';
+                        _this.htmlEl.style.top = y + 'px';
+                        _this.htmlEl.style.visibility = 'visible';
+                    };
+                    if (_this.htmlEl.offsetWidth && _this.htmlEl.offsetHeight) {
+                        positionOnMap_1();
+                    }
+                    else {
+                        setTimeout(function () { return positionOnMap_1(); });
+                    }
+                }
+            };
             this.htmlEl = htmlEl;
             this.position = position;
         }
@@ -842,33 +888,10 @@ function getCustomMarkerOverlayView(htmlEl, position) {
         CustomMarkerOverlayView.prototype.onRemove = function () {
             //
         };
-        CustomMarkerOverlayView.prototype.setPosition = function (position) {
-            var _this = this;
-            var _setPosition = function (latLng) {
-                var posPixel = _this.getProjection().fromLatLngToDivPixel(latLng);
-                var x = Math.round(posPixel.x - (_this.htmlEl.offsetWidth / 2));
-                var y = Math.round(posPixel.y - (_this.htmlEl.offsetHeight / 2));
-                _this.htmlEl.style.left = x + 'px';
-                _this.htmlEl.style.top = y + 'px';
-                _this.htmlEl.style.visibility = 'visible';
-            };
-            if (typeof position === 'string') {
-                // geocode it
-                var geocoder = new google.maps.Geocoder();
-                geocoder.geocode({ address: position }, function (results, status) {
-                    if (status === google.maps.GeocoderStatus.OK) {
-                        _setPosition(results[0].geometry.location);
-                    }
-                    else {
-                    }
-                });
-            }
-            else {
-                // assume array format [lat, lng]
-                var latLng = new google.maps.LatLng(position[0], position[1]);
-                _setPosition(latLng);
-            }
+        CustomMarkerOverlayView.prototype.getPosition = function () {
+            return this.position;
         };
+        ;
         CustomMarkerOverlayView.prototype.setZIndex = function (zIndex) {
             zIndex && (this.zIndex = zIndex); /* jshint ignore:line */
             this.htmlEl.style.zIndex = this.zIndex;
@@ -923,8 +946,7 @@ var CustomMarker = (function () {
         // set google events listeners and emits to this outputs listeners
         this.ng2Map.setObjectEvents(OUTPUTS, this, 'mapObject');
         // update object when input changes
-        this.inputChanges$
-            .debounceTime(1000)
+        debounceTime_1.debounceTime.call(this.inputChanges$, 1000)
             .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.mapObject, changes); });
         this.ng2MapComponent.addToMapObjectGroup('CustomMarker', this.mapObject);
         this.initialized$.emit(this.mapObject);
@@ -944,7 +966,7 @@ exports.CustomMarker = CustomMarker;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -959,8 +981,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var Subject_1 = __webpack_require__(6);
-__webpack_require__(27);
+var Subject_1 = __webpack_require__(8);
+var debounceTime_1 = __webpack_require__(9);
 var ng2_map_1 = __webpack_require__(4);
 var ng2_map_component_1 = __webpack_require__(1);
 var INPUTS = [
@@ -1012,8 +1034,7 @@ var InfoWindow = (function () {
         // set google events listeners and emits to this outputs listeners
         this.ng2Map.setObjectEvents(OUTPUTS, this, 'infoWindow');
         // update object when input changes
-        this.inputChanges$
-            .debounceTime(1000)
+        debounceTime_1.debounceTime.call(this.inputChanges$, 1000)
             .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.infoWindow, changes); });
         this.ng2MapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
         this.initialized$.emit(this.infoWindow);
@@ -1050,7 +1071,7 @@ exports.InfoWindow = InfoWindow;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1093,7 +1114,7 @@ exports.BicyclingLayer = BicyclingLayer;
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1118,7 +1139,7 @@ var ng2_map_component_1 = __webpack_require__(1);
 var INPUTS = [
     'center', 'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'map', 'radius',
     'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex', 'options',
-    //ng2-map specific inputs
+    // ng2-map specific inputs
     'geoFallbackCenter'
 ];
 var OUTPUTS = [
@@ -1170,7 +1191,7 @@ exports.Circle = Circle;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1232,7 +1253,7 @@ exports.DataLayer = DataLayer;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1254,7 +1275,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = __webpack_require__(0);
 var base_map_directive_1 = __webpack_require__(2);
 var ng2_map_component_1 = __webpack_require__(1);
-var navigator_geolocation_1 = __webpack_require__(7);
+var navigator_geolocation_1 = __webpack_require__(6);
 var INPUTS = [
     'directions', 'draggable', 'hideRouteList', 'infoWindow', 'panel', 'markerOptions',
     'polylineOptions', 'preserveViewport', 'routeIndex', 'suppressBicyclingLayer',
@@ -1296,7 +1317,7 @@ var DirectionsRenderer = (function (_super) {
     DirectionsRenderer.prototype.showDirections = function (directionsRequest) {
         var _this = this;
         this.directionsService.route(directionsRequest, function (response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
+            if (status === google.maps.DirectionsStatus.OK) {
                 _this.directionsRenderer.setDirections(response);
             }
             else {
@@ -1322,7 +1343,7 @@ exports.DirectionsRenderer = DirectionsRenderer;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1373,7 +1394,7 @@ exports.DrawingManager = DrawingManager;
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1430,7 +1451,7 @@ exports.GroundOverlay = GroundOverlay;
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1474,7 +1495,7 @@ exports.HeatmapLayer = HeatmapLayer;
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1517,7 +1538,7 @@ exports.KmlLayer = KmlLayer;
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1542,7 +1563,7 @@ var ng2_map_component_1 = __webpack_require__(1);
 var INPUTS = [
     'anchorPoint', 'animation', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity',
     'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex', 'options',
-    //ng2-map specific inputs
+    // ng2-map specific inputs
     'geoFallbackPosition'
 ];
 var OUTPUTS = [
@@ -1595,7 +1616,7 @@ exports.Marker = Marker;
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1678,7 +1699,7 @@ exports.PlacesAutoComplete = PlacesAutoComplete;
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1727,7 +1748,7 @@ exports.Polygon = Polygon;
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1776,7 +1797,7 @@ exports.Polyline = Polyline;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1819,7 +1840,7 @@ var StreetViewPanorama = (function (_super) {
         this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
         var element;
         if (this.objectOptions.selector) {
-            //noinspection TypeScriptValidateTypes
+            // noinspection TypeScriptValidateTypes
             element = document.querySelector(this['selector']);
             delete this.objectOptions.selector;
         }
@@ -1857,7 +1878,7 @@ exports.StreetViewPanorama = StreetViewPanorama;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1900,7 +1921,7 @@ exports.TrafficLayer = TrafficLayer;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1943,7 +1964,7 @@ exports.TransitLayer = TransitLayer;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1998,13 +2019,13 @@ exports.toCamelCase = toCamelCase;
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_27__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_28__;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2019,30 +2040,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(29);
+var common_1 = __webpack_require__(30);
 var option_builder_1 = __webpack_require__(5);
 var geo_coder_1 = __webpack_require__(3);
-var navigator_geolocation_1 = __webpack_require__(7);
-var config_1 = __webpack_require__(8);
+var navigator_geolocation_1 = __webpack_require__(6);
+var config_1 = __webpack_require__(7);
 var ng2_map_component_1 = __webpack_require__(1);
-var info_window_1 = __webpack_require__(10);
-var custom_marker_1 = __webpack_require__(9);
-var bicycling_layer_1 = __webpack_require__(11);
-var circle_1 = __webpack_require__(12);
-var data_layer_1 = __webpack_require__(13);
-var directions_renderer_1 = __webpack_require__(14);
-var drawing_manager_1 = __webpack_require__(15);
-var ground_overlay_1 = __webpack_require__(16);
-var heatmap_layer_1 = __webpack_require__(17);
-var kml_layer_1 = __webpack_require__(18);
-var marker_1 = __webpack_require__(19);
+var info_window_1 = __webpack_require__(11);
+var custom_marker_1 = __webpack_require__(10);
+var bicycling_layer_1 = __webpack_require__(12);
+var circle_1 = __webpack_require__(13);
+var data_layer_1 = __webpack_require__(14);
+var directions_renderer_1 = __webpack_require__(15);
+var drawing_manager_1 = __webpack_require__(16);
+var ground_overlay_1 = __webpack_require__(17);
+var heatmap_layer_1 = __webpack_require__(18);
+var kml_layer_1 = __webpack_require__(19);
+var marker_1 = __webpack_require__(20);
 var ng2_map_1 = __webpack_require__(4);
-var places_auto_complete_1 = __webpack_require__(20);
-var polygon_1 = __webpack_require__(21);
-var polyline_1 = __webpack_require__(22);
-var street_view_panorama_1 = __webpack_require__(23);
-var traffic_layer_1 = __webpack_require__(24);
-var transit_layer_1 = __webpack_require__(25);
+var places_auto_complete_1 = __webpack_require__(21);
+var polygon_1 = __webpack_require__(22);
+var polyline_1 = __webpack_require__(23);
+var street_view_panorama_1 = __webpack_require__(24);
+var traffic_layer_1 = __webpack_require__(25);
+var transit_layer_1 = __webpack_require__(26);
 var COMPONENTS_DIRECTIVES = [
     ng2_map_component_1.Ng2MapComponent, info_window_1.InfoWindow,
     marker_1.Marker, circle_1.Circle, custom_marker_1.CustomMarker, polygon_1.Polygon, info_window_1.InfoWindow, polyline_1.Polyline, ground_overlay_1.GroundOverlay,
@@ -2082,64 +2103,64 @@ exports.Ng2MapModule = Ng2MapModule;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_29__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_30__;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var bicycling_layer_1 = __webpack_require__(11);
+var bicycling_layer_1 = __webpack_require__(12);
 exports.BicyclingLayer = bicycling_layer_1.BicyclingLayer;
-var navigator_geolocation_1 = __webpack_require__(7);
+var navigator_geolocation_1 = __webpack_require__(6);
 exports.NavigatorGeolocation = navigator_geolocation_1.NavigatorGeolocation;
 var option_builder_1 = __webpack_require__(5);
 exports.OptionBuilder = option_builder_1.OptionBuilder;
-var config_1 = __webpack_require__(8);
+var config_1 = __webpack_require__(7);
 exports.NG_MAP_CONFIG_TOKEN = config_1.NG_MAP_CONFIG_TOKEN;
 var ng2_map_component_1 = __webpack_require__(1);
 exports.Ng2MapComponent = ng2_map_component_1.Ng2MapComponent;
-var info_window_1 = __webpack_require__(10);
+var info_window_1 = __webpack_require__(11);
 exports.InfoWindow = info_window_1.InfoWindow;
-var custom_marker_1 = __webpack_require__(9);
+var custom_marker_1 = __webpack_require__(10);
 exports.CustomMarker = custom_marker_1.CustomMarker;
-var circle_1 = __webpack_require__(12);
+var circle_1 = __webpack_require__(13);
 exports.Circle = circle_1.Circle;
-var data_layer_1 = __webpack_require__(13);
+var data_layer_1 = __webpack_require__(14);
 exports.DataLayer = data_layer_1.DataLayer;
-var directions_renderer_1 = __webpack_require__(14);
+var directions_renderer_1 = __webpack_require__(15);
 exports.DirectionsRenderer = directions_renderer_1.DirectionsRenderer;
-var drawing_manager_1 = __webpack_require__(15);
+var drawing_manager_1 = __webpack_require__(16);
 exports.DrawingManager = drawing_manager_1.DrawingManager;
 var geo_coder_1 = __webpack_require__(3);
 exports.GeoCoder = geo_coder_1.GeoCoder;
-var ground_overlay_1 = __webpack_require__(16);
+var ground_overlay_1 = __webpack_require__(17);
 exports.GroundOverlay = ground_overlay_1.GroundOverlay;
-var heatmap_layer_1 = __webpack_require__(17);
+var heatmap_layer_1 = __webpack_require__(18);
 exports.HeatmapLayer = heatmap_layer_1.HeatmapLayer;
-var kml_layer_1 = __webpack_require__(18);
+var kml_layer_1 = __webpack_require__(19);
 exports.KmlLayer = kml_layer_1.KmlLayer;
-var marker_1 = __webpack_require__(19);
+var marker_1 = __webpack_require__(20);
 exports.Marker = marker_1.Marker;
 var ng2_map_1 = __webpack_require__(4);
 exports.Ng2Map = ng2_map_1.Ng2Map;
-var places_auto_complete_1 = __webpack_require__(20);
+var places_auto_complete_1 = __webpack_require__(21);
 exports.PlacesAutoComplete = places_auto_complete_1.PlacesAutoComplete;
-var polygon_1 = __webpack_require__(21);
+var polygon_1 = __webpack_require__(22);
 exports.Polygon = polygon_1.Polygon;
-var polyline_1 = __webpack_require__(22);
+var polyline_1 = __webpack_require__(23);
 exports.Polyline = polyline_1.Polyline;
-var street_view_panorama_1 = __webpack_require__(23);
+var street_view_panorama_1 = __webpack_require__(24);
 exports.StreetViewPanorama = street_view_panorama_1.StreetViewPanorama;
-var traffic_layer_1 = __webpack_require__(24);
+var traffic_layer_1 = __webpack_require__(25);
 exports.TrafficLayer = traffic_layer_1.TrafficLayer;
-var transit_layer_1 = __webpack_require__(25);
+var transit_layer_1 = __webpack_require__(26);
 exports.TransitLayer = transit_layer_1.TransitLayer;
-var ng2_map_module_1 = __webpack_require__(28);
+var ng2_map_module_1 = __webpack_require__(29);
 exports.Ng2MapModule = ng2_map_module_1.Ng2MapModule;
 
 

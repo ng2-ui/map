@@ -1,7 +1,6 @@
 /// <reference types="googlemaps" />
 import { ElementRef, OnInit, OnChanges, OnDestroy, EventEmitter, SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/debounceTime';
 import { Ng2Map } from '../services/ng2-map';
 import { Ng2MapComponent } from './ng2-map.component';
 export declare class InfoWindow implements OnInit, OnChanges, OnDestroy {

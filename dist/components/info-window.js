@@ -1,7 +1,7 @@
 "use strict";
 var core_1 = require('@angular/core');
 var Subject_1 = require('rxjs/Subject');
-require('rxjs/add/operator/debounceTime');
+var debounceTime_1 = require('rxjs/operator/debounceTime');
 var ng2_map_1 = require('../services/ng2-map');
 var ng2_map_component_1 = require('./ng2-map.component');
 var INPUTS = [
@@ -55,8 +55,7 @@ var InfoWindow = (function () {
         // set google events listeners and emits to this outputs listeners
         this.ng2Map.setObjectEvents(OUTPUTS, this, 'infoWindow');
         // update object when input changes
-        this.inputChanges$
-            .debounceTime(1000)
+        debounceTime_1.debounceTime.call(this.inputChanges$, 1000)
             .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.infoWindow, changes); });
         this.ng2MapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
         this.initialized$.emit(this.infoWindow);
