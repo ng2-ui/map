@@ -1,4 +1,10 @@
-import { Input, Output, Directive, EventEmitter, ElementRef } from '@angular/core';
+import {
+  Input,
+  Output,
+  Directive,
+  EventEmitter,
+  ElementRef
+} from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
 import { Ng2MapComponent } from '../components/ng2-map.component';
@@ -41,7 +47,9 @@ export class PlacesAutoComplete  {
     );
     console.log('this.autocomplete', this.autocomplete);
 
-    this.autocomplete.addListener('place_changed', place => this.place_changed.emit());
+    this.autocomplete.addListener('place_changed', place => {
+      this.place_changed.emit(this.autocomplete.getPlace())
+    });
 
     this.initialized$.emit(this.autocomplete);
   };
