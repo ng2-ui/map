@@ -8,7 +8,6 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import { debounceTime } from 'rxjs/operator/debounceTime';
 import { Ng2Map } from '../services/ng2-map';
 import { Ng2MapComponent } from './ng2-map.component';
 
@@ -19,7 +18,7 @@ const OUTPUTS = [
   'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
   'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
   'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged',
-  // to avoid DOM event conflicts
+  //to avoid DOM event conflicts
   'map_click', 'map_mouseover', 'map_mouseout', 'map_mouseup', 'map_mousedown', 'map_drag', 'map_dragend'
 ];
 
@@ -59,33 +58,45 @@ function getCustomMarkerOverlayView(htmlEl: HTMLElement, position: any) {
       //
     }
 
-    setPosition(position: any): void {
+    getPosition() {
+      return this.position;
+    };
 
-      let _setPosition = (latLng: google.maps.LatLng) => {
-        let posPixel = this.getProjection().fromLatLngToDivPixel(latLng);
-        let x = Math.round(posPixel.x - (this.htmlEl.offsetWidth / 2));
-        let y = Math.round(posPixel.y - (this.htmlEl.offsetHeight / 2));
-        this.htmlEl.style.left = x + 'px';
-        this.htmlEl.style.top = y + 'px';
-        this.htmlEl.style.visibility = 'visible';
-      };
+    setPosition = (position?: any) => {
+      this.htmlEl.style.visibility = 'hidden';
 
-      if (typeof position === 'string') {
-        // geocode it
+      if (position.constructor.name === "Array") {
+        this.position = new google.maps.LatLng(position[0], position[1]);
+      } else if (typeof position === 'string') {
         let geocoder = new google.maps.Geocoder();
 
         geocoder.geocode({ address: position }, (results, status) => {
           if (status === google.maps.GeocoderStatus.OK) {
             console.log('setting custom marker position from address', position);
-            _setPosition(results[0].geometry.location);
+            this.setPosition(results[0].geometry.location);
           } else {
-            //
+            console.log('Error in custom marker geo coding, position');
           }
         });
-      } else {
-        // assume array format [lat, lng]
-        let latLng = new google.maps.LatLng(position[0], position[1]);
-        _setPosition(latLng);
+      } else if (position && typeof position.lng == 'function') {
+        this.position = position;
+      }
+      
+      if (this.getProjection() && typeof this.position.lng == 'function') {
+        let positionOnMap = () => {
+          var posPixel = this.getProjection().fromLatLngToDivPixel(this.position);
+          var x = Math.round(posPixel.x - (this.htmlEl.offsetWidth/2));
+          var y = Math.round(posPixel.y - this.htmlEl.offsetHeight/2);
+          this.htmlEl.style.left = x + 'px';
+          this.htmlEl.style.top = y + 'px';
+          this.htmlEl.style.visibility = 'visible';
+        }
+      
+        if (this.htmlEl.offsetWidth && this.htmlEl.offsetHeight) {
+          positionOnMap();
+        } else {
+          setTimeout( () => positionOnMap() );
+        }
       }
     }
 
@@ -163,7 +174,8 @@ export class CustomMarker implements OnInit, OnChanges, OnDestroy {
     this.ng2Map.setObjectEvents(OUTPUTS, this, 'mapObject');
 
     // update object when input changes
-    debounceTime.call(this.inputChanges$, 1000)
+    this.inputChanges$
+      .debounceTime(1000)
       .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.mapObject, changes));
 
     this.ng2MapComponent.addToMapObjectGroup('CustomMarker', this.mapObject);
@@ -171,6 +183,3 @@ export class CustomMarker implements OnInit, OnChanges, OnDestroy {
   }
 
 }
-
-
-
