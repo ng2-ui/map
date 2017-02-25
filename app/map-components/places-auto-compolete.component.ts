@@ -3,18 +3,15 @@ import {Component, ChangeDetectorRef} from '@angular/core';
 let templateStr = `
   <h1>Place Autocomplete Address Form</h1>
   <input places-auto-complete
-    (initialized$)="initialized($event)"
-    (place_changed)="placeChanged(place)"
+    (place_changed)="placeChanged($event)"
     [types]="['geocode']" />
   <p>
+  <ng2-map [center]="center"></ng2-map>
   place: {{address | json}}
   </p>
   <code>
     <br/><b>HTML</b>
     <pre>{{templateStr | htmlCode:'-code'}}</pre>
-    
-    <b>function initialized</b> 
-    <pre>{{initialized | jsCode}}</pre>
     
     <b>function placeChanged</b> 
     <pre>{{placeChanged | jsCode}}</pre>
@@ -25,17 +22,18 @@ let templateStr = `
   template: templateStr
 })
 export class PlacesAutoCompleteComponent {
-  autocomplete: google.maps.places.Autocomplete;
+  autocomplete: any;
   address: any = {};
   templateStr: string = templateStr;
+  center: any;
 
   constructor(private ref: ChangeDetectorRef) {}
 
   initialized(autocomplete: any) {
     this.autocomplete = autocomplete;
   }
-  placeChanged() {
-    let place = this.autocomplete.getPlace();
+  placeChanged(place) {
+    this.center = place.geometry.location;
     for (var i = 0; i < place.address_components.length; i++) {
       var addressType = place.address_components[i].types[0];
       this.address[addressType] = place.address_components[i].long_name;
