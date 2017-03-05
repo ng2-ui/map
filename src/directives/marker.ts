@@ -1,4 +1,4 @@
-import { Directive } from '@angular/core';
+import { Directive, Output, EventEmitter } from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
@@ -21,11 +21,23 @@ const OUTPUTS = [
   outputs: OUTPUTS,
 })
 export class Marker extends BaseMapDirective {
+  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
+
   public mapObject: google.maps.Marker;
   public objectOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{};
 
   constructor(private ng2MapComp: Ng2MapComponent) {
     super(ng2MapComp, 'Marker', INPUTS, OUTPUTS);
+    console.log('marker constructor', 9999999 );
+  }
+
+  // Initialize this map object when map is ready
+  ngOnInit() {
+    if (this.ng2MapComponent.mapIdledOnce) { // map is ready already
+      this.initialize();
+    } else {
+      this.ng2MapComponent.mapReady$.subscribe(map => this.initialize());
+    }
   }
 
   initialize(): void {

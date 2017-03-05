@@ -26,6 +26,7 @@ import { CustomMarkerNgForComponent } from './map-components/custom-marker-ng-fo
 import { MapWithStreetviewComponent } from './map-components/map-with-streetview';
 import { MapChangeMultiplePropertiesComponent } from "./map-components/map-change-multiple-properties.component";
 import { MarkerWithCustomIconComponent } from "./map-components/marker-with-custom-icon.component";
+import { ExperimentComponent } from "./map-components/experiment.component";
 
 export const routes: Routes = [
   { path: 'bicycling-layer', component: BicyclingLayerComponent },
@@ -54,6 +55,7 @@ export const routes: Routes = [
   { path: 'event-arguments', component: EventArgumentsComponent },
   { path: 'custom-marker', component: CustomMarkerComponent },
   { path: 'custom-marker-ng-for', component: CustomMarkerNgForComponent },
+  { path: 'experiment', component: ExperimentComponent },
   { path: '',  redirectTo: '/simple-marker', pathMatch: 'full' },
 ];
 
@@ -84,6 +86,7 @@ export const APP_ROUTER_COMPONENTS = [
   TransitLayerComponent,
   CustomMarkerComponent,
   CustomMarkerNgForComponent,
-  MarkerWithCustomIconComponent
+  MarkerWithCustomIconComponent,
+  ExperimentComponent
 ];
 

@@ -1,4 +1,4 @@
-import { Input, Directive, SimpleChanges } from '@angular/core';
+import { Input, Directive, SimpleChanges, Output, EventEmitter } from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
@@ -17,10 +17,11 @@ const OUTPUTS = ['directions_changed'];
   outputs: OUTPUTS,
 })
 export class DirectionsRenderer extends BaseMapDirective {
+  @Input('directions-request') directionsRequest: google.maps.DirectionsRequest;
+  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
+
   directionsService: google.maps.DirectionsService;
   directionsRenderer: google.maps.DirectionsRenderer;
-
-  @Input('directions-request') directionsRequest: google.maps.DirectionsRequest;
 
   constructor(
     ng2MapComponent: Ng2MapComponent,

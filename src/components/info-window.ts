@@ -1,11 +1,9 @@
 import {
   Component,
   ElementRef,
-  OnInit,
-  OnChanges,
-  OnDestroy,
   EventEmitter,
   SimpleChanges,
+  Output
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operator/debounceTime';
@@ -25,14 +23,15 @@ const OUTPUTS = [
   outputs: OUTPUTS,
   template: `<ng-content></ng-content>`,
 })
-export class InfoWindow implements OnInit, OnChanges, OnDestroy {
+export class InfoWindow {
+  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
+
   public el: HTMLElement;
   public infoWindow: google.maps.InfoWindow;
   public objectOptions: google.maps.InfoWindowOptions = {};
   public inputChanges$ = new Subject();
 
   public template: string;
-  public initialized$: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private ng2MapComponent: Ng2MapComponent,

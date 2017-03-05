@@ -48,21 +48,4 @@ export class Ng2Map {
     }
   }
 
-  //TODO: Is this ever used?, remove it if not used.
-  // updateProperty(object: any, key: string, currentValue: any): void {
-  //   console.log('updateProperty', 'object', object, 'currentValue', currentValue);
-  //
-  //   let val: any, setMethodName: string, that = this;
-  //   setMethodName = `set${key.replace(/^[a-z]/, x => x.toUpperCase()) }`;
-  //   if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
-  //     ((setMethodName) => {
-  //       that.geoCoder.geocode({address: currentValue}).subscribe(results => {
-  //         object[setMethodName](results[0].geometry.location);
-  //       });
-  //     })(setMethodName)
-  //   } else {
-  //     val =  this.optionBuilder.googlize(currentValue);
-  //     object[setMethodName](val);
-  //   }
-  // }
 }

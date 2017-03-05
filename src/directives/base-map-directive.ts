@@ -1,11 +1,12 @@
-import { EventEmitter, SimpleChanges, OnInit, OnChanges, OnDestroy, Output } from '@angular/core';
+import { EventEmitter, SimpleChanges, Output } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
 import { Ng2Map } from '../services/ng2-map';
 import { Ng2MapComponent } from '../components/ng2-map.component';
 
-export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
-  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
+export abstract class BaseMapDirective {
+  // this should be redefined on each childr directive
+  @Output() public initialized$: EventEmitter<any> = new EventEmitter(); 
 
   public mapObject: any; // e.g. google.maps.Marker
   public objectOptions: any; // e.g. google.maps.MarkerOptions

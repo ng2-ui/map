@@ -1,4 +1,4 @@
-import { Directive } from '@angular/core';
+import { Directive, Output, EventEmitter } from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
@@ -12,6 +12,8 @@ const OUTPUTS = [ 'click', 'dblclick' ];
   outputs: OUTPUTS,
 })
 export class GroundOverlay extends BaseMapDirective {
+  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
+
   public mapObject: google.maps.GroundOverlay;
   public objectOptions: google.maps.GroundOverlayOptions = <google.maps.GroundOverlayOptions>{};
 

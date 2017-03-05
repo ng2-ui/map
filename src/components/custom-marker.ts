@@ -1,9 +1,7 @@
 import {
   Component,
   ElementRef,
-  OnInit,
-  OnChanges,
-  OnDestroy,
+  Output,
   EventEmitter,
   SimpleChanges,
 } from '@angular/core';
@@ -125,10 +123,10 @@ function getCustomMarkerOverlayView(htmlEl: HTMLElement, position: any) {
   `,
 })
 
-export class CustomMarker implements OnInit, OnChanges, OnDestroy {
+export class CustomMarker {
+  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
 
   public inputChanges$ = new Subject();
-  public initialized$: EventEmitter<any> = new EventEmitter();
 
   private el: HTMLElement;
   private mapObject: any;

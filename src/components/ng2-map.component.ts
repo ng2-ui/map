@@ -3,11 +3,8 @@ import {
   ElementRef,
   ViewEncapsulation,
   NgZone,
-  OnChanges,
-  OnDestroy,
   EventEmitter,
   SimpleChanges,
-  AfterViewInit,
   Inject,
   Output,
   Optional
@@ -56,7 +53,7 @@ const OUTPUTS = [
     <ng-content></ng-content>
   `,
 })
-export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
+export class Ng2MapComponent {
   @Output() public mapReady$: EventEmitter<any> = new EventEmitter();
 
   public mapIndex: number;
@@ -148,8 +145,10 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
 
     this.map.addListener('idle', () => {
       if (!this.mapIdledOnce) {
-        this.mapReady$.emit(this.map);
         this.mapIdledOnce = true;
+        setTimeout(() => { // Why????, subsribe and emit must not be in the same cycle???
+          this.mapReady$.emit(this.map);
+        });
       }
     });
 

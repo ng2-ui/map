@@ -1,4 +1,4 @@
-import { Directive } from '@angular/core';
+import { Directive, Output, EventEmitter } from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
@@ -15,6 +15,8 @@ const OUTPUTS = [
   outputs: OUTPUTS,
 })
 export class DataLayer extends BaseMapDirective {
+  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
+
   constructor(ng2MapComponent: Ng2MapComponent) {
     super(ng2MapComponent, 'Data', INPUTS, OUTPUTS);
   }
