@@ -44,31 +44,14 @@ var Ng2Map = (function () {
             });
         });
     };
-    //TODO: Is this ever used?, remove it if not used.
-    // updateProperty(object: any, key: string, currentValue: any): void {
-    //   console.log('updateProperty', 'object', object, 'currentValue', currentValue);
-    //
-    //   let val: any, setMethodName: string, that = this;
-    //   setMethodName = `set${key.replace(/^[a-z]/, x => x.toUpperCase()) }`;
-    //   if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
-    //     ((setMethodName) => {
-    //       that.geoCoder.geocode({address: currentValue}).subscribe(results => {
-    //         object[setMethodName](results[0].geometry.location);
-    //       });
-    //     })(setMethodName)
-    //   } else {
-    //     val =  this.optionBuilder.googlize(currentValue);
-    //     object[setMethodName](val);
-    //   }
-    // }
     Ng2Map.decorators = [
         { type: core_1.Injectable },
     ];
     /** @nocollapse */
-    Ng2Map.ctorParameters = [
+    Ng2Map.ctorParameters = function () { return [
         { type: geo_coder_1.GeoCoder, },
         { type: option_builder_1.OptionBuilder, },
-    ];
+    ]; };
     return Ng2Map;
 }());
 exports.Ng2Map = Ng2Map;

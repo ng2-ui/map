@@ -13,6 +13,7 @@ var HeatmapLayer = (function (_super) {
     __extends(HeatmapLayer, _super);
     function HeatmapLayer(ng2MapComp) {
         _super.call(this, ng2MapComp, 'HeatmapLayer', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
         this.libraryName = 'visualization';
     }
     HeatmapLayer.decorators = [
@@ -23,9 +24,12 @@ var HeatmapLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    HeatmapLayer.ctorParameters = [
+    HeatmapLayer.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
+    HeatmapLayer.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
+    };
     return HeatmapLayer;
 }(base_map_directive_1.BaseMapDirective));
 exports.HeatmapLayer = HeatmapLayer;

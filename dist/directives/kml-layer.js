@@ -13,6 +13,7 @@ var KmlLayer = (function (_super) {
     __extends(KmlLayer, _super);
     function KmlLayer(ng2MapComp) {
         _super.call(this, ng2MapComp, 'KmlLayer', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
     KmlLayer.decorators = [
         { type: core_1.Directive, args: [{
@@ -22,9 +23,12 @@ var KmlLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    KmlLayer.ctorParameters = [
+    KmlLayer.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
+    KmlLayer.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
+    };
     return KmlLayer;
 }(base_map_directive_1.BaseMapDirective));
 exports.KmlLayer = KmlLayer;

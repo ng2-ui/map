@@ -13,6 +13,7 @@ var TrafficLayer = (function (_super) {
     __extends(TrafficLayer, _super);
     function TrafficLayer(ng2MapComp) {
         _super.call(this, ng2MapComp, 'TrafficLayer', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
     TrafficLayer.decorators = [
         { type: core_1.Directive, args: [{
@@ -22,9 +23,12 @@ var TrafficLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    TrafficLayer.ctorParameters = [
+    TrafficLayer.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
+    TrafficLayer.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
+    };
     return TrafficLayer;
 }(base_map_directive_1.BaseMapDirective));
 exports.TrafficLayer = TrafficLayer;

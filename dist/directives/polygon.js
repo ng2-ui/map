@@ -19,6 +19,7 @@ var Polygon = (function (_super) {
     __extends(Polygon, _super);
     function Polygon(ng2MapComp) {
         _super.call(this, ng2MapComp, 'Polygon', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
     Polygon.decorators = [
         { type: core_1.Directive, args: [{
@@ -28,9 +29,12 @@ var Polygon = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    Polygon.ctorParameters = [
+    Polygon.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
+    Polygon.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
+    };
     return Polygon;
 }(base_map_directive_1.BaseMapDirective));
 exports.Polygon = Polygon;

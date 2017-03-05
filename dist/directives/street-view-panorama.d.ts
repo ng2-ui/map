@@ -1,3 +1,4 @@
+import { EventEmitter } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
 export declare class StreetViewPanorama extends BaseMapDirective {
@@ -25,6 +26,7 @@ export declare class StreetViewPanorama extends BaseMapDirective {
     visible: any;
     zoomControl: any;
     zoomControlOptions: any;
+    initialized$: EventEmitter<any>;
     constructor(ng2MapComp: Ng2MapComponent);
     initialize(): void;
     ngOnDestroy(): void;

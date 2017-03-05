@@ -16,6 +16,7 @@ var DataLayer = (function (_super) {
     __extends(DataLayer, _super);
     function DataLayer(ng2MapComponent) {
         _super.call(this, ng2MapComponent, 'Data', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
     // only called when map is ready
     DataLayer.prototype.initialize = function () {
@@ -43,9 +44,12 @@ var DataLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    DataLayer.ctorParameters = [
+    DataLayer.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
+    DataLayer.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
+    };
     return DataLayer;
 }(base_map_directive_1.BaseMapDirective));
 exports.DataLayer = DataLayer;

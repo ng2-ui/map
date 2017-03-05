@@ -1,3 +1,8 @@
+# 0.16.0 (2017-03-04)
+ 
+  * Added @Output initialized$ on all dierctives
+  * Fixed emit/subscribe issue, issue #99
+
 # 0.15.0 (2017-01-23)
 
   * added geo fallback options for map and marker

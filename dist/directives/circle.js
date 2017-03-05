@@ -22,6 +22,7 @@ var Circle = (function (_super) {
     function Circle(ng2MapComp) {
         _super.call(this, ng2MapComp, 'Circle', INPUTS, OUTPUTS);
         this.ng2MapComp = ng2MapComp;
+        this.initialized$ = new core_1.EventEmitter();
         this.objectOptions = {};
     }
     Circle.prototype.initialize = function () {
@@ -58,9 +59,12 @@ var Circle = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    Circle.ctorParameters = [
+    Circle.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
+    Circle.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
+    };
     return Circle;
 }(base_map_directive_1.BaseMapDirective));
 exports.Circle = Circle;

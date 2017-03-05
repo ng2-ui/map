@@ -19,6 +19,7 @@ var Polyline = (function (_super) {
     __extends(Polyline, _super);
     function Polyline(ng2MapComp) {
         _super.call(this, ng2MapComp, 'Polyline', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
     Polyline.decorators = [
         { type: core_1.Directive, args: [{
@@ -28,9 +29,12 @@ var Polyline = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    Polyline.ctorParameters = [
+    Polyline.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
+    Polyline.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
+    };
     return Polyline;
 }(base_map_directive_1.BaseMapDirective));
 exports.Polyline = Polyline;

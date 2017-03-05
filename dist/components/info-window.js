@@ -16,9 +16,9 @@ var InfoWindow = (function () {
         this.ng2MapComponent = ng2MapComponent;
         this.elementRef = elementRef;
         this.ng2Map = ng2Map;
+        this.initialized$ = new core_1.EventEmitter();
         this.objectOptions = {};
         this.inputChanges$ = new Subject_1.Subject();
-        this.initialized$ = new core_1.EventEmitter();
         this.elementRef.nativeElement.style.display = 'none';
         OUTPUTS.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
     }
@@ -86,11 +86,14 @@ var InfoWindow = (function () {
                 },] },
     ];
     /** @nocollapse */
-    InfoWindow.ctorParameters = [
+    InfoWindow.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
         { type: core_1.ElementRef, },
         { type: ng2_map_1.Ng2Map, },
-    ];
+    ]; };
+    InfoWindow.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
+    };
     return InfoWindow;
 }());
 exports.InfoWindow = InfoWindow;

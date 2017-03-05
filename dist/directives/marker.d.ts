@@ -1,4 +1,5 @@
 /// <reference types="googlemaps" />
+import { EventEmitter } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
 export declare class Marker extends BaseMapDirective {
@@ -20,9 +21,11 @@ export declare class Marker extends BaseMapDirective {
     zIndex: any;
     options: any;
     geoFallbackPosition: any;
+    initialized$: EventEmitter<any>;
     mapObject: google.maps.Marker;
     objectOptions: google.maps.MarkerOptions;
     constructor(ng2MapComp: Ng2MapComponent);
+    ngOnInit(): void;
     initialize(): void;
     setPosition(): void;
 }

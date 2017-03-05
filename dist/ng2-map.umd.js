@@ -164,7 +164,7 @@ var Ng2MapComponent = (function () {
         this.inputChanges$.next(changes);
     };
     Ng2MapComponent.prototype.addGoogleMapsApi = function () {
-        window['initNg2Map'] = function () {
+        window['initNg2Map'] = window['initNg2Map'] || function () {
             window['ng2MapRef'].forEach(function (ng2MapRef) {
                 ng2MapRef.zone.run(function () { ng2MapRef.componentFn(); });
             });
@@ -195,8 +195,10 @@ var Ng2MapComponent = (function () {
         this.ng2Map.setObjectEvents(OUTPUTS, this, 'map');
         this.map.addListener('idle', function () {
             if (!_this.mapIdledOnce) {
-                _this.mapReady$.emit(_this.map);
                 _this.mapIdledOnce = true;
+                setTimeout(function () {
+                    _this.mapReady$.emit(_this.map);
+                });
             }
         });
         // update map when input changes
@@ -290,6 +292,7 @@ var BaseMapDirective = (function () {
         this.mapObjectName = mapObjectName;
         this.inputs = inputs;
         this.outputs = outputs;
+        // this should be redefined on each childr directive
         this.initialized$ = new core_1.EventEmitter();
         this._subscriptions = [];
         this.ng2Map = this.ng2MapComponent['ng2Map'];
@@ -911,8 +914,8 @@ var CustomMarker = (function () {
         this.ng2MapComponent = ng2MapComponent;
         this.elementRef = elementRef;
         this.ng2Map = ng2Map;
-        this.inputChanges$ = new Subject_1.Subject();
         this.initialized$ = new core_1.EventEmitter();
+        this.inputChanges$ = new Subject_1.Subject();
         this.elementRef.nativeElement.style.display = 'none';
         OUTPUTS.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
     }
@@ -951,6 +954,10 @@ var CustomMarker = (function () {
         this.ng2MapComponent.addToMapObjectGroup('CustomMarker', this.mapObject);
         this.initialized$.emit(this.mapObject);
     };
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], CustomMarker.prototype, "initialized$", void 0);
     CustomMarker = __decorate([
         core_1.Component({
             selector: 'ng2-map > custom-marker',
@@ -997,9 +1004,9 @@ var InfoWindow = (function () {
         this.ng2MapComponent = ng2MapComponent;
         this.elementRef = elementRef;
         this.ng2Map = ng2Map;
+        this.initialized$ = new core_1.EventEmitter();
         this.objectOptions = {};
         this.inputChanges$ = new Subject_1.Subject();
-        this.initialized$ = new core_1.EventEmitter();
         this.elementRef.nativeElement.style.display = 'none';
         OUTPUTS.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
     }
@@ -1056,6 +1063,10 @@ var InfoWindow = (function () {
             delete this.infoWindow;
         }
     };
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], InfoWindow.prototype, "initialized$", void 0);
     InfoWindow = __decorate([
         core_1.Component({
             selector: 'ng2-map > info-window',
@@ -1099,7 +1110,12 @@ var BicyclingLayer = (function (_super) {
     __extends(BicyclingLayer, _super);
     function BicyclingLayer(ng2MapComp) {
         _super.call(this, ng2MapComp, 'BicyclingLayer', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], BicyclingLayer.prototype, "initialized$", void 0);
     BicyclingLayer = __decorate([
         core_1.Directive({
             selector: 'ng2-map > bicycling-layer',
@@ -1151,6 +1167,7 @@ var Circle = (function (_super) {
     function Circle(ng2MapComp) {
         _super.call(this, ng2MapComp, 'Circle', INPUTS, OUTPUTS);
         this.ng2MapComp = ng2MapComp;
+        this.initialized$ = new core_1.EventEmitter();
         this.objectOptions = {};
     }
     Circle.prototype.initialize = function () {
@@ -1177,6 +1194,10 @@ var Circle = (function (_super) {
             }));
         }
     };
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], Circle.prototype, "initialized$", void 0);
     Circle = __decorate([
         core_1.Directive({
             selector: 'ng2-map>circle, ng2-map>map-circle',
@@ -1222,6 +1243,7 @@ var DataLayer = (function (_super) {
     __extends(DataLayer, _super);
     function DataLayer(ng2MapComponent) {
         _super.call(this, ng2MapComponent, 'Data', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
     // only called when map is ready
     DataLayer.prototype.initialize = function () {
@@ -1239,6 +1261,10 @@ var DataLayer = (function (_super) {
         this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
         this.initialized$.emit(this.mapObject);
     };
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], DataLayer.prototype, "initialized$", void 0);
     DataLayer = __decorate([
         core_1.Directive({
             selector: 'ng2-map > data-layer',
@@ -1287,6 +1313,7 @@ var DirectionsRenderer = (function (_super) {
     function DirectionsRenderer(ng2MapComponent, geolocation) {
         _super.call(this, ng2MapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS);
         this.geolocation = geolocation;
+        this.initialized$ = new core_1.EventEmitter();
     }
     // only called when map is ready
     DirectionsRenderer.prototype.initialize = function () {
@@ -1329,6 +1356,10 @@ var DirectionsRenderer = (function (_super) {
         core_1.Input('directions-request'), 
         __metadata('design:type', Object)
     ], DirectionsRenderer.prototype, "directionsRequest", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], DirectionsRenderer.prototype, "initialized$", void 0);
     DirectionsRenderer = __decorate([
         core_1.Directive({
             selector: 'ng2-map > directions-renderer',
@@ -1378,8 +1409,13 @@ var DrawingManager = (function (_super) {
     __extends(DrawingManager, _super);
     function DrawingManager(ng2MapComp) {
         _super.call(this, ng2MapComp, 'DrawingManager', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
         this.libraryName = 'drawing';
     }
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], DrawingManager.prototype, "initialized$", void 0);
     DrawingManager = __decorate([
         core_1.Directive({
             selector: 'ng2-map > drawing-manager',
@@ -1422,6 +1458,7 @@ var GroundOverlay = (function (_super) {
     __extends(GroundOverlay, _super);
     function GroundOverlay(ng2MapComp) {
         _super.call(this, ng2MapComp, 'GroundOverlay', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
         this.objectOptions = {};
     }
     // re-declaring initialize function. called when map is ready
@@ -1437,6 +1474,10 @@ var GroundOverlay = (function (_super) {
         this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
         this.initialized$.emit(this.mapObject);
     };
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], GroundOverlay.prototype, "initialized$", void 0);
     GroundOverlay = __decorate([
         core_1.Directive({
             selector: 'ng2-map > ground-overlay',
@@ -1479,8 +1520,13 @@ var HeatmapLayer = (function (_super) {
     __extends(HeatmapLayer, _super);
     function HeatmapLayer(ng2MapComp) {
         _super.call(this, ng2MapComp, 'HeatmapLayer', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
         this.libraryName = 'visualization';
     }
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], HeatmapLayer.prototype, "initialized$", void 0);
     HeatmapLayer = __decorate([
         core_1.Directive({
             selector: 'ng2-map > heatmap-layer',
@@ -1523,7 +1569,12 @@ var KmlLayer = (function (_super) {
     __extends(KmlLayer, _super);
     function KmlLayer(ng2MapComp) {
         _super.call(this, ng2MapComp, 'KmlLayer', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], KmlLayer.prototype, "initialized$", void 0);
     KmlLayer = __decorate([
         core_1.Directive({
             selector: 'ng2-map > kml-layer',
@@ -1576,8 +1627,19 @@ var Marker = (function (_super) {
     function Marker(ng2MapComp) {
         _super.call(this, ng2MapComp, 'Marker', INPUTS, OUTPUTS);
         this.ng2MapComp = ng2MapComp;
+        this.initialized$ = new core_1.EventEmitter();
         this.objectOptions = {};
     }
+    // Initialize this map object when map is ready
+    Marker.prototype.ngOnInit = function () {
+        var _this = this;
+        if (this.ng2MapComponent.mapIdledOnce) {
+            this.initialize();
+        }
+        else {
+            this.ng2MapComponent.mapReady$.subscribe(function (map) { return _this.initialize(); });
+        }
+    };
     Marker.prototype.initialize = function () {
         _super.prototype.initialize.call(this);
         this.setPosition();
@@ -1602,6 +1664,10 @@ var Marker = (function (_super) {
             }));
         }
     };
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], Marker.prototype, "initialized$", void 0);
     Marker = __decorate([
         core_1.Directive({
             selector: 'ng2-map > marker',
@@ -1756,7 +1822,12 @@ var Polygon = (function (_super) {
     __extends(Polygon, _super);
     function Polygon(ng2MapComp) {
         _super.call(this, ng2MapComp, 'Polygon', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], Polygon.prototype, "initialized$", void 0);
     Polygon = __decorate([
         core_1.Directive({
             selector: 'ng2-map>polygon, ng2-map>map-polygon',
@@ -1805,7 +1876,12 @@ var Polyline = (function (_super) {
     __extends(Polyline, _super);
     function Polyline(ng2MapComp) {
         _super.call(this, ng2MapComp, 'Polyline', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], Polyline.prototype, "initialized$", void 0);
     Polyline = __decorate([
         core_1.Directive({
             selector: 'ng2-map > polyline',
@@ -1857,6 +1933,7 @@ var StreetViewPanorama = (function (_super) {
     __extends(StreetViewPanorama, _super);
     function StreetViewPanorama(ng2MapComp) {
         _super.call(this, ng2MapComp, 'StreetViewPanorama', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
     // only called when map is ready
     StreetViewPanorama.prototype.initialize = function () {
@@ -1887,6 +1964,10 @@ var StreetViewPanorama = (function (_super) {
             OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
         }
     };
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], StreetViewPanorama.prototype, "initialized$", void 0);
     StreetViewPanorama = __decorate([
         core_1.Directive({
             selector: 'ng2-map > street-view-panorama',
@@ -1929,7 +2010,12 @@ var TrafficLayer = (function (_super) {
     __extends(TrafficLayer, _super);
     function TrafficLayer(ng2MapComp) {
         _super.call(this, ng2MapComp, 'TrafficLayer', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], TrafficLayer.prototype, "initialized$", void 0);
     TrafficLayer = __decorate([
         core_1.Directive({
             selector: 'ng2-map > traffic-layer',
@@ -1972,7 +2058,12 @@ var TransitLayer = (function (_super) {
     __extends(TransitLayer, _super);
     function TransitLayer(ng2MapComp) {
         _super.call(this, ng2MapComp, 'TransitLayer', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], TransitLayer.prototype, "initialized$", void 0);
     TransitLayer = __decorate([
         core_1.Directive({
             selector: 'ng2-map > transit-layer',

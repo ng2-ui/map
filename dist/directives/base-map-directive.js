@@ -7,6 +7,7 @@ var BaseMapDirective = (function () {
         this.mapObjectName = mapObjectName;
         this.inputs = inputs;
         this.outputs = outputs;
+        // this should be redefined on each childr directive
         this.initialized$ = new core_1.EventEmitter();
         this._subscriptions = [];
         this.ng2Map = this.ng2MapComponent['ng2Map'];

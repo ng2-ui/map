@@ -19,6 +19,7 @@ var DirectionsRenderer = (function (_super) {
     function DirectionsRenderer(ng2MapComponent, geolocation) {
         _super.call(this, ng2MapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS);
         this.geolocation = geolocation;
+        this.initialized$ = new core_1.EventEmitter();
     }
     // only called when map is ready
     DirectionsRenderer.prototype.initialize = function () {
@@ -66,12 +67,13 @@ var DirectionsRenderer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    DirectionsRenderer.ctorParameters = [
+    DirectionsRenderer.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
         { type: navigator_geolocation_1.NavigatorGeolocation, },
-    ];
+    ]; };
     DirectionsRenderer.propDecorators = {
         'directionsRequest': [{ type: core_1.Input, args: ['directions-request',] },],
+        'initialized$': [{ type: core_1.Output },],
     };
     return DirectionsRenderer;
 }(base_map_directive_1.BaseMapDirective));

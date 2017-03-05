@@ -1,3 +1,4 @@
+import { EventEmitter } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
 export declare class HeatmapLayer extends BaseMapDirective {
@@ -8,6 +9,7 @@ export declare class HeatmapLayer extends BaseMapDirective {
     opacity: any;
     radius: any;
     options: any;
+    initialized$: EventEmitter<any>;
     libraryName: string;
     constructor(ng2MapComp: Ng2MapComponent);
 }

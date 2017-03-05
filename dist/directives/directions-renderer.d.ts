@@ -1,5 +1,5 @@
 /// <reference types="googlemaps" />
-import { SimpleChanges } from '@angular/core';
+import { SimpleChanges, EventEmitter } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
@@ -18,9 +18,10 @@ export declare class DirectionsRenderer extends BaseMapDirective {
     suppressInfoWindows: any;
     suppressMarkers: any;
     suppressPolylines: any;
+    directionsRequest: google.maps.DirectionsRequest;
+    initialized$: EventEmitter<any>;
     directionsService: google.maps.DirectionsService;
     directionsRenderer: google.maps.DirectionsRenderer;
-    directionsRequest: google.maps.DirectionsRequest;
     constructor(ng2MapComponent: Ng2MapComponent, geolocation: NavigatorGeolocation);
     initialize(): void;
     ngOnChanges(changes: SimpleChanges): void;

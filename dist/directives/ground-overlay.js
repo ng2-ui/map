@@ -13,6 +13,7 @@ var GroundOverlay = (function (_super) {
     __extends(GroundOverlay, _super);
     function GroundOverlay(ng2MapComp) {
         _super.call(this, ng2MapComp, 'GroundOverlay', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
         this.objectOptions = {};
     }
     // re-declaring initialize function. called when map is ready
@@ -37,9 +38,12 @@ var GroundOverlay = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    GroundOverlay.ctorParameters = [
+    GroundOverlay.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
+    GroundOverlay.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
+    };
     return GroundOverlay;
 }(base_map_directive_1.BaseMapDirective));
 exports.GroundOverlay = GroundOverlay;

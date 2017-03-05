@@ -13,6 +13,7 @@ var BicyclingLayer = (function (_super) {
     __extends(BicyclingLayer, _super);
     function BicyclingLayer(ng2MapComp) {
         _super.call(this, ng2MapComp, 'BicyclingLayer', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
     BicyclingLayer.decorators = [
         { type: core_1.Directive, args: [{
@@ -22,9 +23,12 @@ var BicyclingLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    BicyclingLayer.ctorParameters = [
+    BicyclingLayer.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
+    BicyclingLayer.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
+    };
     return BicyclingLayer;
 }(base_map_directive_1.BaseMapDirective));
 exports.BicyclingLayer = BicyclingLayer;

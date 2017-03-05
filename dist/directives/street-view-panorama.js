@@ -22,6 +22,7 @@ var StreetViewPanorama = (function (_super) {
     __extends(StreetViewPanorama, _super);
     function StreetViewPanorama(ng2MapComp) {
         _super.call(this, ng2MapComp, 'StreetViewPanorama', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
     // only called when map is ready
     StreetViewPanorama.prototype.initialize = function () {
@@ -61,9 +62,12 @@ var StreetViewPanorama = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    StreetViewPanorama.ctorParameters = [
+    StreetViewPanorama.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
+    StreetViewPanorama.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
+    };
     return StreetViewPanorama;
 }(base_map_directive_1.BaseMapDirective));
 exports.StreetViewPanorama = StreetViewPanorama;

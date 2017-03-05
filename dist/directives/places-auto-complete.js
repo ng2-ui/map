@@ -62,12 +62,12 @@ var PlacesAutoComplete = (function () {
                 },] },
     ];
     /** @nocollapse */
-    PlacesAutoComplete.ctorParameters = [
+    PlacesAutoComplete.ctorParameters = function () { return [
         { type: option_builder_1.OptionBuilder, },
         { type: core_1.ElementRef, },
         { type: core_1.NgZone, },
         { type: undefined, decorators: [{ type: core_1.Optional }, { type: core_1.Inject, args: [config_1.NG_MAP_CONFIG_TOKEN,] },] },
-    ];
+    ]; };
     PlacesAutoComplete.propDecorators = {
         'bounds': [{ type: core_1.Input, args: ['bounds',] },],
         'componentRestrictions': [{ type: core_1.Input, args: ['componentRestrictions',] },],

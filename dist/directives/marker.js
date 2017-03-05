@@ -23,8 +23,20 @@ var Marker = (function (_super) {
     function Marker(ng2MapComp) {
         _super.call(this, ng2MapComp, 'Marker', INPUTS, OUTPUTS);
         this.ng2MapComp = ng2MapComp;
+        this.initialized$ = new core_1.EventEmitter();
         this.objectOptions = {};
+        console.log('marker constructor', 9999999);
     }
+    // Initialize this map object when map is ready
+    Marker.prototype.ngOnInit = function () {
+        var _this = this;
+        if (this.ng2MapComponent.mapIdledOnce) {
+            this.initialize();
+        }
+        else {
+            this.ng2MapComponent.mapReady$.subscribe(function (map) { return _this.initialize(); });
+        }
+    };
     Marker.prototype.initialize = function () {
         _super.prototype.initialize.call(this);
         this.setPosition();
@@ -59,9 +71,12 @@ var Marker = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    Marker.ctorParameters = [
+    Marker.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
+    Marker.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
+    };
     return Marker;
 }(base_map_directive_1.BaseMapDirective));
 exports.Marker = Marker;

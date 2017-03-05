@@ -13,6 +13,7 @@ var TransitLayer = (function (_super) {
     __extends(TransitLayer, _super);
     function TransitLayer(ng2MapComp) {
         _super.call(this, ng2MapComp, 'TransitLayer', INPUTS, OUTPUTS);
+        this.initialized$ = new core_1.EventEmitter();
     }
     TransitLayer.decorators = [
         { type: core_1.Directive, args: [{
@@ -22,9 +23,12 @@ var TransitLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    TransitLayer.ctorParameters = [
+    TransitLayer.ctorParameters = function () { return [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
+    ]; };
+    TransitLayer.propDecorators = {
+        'initialized$': [{ type: core_1.Output },],
+    };
     return TransitLayer;
 }(base_map_directive_1.BaseMapDirective));
 exports.TransitLayer = TransitLayer;
