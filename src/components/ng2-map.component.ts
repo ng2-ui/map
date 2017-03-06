@@ -114,7 +114,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
       window['ng2MapRef'].forEach( ng2MapRef => {
         ng2MapRef.zone.run(function() { ng2MapRef.componentFn(); });
       });
-      window['ng2MapRef'] = [];
+      window['ng2MapRef'].splice(0, window['ng2MapRef'].length);
     };
     if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ng2-map-api')) {
       let script = document.createElement( 'script' );
