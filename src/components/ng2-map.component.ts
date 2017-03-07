@@ -83,9 +83,9 @@ export class Ng2MapComponent {
   ) {
     this.config = this.config || {apiUrl: 'https://maps.google.com/maps/api/js'};
 
-    window['ng2MapRef'] = window['ng2MapRef'] || [];
-    this.mapIndex = window['ng2MapRef'].length;
-    window['ng2MapRef'].push({ zone: this.zone, componentFn: () => this.initializeMap()});
+    (window as any)['ng2MapRef'] = (window as any)['ng2MapRef'] || [];
+    this.mapIndex = (window as any)['ng2MapRef'].length;
+    (window as any)['ng2MapRef'].push({ zone: this.zone, componentFn: () => this.initializeMap()});
     if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
       this.mapInitPath = 1;
       this.addGoogleMapsApi();
@@ -107,13 +107,13 @@ export class Ng2MapComponent {
   }
 
   addGoogleMapsApi(): void {
-    window['initNg2Map'] = window['initNg2Map'] || function() {
-      window['ng2MapRef'].forEach( ng2MapRef => {
+    (window as any)['initNg2Map'] = (window as any)['initNg2Map'] || function() {
+      (window as any)['ng2MapRef'].forEach( ng2MapRef => {
         ng2MapRef.zone.run(function() { ng2MapRef.componentFn(); });
       });
-      window['ng2MapRef'].splice(0, window['ng2MapRef'].length);
+      (window as any)['ng2MapRef'].splice(0, (window as any)['ng2MapRef'].length);
     };
-    if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ng2-map-api')) {
+    if ((!(window as any)['google'] || !(window as any)['google']['maps']) && !document.querySelector('#ng2-map-api')) {
       let script = document.createElement( 'script' );
       script.id = 'ng2-map-api';
 
@@ -156,9 +156,9 @@ export class Ng2MapComponent {
     debounceTime.call(this.inputChanges$, 1000)
       .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.map, changes));
 
-    // expose map object for test and debugging on window
+    // expose map object for test and debugging on (window as any)
     console.log('this.mapIndex', this.mapIndex);
-    window['ng2MapRef'].map = this.map;
+    (window as any)['ng2MapRef'].map = this.map;
   }
 
   setCenter(): void {
