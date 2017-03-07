@@ -23,9 +23,9 @@ var KmlLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    KmlLayer.ctorParameters = function () { return [
+    KmlLayer.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     KmlLayer.propDecorators = {
         'initialized$': [{ type: core_1.Output },],
     };

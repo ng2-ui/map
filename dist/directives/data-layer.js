@@ -44,9 +44,9 @@ var DataLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    DataLayer.ctorParameters = function () { return [
+    DataLayer.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     DataLayer.propDecorators = {
         'initialized$': [{ type: core_1.Output },],
     };

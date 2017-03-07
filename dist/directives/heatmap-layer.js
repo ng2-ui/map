@@ -24,9 +24,9 @@ var HeatmapLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    HeatmapLayer.ctorParameters = function () { return [
+    HeatmapLayer.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     HeatmapLayer.propDecorators = {
         'initialized$': [{ type: core_1.Output },],
     };

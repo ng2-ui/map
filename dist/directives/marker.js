@@ -71,9 +71,9 @@ var Marker = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    Marker.ctorParameters = function () { return [
+    Marker.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     Marker.propDecorators = {
         'initialized$': [{ type: core_1.Output },],
     };

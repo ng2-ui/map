@@ -31,9 +31,9 @@ var DrawingManager = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    DrawingManager.ctorParameters = function () { return [
+    DrawingManager.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     DrawingManager.propDecorators = {
         'initialized$': [{ type: core_1.Output },],
     };

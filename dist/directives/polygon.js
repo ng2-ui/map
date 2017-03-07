@@ -29,9 +29,9 @@ var Polygon = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    Polygon.ctorParameters = function () { return [
+    Polygon.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     Polygon.propDecorators = {
         'initialized$': [{ type: core_1.Output },],
     };

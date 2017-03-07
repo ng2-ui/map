@@ -23,9 +23,9 @@ var BicyclingLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    BicyclingLayer.ctorParameters = function () { return [
+    BicyclingLayer.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     BicyclingLayer.propDecorators = {
         'initialized$': [{ type: core_1.Output },],
     };

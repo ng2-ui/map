@@ -23,9 +23,9 @@ var TransitLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    TransitLayer.ctorParameters = function () { return [
+    TransitLayer.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     TransitLayer.propDecorators = {
         'initialized$': [{ type: core_1.Output },],
     };

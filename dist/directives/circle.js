@@ -59,9 +59,9 @@ var Circle = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    Circle.ctorParameters = function () { return [
+    Circle.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     Circle.propDecorators = {
         'initialized$': [{ type: core_1.Output },],
     };

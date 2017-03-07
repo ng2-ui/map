@@ -67,10 +67,10 @@ var DirectionsRenderer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    DirectionsRenderer.ctorParameters = function () { return [
+    DirectionsRenderer.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
         { type: navigator_geolocation_1.NavigatorGeolocation, },
-    ]; };
+    ];
     DirectionsRenderer.propDecorators = {
         'directionsRequest': [{ type: core_1.Input, args: ['directions-request',] },],
         'initialized$': [{ type: core_1.Output },],

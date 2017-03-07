@@ -67,7 +67,7 @@ var Ng2MapComponent = (function () {
             window['ng2MapRef'].forEach(function (ng2MapRef) {
                 ng2MapRef.zone.run(function () { ng2MapRef.componentFn(); });
             });
-            window['ng2MapRef'] = [];
+            window['ng2MapRef'].splice(0, window['ng2MapRef'].length);
         };
         if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ng2-map-api')) {
             var script = document.createElement('script');
@@ -104,7 +104,7 @@ var Ng2MapComponent = (function () {
         // update map when input changes
         debounceTime_1.debounceTime.call(this.inputChanges$, 1000)
             .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.map, changes); });
-        // expose map object for test and debugging on window
+        // expose map object for test and debugging on (window as any)
         console.log('this.mapIndex', this.mapIndex);
         window['ng2MapRef'].map = this.map;
     };
@@ -162,7 +162,7 @@ var Ng2MapComponent = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2MapComponent.ctorParameters = function () { return [
+    Ng2MapComponent.ctorParameters = [
         { type: option_builder_1.OptionBuilder, },
         { type: core_1.ElementRef, },
         { type: core_1.NgZone, },
@@ -170,7 +170,7 @@ var Ng2MapComponent = (function () {
         { type: geo_coder_1.GeoCoder, },
         { type: ng2_map_1.Ng2Map, },
         { type: undefined, decorators: [{ type: core_1.Optional }, { type: core_1.Inject, args: [config_1.NG_MAP_CONFIG_TOKEN,] },] },
-    ]; };
+    ];
     Ng2MapComponent.propDecorators = {
         'mapReady$': [{ type: core_1.Output },],
     };

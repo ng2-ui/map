@@ -57,7 +57,7 @@ var Ng2MapModule = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Ng2MapModule.ctorParameters = function () { return []; };
+    Ng2MapModule.ctorParameters = [];
     return Ng2MapModule;
 }());
 exports.Ng2MapModule = Ng2MapModule;

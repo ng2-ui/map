@@ -168,7 +168,7 @@ var Ng2MapComponent = (function () {
             window['ng2MapRef'].forEach(function (ng2MapRef) {
                 ng2MapRef.zone.run(function () { ng2MapRef.componentFn(); });
             });
-            window['ng2MapRef'] = [];
+            window['ng2MapRef'].splice(0, window['ng2MapRef'].length);
         };
         if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ng2-map-api')) {
             var script = document.createElement('script');
@@ -204,7 +204,7 @@ var Ng2MapComponent = (function () {
         // update map when input changes
         debounceTime_1.debounceTime.call(this.inputChanges$, 1000)
             .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.map, changes); });
-        // expose map object for test and debugging on window
+        // expose map object for test and debugging on (window as any)
         window['ng2MapRef'].map = this.map;
     };
     Ng2MapComponent.prototype.setCenter = function () {

@@ -23,9 +23,9 @@ var TrafficLayer = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    TrafficLayer.ctorParameters = function () { return [
+    TrafficLayer.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     TrafficLayer.propDecorators = {
         'initialized$': [{ type: core_1.Output },],
     };

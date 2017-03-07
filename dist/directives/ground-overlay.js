@@ -38,9 +38,9 @@ var GroundOverlay = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    GroundOverlay.ctorParameters = function () { return [
+    GroundOverlay.ctorParameters = [
         { type: ng2_map_component_1.Ng2MapComponent, },
-    ]; };
+    ];
     GroundOverlay.propDecorators = {
         'initialized$': [{ type: core_1.Output },],
     };
