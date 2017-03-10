@@ -72,22 +72,23 @@ export class OptionBuilder {
       }
     }
 
-    if (output instanceof Array) { //e.g., [1, 2]
-      if (options['key'] === 'bounds') {
-        output = new google.maps.LatLngBounds(output[0], output[1]);
-      }
-      else if (options['key'] === 'icons') {
-        output = this.getMapIcons(output);
-      }
-      else if (options['key'] === 'position' || (<string>options['key']).match(/^geoFallback/) ) {
-        output = this.getLatLng(output);
-      }
-    } else if (options['key'] && output instanceof Object) {
-      if (options['key'] === 'icon') {
-        output = this.getMarkerIcon(output);
-      }
-      else if ((<string>options['key']).match(/ControlOptions$/)) {
-        output = this.getMapControlOption(output);
+    if (options['key']) {
+      let key: string = <string>options['key'];
+      if (output instanceof Array) { //e.g., [1, 2]
+        if (key === 'bounds') {
+          output = new google.maps.LatLngBounds(output[0], output[1]);
+        } else if (key === 'icons') {
+          output = this.getMapIcons(output);
+        } else if (key === 'position' || key.match(/^geoFallback/) ) {
+          output = this.getLatLng(output);
+        }
+      } else if (output instanceof Object) {
+        if (key === 'icon') {
+          output = this.getMarkerIcon(output);
+        }
+        else if (key.match(/ControlOptions$/)) {
+          output = this.getMapControlOption(output);
+        }
       }
     }
 
