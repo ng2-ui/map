@@ -553,23 +553,26 @@ var OptionBuilder = (function () {
                         || input;
             }
         }
-        if (output instanceof Array) {
-            if (options['key'] === 'bounds') {
-                output = new google.maps.LatLngBounds(output[0], output[1]);
+        if (options['key']) {
+            var key = options['key'];
+            if (output instanceof Array) {
+                if (key === 'bounds') {
+                    output = new google.maps.LatLngBounds(output[0], output[1]);
+                }
+                else if (key === 'icons') {
+                    output = this.getMapIcons(output);
+                }
+                else if (key === 'position' || key.match(/^geoFallback/)) {
+                    output = this.getLatLng(output);
+                }
             }
-            else if (options['key'] === 'icons') {
-                output = this.getMapIcons(output);
-            }
-            else if (options['key'] === 'position' || options['key'].match(/^geoFallback/)) {
-                output = this.getLatLng(output);
-            }
-        }
-        else if (options['key'] && output instanceof Object) {
-            if (options['key'] === 'icon') {
-                output = this.getMarkerIcon(output);
-            }
-            else if (options['key'].match(/ControlOptions$/)) {
-                output = this.getMapControlOption(output);
+            else if (output instanceof Object) {
+                if (key === 'icon') {
+                    output = this.getMarkerIcon(output);
+                }
+                else if (key.match(/ControlOptions$/)) {
+                    output = this.getMapControlOption(output);
+                }
             }
         }
         //delete keys only for processing, not used by google
