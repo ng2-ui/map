@@ -10,13 +10,12 @@ import {
   Optional, AfterViewInit, OnChanges, OnDestroy
 } from '@angular/core';
 
-import {
-  OptionBuilder,
-  NavigatorGeolocation,
-  NG_MAP_CONFIG_TOKEN,
-  GeoCoder,
-  Ng2Map
-} from 'ng2-map';
+import { OptionBuilder } from '../services/option-builder';
+import { NavigatorGeolocation } from '../services/navigator-geolocation';
+import { NG_MAP_CONFIG_TOKEN } from '../services/config';
+import { GeoCoder } from '../services/geo-coder';
+import { Ng2Map } from '../services/ng2-map';
+
 
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operator/debounceTime';

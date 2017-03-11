@@ -1,7 +1,7 @@
 import {Directive, Output, EventEmitter, OnInit} from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
-import { Ng2MapComponent } from 'ng2-map';
+import { Ng2MapComponent } from '../components/ng2-map.component';
 
 const INPUTS = [
   'anchorPoint', 'animation', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity',

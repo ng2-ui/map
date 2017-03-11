@@ -1,5 +1,6 @@
 import { Injectable, SimpleChanges } from '@angular/core';
-import { OptionBuilder, GeoCoder } from 'ng2-map';
+import { OptionBuilder } from './option-builder';
+import { GeoCoder } from './geo-coder';
 
 /**
  * collection of map instance-related properties and methods

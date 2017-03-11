@@ -9,8 +9,9 @@ import {
   Inject
 } from '@angular/core';
 
-import { NG_MAP_CONFIG_TOKEN } from 'ng2-map';
-import { OptionBuilder } from 'ng2-map';
+import { NG_MAP_CONFIG_TOKEN } from '../services/config';
+import { OptionBuilder } from '../services/option-builder';
+
 
 @Directive({
   selector: '[places-auto-complete]'

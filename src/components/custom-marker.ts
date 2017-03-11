@@ -8,7 +8,9 @@ import {
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operator/debounceTime';
 
-import {Ng2Map, Ng2MapComponent} from 'ng2-map';
+import { Ng2Map } from '../services/ng2-map';
+import { Ng2MapComponent } from './ng2-map.component';
+
 
 const INPUTS = [
   'position'

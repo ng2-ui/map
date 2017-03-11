@@ -1,6 +1,8 @@
 import {EventEmitter, SimpleChanges, Output, OnInit, OnChanges, OnDestroy} from '@angular/core';
 
-import { OptionBuilder, Ng2Map, Ng2MapComponent } from 'ng2-map';
+import { OptionBuilder } from '../services/option-builder';
+import { Ng2Map } from '../services/ng2-map';
+import { Ng2MapComponent } from '../components/ng2-map.component';
 
 export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   // this should be redefined on each childr directive
