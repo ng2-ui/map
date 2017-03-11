@@ -1,4 +1,4 @@
-import { Input, Directive, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import {Input, Directive, SimpleChanges, Output, EventEmitter, OnChanges} from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
@@ -16,7 +16,8 @@ const OUTPUTS = ['directions_changed'];
   inputs: INPUTS,
   outputs: OUTPUTS,
 })
-export class DirectionsRenderer extends BaseMapDirective {
+export class DirectionsRenderer extends BaseMapDirective implements OnChanges {
+  // tslint:disable-next-line
   @Input('directions-request') directionsRequest: google.maps.DirectionsRequest;
   @Output() public initialized$: EventEmitter<any> = new EventEmitter();
 

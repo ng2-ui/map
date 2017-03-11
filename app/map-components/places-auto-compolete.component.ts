@@ -34,8 +34,8 @@ export class PlacesAutoCompleteComponent {
   }
   placeChanged(place) {
     this.center = place.geometry.location;
-    for (var i = 0; i < place.address_components.length; i++) {
-      var addressType = place.address_components[i].types[0];
+    for (let i = 0; i < place.address_components.length; i++) {
+      let addressType = place.address_components[i].types[0];
       this.address[addressType] = place.address_components[i].long_name;
     }
     this.ref.detectChanges();

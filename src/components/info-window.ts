@@ -3,7 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   SimpleChanges,
-  Output
+  Output, OnInit, OnChanges, OnDestroy
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operator/debounceTime';
@@ -23,7 +23,7 @@ const OUTPUTS = [
   outputs: OUTPUTS,
   template: `<ng-content></ng-content>`,
 })
-export class InfoWindow {
+export class InfoWindow implements OnInit, OnChanges, OnDestroy {
   @Output() public initialized$: EventEmitter<any> = new EventEmitter();
 
   public el: HTMLElement;

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { getJSON, IJson } from './util';
-import { GeoCoder } from './geo-coder';
 
 /**
  * change any object to google object options
@@ -8,8 +7,6 @@ import { GeoCoder } from './geo-coder';
  */
 @Injectable()
 export class OptionBuilder {
-
-  constructor(private geoCoder: GeoCoder) {}
 
   googlizeAllInputs(definedInputs: string[], userInputs: any) {
     let options: any = {};
@@ -49,7 +46,7 @@ export class OptionBuilder {
   googlize(input: any, options?: IJson): any {
     options = options || {};
     let output: any = input;
-    if (typeof input === 'string') { //convert string to a google object
+    if (typeof input === 'string') { // convert string to a google object
       if (input === 'false') {
         output = false;
       } else if (input === '0') {
@@ -74,7 +71,7 @@ export class OptionBuilder {
 
     if (options['key']) {
       let key: string = <string>options['key'];
-      if (output instanceof Array) { //e.g., [1, 2]
+      if (output instanceof Array) { // e.g., [1, 2]
         if (key === 'bounds') {
           output = new google.maps.LatLngBounds(output[0], output[1]);
         } else if (key === 'icons') {
@@ -92,7 +89,7 @@ export class OptionBuilder {
       }
     }
 
-    //delete keys only for processing, not used by google
+    // delete keys only for processing, not used by google
     delete output['doNotConverStringToNumber'];
     delete output['key'];
 
@@ -136,8 +133,7 @@ export class OptionBuilder {
     let output: any;
     if (input.match(/^[A-Z][a-zA-Z0-9]+\(.*\)$/)) {
       try {
-        let exp = 'new google.maps.' + input;
-        output = Function(`return new google.maps.${input};`)()
+        output = Function(`return new google.maps.${input};`)();
       } catch (e) {}
     }
     return output;
@@ -240,7 +236,7 @@ export class OptionBuilder {
   }
 
   private onlyOptionsGiven(definedInputs: string[], userInputs: any): boolean {
-    for (let i = 0; i< definedInputs.length; i++) {
+    for (let i = 0; i < definedInputs.length; i++) {
       let input = definedInputs[i];
       if (input !== 'options' && typeof userInputs[input] !== 'undefined') {
         return false;

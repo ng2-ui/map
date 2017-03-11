@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 
 let templateStr: string = `
   <h1>Traffic Layer</h1>
