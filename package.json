@@ -15,7 +15,7 @@
     "build:ngc": "ngc -p tsconfig.ngc.json",
     "build:umd": "SET NODE_ENV=prod && webpack",
     "build:app": "SET NODE_ENV=prod && webpack --config app/webpack.config",
-    "test": "npm-run-all --serial test:start test:webtest test:stop",
+    "test": "npm-run-all --serial lint test:start test:webtest test:stop",
     "test:start": "forever start --silent node_modules/.bin/webpack-dev-server --quiet --port 9239 --content-base app --config app/webpack.config",
     "test:stop": "forever stop node_modules/.bin/webpack-dev-server --quiet --port 9239 --content-base app --config app/webpack.config",
     "test:webtest": "webtest webtest.txt",
