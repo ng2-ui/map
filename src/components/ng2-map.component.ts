@@ -7,14 +7,17 @@ import {
   SimpleChanges,
   Inject,
   Output,
-  Optional
+  Optional, AfterViewInit, OnChanges, OnDestroy
 } from '@angular/core';
 
-import { OptionBuilder } from '../services/option-builder';
-import { NavigatorGeolocation } from '../services/navigator-geolocation';
-import { NG_MAP_CONFIG_TOKEN } from '../services/config';
-import { GeoCoder } from '../services/geo-coder';
-import { Ng2Map } from '../services/ng2-map';
+import {
+  OptionBuilder,
+  NavigatorGeolocation,
+  NG_MAP_CONFIG_TOKEN,
+  GeoCoder,
+  Ng2Map
+} from 'ng2-map';
+
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operator/debounceTime';
 import { IJson, toCamelCase } from '../services/util';
@@ -53,7 +56,7 @@ const OUTPUTS = [
     <ng-content></ng-content>
   `,
 })
-export class Ng2MapComponent {
+export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   @Output() public mapReady$: EventEmitter<any> = new EventEmitter();
 
   public mapIndex: number;

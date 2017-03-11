@@ -1,7 +1,7 @@
 import { Directive, Output, EventEmitter } from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
-import { Ng2MapComponent } from '../components/ng2-map.component';
+import { Ng2MapComponent } from 'ng2-map';
 
 const INPUTS = [
   'clickable', 'draggable', 'editable', 'geodesic', 'icons', 'path', 'strokeColor',

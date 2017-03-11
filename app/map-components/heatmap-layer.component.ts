@@ -1,6 +1,6 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 //noinspection TypeScriptCheckImport
-import {HeatmapLayer} from "ng2-map";
+import {HeatmapLayer} from 'ng2-map';
 
 let templateStr = `
   <h1>Heatmap Layer</h1>
@@ -54,17 +54,21 @@ let templateStr = `
     }
   `]
 })
-export class HeatmapLayerComponent {
+export class HeatmapLayerComponent implements OnInit {
   @ViewChild(HeatmapLayer) heatmapLayer: HeatmapLayer;
-  
   templateStr: string = templateStr;
   heatmap: google.maps.visualization.HeatmapLayer;
   map: google.maps.Map;
+  points = [
+    new google.maps.LatLng(37.782551, -122.445368),
+    new google.maps.LatLng(37.782745, -122.444586),
+    new google.maps.LatLng(37.782842, -122.443688)
+  ];
   ngOnInit() {
     this.heatmapLayer['initialized$'].subscribe(heatmap => {
       this.heatmap = heatmap;
       this.map = this.heatmap.getMap();
-    })
+    });
   }
 
   toggleHeatmap() {
@@ -72,7 +76,7 @@ export class HeatmapLayerComponent {
   }
 
   changeGradient() {
-    var gradient = [
+    let gradient = [
       'rgba(0, 255, 255, 0)',
       'rgba(0, 255, 255, 1)',
       'rgba(0, 191, 255, 1)',
@@ -87,7 +91,7 @@ export class HeatmapLayerComponent {
       'rgba(127, 0, 63, 1)',
       'rgba(191, 0, 31, 1)',
       'rgba(255, 0, 0, 1)'
-    ]
+    ];
     this.heatmap.set('gradient', this.heatmap.get('gradient') ? null : gradient);
   }
 
@@ -99,15 +103,7 @@ export class HeatmapLayerComponent {
     this.heatmap.set('opacity', this.heatmap.get('opacity') ? null : 0.2);
   }
 
-  points = [
-    new google.maps.LatLng(37.782551, -122.445368),
-    new google.maps.LatLng(37.782745, -122.444586),
-    new google.maps.LatLng(37.782842, -122.443688)
-  ];
-  
   loadRandomPoints() {
-    let randomLat: number;
-    let randomLng: number;
     this.points = [];
 
     for (let i = 0 ; i < 9; i++) {

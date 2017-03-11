@@ -24,9 +24,9 @@ import { EventArgumentsComponent } from './map-components/event-arguments.compon
 import { CustomMarkerComponent } from './map-components/custom-marker.component';
 import { CustomMarkerNgForComponent } from './map-components/custom-marker-ng-for.component';
 import { MapWithStreetviewComponent } from './map-components/map-with-streetview';
-import { MapChangeMultiplePropertiesComponent } from "./map-components/map-change-multiple-properties.component";
-import { MarkerWithCustomIconComponent } from "./map-components/marker-with-custom-icon.component";
-import { ExperimentComponent } from "./map-components/experiment.component";
+import { MapChangeMultiplePropertiesComponent } from './map-components/map-change-multiple-properties.component';
+import { MarkerWithCustomIconComponent } from './map-components/marker-with-custom-icon.component';
+import { ExperimentComponent } from './map-components/experiment.component';
 
 export const routes: Routes = [
   { path: 'bicycling-layer', component: BicyclingLayerComponent },

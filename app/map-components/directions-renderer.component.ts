@@ -1,4 +1,4 @@
-import {Component, ViewChild, ChangeDetectorRef} from '@angular/core';
+import {Component, ViewChild, ChangeDetectorRef, OnInit} from '@angular/core';
 //noinspection TypeScriptCheckImport
 import { DirectionsRenderer } from 'ng2-map';
 
@@ -48,16 +48,16 @@ let templateStr = `
 @Component({
   template: templateStr
 })
-export class DirectionsRendererComponent {
+export class DirectionsRendererComponent implements OnInit {
   @ViewChild(DirectionsRenderer) directionsRendererDirective: DirectionsRenderer;
 
   templateStr: string = templateStr;
   directionsRenderer: google.maps.DirectionsRenderer;
   directionsResult: google.maps.DirectionsResult;
   direction: any = {
-    origin: "penn station, new york, ny",
-    destination: "260 Broadway New York NY 10007",
-    travelMode: "WALKING"
+    origin: 'penn station, new york, ny',
+    destination: '260 Broadway New York NY 10007',
+    travelMode: 'WALKING'
   };
 
   constructor(private cdr: ChangeDetectorRef) {}

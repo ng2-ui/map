@@ -1,7 +1,7 @@
-import { Directive, Output, EventEmitter } from '@angular/core';
+import {Directive, Output, EventEmitter, OnDestroy} from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
-import { Ng2MapComponent } from '../components/ng2-map.component';
+import { Ng2MapComponent } from 'ng2-map';
 
 const INPUTS = [
   'selector', 'options',
@@ -20,7 +20,7 @@ const OUTPUTS = [
   inputs: INPUTS,
   outputs: OUTPUTS,
 })
-export class StreetViewPanorama extends BaseMapDirective {
+export class StreetViewPanorama extends BaseMapDirective implements OnDestroy {
   @Output() public initialized$: EventEmitter<any> = new EventEmitter();
 
   constructor(ng2MapComp: Ng2MapComponent) {

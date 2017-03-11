@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
 let templateStr = `
@@ -45,6 +45,6 @@ export class MarkerNgForComponent {
     Observable.of(this.getRandomMarkers()) // Think this as http call
       .subscribe( positions => {
         this.positions = positions;
-      })
+      });
   }
 }

@@ -3,12 +3,11 @@ import {
   ElementRef,
   EventEmitter,
   SimpleChanges,
-  Output
+  Output, OnInit, OnChanges, OnDestroy
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operator/debounceTime';
-import { Ng2Map } from '../services/ng2-map';
-import { Ng2MapComponent } from './ng2-map.component';
+import { Ng2Map, Ng2MapComponent } from 'ng2-map';
 
 const INPUTS = [
   'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
@@ -23,7 +22,7 @@ const OUTPUTS = [
   outputs: OUTPUTS,
   template: `<ng-content></ng-content>`,
 })
-export class InfoWindow {
+export class InfoWindow implements OnInit, OnChanges, OnDestroy {
   @Output() public initialized$: EventEmitter<any> = new EventEmitter();
 
   public el: HTMLElement;
