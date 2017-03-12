@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 
 let templateStr: string = `
   <h1>Simple Marker</h1>

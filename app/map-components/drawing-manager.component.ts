@@ -1,6 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 //noinspection TypeScriptCheckImport
-import { DrawingManager } from "ng2-map";
+import { DrawingManager } from 'ng2-map';
 
 let templateStr: string = `
   <h1>Drawing Manager</h1>
@@ -34,7 +34,7 @@ let templateStr: string = `
 @Component({
   template: templateStr
 })
-export class DrawingManagerComponent {
+export class DrawingManagerComponent implements OnInit {
   templateStr: string = templateStr;
   selectedOverlay: any;
   @ViewChild(DrawingManager) drawingManager: DrawingManager;
