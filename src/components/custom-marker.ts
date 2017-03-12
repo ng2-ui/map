@@ -11,10 +11,6 @@ import {debounceTime} from 'rxjs/operator/debounceTime';
 import { Ng2Map } from '../services/ng2-map';
 import { Ng2MapComponent } from './ng2-map.component';
 
-
-const INPUTS = [
-  'position'
-];
 // to avoid DOM event conflicts map_*
 const OUTPUTS = [
   'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
