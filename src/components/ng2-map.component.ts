@@ -90,10 +90,6 @@ export class Ng2MapComponent {
       this.mapInitPath = 1;
       this.addGoogleMapsApi();
     }
-
-    // all outputs needs to be initialized,
-    // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
-    OUTPUTS.forEach(output => this[output] = new EventEmitter());
   }
 
   ngAfterViewInit(): void {

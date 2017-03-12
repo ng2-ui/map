@@ -39,7 +39,6 @@ export class InfoWindow {
     private ng2Map: Ng2Map
   ) {
     this.elementRef.nativeElement.style.display = 'none';
-    OUTPUTS.forEach(output => this[output] = new EventEmitter());
   }
 
   // Initialize this map object when map is ready
