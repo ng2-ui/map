@@ -4,3 +4,5 @@ typings
 *.tgz
 .idea
 .tmp
+dist
+app/build

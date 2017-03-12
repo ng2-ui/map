@@ -12,12 +12,10 @@ import {
 import { NG_MAP_CONFIG_TOKEN } from '../services/config';
 import { OptionBuilder } from '../services/option-builder';
 
-
 @Directive({
   selector: '[places-auto-complete]'
 })
 export class PlacesAutoComplete  {
-
   @Input('bounds') bounds: any;
   @Input('componentRestrictions') componentRestrictions: any;
   @Input('types') types: string[];

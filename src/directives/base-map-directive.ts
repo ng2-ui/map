@@ -19,13 +19,11 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   constructor(
     protected ng2MapComponent: Ng2MapComponent,
     public    mapObjectName: string,
-    protected inputs: string[],
-    protected outputs: string[]
+    protected inputs: string[] = [],
+    protected outputs: string[] = []
   ) {
     this.ng2Map = this.ng2MapComponent['ng2Map'];
     this.optionBuilder = this.ng2MapComponent['optionBuilder'];
-    // all outputs must be initialized
-    this.outputs.forEach(output => this[output] = new EventEmitter());
     this.mapObjectName = mapObjectName;
   }
 
