@@ -21,7 +21,6 @@ fs.copySync('src', tmpDir);
     let jsPath = path.join(dirPath, fileName);
     let js = fs.readFileSync(jsPath, 'utf8');
     let inputMatches = js.match(/INPUTS\s*=\s*(\[[^\]]*?\])/m);
-    let outputMatches = js.match(/OUTPUTS\s*=\s*(\[[^\]]*?\])/m);
     if (inputMatches) {
       let inputs = eval(inputMatches[1]);
       let inputsJs = '\n'+
@@ -33,6 +32,8 @@ fs.copySync('src', tmpDir);
         fs.writeFileSync(jsPath, jsToReplace);
       }
     }
+    js = fs.readFileSync(jsPath, 'utf8');
+    let outputMatches = js.match(/OUTPUTS\s*=\s*(\[[^\]]*?\])/m);
     if (outputMatches) {
       let outputs = eval(outputMatches[1]);
       let outputsJs = '\n'+
