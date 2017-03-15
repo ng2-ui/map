@@ -5,6 +5,7 @@ import { OptionBuilder } from './services/option-builder';
 import { GeoCoder } from './services/geo-coder';
 import { NavigatorGeolocation } from './services/navigator-geolocation';
 import { NG_MAP_CONFIG_TOKEN, ConfigOption } from './services/config';
+import { NgMapApiLoader, NgMapAsyncCallbackApiLoader } from './services/api-loader';
 
 import { Ng2MapComponent } from './components/ng2-map.component';
 import { InfoWindow } from './components/info-window';
@@ -43,7 +44,8 @@ const COMPONENTS_DIRECTIVES = [
     GeoCoder,
     NavigatorGeolocation,
     Ng2Map,
-    OptionBuilder
+    OptionBuilder,
+    {provide: NgMapApiLoader, useClass: NgMapAsyncCallbackApiLoader},
   ]
 })
 export class Ng2MapModule {
