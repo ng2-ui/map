@@ -2,19 +2,17 @@ import {
   Component,
   ElementRef,
   ViewEncapsulation,
-  NgZone,
   EventEmitter,
   SimpleChanges,
-  Inject,
   Output,
-  Optional, AfterViewInit, OnChanges, OnDestroy
+  AfterViewInit, OnChanges, OnDestroy
 } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
-import { NG_MAP_CONFIG_TOKEN } from '../services/config';
 import { GeoCoder } from '../services/geo-coder';
 import { Ng2Map } from '../services/ng2-map';
+import { NgMapApiLoader } from '../services/api-loader';
 
 
 import { Subject } from 'rxjs/Subject';
@@ -58,7 +56,6 @@ const OUTPUTS = [
 export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   @Output() public mapReady$: EventEmitter<any> = new EventEmitter();
 
-  public mapIndex: number;
   public el: HTMLElement;
   public map: google.maps.Map;
   public mapOptions: google.maps.MapOptions = {};
@@ -68,63 +65,30 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   // map objects by group
   public infoWindows: any = {};
 
-  // map init path
-  public mapInitPath: number; // 1: init after loading google api first, 2: init when view is initialized
-
   // map has been fully initialized
   public mapIdledOnce: boolean = false;
 
   constructor(
     public optionBuilder: OptionBuilder,
     public elementRef: ElementRef,
-    public zone: NgZone,
     public geolocation: NavigatorGeolocation,
     public geoCoder: GeoCoder,
     public ng2Map: Ng2Map,
-    @Optional() @Inject(NG_MAP_CONFIG_TOKEN) private config
+    public apiLoader: NgMapApiLoader,
   ) {
-    this.config = this.config || {apiUrl: 'https://maps.google.com/maps/api/js'};
-
-    (window as any)['ng2MapRef'] = (window as any)['ng2MapRef'] || [];
-    this.mapIndex = (window as any)['ng2MapRef'].length;
-    (window as any)['ng2MapRef'].push({ zone: this.zone, componentFn: () => this.initializeMap()});
-    if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
-      this.mapInitPath = 1;
-      this.addGoogleMapsApi();
-    }
+    apiLoader.load();
 
     // all outputs needs to be initialized,
     // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
     OUTPUTS.forEach(output => this[output] = new EventEmitter());
   }
 
-  ngAfterViewInit(): void {
-    if (this.mapInitPath !== 1) {
-      this.initializeMap();
-    }
+  ngAfterViewInit() {
+    this.apiLoader.api$.subscribe(() => this.initializeMap());
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.inputChanges$.next(changes);
-  }
-
-  addGoogleMapsApi(): void {
-    (window as any)['initNg2Map'] = (window as any)['initNg2Map'] || function() {
-      (window as any)['ng2MapRef'].forEach( ng2MapRef => {
-        ng2MapRef.zone.run(function() { ng2MapRef.componentFn(); });
-      });
-      (window as any)['ng2MapRef'].splice(0, (window as any)['ng2MapRef'].length);
-    };
-    if ((!(window as any)['google'] || !(window as any)['google']['maps']) && !document.querySelector('#ng2-map-api')) {
-      let script = document.createElement( 'script' );
-      script.id = 'ng2-map-api';
-
-      // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
-      let apiUrl = this.config.apiUrl ;
-      apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
-      script.src = apiUrl + 'callback=initNg2Map';
-      document.querySelector('body').appendChild(script);
-    }
   }
 
   initializeMap(): void {
@@ -158,9 +122,10 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     debounceTime.call(this.inputChanges$, 1000)
       .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.map, changes));
 
-    // expose map object for test and debugging on (window as any)
-    console.log('this.mapIndex', this.mapIndex);
-    (window as any)['ng2MapRef'].map = this.map;
+    if (typeof window !== 'undefined' && (<any>window)['ng2MapRef']) {
+      // expose map object for test and debugging on (<any>window)
+      (<any>window)['ng2MapRef'].map = this.map;
+    }
   }
 
   setCenter(): void {
@@ -208,8 +173,10 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
 
   removeFromMapObjectGroup(mapObjectName: string, mapObject: any) {
     let groupName = toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
-    let index = this.map[groupName].indexOf(mapObject);
-    console.log('index', mapObject, index);
-    (index > -1) && this.map[groupName].splice(index, 1);
+    if (this.map && this.map[groupName]) {
+      let index = this.map[groupName].indexOf(mapObject);
+      console.log('index', mapObject, index);
+      (index > -1) && this.map[groupName].splice(index, 1);
+    }
   }
 }
