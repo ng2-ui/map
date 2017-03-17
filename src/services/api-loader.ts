@@ -4,7 +4,6 @@ import { NG_MAP_CONFIG_TOKEN } from './config';
 import { isMapsApiLoaded } from './util';
 import { first } from 'rxjs/operator/first';
 
-@Injectable()
 export abstract class NgMapApiLoader implements OnDestroy {
   api$: ReplaySubject<any> = first.call(new ReplaySubject(1));
   abstract load();
