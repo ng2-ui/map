@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'my-app',
+  selector: 'ng2-map-app',
   templateUrl: './app.html',
 })
 export class AppComponent {

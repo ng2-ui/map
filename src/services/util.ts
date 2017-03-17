@@ -1,7 +1,7 @@
 /**
  * return json string from json-like string
  */
-const jsonize = function(str: string): string {
+export function jsonize(str: string): string {
   try {       // if parsable already, return as it is
     JSON.parse(str);
     return str;
@@ -23,7 +23,7 @@ const jsonize = function(str: string): string {
 /**
  * Returns string to an object by using JSON.parse()
  */
-const getJSON = function(input: any): any {
+export function getJSON(input: any): any {
   if (typeof input === 'string') {
     const re = /^[\+\-]?[0-9\.]+,[ ]*\ ?[\+\-]?[0-9\.]+$/; // lat,lng
     if (input.match(re)) {
@@ -40,7 +40,7 @@ const getJSON = function(input: any): any {
  */
 /* tslint:disable */
 //interface IJsonArray extends Array<string|number|boolean|Date|IJson|IJsonArray> { }
-interface IJson {
+export interface IJson {
   //[x: string]: string|number|boolean|Date|IJson|IJsonArray;
   [x: string]: string|number|boolean|Date|IJson|Array<string|number|boolean|Date|IJson>;
 }
@@ -50,10 +50,12 @@ interface IJson {
 /**
  * Returns camel-cased from string 'Foo Bar' to 'fooBar'
  */
-const toCamelCase = function(str: string): string {
+export function toCamelCase(str: string): string {
   return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(letter, index) {
-    return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+    return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
   }).replace(/\s+/g, '');
 }
 
-export {jsonize, getJSON, IJson, toCamelCase};
+export function isMapsApiLoaded() {
+  return typeof google === 'object' && typeof google.maps === 'object';
+}

@@ -16,8 +16,8 @@ export class Ng2Map {
   setObjectEvents(definedEvents: string[], thisObj: any, prefix: string) {
     definedEvents.forEach(definedEvent => {
       let eventName = definedEvent
-        .replace(/([A-Z])/g, ($1) => `_${$1.toLowerCase()}`) //positionChanged -> position_changed
-        .replace(/^map_/, '');                               //map_click -> click  to avoid DOM conflicts
+        .replace(/([A-Z])/g, ($1) => `_${$1.toLowerCase()}`) // positionChanged -> position_changed
+        .replace(/^map_/, '');                               // map_click -> click  to avoid DOM conflicts
 
       thisObj[prefix].addListener(eventName, function(event: google.maps.event) {
         let param: any = event ? event : {};
@@ -39,7 +39,7 @@ export class Ng2Map {
             this.geoCoder.geocode({address: currentValue}).subscribe(results => {
               object[setMethodName](results[0].geometry.location);
             });
-          })(setMethodName)
+          })(setMethodName);
         } else {
           val =  this.optionBuilder.googlize(currentValue);
           object[setMethodName](val);
@@ -47,5 +47,4 @@ export class Ng2Map {
       }
     }
   }
-
 }

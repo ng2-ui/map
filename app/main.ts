@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
-import {Ng2UtilsModule} from "ng2-utils";
+import {Ng2UtilsModule} from 'ng2-utils';
 //noinspection TypeScriptCheckImport
 import { Ng2MapModule } from 'ng2-map';
 

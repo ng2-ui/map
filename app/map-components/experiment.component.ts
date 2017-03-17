@@ -1,5 +1,4 @@
-import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { Component, ChangeDetectorRef } from '@angular/core';
 declare let google: any;
 
 let templateStr = `
@@ -10,9 +9,9 @@ let templateStr = `
     <marker *ngFor="let pos of positions" [position]="pos"></marker>
   </ng2-map>
 `;
-//ver 16.
+// ver 16.
 @Component({
-  template: templateStr 
+  template: templateStr,
 })
 export class ExperimentComponent {
   positions = [];
@@ -22,10 +21,10 @@ export class ExperimentComponent {
 
   onHeatmapInitialized = (evt) => {
     this.heatmap = evt;
-      
+
     let randomLat = Math.random() * 0.0099 + 43.7250;
     let randomLon = Math.random() * 0.0099 + -79.7699;
-    
+
     let values = [];
     values.push(new google.maps.LatLng(randomLat, randomLon));
     values.push(new google.maps.LatLng(randomLat, randomLon));
@@ -37,7 +36,7 @@ export class ExperimentComponent {
     values.push(new google.maps.LatLng(randomLat, randomLon));
     values.push(new google.maps.LatLng(randomLat, randomLon));
     this.heatmap.setData(values);
-    
+
     this.positions.push([43.72723792568628, -79.7657115210506]);
     this.positions.push([randomLat, randomLon]);
     console.log(this.positions);

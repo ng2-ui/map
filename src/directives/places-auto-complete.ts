@@ -11,7 +11,7 @@ import {
 
 import { NG_MAP_CONFIG_TOKEN } from '../services/config';
 import { OptionBuilder } from '../services/option-builder';
-import { Ng2MapComponent } from '../components/ng2-map.component';
+
 
 @Directive({
   selector: '[places-auto-complete]'
@@ -35,16 +35,16 @@ export class PlacesAutoComplete  {
     public zone: NgZone,
     @Optional() @Inject(NG_MAP_CONFIG_TOKEN) private config
   ) {
-    this.config = this.config 
-      || {apiUrl: 'https://maps.google.com/maps/api/js?libraries=places'};
+    this.config = this.config || {apiUrl: 'https://maps.google.com/maps/api/js?libraries=places'};
 
-    //treat this as ng2Map because it requires google api on root level
+    // treat this as ng2Map because it requires google api on root level
     window['ng2MapRef'] = window['ng2MapRef'] || [];
     this.mapIndex = window['ng2MapRef'].length;
-    window['ng2MapRef'].push({ 
-      zone: this.zone, 
-      componentFn: () => this.initialize()
-    });
+    window['ng2MapRef'].push(
+      {
+        zone: this.zone,
+        componentFn: () => this.initialize()
+      });
 
     if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
       this.addGoogleMapsApi();
@@ -60,7 +60,7 @@ export class PlacesAutoComplete  {
         ng2MapRef.zone.run(function() { ng2MapRef.componentFn(); });
       });
       window['ng2MapRef'] = [];
-    }
+    };
 
     if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ng2-map-api')) {
       let script = document.createElement( 'script' );
@@ -87,10 +87,9 @@ export class PlacesAutoComplete  {
     console.log('this.autocomplete', this.autocomplete);
 
     this.autocomplete.addListener('place_changed', place => {
-      this.place_changed.emit(this.autocomplete.getPlace())
+      this.place_changed.emit(this.autocomplete.getPlace());
     });
 
     this.initialized$.emit(this.autocomplete);
-  };
-
+  }
 }
