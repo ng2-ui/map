@@ -48,7 +48,7 @@ If you like this, you also may like these;
           imports: [
             BrowserModule, 
             FormsModule, 
-            Ng2MapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=MY_GOOGLE_API_KEY')
+            Ng2MapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=MY_GOOGLE_API_KEY'})
           ],
           declarations: [AppComponent],
           bootstrap: [ AppComponent ]
