@@ -12,6 +12,7 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 If you like this, you also may like these;
 * [ng-map](https://github.com/allenhwkim/angularjs-google-maps) Google Maps Wrapper for Angular 1.*
 * [react-openlayers](https://github.com/allenhwkim/react-openlayers) React + OpenLayers
+* [geo-coder](https://github.com/allenhwkim/geocoder) Google/Bing/OpenStreetMap Geocoding/autocomplete/reverse lookup
 
 ### Design Principle
 
