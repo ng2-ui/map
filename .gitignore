@@ -4,3 +4,4 @@ typings
 *.tgz
 .idea
 .tmp
+dist
