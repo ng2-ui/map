@@ -41,19 +41,23 @@ export class DrawingManagerComponent implements OnInit {
 
   ngOnInit() {
     this.drawingManager['initialized$'].subscribe(dm => {
-      let drawingManagerEvents: string[]  = this.drawingManager['outputs'];
-      drawingManagerEvents.forEach(eventName => {
-        google.maps.event.addListener(dm, eventName, event => {
-          google.maps.event.addListener(event.overlay, 'click', () => {
+      google.maps.event.addListener(dm, 'overlaycomplete', event => {
+        if (event.type != google.maps.drawing.OverlayType.MARKER) {
+          dm.setDrawingMode(null);
+          google.maps.event.addListener(event.overlay, 'click', e => {
             this.selectedOverlay = event.overlay;
+            this.selectedOverlay.setEditable(true);
           });
-        });
+          this.selectedOverlay = event.overlay;
+        }
       });
     });
   }
 
   deleteSelectedOverlay() {
-    this.selectedOverlay.setMap(null);
-    delete this.selectedOverlay;
+    if (this.selectedOverlay) {
+      this.selectedOverlay.setMap(null);
+      delete this.selectedOverlay;
+    }
   }
 }
