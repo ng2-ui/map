@@ -42,7 +42,7 @@ export class DrawingManagerComponent implements OnInit {
   ngOnInit() {
     this.drawingManager['initialized$'].subscribe(dm => {
       google.maps.event.addListener(dm, 'overlaycomplete', event => {
-        if (event.type != google.maps.drawing.OverlayType.MARKER) {
+        if (event.type !== google.maps.drawing.OverlayType.MARKER) {
           dm.setDrawingMode(null);
           google.maps.event.addListener(event.overlay, 'click', e => {
             this.selectedOverlay = event.overlay;
