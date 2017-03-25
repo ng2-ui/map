@@ -1,8 +1,8 @@
-import { ElementRef, EventEmitter, SimpleChanges } from '@angular/core';
+import { ElementRef, EventEmitter, SimpleChanges, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Ng2Map } from '../services/ng2-map';
 import { Ng2MapComponent } from './ng2-map.component';
-export declare class CustomMarker {
+export declare class CustomMarker implements OnInit, OnDestroy, OnChanges {
     private ng2MapComponent;
     private elementRef;
     private ng2Map;

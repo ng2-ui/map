@@ -1,9 +1,9 @@
 /// <reference types="googlemaps" />
-import { ElementRef, EventEmitter, SimpleChanges } from '@angular/core';
+import { ElementRef, EventEmitter, SimpleChanges, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Ng2Map } from '../services/ng2-map';
 import { Ng2MapComponent } from './ng2-map.component';
-export declare class InfoWindow {
+export declare class InfoWindow implements OnInit, OnChanges, OnDestroy {
     private ng2MapComponent;
     private elementRef;
     private ng2Map;

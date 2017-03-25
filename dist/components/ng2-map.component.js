@@ -1,13 +1,23 @@
 "use strict";
-var core_1 = require('@angular/core');
-var option_builder_1 = require('../services/option-builder');
-var navigator_geolocation_1 = require('../services/navigator-geolocation');
-var config_1 = require('../services/config');
-var geo_coder_1 = require('../services/geo-coder');
-var ng2_map_1 = require('../services/ng2-map');
-var Subject_1 = require('rxjs/Subject');
-var debounceTime_1 = require('rxjs/operator/debounceTime');
-var util_1 = require('../services/util');
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var option_builder_1 = require("../services/option-builder");
+var navigator_geolocation_1 = require("../services/navigator-geolocation");
+var geo_coder_1 = require("../services/geo-coder");
+var ng2_map_1 = require("../services/ng2-map");
+var api_loader_1 = require("../services/api-loader");
+var Subject_1 = require("rxjs/Subject");
+var debounceTime_1 = require("rxjs/operator/debounceTime");
+var util_1 = require("../services/util");
 var INPUTS = [
     'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
     'draggingCursor', 'heading', 'keyboardShortcuts', 'mapMaker', 'mapTypeControl', 'mapTypeId', 'maxZoom', 'minZoom',
@@ -26,15 +36,14 @@ var OUTPUTS = [
     'mapClick', 'mapMouseover', 'mapMouseout', 'mapMousemove', 'mapDrag', 'mapDragend', 'mapDragstart'
 ];
 var Ng2MapComponent = (function () {
-    function Ng2MapComponent(optionBuilder, elementRef, zone, geolocation, geoCoder, ng2Map, config) {
+    function Ng2MapComponent(optionBuilder, elementRef, geolocation, geoCoder, ng2Map, apiLoader) {
         var _this = this;
         this.optionBuilder = optionBuilder;
         this.elementRef = elementRef;
-        this.zone = zone;
         this.geolocation = geolocation;
         this.geoCoder = geoCoder;
         this.ng2Map = ng2Map;
-        this.config = config;
+        this.apiLoader = apiLoader;
         this.mapReady$ = new core_1.EventEmitter();
         this.mapOptions = {};
         this.inputChanges$ = new Subject_1.Subject();
@@ -42,42 +51,17 @@ var Ng2MapComponent = (function () {
         this.infoWindows = {};
         // map has been fully initialized
         this.mapIdledOnce = false;
-        this.config = this.config || { apiUrl: 'https://maps.google.com/maps/api/js' };
-        window['ng2MapRef'] = window['ng2MapRef'] || [];
-        this.mapIndex = window['ng2MapRef'].length;
-        window['ng2MapRef'].push({ zone: this.zone, componentFn: function () { return _this.initializeMap(); } });
-        if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
-            this.mapInitPath = 1;
-            this.addGoogleMapsApi();
-        }
+        apiLoader.load();
         // all outputs needs to be initialized,
         // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
         OUTPUTS.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
     }
     Ng2MapComponent.prototype.ngAfterViewInit = function () {
-        if (this.mapInitPath !== 1) {
-            this.initializeMap();
-        }
+        var _this = this;
+        this.apiLoader.api$.subscribe(function () { return _this.initializeMap(); });
     };
     Ng2MapComponent.prototype.ngOnChanges = function (changes) {
         this.inputChanges$.next(changes);
-    };
-    Ng2MapComponent.prototype.addGoogleMapsApi = function () {
-        window['initNg2Map'] = window['initNg2Map'] || function () {
-            window['ng2MapRef'].forEach(function (ng2MapRef) {
-                ng2MapRef.zone.run(function () { ng2MapRef.componentFn(); });
-            });
-            window['ng2MapRef'].splice(0, window['ng2MapRef'].length);
-        };
-        if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ng2-map-api')) {
-            var script = document.createElement('script');
-            script.id = 'ng2-map-api';
-            // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
-            var apiUrl = this.config.apiUrl;
-            apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
-            script.src = apiUrl + 'callback=initNg2Map';
-            document.querySelector('body').appendChild(script);
-        }
     };
     Ng2MapComponent.prototype.initializeMap = function () {
         var _this = this;
@@ -104,9 +88,10 @@ var Ng2MapComponent = (function () {
         // update map when input changes
         debounceTime_1.debounceTime.call(this.inputChanges$, 1000)
             .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.map, changes); });
-        // expose map object for test and debugging on (window as any)
-        console.log('this.mapIndex', this.mapIndex);
-        window['ng2MapRef'].map = this.map;
+        if (typeof window !== 'undefined' && window['ng2MapRef']) {
+            // expose map object for test and debugging on (<any>window)
+            window['ng2MapRef'].map = this.map;
+        }
     };
     Ng2MapComponent.prototype.setCenter = function () {
         var _this = this;
@@ -146,35 +131,34 @@ var Ng2MapComponent = (function () {
     };
     Ng2MapComponent.prototype.removeFromMapObjectGroup = function (mapObjectName, mapObject) {
         var groupName = util_1.toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
-        var index = this.map[groupName].indexOf(mapObject);
-        console.log('index', mapObject, index);
-        (index > -1) && this.map[groupName].splice(index, 1);
-    };
-    Ng2MapComponent.decorators = [
-        { type: core_1.Component, args: [{
-                    selector: 'ng2-map',
-                    providers: [ng2_map_1.Ng2Map, option_builder_1.OptionBuilder, geo_coder_1.GeoCoder, navigator_geolocation_1.NavigatorGeolocation],
-                    styles: ["\n    ng2-map {display: block; height: 300px;}\n    .google-map {width: 100%; height: 100%}\n  "],
-                    inputs: INPUTS,
-                    outputs: OUTPUTS,
-                    encapsulation: core_1.ViewEncapsulation.None,
-                    template: "\n    <div class=\"google-map\"></div>\n    <ng-content></ng-content>\n  ",
-                },] },
-    ];
-    /** @nocollapse */
-    Ng2MapComponent.ctorParameters = [
-        { type: option_builder_1.OptionBuilder, },
-        { type: core_1.ElementRef, },
-        { type: core_1.NgZone, },
-        { type: navigator_geolocation_1.NavigatorGeolocation, },
-        { type: geo_coder_1.GeoCoder, },
-        { type: ng2_map_1.Ng2Map, },
-        { type: undefined, decorators: [{ type: core_1.Optional }, { type: core_1.Inject, args: [config_1.NG_MAP_CONFIG_TOKEN,] },] },
-    ];
-    Ng2MapComponent.propDecorators = {
-        'mapReady$': [{ type: core_1.Output },],
+        if (this.map && this.map[groupName]) {
+            var index = this.map[groupName].indexOf(mapObject);
+            console.log('index', mapObject, index);
+            (index > -1) && this.map[groupName].splice(index, 1);
+        }
     };
     return Ng2MapComponent;
 }());
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], Ng2MapComponent.prototype, "mapReady$", void 0);
+Ng2MapComponent = __decorate([
+    core_1.Component({
+        selector: 'ng2-map',
+        providers: [ng2_map_1.Ng2Map, option_builder_1.OptionBuilder, geo_coder_1.GeoCoder, navigator_geolocation_1.NavigatorGeolocation],
+        styles: ["\n    ng2-map {display: block; height: 300px;}\n    .google-map {width: 100%; height: 100%}\n  "],
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+        encapsulation: core_1.ViewEncapsulation.None,
+        template: "\n    <div class=\"google-map\"></div>\n    <ng-content></ng-content>\n  ",
+    }),
+    __metadata("design:paramtypes", [option_builder_1.OptionBuilder,
+        core_1.ElementRef,
+        navigator_geolocation_1.NavigatorGeolocation,
+        geo_coder_1.GeoCoder,
+        ng2_map_1.Ng2Map,
+        api_loader_1.NgMapApiLoader])
+], Ng2MapComponent);
 exports.Ng2MapComponent = Ng2MapComponent;
 //# sourceMappingURL=ng2-map.component.js.map

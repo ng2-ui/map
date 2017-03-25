@@ -1,8 +1,8 @@
 /// <reference types="googlemaps" />
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, OnInit } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
-export declare class Marker extends BaseMapDirective {
+export declare class Marker extends BaseMapDirective implements OnInit {
     private ng2MapComp;
     anchorPoint: any;
     animation: any;

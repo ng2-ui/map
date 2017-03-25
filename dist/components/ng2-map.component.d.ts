@@ -1,19 +1,19 @@
 /// <reference types="googlemaps" />
-import { ElementRef, NgZone, EventEmitter, SimpleChanges } from '@angular/core';
+import { ElementRef, EventEmitter, SimpleChanges, AfterViewInit, OnChanges, OnDestroy } from '@angular/core';
 import { OptionBuilder } from '../services/option-builder';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
 import { GeoCoder } from '../services/geo-coder';
 import { Ng2Map } from '../services/ng2-map';
+import { NgMapApiLoader } from '../services/api-loader';
 import { Subject } from 'rxjs/Subject';
 import { IJson } from '../services/util';
-export declare class Ng2MapComponent {
+export declare class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     optionBuilder: OptionBuilder;
     elementRef: ElementRef;
-    zone: NgZone;
     geolocation: NavigatorGeolocation;
     geoCoder: GeoCoder;
     ng2Map: Ng2Map;
-    private config;
+    apiLoader: NgMapApiLoader;
     backgroundColor: any;
     center: any;
     disableDefaultUI: any;
@@ -49,18 +49,15 @@ export declare class Ng2MapComponent {
     options: any;
     geoFallbackCenter: any;
     mapReady$: EventEmitter<any>;
-    mapIndex: number;
     el: HTMLElement;
     map: google.maps.Map;
     mapOptions: google.maps.MapOptions;
     inputChanges$: Subject<{}>;
     infoWindows: any;
-    mapInitPath: number;
     mapIdledOnce: boolean;
-    constructor(optionBuilder: OptionBuilder, elementRef: ElementRef, zone: NgZone, geolocation: NavigatorGeolocation, geoCoder: GeoCoder, ng2Map: Ng2Map, config: any);
+    constructor(optionBuilder: OptionBuilder, elementRef: ElementRef, geolocation: NavigatorGeolocation, geoCoder: GeoCoder, ng2Map: Ng2Map, apiLoader: NgMapApiLoader);
     ngAfterViewInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
-    addGoogleMapsApi(): void;
     initializeMap(): void;
     setCenter(): void;
     openInfoWindow(id: string, anchor: google.maps.MVCObject, data: IJson): void;

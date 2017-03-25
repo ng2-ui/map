@@ -1,9 +1,9 @@
 /// <reference types="googlemaps" />
-import { SimpleChanges, EventEmitter } from '@angular/core';
+import { SimpleChanges, EventEmitter, OnChanges } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
-export declare class DirectionsRenderer extends BaseMapDirective {
+export declare class DirectionsRenderer extends BaseMapDirective implements OnChanges {
     geolocation: NavigatorGeolocation;
     directions: any;
     draggable: any;

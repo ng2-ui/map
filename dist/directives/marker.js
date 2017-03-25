@@ -1,12 +1,27 @@
 "use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var core_1 = require('@angular/core');
-var base_map_directive_1 = require('./base-map-directive');
-var ng2_map_component_1 = require('../components/ng2-map.component');
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var base_map_directive_1 = require("./base-map-directive");
+var ng2_map_component_1 = require("../components/ng2-map.component");
 var INPUTS = [
     'anchorPoint', 'animation', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity',
     'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex', 'options',
@@ -21,11 +36,12 @@ var OUTPUTS = [
 var Marker = (function (_super) {
     __extends(Marker, _super);
     function Marker(ng2MapComp) {
-        _super.call(this, ng2MapComp, 'Marker', INPUTS, OUTPUTS);
-        this.ng2MapComp = ng2MapComp;
-        this.initialized$ = new core_1.EventEmitter();
-        this.objectOptions = {};
+        var _this = _super.call(this, ng2MapComp, 'Marker', INPUTS, OUTPUTS) || this;
+        _this.ng2MapComp = ng2MapComp;
+        _this.initialized$ = new core_1.EventEmitter();
+        _this.objectOptions = {};
         console.log('marker constructor', 9999999);
+        return _this;
     }
     // Initialize this map object when map is ready
     Marker.prototype.ngOnInit = function () {
@@ -63,21 +79,19 @@ var Marker = (function (_super) {
             }));
         }
     };
-    Marker.decorators = [
-        { type: core_1.Directive, args: [{
-                    selector: 'ng2-map > marker',
-                    inputs: INPUTS,
-                    outputs: OUTPUTS,
-                },] },
-    ];
-    /** @nocollapse */
-    Marker.ctorParameters = [
-        { type: ng2_map_component_1.Ng2MapComponent, },
-    ];
-    Marker.propDecorators = {
-        'initialized$': [{ type: core_1.Output },],
-    };
     return Marker;
 }(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], Marker.prototype, "initialized$", void 0);
+Marker = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map > marker',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], Marker);
 exports.Marker = Marker;
 //# sourceMappingURL=marker.js.map

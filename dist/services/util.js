@@ -1,8 +1,9 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * return json string from json-like string
  */
-var jsonize = function (str) {
+function jsonize(str) {
     try {
         JSON.parse(str);
         return str;
@@ -18,12 +19,13 @@ var jsonize = function (str) {
             return '"' + $1 + '"';
         });
     }
-};
+}
 exports.jsonize = jsonize;
+;
 /**
  * Returns string to an object by using JSON.parse()
  */
-var getJSON = function (input) {
+function getJSON(input) {
     if (typeof input === 'string') {
         var re = /^[\+\-]?[0-9\.]+,[ ]*\ ?[\+\-]?[0-9\.]+$/; // lat,lng
         if (input.match(re)) {
@@ -34,16 +36,21 @@ var getJSON = function (input) {
     else {
         return input;
     }
-};
+}
 exports.getJSON = getJSON;
+;
 /* tslint:enable */
 /**
  * Returns camel-cased from string 'Foo Bar' to 'fooBar'
  */
-var toCamelCase = function (str) {
+function toCamelCase(str) {
     return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
-        return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
+        return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
     }).replace(/\s+/g, '');
-};
+}
 exports.toCamelCase = toCamelCase;
+function isMapsApiLoaded() {
+    return typeof google === 'object' && typeof google.maps === 'object';
+}
+exports.isMapsApiLoaded = isMapsApiLoaded;
 //# sourceMappingURL=util.js.map

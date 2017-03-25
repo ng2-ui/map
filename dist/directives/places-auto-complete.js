@@ -1,7 +1,20 @@
 "use strict";
-var core_1 = require('@angular/core');
-var config_1 = require('../services/config');
-var option_builder_1 = require('../services/option-builder');
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var config_1 = require("../services/config");
+var option_builder_1 = require("../services/option-builder");
 var PlacesAutoComplete = (function () {
     function PlacesAutoComplete(optionBuilder, elementRef, zone, config) {
         var _this = this;
@@ -23,9 +36,8 @@ var PlacesAutoComplete = (function () {
             });
             _this.initialized$.emit(_this.autocomplete);
         };
-        this.config = this.config
-            || { apiUrl: 'https://maps.google.com/maps/api/js?libraries=places' };
-        //treat this as ng2Map because it requires google api on root level
+        this.config = this.config || { apiUrl: 'https://maps.google.com/maps/api/js?libraries=places' };
+        // treat this as ng2Map because it requires google api on root level
         window['ng2MapRef'] = window['ng2MapRef'] || [];
         this.mapIndex = window['ng2MapRef'].length;
         window['ng2MapRef'].push({
@@ -56,26 +68,36 @@ var PlacesAutoComplete = (function () {
             document.querySelector('body').appendChild(script);
         }
     };
-    PlacesAutoComplete.decorators = [
-        { type: core_1.Directive, args: [{
-                    selector: '[places-auto-complete]'
-                },] },
-    ];
-    /** @nocollapse */
-    PlacesAutoComplete.ctorParameters = [
-        { type: option_builder_1.OptionBuilder, },
-        { type: core_1.ElementRef, },
-        { type: core_1.NgZone, },
-        { type: undefined, decorators: [{ type: core_1.Optional }, { type: core_1.Inject, args: [config_1.NG_MAP_CONFIG_TOKEN,] },] },
-    ];
-    PlacesAutoComplete.propDecorators = {
-        'bounds': [{ type: core_1.Input, args: ['bounds',] },],
-        'componentRestrictions': [{ type: core_1.Input, args: ['componentRestrictions',] },],
-        'types': [{ type: core_1.Input, args: ['types',] },],
-        'place_changed': [{ type: core_1.Output, args: ['place_changed',] },],
-        'initialized$': [{ type: core_1.Output, args: ['initialized$',] },],
-    };
     return PlacesAutoComplete;
 }());
+__decorate([
+    core_1.Input('bounds'),
+    __metadata("design:type", Object)
+], PlacesAutoComplete.prototype, "bounds", void 0);
+__decorate([
+    core_1.Input('componentRestrictions'),
+    __metadata("design:type", Object)
+], PlacesAutoComplete.prototype, "componentRestrictions", void 0);
+__decorate([
+    core_1.Input('types'),
+    __metadata("design:type", Array)
+], PlacesAutoComplete.prototype, "types", void 0);
+__decorate([
+    core_1.Output('place_changed'),
+    __metadata("design:type", core_1.EventEmitter)
+], PlacesAutoComplete.prototype, "place_changed", void 0);
+__decorate([
+    core_1.Output('initialized$'),
+    __metadata("design:type", core_1.EventEmitter)
+], PlacesAutoComplete.prototype, "initialized$", void 0);
+PlacesAutoComplete = __decorate([
+    core_1.Directive({
+        selector: '[places-auto-complete]'
+    }),
+    __param(3, core_1.Optional()), __param(3, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)),
+    __metadata("design:paramtypes", [option_builder_1.OptionBuilder,
+        core_1.ElementRef,
+        core_1.NgZone, Object])
+], PlacesAutoComplete);
 exports.PlacesAutoComplete = PlacesAutoComplete;
 //# sourceMappingURL=places-auto-complete.js.map

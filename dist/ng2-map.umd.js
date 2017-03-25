@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("@angular/core"), require("rxjs/Subject"), require("rxjs/operator/debounceTime"), require("rxjs/Observable"), require("@angular/common"));
+		module.exports = factory(require("@angular/core"), require("rxjs/Subject"), require("rxjs/operator/debounceTime"), require("rxjs/Observable"), require("@angular/common"), require("rxjs/ReplaySubject"), require("rxjs/operator/first"));
 	else if(typeof define === 'function' && define.amd)
-		define(["@angular/core", "rxjs/Subject", "rxjs/operator/debounceTime", "rxjs/Observable", "@angular/common"], factory);
+		define(["@angular/core", "rxjs/Subject", "rxjs/operator/debounceTime", "rxjs/Observable", "@angular/common", "rxjs/ReplaySubject", "rxjs/operator/first"], factory);
 	else if(typeof exports === 'object')
-		exports["ng2-map"] = factory(require("@angular/core"), require("rxjs/Subject"), require("rxjs/operator/debounceTime"), require("rxjs/Observable"), require("@angular/common"));
+		exports["ng2-map"] = factory(require("@angular/core"), require("rxjs/Subject"), require("rxjs/operator/debounceTime"), require("rxjs/Observable"), require("@angular/common"), require("rxjs/ReplaySubject"), require("rxjs/operator/first"));
 	else
-		root["ng2-map"] = factory(root["@angular/core"], root["rxjs/Subject"], root["rxjs/operator/debounceTime"], root["rxjs/Observable"], root["@angular/common"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_8__, __WEBPACK_EXTERNAL_MODULE_9__, __WEBPACK_EXTERNAL_MODULE_28__, __WEBPACK_EXTERNAL_MODULE_30__) {
+		root["ng2-map"] = factory(root["@angular/core"], root["rxjs/Subject"], root["rxjs/operator/debounceTime"], root["rxjs/Observable"], root["@angular/common"], root["rxjs/ReplaySubject"], root["rxjs/operator/first"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_10__, __WEBPACK_EXTERNAL_MODULE_11__, __WEBPACK_EXTERNAL_MODULE_29__, __WEBPACK_EXTERNAL_MODULE_31__, __WEBPACK_EXTERNAL_MODULE_32__, __WEBPACK_EXTERNAL_MODULE_33__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 31);
+/******/ 	return __webpack_require__(__webpack_require__.s = 34);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -97,18 +97,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var option_builder_1 = __webpack_require__(5);
-var navigator_geolocation_1 = __webpack_require__(7);
-var config_1 = __webpack_require__(6);
-var geo_coder_1 = __webpack_require__(3);
-var ng2_map_1 = __webpack_require__(4);
-var Subject_1 = __webpack_require__(8);
-var debounceTime_1 = __webpack_require__(9);
-var util_1 = __webpack_require__(27);
+var option_builder_1 = __webpack_require__(4);
+var navigator_geolocation_1 = __webpack_require__(8);
+var geo_coder_1 = __webpack_require__(7);
+var ng2_map_1 = __webpack_require__(3);
+var api_loader_1 = __webpack_require__(5);
+var Subject_1 = __webpack_require__(10);
+var debounceTime_1 = __webpack_require__(11);
+var util_1 = __webpack_require__(9);
 var INPUTS = [
     'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
     'draggingCursor', 'heading', 'keyboardShortcuts', 'mapMaker', 'mapTypeControl', 'mapTypeId', 'maxZoom', 'minZoom',
@@ -127,15 +125,14 @@ var OUTPUTS = [
     'mapClick', 'mapMouseover', 'mapMouseout', 'mapMousemove', 'mapDrag', 'mapDragend', 'mapDragstart'
 ];
 var Ng2MapComponent = (function () {
-    function Ng2MapComponent(optionBuilder, elementRef, zone, geolocation, geoCoder, ng2Map, config) {
+    function Ng2MapComponent(optionBuilder, elementRef, geolocation, geoCoder, ng2Map, apiLoader) {
         var _this = this;
         this.optionBuilder = optionBuilder;
         this.elementRef = elementRef;
-        this.zone = zone;
         this.geolocation = geolocation;
         this.geoCoder = geoCoder;
         this.ng2Map = ng2Map;
-        this.config = config;
+        this.apiLoader = apiLoader;
         this.mapReady$ = new core_1.EventEmitter();
         this.mapOptions = {};
         this.inputChanges$ = new Subject_1.Subject();
@@ -143,47 +140,23 @@ var Ng2MapComponent = (function () {
         this.infoWindows = {};
         // map has been fully initialized
         this.mapIdledOnce = false;
-        this.config = this.config || { apiUrl: 'https://maps.google.com/maps/api/js' };
-        window['ng2MapRef'] = window['ng2MapRef'] || [];
-        this.mapIndex = window['ng2MapRef'].length;
-        window['ng2MapRef'].push({ zone: this.zone, componentFn: function () { return _this.initializeMap(); } });
-        if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
-            this.mapInitPath = 1;
-            this.addGoogleMapsApi();
-        }
+        apiLoader.load();
         // all outputs needs to be initialized,
         // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
         OUTPUTS.forEach(function (output) { return _this[output] = new core_1.EventEmitter(); });
     }
     Ng2MapComponent.prototype.ngAfterViewInit = function () {
-        if (this.mapInitPath !== 1) {
-            this.initializeMap();
-        }
+        var _this = this;
+        this.apiLoader.api$.subscribe(function () { return _this.initializeMap(); });
     };
     Ng2MapComponent.prototype.ngOnChanges = function (changes) {
         this.inputChanges$.next(changes);
-    };
-    Ng2MapComponent.prototype.addGoogleMapsApi = function () {
-        window['initNg2Map'] = window['initNg2Map'] || function () {
-            window['ng2MapRef'].forEach(function (ng2MapRef) {
-                ng2MapRef.zone.run(function () { ng2MapRef.componentFn(); });
-            });
-            window['ng2MapRef'].splice(0, window['ng2MapRef'].length);
-        };
-        if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ng2-map-api')) {
-            var script = document.createElement('script');
-            script.id = 'ng2-map-api';
-            // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
-            var apiUrl = this.config.apiUrl;
-            apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
-            script.src = apiUrl + 'callback=initNg2Map';
-            document.querySelector('body').appendChild(script);
-        }
     };
     Ng2MapComponent.prototype.initializeMap = function () {
         var _this = this;
         this.el = this.elementRef.nativeElement.querySelector('.google-map');
         this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
+        console.log('ng2-map mapOptions', this.mapOptions);
         this.mapOptions.zoom = this.mapOptions.zoom || 15;
         typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
         this.map = new google.maps.Map(this.el, this.mapOptions);
@@ -204,13 +177,16 @@ var Ng2MapComponent = (function () {
         // update map when input changes
         debounceTime_1.debounceTime.call(this.inputChanges$, 1000)
             .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.map, changes); });
-        // expose map object for test and debugging on (window as any)
-        window['ng2MapRef'].map = this.map;
+        if (typeof window !== 'undefined' && window['ng2MapRef']) {
+            // expose map object for test and debugging on (<any>window)
+            window['ng2MapRef'].map = this.map;
+        }
     };
     Ng2MapComponent.prototype.setCenter = function () {
         var _this = this;
         if (!this['center']) {
             this.geolocation.getCurrentPosition().subscribe(function (position) {
+                console.log('setting map center from current location');
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 _this.map.setCenter(latLng);
             }, function (error) {
@@ -220,6 +196,7 @@ var Ng2MapComponent = (function () {
         }
         else if (typeof this['center'] === 'string') {
             this.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
+                console.log('setting map center from address', _this['center']);
                 _this.map.setCenter(results[0].geometry.location);
             }, function (error) {
                 _this.map.setCenter(_this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
@@ -243,29 +220,35 @@ var Ng2MapComponent = (function () {
     };
     Ng2MapComponent.prototype.removeFromMapObjectGroup = function (mapObjectName, mapObject) {
         var groupName = util_1.toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
-        var index = this.map[groupName].indexOf(mapObject);
-        (index > -1) && this.map[groupName].splice(index, 1);
+        if (this.map && this.map[groupName]) {
+            var index = this.map[groupName].indexOf(mapObject);
+            console.log('index', mapObject, index);
+            (index > -1) && this.map[groupName].splice(index, 1);
+        }
     };
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], Ng2MapComponent.prototype, "mapReady$", void 0);
-    Ng2MapComponent = __decorate([
-        core_1.Component({
-            selector: 'ng2-map',
-            providers: [ng2_map_1.Ng2Map, option_builder_1.OptionBuilder, geo_coder_1.GeoCoder, navigator_geolocation_1.NavigatorGeolocation],
-            styles: ["\n    ng2-map {display: block; height: 300px;}\n    .google-map {width: 100%; height: 100%}\n  "],
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-            encapsulation: core_1.ViewEncapsulation.None,
-            template: "\n    <div class=\"google-map\"></div>\n    <ng-content></ng-content>\n  ",
-        }),
-        __param(6, core_1.Optional()),
-        __param(6, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)), 
-        __metadata('design:paramtypes', [option_builder_1.OptionBuilder, core_1.ElementRef, core_1.NgZone, navigator_geolocation_1.NavigatorGeolocation, geo_coder_1.GeoCoder, ng2_map_1.Ng2Map, Object])
-    ], Ng2MapComponent);
     return Ng2MapComponent;
 }());
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], Ng2MapComponent.prototype, "mapReady$", void 0);
+Ng2MapComponent = __decorate([
+    core_1.Component({
+        selector: 'ng2-map',
+        providers: [ng2_map_1.Ng2Map, option_builder_1.OptionBuilder, geo_coder_1.GeoCoder, navigator_geolocation_1.NavigatorGeolocation],
+        styles: ["\n    ng2-map {display: block; height: 300px;}\n    .google-map {width: 100%; height: 100%}\n  "],
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+        encapsulation: core_1.ViewEncapsulation.None,
+        template: "\n    <div class=\"google-map\"></div>\n    <ng-content></ng-content>\n  ",
+    }),
+    __metadata("design:paramtypes", [option_builder_1.OptionBuilder,
+        core_1.ElementRef,
+        navigator_geolocation_1.NavigatorGeolocation,
+        geo_coder_1.GeoCoder,
+        ng2_map_1.Ng2Map,
+        api_loader_1.NgMapApiLoader])
+], Ng2MapComponent);
 exports.Ng2MapComponent = Ng2MapComponent;
 
 
@@ -284,6 +267,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var BaseMapDirective = (function () {
     function BaseMapDirective(ng2MapComponent, mapObjectName, inputs, outputs) {
@@ -314,6 +298,7 @@ var BaseMapDirective = (function () {
     // only called when map is ready
     BaseMapDirective.prototype.initialize = function () {
         this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
+        console.log(this.mapObjectName, 'initialization options', this.objectOptions);
         // will be set after geocoded
         typeof this.objectOptions.position === 'string' && (delete this.objectOptions.position);
         typeof this.objectOptions.center === 'string' && (delete this.objectOptions.center);
@@ -335,6 +320,7 @@ var BaseMapDirective = (function () {
     // When input is changed, update object too.
     // e.g., when map center is changed by user, update center on the map
     BaseMapDirective.prototype.ngOnChanges = function (changes) {
+        console.log(this.mapObjectName, 'objectOptions are changed', changes);
         this.ng2Map.updateGoogleObject(this.mapObject, changes);
     };
     // When destroyed, remove event listener, and delete this object to prevent memory leak
@@ -348,12 +334,12 @@ var BaseMapDirective = (function () {
             delete this.mapObject;
         }
     };
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], BaseMapDirective.prototype, "initialized$", void 0);
     return BaseMapDirective;
 }());
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], BaseMapDirective.prototype, "initialized$", void 0);
 exports.BaseMapDirective = BaseMapDirective;
 
 
@@ -372,57 +358,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var Observable_1 = __webpack_require__(28);
-/**
- *   Provides [defered/promise API](https://docs.angularjs.org/api/ng/service/$q)
- *   service for Google Geocoder service
- */
-var GeoCoder = (function () {
-    function GeoCoder() {
-    }
-    GeoCoder.prototype.geocode = function (options) {
-        var geocoder = new google.maps.Geocoder();
-        return new Observable_1.Observable(function (responseObserver) {
-            geocoder.geocode(options, function (results, status) {
-                if (status === google.maps.GeocoderStatus.OK) {
-                    responseObserver.next(results);
-                    responseObserver.complete();
-                }
-                else {
-                    responseObserver.error(results);
-                }
-            });
-        });
-    };
-    ;
-    GeoCoder = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
-    ], GeoCoder);
-    return GeoCoder;
-}());
-exports.GeoCoder = GeoCoder;
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var core_1 = __webpack_require__(0);
-var option_builder_1 = __webpack_require__(5);
-var geo_coder_1 = __webpack_require__(3);
+var option_builder_1 = __webpack_require__(4);
+var geo_coder_1 = __webpack_require__(7);
 /**
  * collection of map instance-related properties and methods
  */
@@ -456,8 +395,8 @@ var Ng2Map = (function () {
     Ng2Map.prototype.setObjectEvents = function (definedEvents, thisObj, prefix) {
         definedEvents.forEach(function (definedEvent) {
             var eventName = definedEvent
-                .replace(/([A-Z])/g, function ($1) { return ("_" + $1.toLowerCase()); }) //positionChanged -> position_changed
-                .replace(/^map_/, ''); //map_click -> click  to avoid DOM conflicts
+                .replace(/([A-Z])/g, function ($1) { return "_" + $1.toLowerCase(); }) // positionChanged -> position_changed
+                .replace(/^map_/, ''); // map_click -> click  to avoid DOM conflicts
             thisObj[prefix].addListener(eventName, function (event) {
                 var param = event ? event : {};
                 param.target = this;
@@ -465,17 +404,18 @@ var Ng2Map = (function () {
             });
         });
     };
-    Ng2Map = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [geo_coder_1.GeoCoder, option_builder_1.OptionBuilder])
-    ], Ng2Map);
     return Ng2Map;
 }());
+Ng2Map = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [geo_coder_1.GeoCoder,
+        option_builder_1.OptionBuilder])
+], Ng2Map);
 exports.Ng2Map = Ng2Map;
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -486,25 +426,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var util_1 = __webpack_require__(27);
-var geo_coder_1 = __webpack_require__(3);
+var util_1 = __webpack_require__(9);
 /**
  * change any object to google object options
  * e.g. [1,2] -> new google.maps.LatLng(1,2);
  */
 var OptionBuilder = (function () {
-    function OptionBuilder(geoCoder) {
-        this.geoCoder = geoCoder;
+    function OptionBuilder() {
     }
     OptionBuilder.prototype.googlizeAllInputs = function (definedInputs, userInputs) {
         var _this = this;
         var options = {};
         // if options given from user, only take options and ignore other inputs
         if (userInputs.options) {
+            console.log('userInputs.options .................', userInputs.options);
             options = userInputs.options;
             if (!this.onlyOptionsGiven(definedInputs, userInputs)) {
                 console.error('when "options" are used, other options are ignored');
@@ -575,7 +512,7 @@ var OptionBuilder = (function () {
                 }
             }
         }
-        //delete keys only for processing, not used by google
+        // delete keys only for processing, not used by google
         delete output['doNotConverStringToNumber'];
         delete output['key'];
         return output;
@@ -615,7 +552,6 @@ var OptionBuilder = (function () {
         var output;
         if (input.match(/^[A-Z][a-zA-Z0-9]+\(.*\)$/)) {
             try {
-                var exp = 'new google.maps.' + input;
                 output = Function("return new google.maps." + input + ";")();
             }
             catch (e) { }
@@ -719,13 +655,134 @@ var OptionBuilder = (function () {
         }
         return true;
     };
-    OptionBuilder = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [geo_coder_1.GeoCoder])
-    ], OptionBuilder);
     return OptionBuilder;
 }());
+OptionBuilder = __decorate([
+    core_1.Injectable()
+], OptionBuilder);
 exports.OptionBuilder = OptionBuilder;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var ReplaySubject_1 = __webpack_require__(32);
+var config_1 = __webpack_require__(6);
+var util_1 = __webpack_require__(9);
+var first_1 = __webpack_require__(33);
+var NgMapApiLoader = (function () {
+    function NgMapApiLoader(config) {
+        this.config = config;
+        this.api$ = first_1.first.call(new ReplaySubject_1.ReplaySubject(1));
+        this.config = this.config || { apiUrl: 'https://maps.google.com/maps/api/js' };
+    }
+    NgMapApiLoader.prototype.ngOnDestroy = function () {
+        this.api$.complete();
+    };
+    return NgMapApiLoader;
+}());
+exports.NgMapApiLoader = NgMapApiLoader;
+var NgMapAsyncCallbackApiLoader = (function (_super) {
+    __extends(NgMapAsyncCallbackApiLoader, _super);
+    function NgMapAsyncCallbackApiLoader(zone, config) {
+        var _this = _super.call(this, config) || this;
+        _this.zone = zone;
+        return _this;
+    }
+    NgMapAsyncCallbackApiLoader.prototype.load = function () {
+        var _this = this;
+        if (typeof window === 'undefined') {
+            return;
+        }
+        if (util_1.isMapsApiLoaded()) {
+            this.api$.next(google.maps);
+        }
+        else if (!document.querySelector('#ng2-map-api')) {
+            window['ng2MapRef'] = window['ng2MapRef'] || [];
+            window['ng2MapRef'].push({ zone: this.zone, componentFn: function () { return _this.api$.next(google.maps); } });
+            this.addGoogleMapsApi();
+        }
+    };
+    NgMapAsyncCallbackApiLoader.prototype.addGoogleMapsApi = function () {
+        window['initNg2Map'] = window['initNg2Map'] || function () {
+            window['ng2MapRef'].forEach(function (ng2MapRef) {
+                ng2MapRef.zone.run(function () { ng2MapRef.componentFn(); });
+            });
+            window['ng2MapRef'].splice(0, window['ng2MapRef'].length);
+        };
+        var script = document.createElement('script');
+        script.id = 'ng2-map-api';
+        // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
+        var apiUrl = this.config.apiUrl;
+        apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
+        script.src = apiUrl + 'callback=initNg2Map';
+        document.querySelector('body').appendChild(script);
+    };
+    return NgMapAsyncCallbackApiLoader;
+}(NgMapApiLoader));
+NgMapAsyncCallbackApiLoader = __decorate([
+    core_1.Injectable(),
+    __param(1, core_1.Optional()), __param(1, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)),
+    __metadata("design:paramtypes", [core_1.NgZone, Object])
+], NgMapAsyncCallbackApiLoader);
+exports.NgMapAsyncCallbackApiLoader = NgMapAsyncCallbackApiLoader;
+var NgMapAsyncApiLoader = (function (_super) {
+    __extends(NgMapAsyncApiLoader, _super);
+    function NgMapAsyncApiLoader(config) {
+        return _super.call(this, config) || this;
+    }
+    NgMapAsyncApiLoader.prototype.load = function () {
+        var _this = this;
+        if (typeof window === 'undefined') {
+            return;
+        }
+        if (util_1.isMapsApiLoaded()) {
+            this.api$.next(google.maps);
+        }
+        else if (!document.querySelector('#ng2-map-api')) {
+            var script = document.createElement('script');
+            script.id = 'ng2-map-api';
+            script.async = true;
+            script.onload = function () { return _this.api$.next(google.maps); };
+            script.src = this.config.apiUrl;
+            document.querySelector('body').appendChild(script);
+        }
+    };
+    return NgMapAsyncApiLoader;
+}(NgMapApiLoader));
+NgMapAsyncApiLoader = __decorate([
+    core_1.Injectable(),
+    __param(0, core_1.Optional()), __param(0, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)),
+    __metadata("design:paramtypes", [Object])
+], NgMapAsyncApiLoader);
+exports.NgMapAsyncApiLoader = NgMapAsyncApiLoader;
 
 
 /***/ }),
@@ -734,6 +791,7 @@ exports.OptionBuilder = OptionBuilder;
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 exports.NG_MAP_CONFIG_TOKEN = new core_1.OpaqueToken('NG_MAP_CONFIG_TOKEN');
 
@@ -753,8 +811,61 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var Observable_1 = __webpack_require__(28);
+var Observable_1 = __webpack_require__(29);
+var api_loader_1 = __webpack_require__(5);
+/**
+ *   Provides [defered/promise API](https://docs.angularjs.org/api/ng/service/$q)
+ *   service for Google Geocoder service
+ */
+var GeoCoder = (function () {
+    function GeoCoder(apiLoader) {
+        this.apiLoader = apiLoader;
+    }
+    GeoCoder.prototype.geocode = function (options) {
+        var _this = this;
+        return new Observable_1.Observable(function (responseObserver) {
+            _this.apiLoader.api$
+                .subscribe(function () { return _this.requestGeocode(options, responseObserver); });
+        });
+    };
+    GeoCoder.prototype.requestGeocode = function (options, observer) {
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode(options, function (results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+                observer.next(results);
+                observer.complete();
+            }
+            else {
+                observer.error(results);
+            }
+        });
+    };
+    return GeoCoder;
+}());
+GeoCoder = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [api_loader_1.NgMapApiLoader])
+], GeoCoder);
+exports.GeoCoder = GeoCoder;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var Observable_1 = __webpack_require__(29);
 /**
  *  service for navigator.geolocation methods
  */
@@ -776,38 +887,104 @@ var NavigatorGeolocation = (function () {
         });
     };
     ;
-    NavigatorGeolocation = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
-    ], NavigatorGeolocation);
     return NavigatorGeolocation;
 }());
+NavigatorGeolocation = __decorate([
+    core_1.Injectable()
+], NavigatorGeolocation);
 exports.NavigatorGeolocation = NavigatorGeolocation;
 
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_8__;
-
-/***/ }),
 /* 9 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_9__;
-
-/***/ }),
-/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * return json string from json-like string
+ */
+function jsonize(str) {
+    try {
+        JSON.parse(str);
+        return str;
+    }
+    catch (e) {
+        return str
+            .replace(/([\$\w]+)\s*:/g, // wrap keys without double quote
+        function (_, $1) {
+            return '"' + $1 + '":';
+        })
+            .replace(/'([^']+)'/g, // replacing single quote to double quote
+        function (_, $1) {
+            return '"' + $1 + '"';
+        });
+    }
+}
+exports.jsonize = jsonize;
+;
+/**
+ * Returns string to an object by using JSON.parse()
+ */
+function getJSON(input) {
+    if (typeof input === 'string') {
+        var re = /^[\+\-]?[0-9\.]+,[ ]*\ ?[\+\-]?[0-9\.]+$/; // lat,lng
+        if (input.match(re)) {
+            input = '[' + input + ']';
+        }
+        return JSON.parse(jsonize(input));
+    }
+    else {
+        return input;
+    }
+}
+exports.getJSON = getJSON;
+;
+/* tslint:enable */
+/**
+ * Returns camel-cased from string 'Foo Bar' to 'fooBar'
+ */
+function toCamelCase(str) {
+    return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
+        return index === 0 ? letter.toLowerCase() : letter.toUpperCase();
+    }).replace(/\s+/g, '');
+}
+exports.toCamelCase = toCamelCase;
+function isMapsApiLoaded() {
+    return typeof google === 'object' && typeof google.maps === 'object';
+}
+exports.isMapsApiLoaded = isMapsApiLoaded;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_10__;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_11__;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -817,19 +994,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var Subject_1 = __webpack_require__(8);
-var debounceTime_1 = __webpack_require__(9);
-var ng2_map_1 = __webpack_require__(4);
+var Subject_1 = __webpack_require__(10);
+var debounceTime_1 = __webpack_require__(11);
+var ng2_map_1 = __webpack_require__(3);
 var ng2_map_component_1 = __webpack_require__(1);
 var INPUTS = [
     'position'
 ];
+// to avoid DOM event conflicts map_*
 var OUTPUTS = [
     'animationChanged', 'click', 'clickableChanged', 'cursorChanged', 'dblclick', 'drag', 'dragend', 'draggableChanged',
     'dragstart', 'flatChanged', 'iconChanged', 'mousedown', 'mouseout', 'mouseover', 'mouseup', 'positionChanged', 'rightclick',
     'shapeChanged', 'titleChanged', 'visibleChanged', 'zindexChanged',
-    //to avoid DOM event conflicts
     'map_click', 'map_mouseover', 'map_mouseout', 'map_mouseup', 'map_mousedown', 'map_drag', 'map_dragend'
 ];
 /**
@@ -840,28 +1018,29 @@ function getCustomMarkerOverlayView(htmlEl, position) {
     var CustomMarkerOverlayView = (function (_super) {
         __extends(CustomMarkerOverlayView, _super);
         function CustomMarkerOverlayView(htmlEl, position) {
-            var _this = this;
-            _super.call(this);
-            this.visible = true;
-            this.setPosition = function (position) {
+            var _this = _super.call(this) || this;
+            _this.visible = true;
+            _this.setPosition = function (position) {
                 _this.htmlEl.style.visibility = 'hidden';
-                if (position.constructor.name === "Array") {
+                if (position.constructor.name === 'Array') {
                     _this.position = new google.maps.LatLng(position[0], position[1]);
                 }
                 else if (typeof position === 'string') {
                     var geocoder = new google.maps.Geocoder();
                     geocoder.geocode({ address: position }, function (results, status) {
                         if (status === google.maps.GeocoderStatus.OK) {
+                            console.log('setting custom marker position from address', position);
                             _this.setPosition(results[0].geometry.location);
                         }
                         else {
+                            console.log('Error in custom marker geo coding, position');
                         }
                     });
                 }
-                else if (position && typeof position.lng == 'function') {
+                else if (position && typeof position.lng === 'function') {
                     _this.position = position;
                 }
-                if (_this.getProjection() && typeof _this.position.lng == 'function') {
+                if (_this.getProjection() && typeof _this.position.lng === 'function') {
                     var positionOnMap_1 = function () {
                         var posPixel = _this.getProjection().fromLatLngToDivPixel(_this.position);
                         var x = Math.round(posPixel.x - (_this.htmlEl.offsetWidth / 2));
@@ -878,8 +1057,9 @@ function getCustomMarkerOverlayView(htmlEl, position) {
                     }
                 }
             };
-            this.htmlEl = htmlEl;
-            this.position = position;
+            _this.htmlEl = htmlEl;
+            _this.position = position;
+            return _this;
         }
         CustomMarkerOverlayView.prototype.onAdd = function () {
             this.getPanes().overlayMouseTarget.appendChild(this.htmlEl);
@@ -946,6 +1126,7 @@ var CustomMarker = (function () {
     };
     CustomMarker.prototype.initialize = function () {
         var _this = this;
+        console.log('custom-marker is being initialized');
         this.el = this.elementRef.nativeElement;
         this.mapObject = getCustomMarkerOverlayView(this.el, this['position']);
         this.mapObject.setMap(this.ng2MapComponent.map);
@@ -957,26 +1138,28 @@ var CustomMarker = (function () {
         this.ng2MapComponent.addToMapObjectGroup('CustomMarker', this.mapObject);
         this.initialized$.emit(this.mapObject);
     };
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], CustomMarker.prototype, "initialized$", void 0);
-    CustomMarker = __decorate([
-        core_1.Component({
-            selector: 'ng2-map > custom-marker',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-            template: "\n    <ng-content></ng-content>\n  ",
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent, core_1.ElementRef, ng2_map_1.Ng2Map])
-    ], CustomMarker);
     return CustomMarker;
 }());
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], CustomMarker.prototype, "initialized$", void 0);
+CustomMarker = __decorate([
+    core_1.Component({
+        selector: 'ng2-map > custom-marker',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+        template: "\n    <ng-content></ng-content>\n  ",
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent,
+        core_1.ElementRef,
+        ng2_map_1.Ng2Map])
+], CustomMarker);
 exports.CustomMarker = CustomMarker;
 
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -990,10 +1173,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var Subject_1 = __webpack_require__(8);
-var debounceTime_1 = __webpack_require__(9);
-var ng2_map_1 = __webpack_require__(4);
+var Subject_1 = __webpack_require__(10);
+var debounceTime_1 = __webpack_require__(11);
+var ng2_map_1 = __webpack_require__(3);
 var ng2_map_component_1 = __webpack_require__(1);
 var INPUTS = [
     'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
@@ -1029,10 +1213,12 @@ var InfoWindow = (function () {
     // called when map is ready
     InfoWindow.prototype.initialize = function () {
         var _this = this;
+        console.log('infowindow is being initialized');
         this.template = this.elementRef.nativeElement.innerHTML;
         this.objectOptions = this.ng2MapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
         this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
         this.infoWindow['mapObjectName'] = 'InfoWindow';
+        console.log('INFOWINDOW objectOptions', this.objectOptions);
         // register infoWindow ids to Ng2Map, so that it can be opened by id
         this.el = this.elementRef.nativeElement;
         if (this.el.id) {
@@ -1066,35 +1252,42 @@ var InfoWindow = (function () {
             delete this.infoWindow;
         }
     };
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], InfoWindow.prototype, "initialized$", void 0);
-    InfoWindow = __decorate([
-        core_1.Component({
-            selector: 'ng2-map > info-window',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-            template: "<ng-content></ng-content>",
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent, core_1.ElementRef, ng2_map_1.Ng2Map])
-    ], InfoWindow);
     return InfoWindow;
 }());
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], InfoWindow.prototype, "initialized$", void 0);
+InfoWindow = __decorate([
+    core_1.Component({
+        selector: 'ng2-map > info-window',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+        template: "<ng-content></ng-content>",
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent,
+        core_1.ElementRef,
+        ng2_map_1.Ng2Map])
+], InfoWindow);
 exports.InfoWindow = InfoWindow;
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1104,6 +1297,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var base_map_directive_1 = __webpack_require__(2);
 var ng2_map_component_1 = __webpack_require__(1);
@@ -1112,37 +1306,43 @@ var OUTPUTS = [];
 var BicyclingLayer = (function (_super) {
     __extends(BicyclingLayer, _super);
     function BicyclingLayer(ng2MapComp) {
-        _super.call(this, ng2MapComp, 'BicyclingLayer', INPUTS, OUTPUTS);
-        this.initialized$ = new core_1.EventEmitter();
+        var _this = _super.call(this, ng2MapComp, 'BicyclingLayer', INPUTS, OUTPUTS) || this;
+        _this.initialized$ = new core_1.EventEmitter();
+        return _this;
     }
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], BicyclingLayer.prototype, "initialized$", void 0);
-    BicyclingLayer = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map > bicycling-layer',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
-    ], BicyclingLayer);
     return BicyclingLayer;
 }(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], BicyclingLayer.prototype, "initialized$", void 0);
+BicyclingLayer = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map > bicycling-layer',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], BicyclingLayer);
 exports.BicyclingLayer = BicyclingLayer;
 
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1152,6 +1352,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var base_map_directive_1 = __webpack_require__(2);
 var ng2_map_component_1 = __webpack_require__(1);
@@ -1168,10 +1369,11 @@ var OUTPUTS = [
 var Circle = (function (_super) {
     __extends(Circle, _super);
     function Circle(ng2MapComp) {
-        _super.call(this, ng2MapComp, 'Circle', INPUTS, OUTPUTS);
-        this.ng2MapComp = ng2MapComp;
-        this.initialized$ = new core_1.EventEmitter();
-        this.objectOptions = {};
+        var _this = _super.call(this, ng2MapComp, 'Circle', INPUTS, OUTPUTS) || this;
+        _this.ng2MapComp = ng2MapComp;
+        _this.initialized$ = new core_1.EventEmitter();
+        _this.objectOptions = {};
+        return _this;
     }
     Circle.prototype.initialize = function () {
         _super.prototype.initialize.call(this);
@@ -1181,6 +1383,7 @@ var Circle = (function (_super) {
         var _this = this;
         if (!this['center']) {
             this._subscriptions.push(this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (center) {
+                console.log('setting circle center from current location');
                 var latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
                 _this.mapObject.setCenter(latLng);
             }, function (error) {
@@ -1190,6 +1393,7 @@ var Circle = (function (_super) {
         }
         else if (typeof this['center'] === 'string') {
             this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
+                console.log('setting circle center from address', _this['center']);
                 _this.mapObject.setCenter(results[0].geometry.location);
             }, function (error) {
                 console.error('ng2-map, error in finding location from', _this['center']);
@@ -1197,34 +1401,39 @@ var Circle = (function (_super) {
             }));
         }
     };
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], Circle.prototype, "initialized$", void 0);
-    Circle = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map>circle, ng2-map>map-circle',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
-    ], Circle);
     return Circle;
 }(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], Circle.prototype, "initialized$", void 0);
+Circle = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map>circle, ng2-map>map-circle',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], Circle);
 exports.Circle = Circle;
 
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1234,6 +1443,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var base_map_directive_1 = __webpack_require__(2);
 var ng2_map_component_1 = __webpack_require__(1);
@@ -1245,16 +1455,19 @@ var OUTPUTS = [
 var DataLayer = (function (_super) {
     __extends(DataLayer, _super);
     function DataLayer(ng2MapComponent) {
-        _super.call(this, ng2MapComponent, 'Data', INPUTS, OUTPUTS);
-        this.initialized$ = new core_1.EventEmitter();
+        var _this = _super.call(this, ng2MapComponent, 'Data', INPUTS, OUTPUTS) || this;
+        _this.initialized$ = new core_1.EventEmitter();
+        return _this;
     }
     // only called when map is ready
     DataLayer.prototype.initialize = function () {
         if (this['geoJson']) {
+            console.log('this.geoJson', this['geoJson']);
             this.ng2MapComponent.map.data.loadGeoJson(this['geoJson']);
         }
         else {
             this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
+            console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
             this.ng2MapComponent.map.data.add(this.objectOptions);
         }
         // unlike others, data belongs to map. e.g., map.data.loadGeoJson(), map.data.add()
@@ -1264,34 +1477,39 @@ var DataLayer = (function (_super) {
         this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
         this.initialized$.emit(this.mapObject);
     };
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], DataLayer.prototype, "initialized$", void 0);
-    DataLayer = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map > data-layer',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
-    ], DataLayer);
     return DataLayer;
 }(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], DataLayer.prototype, "initialized$", void 0);
+DataLayer = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map > data-layer',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], DataLayer);
 exports.DataLayer = DataLayer;
 
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1301,10 +1519,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var base_map_directive_1 = __webpack_require__(2);
 var ng2_map_component_1 = __webpack_require__(1);
-var navigator_geolocation_1 = __webpack_require__(7);
+var navigator_geolocation_1 = __webpack_require__(8);
 var INPUTS = [
     'directions', 'draggable', 'hideRouteList', 'infoWindow', 'panel', 'markerOptions',
     'polylineOptions', 'preserveViewport', 'routeIndex', 'suppressBicyclingLayer',
@@ -1314,9 +1533,10 @@ var OUTPUTS = ['directions_changed'];
 var DirectionsRenderer = (function (_super) {
     __extends(DirectionsRenderer, _super);
     function DirectionsRenderer(ng2MapComponent, geolocation) {
-        _super.call(this, ng2MapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS);
-        this.geolocation = geolocation;
-        this.initialized$ = new core_1.EventEmitter();
+        var _this = _super.call(this, ng2MapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS) || this;
+        _this.geolocation = geolocation;
+        _this.initialized$ = new core_1.EventEmitter();
+        return _this;
     }
     // only called when map is ready
     DirectionsRenderer.prototype.initialize = function () {
@@ -1324,6 +1544,7 @@ var DirectionsRenderer = (function (_super) {
         if (typeof this.objectOptions['panel'] === 'string') {
             this.objectOptions['panel'] = document.querySelector(this.objectOptions['panel']);
         }
+        console.log('DirectionsRenderer', 'initialization options', this.objectOptions, this.directionsRequest);
         this.directionsService = new google.maps.DirectionsService();
         this.directionsRenderer = new google.maps.DirectionsRenderer(this.objectOptions);
         this.directionsRenderer.setMap(this.ng2MapComponent.map);
@@ -1355,38 +1576,44 @@ var DirectionsRenderer = (function (_super) {
             }
         });
     };
-    __decorate([
-        core_1.Input('directions-request'), 
-        __metadata('design:type', Object)
-    ], DirectionsRenderer.prototype, "directionsRequest", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], DirectionsRenderer.prototype, "initialized$", void 0);
-    DirectionsRenderer = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map > directions-renderer',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent, navigator_geolocation_1.NavigatorGeolocation])
-    ], DirectionsRenderer);
     return DirectionsRenderer;
 }(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Input('directions-request'),
+    __metadata("design:type", Object)
+], DirectionsRenderer.prototype, "directionsRequest", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], DirectionsRenderer.prototype, "initialized$", void 0);
+DirectionsRenderer = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map > directions-renderer',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent,
+        navigator_geolocation_1.NavigatorGeolocation])
+], DirectionsRenderer);
 exports.DirectionsRenderer = DirectionsRenderer;
 
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1396,6 +1623,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var base_map_directive_1 = __webpack_require__(2);
 var ng2_map_component_1 = __webpack_require__(1);
@@ -1411,38 +1639,44 @@ var OUTPUTS = [
 var DrawingManager = (function (_super) {
     __extends(DrawingManager, _super);
     function DrawingManager(ng2MapComp) {
-        _super.call(this, ng2MapComp, 'DrawingManager', INPUTS, OUTPUTS);
-        this.initialized$ = new core_1.EventEmitter();
-        this.libraryName = 'drawing';
+        var _this = _super.call(this, ng2MapComp, 'DrawingManager', INPUTS, OUTPUTS) || this;
+        _this.initialized$ = new core_1.EventEmitter();
+        _this.libraryName = 'drawing';
+        return _this;
     }
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], DrawingManager.prototype, "initialized$", void 0);
-    DrawingManager = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map > drawing-manager',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
-    ], DrawingManager);
     return DrawingManager;
 }(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], DrawingManager.prototype, "initialized$", void 0);
+DrawingManager = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map > drawing-manager',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], DrawingManager);
 exports.DrawingManager = DrawingManager;
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1452,6 +1686,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var base_map_directive_1 = __webpack_require__(2);
 var ng2_map_component_1 = __webpack_require__(1);
@@ -1460,14 +1695,16 @@ var OUTPUTS = ['click', 'dblclick'];
 var GroundOverlay = (function (_super) {
     __extends(GroundOverlay, _super);
     function GroundOverlay(ng2MapComp) {
-        _super.call(this, ng2MapComp, 'GroundOverlay', INPUTS, OUTPUTS);
-        this.initialized$ = new core_1.EventEmitter();
-        this.objectOptions = {};
+        var _this = _super.call(this, ng2MapComp, 'GroundOverlay', INPUTS, OUTPUTS) || this;
+        _this.initialized$ = new core_1.EventEmitter();
+        _this.objectOptions = {};
+        return _this;
     }
     // re-declaring initialize function. called when map is ready
     GroundOverlay.prototype.initialize = function () {
         // url, bounds are not the options of GroundOverlay
         this.objectOptions = this.optionBuilder.googlizeAllInputs(['clickable', 'opacity'], this);
+        console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
         // noinspection TypeScriptUnresolvedFunction
         this.mapObject = new google.maps.GroundOverlay(this['url'], this['bounds'], this.objectOptions);
         this.mapObject.setMap(this.ng2MapComponent.map);
@@ -1477,118 +1714,21 @@ var GroundOverlay = (function (_super) {
         this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
         this.initialized$.emit(this.mapObject);
     };
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], GroundOverlay.prototype, "initialized$", void 0);
-    GroundOverlay = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map > ground-overlay',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
-    ], GroundOverlay);
     return GroundOverlay;
 }(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], GroundOverlay.prototype, "initialized$", void 0);
+GroundOverlay = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map > ground-overlay',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], GroundOverlay);
 exports.GroundOverlay = GroundOverlay;
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var core_1 = __webpack_require__(0);
-var base_map_directive_1 = __webpack_require__(2);
-var ng2_map_component_1 = __webpack_require__(1);
-var INPUTS = ['data', 'dissipating', 'gradient', 'maxIntensity', 'opacity', 'radius', 'options'];
-var OUTPUTS = [];
-var HeatmapLayer = (function (_super) {
-    __extends(HeatmapLayer, _super);
-    function HeatmapLayer(ng2MapComp) {
-        _super.call(this, ng2MapComp, 'HeatmapLayer', INPUTS, OUTPUTS);
-        this.initialized$ = new core_1.EventEmitter();
-        this.libraryName = 'visualization';
-    }
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], HeatmapLayer.prototype, "initialized$", void 0);
-    HeatmapLayer = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map > heatmap-layer',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
-    ], HeatmapLayer);
-    return HeatmapLayer;
-}(base_map_directive_1.BaseMapDirective));
-exports.HeatmapLayer = HeatmapLayer;
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var core_1 = __webpack_require__(0);
-var base_map_directive_1 = __webpack_require__(2);
-var ng2_map_component_1 = __webpack_require__(1);
-var INPUTS = ['clickable', 'preserveViewport', 'screenOverlays', 'suppressInfoWindows', 'url', 'zIndex', 'options'];
-var OUTPUTS = ['click', 'defaultviewport_changed', 'status_changed'];
-var KmlLayer = (function (_super) {
-    __extends(KmlLayer, _super);
-    function KmlLayer(ng2MapComp) {
-        _super.call(this, ng2MapComp, 'KmlLayer', INPUTS, OUTPUTS);
-        this.initialized$ = new core_1.EventEmitter();
-    }
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], KmlLayer.prototype, "initialized$", void 0);
-    KmlLayer = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map > kml-layer',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
-    ], KmlLayer);
-    return KmlLayer;
-}(base_map_directive_1.BaseMapDirective));
-exports.KmlLayer = KmlLayer;
 
 
 /***/ }),
@@ -1597,11 +1737,16 @@ exports.KmlLayer = KmlLayer;
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1611,6 +1756,118 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var base_map_directive_1 = __webpack_require__(2);
+var ng2_map_component_1 = __webpack_require__(1);
+var INPUTS = ['data', 'dissipating', 'gradient', 'maxIntensity', 'opacity', 'radius', 'options'];
+var OUTPUTS = [];
+var HeatmapLayer = (function (_super) {
+    __extends(HeatmapLayer, _super);
+    function HeatmapLayer(ng2MapComp) {
+        var _this = _super.call(this, ng2MapComp, 'HeatmapLayer', INPUTS, OUTPUTS) || this;
+        _this.initialized$ = new core_1.EventEmitter();
+        _this.libraryName = 'visualization';
+        return _this;
+    }
+    return HeatmapLayer;
+}(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], HeatmapLayer.prototype, "initialized$", void 0);
+HeatmapLayer = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map > heatmap-layer',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], HeatmapLayer);
+exports.HeatmapLayer = HeatmapLayer;
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var base_map_directive_1 = __webpack_require__(2);
+var ng2_map_component_1 = __webpack_require__(1);
+var INPUTS = ['clickable', 'preserveViewport', 'screenOverlays', 'suppressInfoWindows', 'url', 'zIndex', 'options'];
+var OUTPUTS = ['click', 'defaultviewport_changed', 'status_changed'];
+var KmlLayer = (function (_super) {
+    __extends(KmlLayer, _super);
+    function KmlLayer(ng2MapComp) {
+        var _this = _super.call(this, ng2MapComp, 'KmlLayer', INPUTS, OUTPUTS) || this;
+        _this.initialized$ = new core_1.EventEmitter();
+        return _this;
+    }
+    return KmlLayer;
+}(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], KmlLayer.prototype, "initialized$", void 0);
+KmlLayer = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map > kml-layer',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], KmlLayer);
+exports.KmlLayer = KmlLayer;
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var base_map_directive_1 = __webpack_require__(2);
 var ng2_map_component_1 = __webpack_require__(1);
@@ -1628,10 +1885,12 @@ var OUTPUTS = [
 var Marker = (function (_super) {
     __extends(Marker, _super);
     function Marker(ng2MapComp) {
-        _super.call(this, ng2MapComp, 'Marker', INPUTS, OUTPUTS);
-        this.ng2MapComp = ng2MapComp;
-        this.initialized$ = new core_1.EventEmitter();
-        this.objectOptions = {};
+        var _this = _super.call(this, ng2MapComp, 'Marker', INPUTS, OUTPUTS) || this;
+        _this.ng2MapComp = ng2MapComp;
+        _this.initialized$ = new core_1.EventEmitter();
+        _this.objectOptions = {};
+        console.log('marker constructor', 9999999);
+        return _this;
     }
     // Initialize this map object when map is ready
     Marker.prototype.ngOnInit = function () {
@@ -1651,6 +1910,7 @@ var Marker = (function (_super) {
         var _this = this;
         if (!this['position']) {
             this._subscriptions.push(this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (position) {
+                console.log('setting marker position from current location');
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 _this.mapObject.setPosition(latLng);
             }, function (error) {
@@ -1660,6 +1920,7 @@ var Marker = (function (_super) {
         }
         else if (typeof this['position'] === 'string') {
             this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({ address: this['position'] }).subscribe(function (results) {
+                console.log('setting marker position from address', _this['position']);
                 _this.mapObject.setPosition(results[0].geometry.location);
             }, function (error) {
                 console.error('ng2-map, error finding the location from', _this['position']);
@@ -1667,25 +1928,25 @@ var Marker = (function (_super) {
             }));
         }
     };
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], Marker.prototype, "initialized$", void 0);
-    Marker = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map > marker',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
-    ], Marker);
     return Marker;
 }(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], Marker.prototype, "initialized$", void 0);
+Marker = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map > marker',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], Marker);
 exports.Marker = Marker;
 
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1702,9 +1963,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var config_1 = __webpack_require__(6);
-var option_builder_1 = __webpack_require__(5);
+var option_builder_1 = __webpack_require__(4);
 var PlacesAutoComplete = (function () {
     function PlacesAutoComplete(optionBuilder, elementRef, zone, config) {
         var _this = this;
@@ -1718,15 +1980,16 @@ var PlacesAutoComplete = (function () {
         this.initialize = function () {
             _this.objectOptions =
                 _this.optionBuilder.googlizeAllInputs(['bounds', 'componentRestrictions', 'types'], _this);
+            console.log('places autocomplete options', _this.objectOptions);
             _this.autocomplete = new google.maps.places.Autocomplete(_this.elementRef.nativeElement, _this.objectOptions);
+            console.log('this.autocomplete', _this.autocomplete);
             _this.autocomplete.addListener('place_changed', function (place) {
                 _this.place_changed.emit(_this.autocomplete.getPlace());
             });
             _this.initialized$.emit(_this.autocomplete);
         };
-        this.config = this.config
-            || { apiUrl: 'https://maps.google.com/maps/api/js?libraries=places' };
-        //treat this as ng2Map because it requires google api on root level
+        this.config = this.config || { apiUrl: 'https://maps.google.com/maps/api/js?libraries=places' };
+        // treat this as ng2Map because it requires google api on root level
         window['ng2MapRef'] = window['ng2MapRef'] || [];
         this.mapIndex = window['ng2MapRef'].length;
         window['ng2MapRef'].push({
@@ -1757,50 +2020,56 @@ var PlacesAutoComplete = (function () {
             document.querySelector('body').appendChild(script);
         }
     };
-    __decorate([
-        core_1.Input('bounds'), 
-        __metadata('design:type', Object)
-    ], PlacesAutoComplete.prototype, "bounds", void 0);
-    __decorate([
-        core_1.Input('componentRestrictions'), 
-        __metadata('design:type', Object)
-    ], PlacesAutoComplete.prototype, "componentRestrictions", void 0);
-    __decorate([
-        core_1.Input('types'), 
-        __metadata('design:type', Array)
-    ], PlacesAutoComplete.prototype, "types", void 0);
-    __decorate([
-        core_1.Output('place_changed'), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], PlacesAutoComplete.prototype, "place_changed", void 0);
-    __decorate([
-        core_1.Output('initialized$'), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], PlacesAutoComplete.prototype, "initialized$", void 0);
-    PlacesAutoComplete = __decorate([
-        core_1.Directive({
-            selector: '[places-auto-complete]'
-        }),
-        __param(3, core_1.Optional()),
-        __param(3, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)), 
-        __metadata('design:paramtypes', [option_builder_1.OptionBuilder, core_1.ElementRef, core_1.NgZone, Object])
-    ], PlacesAutoComplete);
     return PlacesAutoComplete;
 }());
+__decorate([
+    core_1.Input('bounds'),
+    __metadata("design:type", Object)
+], PlacesAutoComplete.prototype, "bounds", void 0);
+__decorate([
+    core_1.Input('componentRestrictions'),
+    __metadata("design:type", Object)
+], PlacesAutoComplete.prototype, "componentRestrictions", void 0);
+__decorate([
+    core_1.Input('types'),
+    __metadata("design:type", Array)
+], PlacesAutoComplete.prototype, "types", void 0);
+__decorate([
+    core_1.Output('place_changed'),
+    __metadata("design:type", core_1.EventEmitter)
+], PlacesAutoComplete.prototype, "place_changed", void 0);
+__decorate([
+    core_1.Output('initialized$'),
+    __metadata("design:type", core_1.EventEmitter)
+], PlacesAutoComplete.prototype, "initialized$", void 0);
+PlacesAutoComplete = __decorate([
+    core_1.Directive({
+        selector: '[places-auto-complete]'
+    }),
+    __param(3, core_1.Optional()), __param(3, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)),
+    __metadata("design:paramtypes", [option_builder_1.OptionBuilder,
+        core_1.ElementRef,
+        core_1.NgZone, Object])
+], PlacesAutoComplete);
 exports.PlacesAutoComplete = PlacesAutoComplete;
 
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1810,6 +2079,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var base_map_directive_1 = __webpack_require__(2);
 var ng2_map_component_1 = __webpack_require__(1);
@@ -1824,37 +2094,43 @@ var OUTPUTS = [
 var Polygon = (function (_super) {
     __extends(Polygon, _super);
     function Polygon(ng2MapComp) {
-        _super.call(this, ng2MapComp, 'Polygon', INPUTS, OUTPUTS);
-        this.initialized$ = new core_1.EventEmitter();
+        var _this = _super.call(this, ng2MapComp, 'Polygon', INPUTS, OUTPUTS) || this;
+        _this.initialized$ = new core_1.EventEmitter();
+        return _this;
     }
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], Polygon.prototype, "initialized$", void 0);
-    Polygon = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map>polygon, ng2-map>map-polygon',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
-    ], Polygon);
     return Polygon;
 }(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], Polygon.prototype, "initialized$", void 0);
+Polygon = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map>polygon, ng2-map>map-polygon',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], Polygon);
 exports.Polygon = Polygon;
 
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1864,6 +2140,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var base_map_directive_1 = __webpack_require__(2);
 var ng2_map_component_1 = __webpack_require__(1);
@@ -1878,37 +2155,43 @@ var OUTPUTS = [
 var Polyline = (function (_super) {
     __extends(Polyline, _super);
     function Polyline(ng2MapComp) {
-        _super.call(this, ng2MapComp, 'Polyline', INPUTS, OUTPUTS);
-        this.initialized$ = new core_1.EventEmitter();
+        var _this = _super.call(this, ng2MapComp, 'Polyline', INPUTS, OUTPUTS) || this;
+        _this.initialized$ = new core_1.EventEmitter();
+        return _this;
     }
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], Polyline.prototype, "initialized$", void 0);
-    Polyline = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map > polyline',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
-    ], Polyline);
     return Polyline;
 }(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], Polyline.prototype, "initialized$", void 0);
+Polyline = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map > polyline',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], Polyline);
 exports.Polyline = Polyline;
 
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1918,6 +2201,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var base_map_directive_1 = __webpack_require__(2);
 var ng2_map_component_1 = __webpack_require__(1);
@@ -1935,12 +2219,14 @@ var OUTPUTS = [
 var StreetViewPanorama = (function (_super) {
     __extends(StreetViewPanorama, _super);
     function StreetViewPanorama(ng2MapComp) {
-        _super.call(this, ng2MapComp, 'StreetViewPanorama', INPUTS, OUTPUTS);
-        this.initialized$ = new core_1.EventEmitter();
+        var _this = _super.call(this, ng2MapComp, 'StreetViewPanorama', INPUTS, OUTPUTS) || this;
+        _this.initialized$ = new core_1.EventEmitter();
+        return _this;
     }
     // only called when map is ready
     StreetViewPanorama.prototype.initialize = function () {
         this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
+        console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
         var element;
         if (this.objectOptions.selector) {
             // noinspection TypeScriptValidateTypes
@@ -1967,117 +2253,21 @@ var StreetViewPanorama = (function (_super) {
             OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
         }
     };
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], StreetViewPanorama.prototype, "initialized$", void 0);
-    StreetViewPanorama = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map > street-view-panorama',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
-    ], StreetViewPanorama);
     return StreetViewPanorama;
 }(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], StreetViewPanorama.prototype, "initialized$", void 0);
+StreetViewPanorama = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map > street-view-panorama',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], StreetViewPanorama);
 exports.StreetViewPanorama = StreetViewPanorama;
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var core_1 = __webpack_require__(0);
-var base_map_directive_1 = __webpack_require__(2);
-var ng2_map_component_1 = __webpack_require__(1);
-var INPUTS = ['autoRefresh', 'options'];
-var OUTPUTS = [];
-var TrafficLayer = (function (_super) {
-    __extends(TrafficLayer, _super);
-    function TrafficLayer(ng2MapComp) {
-        _super.call(this, ng2MapComp, 'TrafficLayer', INPUTS, OUTPUTS);
-        this.initialized$ = new core_1.EventEmitter();
-    }
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], TrafficLayer.prototype, "initialized$", void 0);
-    TrafficLayer = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map > traffic-layer',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
-    ], TrafficLayer);
-    return TrafficLayer;
-}(base_map_directive_1.BaseMapDirective));
-exports.TrafficLayer = TrafficLayer;
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var core_1 = __webpack_require__(0);
-var base_map_directive_1 = __webpack_require__(2);
-var ng2_map_component_1 = __webpack_require__(1);
-var INPUTS = [];
-var OUTPUTS = [];
-var TransitLayer = (function (_super) {
-    __extends(TransitLayer, _super);
-    function TransitLayer(ng2MapComp) {
-        _super.call(this, ng2MapComp, 'TransitLayer', INPUTS, OUTPUTS);
-        this.initialized$ = new core_1.EventEmitter();
-    }
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], TransitLayer.prototype, "initialized$", void 0);
-    TransitLayer = __decorate([
-        core_1.Directive({
-            selector: 'ng2-map > transit-layer',
-            inputs: INPUTS,
-            outputs: OUTPUTS,
-        }), 
-        __metadata('design:paramtypes', [ng2_map_component_1.Ng2MapComponent])
-    ], TransitLayer);
-    return TransitLayer;
-}(base_map_directive_1.BaseMapDirective));
-exports.TransitLayer = TransitLayer;
 
 
 /***/ }),
@@ -2086,63 +2276,118 @@ exports.TransitLayer = TransitLayer;
 
 "use strict";
 
-/**
- * return json string from json-like string
- */
-var jsonize = function (str) {
-    try {
-        JSON.parse(str);
-        return str;
-    }
-    catch (e) {
-        return str
-            .replace(/([\$\w]+)\s*:/g, // wrap keys without double quote
-        function (_, $1) {
-            return '"' + $1 + '":';
-        })
-            .replace(/'([^']+)'/g, // replacing single quote to double quote
-        function (_, $1) {
-            return '"' + $1 + '"';
-        });
-    }
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-exports.jsonize = jsonize;
-/**
- * Returns string to an object by using JSON.parse()
- */
-var getJSON = function (input) {
-    if (typeof input === 'string') {
-        var re = /^[\+\-]?[0-9\.]+,[ ]*\ ?[\+\-]?[0-9\.]+$/; // lat,lng
-        if (input.match(re)) {
-            input = '[' + input + ']';
-        }
-        return JSON.parse(jsonize(input));
-    }
-    else {
-        return input;
-    }
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-exports.getJSON = getJSON;
-/* tslint:enable */
-/**
- * Returns camel-cased from string 'Foo Bar' to 'fooBar'
- */
-var toCamelCase = function (str) {
-    return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
-        return index == 0 ? letter.toLowerCase() : letter.toUpperCase();
-    }).replace(/\s+/g, '');
-};
-exports.toCamelCase = toCamelCase;
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var base_map_directive_1 = __webpack_require__(2);
+var ng2_map_component_1 = __webpack_require__(1);
+var INPUTS = ['autoRefresh', 'options'];
+var OUTPUTS = [];
+var TrafficLayer = (function (_super) {
+    __extends(TrafficLayer, _super);
+    function TrafficLayer(ng2MapComp) {
+        var _this = _super.call(this, ng2MapComp, 'TrafficLayer', INPUTS, OUTPUTS) || this;
+        _this.initialized$ = new core_1.EventEmitter();
+        return _this;
+    }
+    return TrafficLayer;
+}(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], TrafficLayer.prototype, "initialized$", void 0);
+TrafficLayer = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map > traffic-layer',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], TrafficLayer);
+exports.TrafficLayer = TrafficLayer;
 
 
 /***/ }),
 /* 28 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_28__;
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var base_map_directive_1 = __webpack_require__(2);
+var ng2_map_component_1 = __webpack_require__(1);
+var INPUTS = [];
+var OUTPUTS = [];
+var TransitLayer = (function (_super) {
+    __extends(TransitLayer, _super);
+    function TransitLayer(ng2MapComp) {
+        var _this = _super.call(this, ng2MapComp, 'TransitLayer', INPUTS, OUTPUTS) || this;
+        _this.initialized$ = new core_1.EventEmitter();
+        return _this;
+    }
+    return TransitLayer;
+}(base_map_directive_1.BaseMapDirective));
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], TransitLayer.prototype, "initialized$", void 0);
+TransitLayer = __decorate([
+    core_1.Directive({
+        selector: 'ng2-map > transit-layer',
+        inputs: INPUTS,
+        outputs: OUTPUTS,
+    }),
+    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+], TransitLayer);
+exports.TransitLayer = TransitLayer;
+
 
 /***/ }),
 /* 29 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_29__;
+
+/***/ }),
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2153,34 +2398,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(30);
-var option_builder_1 = __webpack_require__(5);
-var geo_coder_1 = __webpack_require__(3);
-var navigator_geolocation_1 = __webpack_require__(7);
+var common_1 = __webpack_require__(31);
+var option_builder_1 = __webpack_require__(4);
+var geo_coder_1 = __webpack_require__(7);
+var navigator_geolocation_1 = __webpack_require__(8);
 var config_1 = __webpack_require__(6);
+var api_loader_1 = __webpack_require__(5);
 var ng2_map_component_1 = __webpack_require__(1);
-var info_window_1 = __webpack_require__(11);
-var custom_marker_1 = __webpack_require__(10);
-var bicycling_layer_1 = __webpack_require__(12);
-var circle_1 = __webpack_require__(13);
-var data_layer_1 = __webpack_require__(14);
-var directions_renderer_1 = __webpack_require__(15);
-var drawing_manager_1 = __webpack_require__(16);
-var ground_overlay_1 = __webpack_require__(17);
-var heatmap_layer_1 = __webpack_require__(18);
-var kml_layer_1 = __webpack_require__(19);
-var marker_1 = __webpack_require__(20);
-var ng2_map_1 = __webpack_require__(4);
-var places_auto_complete_1 = __webpack_require__(21);
-var polygon_1 = __webpack_require__(22);
-var polyline_1 = __webpack_require__(23);
-var street_view_panorama_1 = __webpack_require__(24);
-var traffic_layer_1 = __webpack_require__(25);
-var transit_layer_1 = __webpack_require__(26);
+var info_window_1 = __webpack_require__(13);
+var custom_marker_1 = __webpack_require__(12);
+var bicycling_layer_1 = __webpack_require__(14);
+var circle_1 = __webpack_require__(15);
+var data_layer_1 = __webpack_require__(16);
+var directions_renderer_1 = __webpack_require__(17);
+var drawing_manager_1 = __webpack_require__(18);
+var ground_overlay_1 = __webpack_require__(19);
+var heatmap_layer_1 = __webpack_require__(20);
+var kml_layer_1 = __webpack_require__(21);
+var marker_1 = __webpack_require__(22);
+var ng2_map_1 = __webpack_require__(3);
+var places_auto_complete_1 = __webpack_require__(23);
+var polygon_1 = __webpack_require__(24);
+var polyline_1 = __webpack_require__(25);
+var street_view_panorama_1 = __webpack_require__(26);
+var traffic_layer_1 = __webpack_require__(27);
+var transit_layer_1 = __webpack_require__(28);
 var COMPONENTS_DIRECTIVES = [
     ng2_map_component_1.Ng2MapComponent, info_window_1.InfoWindow,
     marker_1.Marker, circle_1.Circle, custom_marker_1.CustomMarker, polygon_1.Polygon, info_window_1.InfoWindow, polyline_1.Polyline, ground_overlay_1.GroundOverlay,
@@ -2188,96 +2432,114 @@ var COMPONENTS_DIRECTIVES = [
     street_view_panorama_1.StreetViewPanorama, places_auto_complete_1.PlacesAutoComplete, directions_renderer_1.DirectionsRenderer,
     drawing_manager_1.DrawingManager,
 ];
-var Ng2MapModule = (function () {
+var Ng2MapModule = Ng2MapModule_1 = (function () {
     function Ng2MapModule() {
     }
     Ng2MapModule.forRoot = function (config) {
         if (config === void 0) { config = {}; }
         return {
-            ngModule: Ng2MapModule,
+            ngModule: Ng2MapModule_1,
             providers: [
                 { provide: config_1.NG_MAP_CONFIG_TOKEN, useValue: config }
             ],
         };
     };
-    Ng2MapModule = __decorate([
-        core_1.NgModule({
-            imports: [common_1.CommonModule],
-            declarations: COMPONENTS_DIRECTIVES,
-            exports: [COMPONENTS_DIRECTIVES],
-            providers: [
-                geo_coder_1.GeoCoder,
-                navigator_geolocation_1.NavigatorGeolocation,
-                ng2_map_1.Ng2Map,
-                option_builder_1.OptionBuilder
-            ]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], Ng2MapModule);
     return Ng2MapModule;
 }());
+Ng2MapModule = Ng2MapModule_1 = __decorate([
+    core_1.NgModule({
+        imports: [common_1.CommonModule],
+        declarations: COMPONENTS_DIRECTIVES,
+        exports: [COMPONENTS_DIRECTIVES],
+        providers: [
+            geo_coder_1.GeoCoder,
+            navigator_geolocation_1.NavigatorGeolocation,
+            ng2_map_1.Ng2Map,
+            option_builder_1.OptionBuilder,
+            { provide: api_loader_1.NgMapApiLoader, useClass: api_loader_1.NgMapAsyncCallbackApiLoader },
+        ]
+    })
+], Ng2MapModule);
 exports.Ng2MapModule = Ng2MapModule;
+var Ng2MapModule_1;
 
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_30__;
 
 /***/ }),
 /* 31 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_31__;
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_32__;
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_33__;
+
+/***/ }),
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var bicycling_layer_1 = __webpack_require__(12);
+Object.defineProperty(exports, "__esModule", { value: true });
+var bicycling_layer_1 = __webpack_require__(14);
 exports.BicyclingLayer = bicycling_layer_1.BicyclingLayer;
-var navigator_geolocation_1 = __webpack_require__(7);
+var navigator_geolocation_1 = __webpack_require__(8);
 exports.NavigatorGeolocation = navigator_geolocation_1.NavigatorGeolocation;
-var option_builder_1 = __webpack_require__(5);
+var option_builder_1 = __webpack_require__(4);
 exports.OptionBuilder = option_builder_1.OptionBuilder;
 var config_1 = __webpack_require__(6);
 exports.NG_MAP_CONFIG_TOKEN = config_1.NG_MAP_CONFIG_TOKEN;
+var api_loader_1 = __webpack_require__(5);
+exports.NgMapApiLoader = api_loader_1.NgMapApiLoader;
+exports.NgMapAsyncApiLoader = api_loader_1.NgMapAsyncApiLoader;
+exports.NgMapAsyncCallbackApiLoader = api_loader_1.NgMapAsyncCallbackApiLoader;
 var ng2_map_component_1 = __webpack_require__(1);
 exports.Ng2MapComponent = ng2_map_component_1.Ng2MapComponent;
-var info_window_1 = __webpack_require__(11);
+var info_window_1 = __webpack_require__(13);
 exports.InfoWindow = info_window_1.InfoWindow;
-var custom_marker_1 = __webpack_require__(10);
+var custom_marker_1 = __webpack_require__(12);
 exports.CustomMarker = custom_marker_1.CustomMarker;
-var circle_1 = __webpack_require__(13);
+var circle_1 = __webpack_require__(15);
 exports.Circle = circle_1.Circle;
-var data_layer_1 = __webpack_require__(14);
+var data_layer_1 = __webpack_require__(16);
 exports.DataLayer = data_layer_1.DataLayer;
-var directions_renderer_1 = __webpack_require__(15);
+var directions_renderer_1 = __webpack_require__(17);
 exports.DirectionsRenderer = directions_renderer_1.DirectionsRenderer;
-var drawing_manager_1 = __webpack_require__(16);
+var drawing_manager_1 = __webpack_require__(18);
 exports.DrawingManager = drawing_manager_1.DrawingManager;
-var geo_coder_1 = __webpack_require__(3);
+var geo_coder_1 = __webpack_require__(7);
 exports.GeoCoder = geo_coder_1.GeoCoder;
-var ground_overlay_1 = __webpack_require__(17);
+var ground_overlay_1 = __webpack_require__(19);
 exports.GroundOverlay = ground_overlay_1.GroundOverlay;
-var heatmap_layer_1 = __webpack_require__(18);
+var heatmap_layer_1 = __webpack_require__(20);
 exports.HeatmapLayer = heatmap_layer_1.HeatmapLayer;
-var kml_layer_1 = __webpack_require__(19);
+var kml_layer_1 = __webpack_require__(21);
 exports.KmlLayer = kml_layer_1.KmlLayer;
-var marker_1 = __webpack_require__(20);
+var marker_1 = __webpack_require__(22);
 exports.Marker = marker_1.Marker;
-var ng2_map_1 = __webpack_require__(4);
+var ng2_map_1 = __webpack_require__(3);
 exports.Ng2Map = ng2_map_1.Ng2Map;
-var places_auto_complete_1 = __webpack_require__(21);
+var places_auto_complete_1 = __webpack_require__(23);
 exports.PlacesAutoComplete = places_auto_complete_1.PlacesAutoComplete;
-var polygon_1 = __webpack_require__(22);
+var polygon_1 = __webpack_require__(24);
 exports.Polygon = polygon_1.Polygon;
-var polyline_1 = __webpack_require__(23);
+var polyline_1 = __webpack_require__(25);
 exports.Polyline = polyline_1.Polyline;
-var street_view_panorama_1 = __webpack_require__(24);
+var street_view_panorama_1 = __webpack_require__(26);
 exports.StreetViewPanorama = street_view_panorama_1.StreetViewPanorama;
-var traffic_layer_1 = __webpack_require__(25);
+var traffic_layer_1 = __webpack_require__(27);
 exports.TrafficLayer = traffic_layer_1.TrafficLayer;
-var transit_layer_1 = __webpack_require__(26);
+var transit_layer_1 = __webpack_require__(28);
 exports.TransitLayer = transit_layer_1.TransitLayer;
-var ng2_map_module_1 = __webpack_require__(29);
+var ng2_map_module_1 = __webpack_require__(30);
 exports.Ng2MapModule = ng2_map_module_1.Ng2MapModule;
 
 

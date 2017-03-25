@@ -1,14 +1,19 @@
 "use strict";
-var core_1 = require('@angular/core');
-var util_1 = require('./util');
-var geo_coder_1 = require('./geo-coder');
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var util_1 = require("./util");
 /**
  * change any object to google object options
  * e.g. [1,2] -> new google.maps.LatLng(1,2);
  */
 var OptionBuilder = (function () {
-    function OptionBuilder(geoCoder) {
-        this.geoCoder = geoCoder;
+    function OptionBuilder() {
     }
     OptionBuilder.prototype.googlizeAllInputs = function (definedInputs, userInputs) {
         var _this = this;
@@ -86,7 +91,7 @@ var OptionBuilder = (function () {
                 }
             }
         }
-        //delete keys only for processing, not used by google
+        // delete keys only for processing, not used by google
         delete output['doNotConverStringToNumber'];
         delete output['key'];
         return output;
@@ -126,7 +131,6 @@ var OptionBuilder = (function () {
         var output;
         if (input.match(/^[A-Z][a-zA-Z0-9]+\(.*\)$/)) {
             try {
-                var exp = 'new google.maps.' + input;
                 output = Function("return new google.maps." + input + ";")();
             }
             catch (e) { }
@@ -230,14 +234,10 @@ var OptionBuilder = (function () {
         }
         return true;
     };
-    OptionBuilder.decorators = [
-        { type: core_1.Injectable },
-    ];
-    /** @nocollapse */
-    OptionBuilder.ctorParameters = [
-        { type: geo_coder_1.GeoCoder, },
-    ];
     return OptionBuilder;
 }());
+OptionBuilder = __decorate([
+    core_1.Injectable()
+], OptionBuilder);
 exports.OptionBuilder = OptionBuilder;
 //# sourceMappingURL=option-builder.js.map

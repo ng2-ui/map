@@ -1,7 +1,7 @@
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, OnDestroy } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { Ng2MapComponent } from '../components/ng2-map.component';
-export declare class StreetViewPanorama extends BaseMapDirective {
+export declare class StreetViewPanorama extends BaseMapDirective implements OnDestroy {
     selector: any;
     options: any;
     addressControl: any;
