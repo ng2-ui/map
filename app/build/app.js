@@ -4590,7 +4590,7 @@ var INPUTS = [
     'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
     'draggingCursor', 'heading', 'keyboardShortcuts', 'mapMaker', 'mapTypeControl', 'mapTypeId', 'maxZoom', 'minZoom',
     'noClear', 'overviewMapControl', 'panControl', 'panControlOptions', 'rotateControl', 'scaleControl', 'scrollwheel',
-    'streetView', 'styles', 'tilt', 'zoom', 'streetViewControl', 'zoomControl', 'mapTypeControlOptions',
+    'streetView', 'styles', 'tilt', 'zoom', 'streetViewControl', 'zoomControl', 'zoomControlOptions', 'mapTypeControlOptions',
     'overviewMapControlOptions', 'rotateControlOptions', 'scaleControlOptions', 'streetViewControlOptions',
     'options',
     // ng2-map-specific inputs
@@ -99151,19 +99151,23 @@ var DrawingManagerComponent = (function () {
     DrawingManagerComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.drawingManager['initialized$'].subscribe(function (dm) {
-            var drawingManagerEvents = _this.drawingManager['outputs'];
-            drawingManagerEvents.forEach(function (eventName) {
-                google.maps.event.addListener(dm, eventName, function (event) {
-                    google.maps.event.addListener(event.overlay, 'click', function () {
+            google.maps.event.addListener(dm, 'overlaycomplete', function (event) {
+                if (event.type != google.maps.drawing.OverlayType.MARKER) {
+                    dm.setDrawingMode(null);
+                    google.maps.event.addListener(event.overlay, 'click', function (e) {
                         _this.selectedOverlay = event.overlay;
+                        _this.selectedOverlay.setEditable(true);
                     });
-                });
+                    _this.selectedOverlay = event.overlay;
+                }
             });
         });
     };
     DrawingManagerComponent.prototype.deleteSelectedOverlay = function () {
-        this.selectedOverlay.setMap(null);
-        delete this.selectedOverlay;
+        if (this.selectedOverlay) {
+            this.selectedOverlay.setMap(null);
+            delete this.selectedOverlay;
+        }
     };
     return DrawingManagerComponent;
 }());
@@ -99833,7 +99837,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var templateStr = "\n  <h1>Simple Marker</h1>\n  <ng2-map center=\"Brampton, Canada\" \n    (click)=\"log($event)\"\n    [scrollwheel]=\"false\">\n    <marker position=\"will-fall-back-to-brampton-canada\"\n      [geoFallbackPosition]=\"[43.73154789999999, -79.7449296972229]\"\n      (dragstart)=\"log($event, 'dragstart')\"\n      (dragend)=\"log($event, 'dragend')\"\n      draggable=\"true\"></marker>\n  </ng2-map>\n  <code>\n    <br/><b>HTML</b>\n    <pre>{{templateStr | htmlCode:'-code'}}</pre>\n    <b>log function</b> \n    <pre>{{log|jsCode}}</pre>\n  </code>\n";
+var templateStr = "\n  <h1>Simple Marker</h1>\n  <ng2-map center=\"Brampton, Canada\" \n    [zoomControlOptions]=\"{position: 'TOP_CENTER'}\"\n    (click)=\"log($event)\"\n    [scrollwheel]=\"false\">\n    <marker position=\"will-fall-back-to-brampton-canada\"\n      [geoFallbackPosition]=\"[43.73154789999999, -79.7449296972229]\"\n      (dragstart)=\"log($event, 'dragstart')\"\n      (dragend)=\"log($event, 'dragend')\"\n      draggable=\"true\"></marker>\n  </ng2-map>\n  <code>\n    <br/><b>HTML</b>\n    <pre>{{templateStr | htmlCode:'-code'}}</pre>\n    <b>log function</b> \n    <pre>{{log|jsCode}}</pre>\n  </code>\n";
 var SimpleMarkerComponent = (function () {
     function SimpleMarkerComponent() {
         this.templateStr = templateStr;

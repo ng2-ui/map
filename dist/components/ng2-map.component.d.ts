@@ -41,6 +41,7 @@ export declare class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewI
     zoom: any;
     streetViewControl: any;
     zoomControl: any;
+    zoomControlOptions: any;
     mapTypeControlOptions: any;
     overviewMapControlOptions: any;
     rotateControlOptions: any;
