@@ -28,6 +28,7 @@ var HeatmapLayer = (function (_super) {
     __extends(HeatmapLayer, _super);
     function HeatmapLayer(ng2MapComp) {
         var _this = _super.call(this, ng2MapComp, 'HeatmapLayer', INPUTS, OUTPUTS) || this;
+        // declare OUTPUTS for AOT compiler
         _this.initialized$ = new core_1.EventEmitter();
         _this.libraryName = 'visualization';
         return _this;

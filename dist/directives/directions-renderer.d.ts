@@ -18,6 +18,7 @@ export declare class DirectionsRenderer extends BaseMapDirective implements OnCh
     suppressInfoWindows: any;
     suppressMarkers: any;
     suppressPolylines: any;
+    directions_changed: any;
     directionsRequest: google.maps.DirectionsRequest;
     initialized$: EventEmitter<any>;
     directionsService: google.maps.DirectionsService;

@@ -28,6 +28,8 @@ var BicyclingLayer = (function (_super) {
     __extends(BicyclingLayer, _super);
     function BicyclingLayer(ng2MapComp) {
         var _this = _super.call(this, ng2MapComp, 'BicyclingLayer', INPUTS, OUTPUTS) || this;
+        // declare INPUTS for AOT compiler
+        // declare OUTPUTS for AOT compiler
         _this.initialized$ = new core_1.EventEmitter();
         return _this;
     }

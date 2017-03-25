@@ -26,6 +26,14 @@ export declare class StreetViewPanorama extends BaseMapDirective implements OnDe
     visible: any;
     zoomControl: any;
     zoomControlOptions: any;
+    closeclick: any;
+    pano_changed: any;
+    position_changed: any;
+    pov_changed: any;
+    resize: any;
+    status_changed: any;
+    visible_changed: any;
+    zoom_changed: any;
     initialized$: EventEmitter<any>;
     constructor(ng2MapComp: Ng2MapComponent);
     initialize(): void;

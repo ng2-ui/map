@@ -14,6 +14,11 @@ export declare class InfoWindow implements OnInit, OnChanges, OnDestroy {
     position: any;
     zIndex: any;
     options: any;
+    closeclick: any;
+    content_changed: any;
+    domready: any;
+    position_changed: any;
+    zindex_changed: any;
     initialized$: EventEmitter<any>;
     el: HTMLElement;
     infoWindow: google.maps.InfoWindow;

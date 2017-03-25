@@ -16,6 +16,17 @@ export declare class Polygon extends BaseMapDirective {
     visible: any;
     zIndex: any;
     options: any;
+    click: any;
+    dblclick: any;
+    drag: any;
+    dragend: any;
+    dragstart: any;
+    mousedown: any;
+    mousemove: any;
+    mouseout: any;
+    mouseover: any;
+    mouseup: any;
+    rightclick: any;
     initialized$: EventEmitter<any>;
     constructor(ng2MapComp: Ng2MapComponent);
 }

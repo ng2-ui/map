@@ -9,6 +9,9 @@ export declare class KmlLayer extends BaseMapDirective {
     url: any;
     zIndex: any;
     options: any;
+    click: any;
+    defaultviewport_changed: any;
+    status_changed: any;
     initialized$: EventEmitter<any>;
     constructor(ng2MapComp: Ng2MapComponent);
 }

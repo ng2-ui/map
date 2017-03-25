@@ -99152,7 +99152,7 @@ var DrawingManagerComponent = (function () {
         var _this = this;
         this.drawingManager['initialized$'].subscribe(function (dm) {
             google.maps.event.addListener(dm, 'overlaycomplete', function (event) {
-                if (event.type != google.maps.drawing.OverlayType.MARKER) {
+                if (event.type !== google.maps.drawing.OverlayType.MARKER) {
                     dm.setDrawingMode(null);
                     google.maps.event.addListener(event.overlay, 'click', function (e) {
                         _this.selectedOverlay = event.overlay;

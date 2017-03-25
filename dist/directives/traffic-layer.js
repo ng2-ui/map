@@ -28,6 +28,7 @@ var TrafficLayer = (function (_super) {
     __extends(TrafficLayer, _super);
     function TrafficLayer(ng2MapComp) {
         var _this = _super.call(this, ng2MapComp, 'TrafficLayer', INPUTS, OUTPUTS) || this;
+        // declare OUTPUTS for AOT compiler
         _this.initialized$ = new core_1.EventEmitter();
         return _this;
     }

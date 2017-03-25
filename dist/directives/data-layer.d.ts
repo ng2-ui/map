@@ -8,6 +8,18 @@ export declare class DataLayer extends BaseMapDirective {
     featureFactory: any;
     style: any;
     geoJson: any;
+    addfeature: any;
+    click: any;
+    dblclick: any;
+    mousedown: any;
+    mouseout: any;
+    mouseover: any;
+    mouseup: any;
+    removefeature: any;
+    removeproperty: any;
+    rightclick: any;
+    setgeometry: any;
+    setproperty: any;
     initialized$: EventEmitter<any>;
     constructor(ng2MapComponent: Ng2MapComponent);
     initialize(): void;

@@ -7,6 +7,8 @@ export declare class GroundOverlay extends BaseMapDirective {
     bounds: any;
     clickable: any;
     opacity: any;
+    click: any;
+    dblclick: any;
     initialized$: EventEmitter<any>;
     mapObject: google.maps.GroundOverlay;
     objectOptions: google.maps.GroundOverlayOptions;

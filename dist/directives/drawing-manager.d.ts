@@ -12,6 +12,12 @@ export declare class DrawingManager extends BaseMapDirective {
     polygonOptions: any;
     polylineOptions: any;
     rectangleOptions: any;
+    circlecomplete: any;
+    markercomplete: any;
+    overlaycomplete: any;
+    polygoncomplete: any;
+    polylinecomplete: any;
+    rectanglecomplete: any;
     initialized$: EventEmitter<any>;
     constructor(ng2MapComp: Ng2MapComponent);
 }
