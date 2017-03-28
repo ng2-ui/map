@@ -4,6 +4,7 @@ let templateStr: string = `
   <h1>Simple Marker</h1>
   <ng2-map center="Brampton, Canada" 
     [zoomControlOptions]="{position: 'TOP_CENTER'}"
+    [fullscreenControl]="true"
     (click)="log($event)"
     [scrollwheel]="false">
     <marker position="will-fall-back-to-brampton-canada"
