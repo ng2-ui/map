@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 
 let templateStr: string = `
   <h1>Simple Map</h1>
-  <ng2-map center="Brampton, Canada" 
+  <ng2-map center="Brampton, Canada"
+    [fullscreenControl]="true"
     (mapClick)="onClick($event)"></ng2-map>
   "center" can be an;
   <ul>
