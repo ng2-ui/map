@@ -5,6 +5,7 @@ let templateStr: string = `
   <ng2-map center="Brampton, Canada" 
     [zoomControlOptions]="{position: 'TOP_CENTER'}"
     [fullscreenControl]="true"
+    [fullscreenControlOptions]="{position: 'TOP_CENTER'}" 
     (click)="log($event)"
     [scrollwheel]="false">
     <marker position="will-fall-back-to-brampton-canada"

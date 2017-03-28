@@ -4,7 +4,9 @@ let templateStr: string = `
   <h1>Simple Map</h1>
   <ng2-map center="Brampton, Canada" 
     (mapClick)="onClick($event)"
-    [fullscreenControl]="true"></ng2-map>
+    [fullscreenControl]="true"
+    [fullscreenControlOptions]="{position: 'TOP_RIGHT'}" 
+></ng2-map>
   "center" can be an;
   <ul>
     <li>lat/lng array e.g., [42.99, -77.79]

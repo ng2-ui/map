@@ -4591,7 +4591,7 @@ var INPUTS = [
     'draggingCursor', 'heading', 'keyboardShortcuts', 'mapMaker', 'mapTypeControl', 'mapTypeId', 'maxZoom', 'minZoom',
     'noClear', 'overviewMapControl', 'panControl', 'panControlOptions', 'rotateControl', 'scaleControl', 'scrollwheel',
     'streetView', 'styles', 'tilt', 'zoom', 'streetViewControl', 'zoomControl', 'zoomControlOptions', 'mapTypeControlOptions',
-    'overviewMapControlOptions', 'rotateControlOptions', 'scaleControlOptions', 'streetViewControlOptions', 'fullscreenControl',
+    'overviewMapControlOptions', 'rotateControlOptions', 'scaleControlOptions', 'streetViewControlOptions', 'fullscreenControl', 'fullscreenControlOptions',
     'options',
     // ng2-map-specific inputs
     'geoFallbackCenter'
@@ -99855,7 +99855,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var templateStr = "\n  <h1>Simple Map</h1>\n  <ng2-map center=\"Brampton, Canada\" \n    (mapClick)=\"onClick($event)\"\n    [fullscreenControl]=\"true\"></ng2-map>\n  \"center\" can be an;\n  <ul>\n    <li>lat/lng array e.g., [42.99, -77.79]\n    <li> an address. e.g. Brampton, Canada\n    <li> or, none(for the current position)\n  </ul>\n  <ng2-map center=\"some-invalid-location\"\n    [geoFallbackCenter]=\"[42.99, -77.79]\"></ng2-map>\n  \n  <code>\n    <br/><b>HTML</b>\n    <pre>{{templateStr | htmlCode:'-code'}}</pre>\n    \n    <b>function onClick</b> \n    <pre>{{onClick | jsCode}}</pre>\n  </code>\n";
+var templateStr = "\n  <h1>Simple Map</h1>\n  <ng2-map center=\"Brampton, Canada\" \n    (mapClick)=\"onClick($event)\"\n    [fullscreenControl]=\"true\"\n    [fullscreenControlOptions]=\"{position: 'TOP_RIGHT'}\" \n></ng2-map>\n  \"center\" can be an;\n  <ul>\n    <li>lat/lng array e.g., [42.99, -77.79]\n    <li> an address. e.g. Brampton, Canada\n    <li> or, none(for the current position)\n  </ul>\n  <ng2-map center=\"some-invalid-location\"\n    [geoFallbackCenter]=\"[42.99, -77.79]\"></ng2-map>\n  \n  <code>\n    <br/><b>HTML</b>\n    <pre>{{templateStr | htmlCode:'-code'}}</pre>\n    \n    <b>function onClick</b> \n    <pre>{{onClick | jsCode}}</pre>\n  </code>\n";
 var SimpleMapComponent = (function () {
     function SimpleMapComponent() {
         this.templateStr = templateStr;
@@ -99890,7 +99890,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var templateStr = "\n  <h1>Simple Marker</h1>\n  <ng2-map center=\"Brampton, Canada\" \n    [zoomControlOptions]=\"{position: 'TOP_CENTER'}\"\n    [fullscreenControl]=\"true\"\n    (click)=\"log($event)\"\n    [scrollwheel]=\"false\">\n    <marker position=\"will-fall-back-to-brampton-canada\"\n      [geoFallbackPosition]=\"[43.73154789999999, -79.7449296972229]\"\n      (dragstart)=\"log($event, 'dragstart')\"\n      (dragend)=\"log($event, 'dragend')\"\n      draggable=\"true\"></marker>\n  </ng2-map>\n  <code>\n    <br/><b>HTML</b>\n    <pre>{{templateStr | htmlCode:'-code'}}</pre>\n    <b>log function</b> \n    <pre>{{log|jsCode}}</pre>\n  </code>\n";
+var templateStr = "\n  <h1>Simple Marker</h1>\n  <ng2-map center=\"Brampton, Canada\" \n    [zoomControlOptions]=\"{position: 'TOP_CENTER'}\"\n    [fullscreenControl]=\"true\"\n    [fullscreenControlOptions]=\"{position: 'TOP_CENTER'}\" \n    (click)=\"log($event)\"\n    [scrollwheel]=\"false\">\n    <marker position=\"will-fall-back-to-brampton-canada\"\n      [geoFallbackPosition]=\"[43.73154789999999, -79.7449296972229]\"\n      (dragstart)=\"log($event, 'dragstart')\"\n      (dragend)=\"log($event, 'dragend')\"\n      draggable=\"true\"></marker>\n  </ng2-map>\n  <code>\n    <br/><b>HTML</b>\n    <pre>{{templateStr | htmlCode:'-code'}}</pre>\n    <b>log function</b> \n    <pre>{{log|jsCode}}</pre>\n  </code>\n";
 var SimpleMarkerComponent = (function () {
     function SimpleMarkerComponent() {
         this.templateStr = templateStr;
