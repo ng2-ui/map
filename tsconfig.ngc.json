@@ -22,7 +22,7 @@
     "outDir": "dist",
     "baseUrl": "./tmp/src",
     "paths": {
-      "ng2-map": ["./index"]
+      "@ngui/map": ["./index"]
     }
   },
   "files": [

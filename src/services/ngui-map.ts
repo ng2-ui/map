@@ -6,7 +6,7 @@ import { GeoCoder } from './geo-coder';
  * collection of map instance-related properties and methods
  */
 @Injectable()
-export class Ng2Map {
+export class NguiMap {
 
   constructor(
     private geoCoder: GeoCoder,

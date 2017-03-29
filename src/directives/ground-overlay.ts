@@ -1,13 +1,13 @@
 import { Directive, Output, EventEmitter } from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
-import { Ng2MapComponent } from '../components/ng2-map.component';
+import { NguiMapComponent } from '../components/ngui-map.component';
 
 const INPUTS = [ 'url', 'bounds', 'clickable', 'opacity' ];
 const OUTPUTS = [ 'click', 'dblclick' ];
 
 @Directive({
-  selector: 'ng2-map > ground-overlay',
+  selector: 'ngui-map > ground-overlay',
   inputs: INPUTS,
   outputs: OUTPUTS,
 })
@@ -17,8 +17,8 @@ export class GroundOverlay extends BaseMapDirective {
   public mapObject: google.maps.GroundOverlay;
   public objectOptions: google.maps.GroundOverlayOptions = <google.maps.GroundOverlayOptions>{};
 
-  constructor(ng2MapComp: Ng2MapComponent) {
-    super(ng2MapComp, 'GroundOverlay', INPUTS, OUTPUTS);
+  constructor(nguiMapComp: NguiMapComponent) {
+    super(nguiMapComp, 'GroundOverlay', INPUTS, OUTPUTS);
   }
 
   // re-declaring initialize function. called when map is ready
@@ -29,13 +29,13 @@ export class GroundOverlay extends BaseMapDirective {
 
     // noinspection TypeScriptUnresolvedFunction
     this.mapObject = new google.maps.GroundOverlay(this['url'], this['bounds'], this.objectOptions);
-    this.mapObject.setMap(this.ng2MapComponent.map);
+    this.mapObject.setMap(this.nguiMapComponent.map);
     this.mapObject['mapObjectName'] = this.mapObjectName;
 
     // set google events listeners and emits to this outputs listeners
-    this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
+    this.nguiMap.setObjectEvents(this.outputs, this, 'mapObject');
 
-    this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
+    this.nguiMapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
     this.initialized$.emit(this.mapObject);
   }
 }

@@ -4,9 +4,9 @@ import 'rxjs/add/observable/of';
 
 let templateStr = `
   <h1>Marker Wigh *ngFor</h1>
-  <ng2-map zoom="13" center="Brampton, Canada">
+  <ngui-map zoom="13" center="Brampton, Canada">
     <marker *ngFor="let pos of positions" [position]="pos"></marker>
-  </ng2-map>
+  </ngui-map>
   <button (click)="positions = getRandomMarkers()">Show Random Markers</button> <br/>
   <button (click)="showMarkersFromObservable()">Show Random Markers From Observable</button>
   <code>

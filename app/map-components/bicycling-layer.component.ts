@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 let templateStr = `
   <h1>Bicycling Layer</h1>
-  <ng2-map zoom="14" center="42.3726399, -71.1096528">
+  <ngui-map zoom="14" center="42.3726399, -71.1096528">
     <bicycling-layer></bicycling-layer>
-  </ng2-map>
+  </ngui-map>
   <code>
     <br/><b>HTML</b>
     <pre>{{templateStr | htmlCode:'-code'}}</pre>

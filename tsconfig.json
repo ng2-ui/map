@@ -21,7 +21,7 @@
     "outDir": "dist",
     "baseUrl": "src",
     "paths": {
-      "ng2-map": ["./index"]
+      "@ngui/map": ["./index"]
     }
   },
   "types": [

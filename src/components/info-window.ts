@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operator/debounceTime';
-import { Ng2Map } from '../services/ng2-map';
-import { Ng2MapComponent } from './ng2-map.component';
+import { NguiMap } from '../services/ngui-map';
+import { NguiMapComponent } from './ngui-map.component';
 
 const INPUTS = [
   'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
@@ -18,7 +18,7 @@ const OUTPUTS = [
 ];
 
 @Component({
-  selector: 'ng2-map > info-window',
+  selector: 'ngui-map > info-window',
   inputs: INPUTS,
   outputs: OUTPUTS,
   template: `<ng-content></ng-content>`,
@@ -34,9 +34,9 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
   public template: string;
 
   constructor(
-    private ng2MapComponent: Ng2MapComponent,
+    private nguiMapComponent: NguiMapComponent,
     private elementRef: ElementRef,
-    private ng2Map: Ng2Map
+    private nguiMap: NguiMap
   ) {
     this.elementRef.nativeElement.style.display = 'none';
     OUTPUTS.forEach(output => this[output] = new EventEmitter());
@@ -44,10 +44,10 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
 
   // Initialize this map object when map is ready
   ngOnInit() {
-    if (this.ng2MapComponent.mapIdledOnce) { // map is ready already
+    if (this.nguiMapComponent.mapIdledOnce) { // map is ready already
       this.initialize();
     } else {
-      this.ng2MapComponent.mapReady$.subscribe(map => this.initialize());
+      this.nguiMapComponent.mapReady$.subscribe(map => this.initialize());
     }
   }
 
@@ -60,27 +60,27 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     console.log('infowindow is being initialized');
     this.template = this.elementRef.nativeElement.innerHTML;
 
-    this.objectOptions = this.ng2MapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
+    this.objectOptions = this.nguiMapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
     this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
     this.infoWindow['mapObjectName'] = 'InfoWindow';
     console.log('INFOWINDOW objectOptions', this.objectOptions);
 
-    // register infoWindow ids to Ng2Map, so that it can be opened by id
+    // register infoWindow ids to NguiMap, so that it can be opened by id
     this.el = this.elementRef.nativeElement;
     if (this.el.id) {
-      this.ng2MapComponent.infoWindows[this.el.id] = this;
+      this.nguiMapComponent.infoWindows[this.el.id] = this;
     } else {
       console.error('An InfoWindow must have an id. e.g. id="detail"');
     }
 
     // set google events listeners and emits to this outputs listeners
-    this.ng2Map.setObjectEvents(OUTPUTS, this, 'infoWindow');
+    this.nguiMap.setObjectEvents(OUTPUTS, this, 'infoWindow');
 
     // update object when input changes
     debounceTime.call(this.inputChanges$, 1000)
-      .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.infoWindow, changes));
+      .subscribe((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.infoWindow, changes));
 
-    this.ng2MapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
+    this.nguiMapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
     this.initialized$.emit(this.infoWindow);
   }
 
@@ -94,7 +94,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
 
     // set content and open it
     this.infoWindow.setContent(html);
-    this.infoWindow.open(this.ng2MapComponent.map, anchor);
+    this.infoWindow.open(this.nguiMapComponent.map, anchor);
   }
 
   ngOnDestroy() {

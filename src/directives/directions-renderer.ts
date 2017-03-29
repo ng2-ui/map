@@ -1,7 +1,7 @@
 import {Input, Directive, SimpleChanges, Output, EventEmitter, OnChanges} from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
-import { Ng2MapComponent } from '../components/ng2-map.component';
+import { NguiMapComponent } from '../components/ngui-map.component';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
 
 const INPUTS = [
@@ -12,7 +12,7 @@ const INPUTS = [
 const OUTPUTS = ['directions_changed'];
 
 @Directive({
-  selector: 'ng2-map > directions-renderer',
+  selector: 'ngui-map > directions-renderer',
   inputs: INPUTS,
   outputs: OUTPUTS,
 })
@@ -25,10 +25,10 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges {
   directionsRenderer: google.maps.DirectionsRenderer;
 
   constructor(
-    ng2MapComponent: Ng2MapComponent,
+    nguiMapComponent: NguiMapComponent,
     public geolocation: NavigatorGeolocation
   ) {
-    super(ng2MapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS);
+    super(nguiMapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS);
   }
 
   // only called when map is ready
@@ -43,14 +43,14 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges {
     this.directionsService = new google.maps.DirectionsService();
     this.directionsRenderer = new google.maps.DirectionsRenderer(this.objectOptions);
 
-    this.directionsRenderer.setMap(this.ng2MapComponent.map);
+    this.directionsRenderer.setMap(this.nguiMapComponent.map);
 
     // set google events listeners and emidirectionsRenderer to this outputs listeners
     this.showDirections(this.directionsRequest);
 
-    this.ng2Map.setObjectEvents(this.outputs, this, 'directionsRenderer');
+    this.nguiMap.setObjectEvents(this.outputs, this, 'directionsRenderer');
 
-    this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
+    this.nguiMapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
     this.initialized$.emit(this.directionsRenderer);
   }
 

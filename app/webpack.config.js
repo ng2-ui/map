@@ -5,7 +5,7 @@ const config = {
   resolve: {
     extensions: ['.ts', '.webpack.js', '.web.js', '.js'],
     alias: {
-      'ng2-map': path.join(__dirname, '..', 'src', 'index')
+      '@ngui/map': path.join(__dirname, '..', 'src', 'index')
     }
   },
   devtool: 'source-map',

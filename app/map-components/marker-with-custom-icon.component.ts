@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 let templateStr: string = `
   <h1>Marker With Custom Icon</h1>
-  <ng2-map center="Brampton, Canada">
+  <ngui-map center="Brampton, Canada">
     <marker position="Brampton, Canada"
      [icon]="{
        url: 'https://plnkr.co/img/plunker.png',
@@ -11,7 +11,7 @@ let templateStr: string = `
        scaledSize: [32,32]
      }">
     </marker>
-  </ng2-map>
+  </ngui-map>
   <code>
     <br/><b>HTML</b>
     <pre>{{templateStr | htmlCode:'-code'}}</pre>

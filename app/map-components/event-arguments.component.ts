@@ -5,9 +5,9 @@ let templateStr: string = `
   Implementation of https://developers.google.com/maps/documentation/javascript/examples/event-arguments
   <br/><br/>
   Click the map to add marker and center it.
-  <ng2-map zoom="4" center="-25.363882, 131.044922" (click)="onClick($event)">
+  <ngui-map zoom="4" center="-25.363882, 131.044922" (click)="onClick($event)">
     <marker *ngFor="let pos of positions" [position]="pos"></marker>
-  </ng2-map>
+  </ngui-map>
   
   <code>
     <br/><b>HTML</b>

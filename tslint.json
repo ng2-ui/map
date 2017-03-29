@@ -1,8 +1,8 @@
 {
   "rulesDirectory": ["node_modules/codelyzer"],
   "rules": {
-    "directive-selector": [false, "attribute", ["ng2-map"], "camelCase"],
-    "component-selector": [true, "element", ["ng2-map", "custom", "info"], "kebab-case"],
+    "directive-selector": [false, "attribute", ["ngui-map"], "camelCase"],
+    "component-selector": [true, "element", ["ngui-map", "custom", "info"], "kebab-case"],
     "use-input-property-decorator": false,
     "use-output-property-decorator": false,
     "use-host-property-decorator": true,
@@ -12,7 +12,7 @@
     "no-forward-ref" : true,
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
-    "pipe-naming": [false, "camelCase", "ng2-map"],
+    "pipe-naming": [false, "camelCase", "ngui-map"],
     "import-spacing": true,
     "templates-use-public": true,
     "invoke-injectable": true,

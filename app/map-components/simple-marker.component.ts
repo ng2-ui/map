@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 let templateStr: string = `
   <h1>Simple Marker</h1>
-  <ng2-map center="Brampton, Canada" 
+  <ngui-map center="Brampton, Canada" 
     [zoomControlOptions]="{position: 'TOP_CENTER'}"
     (click)="log($event)"
     [scrollwheel]="false">
@@ -11,7 +11,7 @@ let templateStr: string = `
       (dragstart)="log($event, 'dragstart')"
       (dragend)="log($event, 'dragend')"
       draggable="true"></marker>
-  </ng2-map>
+  </ngui-map>
   <code>
     <br/><b>HTML</b>
     <pre>{{templateStr | htmlCode:'-code'}}</pre>

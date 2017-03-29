@@ -2,16 +2,16 @@ import { Component } from '@angular/core';
 
 let templateStr: string = `
   <h1>Simple Map</h1>
-  <ng2-map center="Brampton, Canada" 
-    (mapClick)="onClick($event)"></ng2-map>
+  <ngui-map center="Brampton, Canada" 
+    (mapClick)="onClick($event)"></ngui-map>
   "center" can be an;
   <ul>
     <li>lat/lng array e.g., [42.99, -77.79]
     <li> an address. e.g. Brampton, Canada
     <li> or, none(for the current position)
   </ul>
-  <ng2-map center="some-invalid-location"
-    [geoFallbackCenter]="[42.99, -77.79]"></ng2-map>
+  <ngui-map center="some-invalid-location"
+    [geoFallbackCenter]="[42.99, -77.79]"></ngui-map>
   
   <code>
     <br/><b>HTML</b>

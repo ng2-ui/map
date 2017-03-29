@@ -3,7 +3,7 @@ var webpack = require('webpack');
 
 var config = {
   entry: {
-    'ng2-map': path.join(__dirname, 'src', 'index.ts')
+    '@ngui/map': path.join(__dirname, 'src', 'index.ts')
   },
   resolve: {
     extensions: ['.ts', '.js', '.json', '.css', '.html']
@@ -13,8 +13,8 @@ var config = {
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: "[name].umd.js",
-    library: ["[name]"],
+    filename: "map.umd.js",
+    library: ["map"],
     libraryTarget: "umd"
   },
   externals: [

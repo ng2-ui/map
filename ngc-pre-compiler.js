@@ -4,7 +4,7 @@
 /**
  * this is to declare all INPUTS as a public variable for components and directives
  * Without declaring all INPUTS variable, there will be an error in AoT compilation
- * https://github.com/ng2-ui/ng2-map/pull/64
+ * https://github.com/ng2-ui/map/pull/64
  */
 var path = require("path");
 var fs = require('fs-extra');

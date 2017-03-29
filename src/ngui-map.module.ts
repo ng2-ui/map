@@ -7,7 +7,7 @@ import { NavigatorGeolocation } from './services/navigator-geolocation';
 import { NG_MAP_CONFIG_TOKEN, ConfigOption } from './services/config';
 import { NgMapApiLoader, NgMapAsyncCallbackApiLoader } from './services/api-loader';
 
-import { Ng2MapComponent } from './components/ng2-map.component';
+import { NguiMapComponent } from './components/ngui-map.component';
 import { InfoWindow } from './components/info-window';
 import { CustomMarker } from './components/custom-marker';
 
@@ -20,7 +20,7 @@ import { GroundOverlay } from './directives/ground-overlay';
 import { HeatmapLayer } from './directives/heatmap-layer';
 import { KmlLayer } from './directives/kml-layer';
 import { Marker } from './directives/marker';
-import { Ng2Map } from './services/ng2-map';
+import { NguiMap } from './services/ngui-map';
 import { PlacesAutoComplete } from './directives/places-auto-complete';
 import { Polygon } from './directives/polygon';
 import { Polyline } from './directives/polyline';
@@ -29,7 +29,7 @@ import { TrafficLayer } from './directives/traffic-layer';
 import { TransitLayer } from './directives/transit-layer';
 
 const COMPONENTS_DIRECTIVES = [
-  Ng2MapComponent, InfoWindow,
+  NguiMapComponent, InfoWindow,
   Marker, Circle, CustomMarker, Polygon, InfoWindow, Polyline, GroundOverlay,
   TransitLayer, TrafficLayer, HeatmapLayer, BicyclingLayer, KmlLayer, DataLayer,
   StreetViewPanorama, PlacesAutoComplete, DirectionsRenderer,
@@ -43,15 +43,15 @@ const COMPONENTS_DIRECTIVES = [
   providers: [
     GeoCoder,
     NavigatorGeolocation,
-    Ng2Map,
+    NguiMap,
     OptionBuilder,
     {provide: NgMapApiLoader, useClass: NgMapAsyncCallbackApiLoader},
   ]
 })
-export class Ng2MapModule {
+export class NguiMapModule {
   static forRoot(config: ConfigOption = {}): ModuleWithProviders {
     return {
-      ngModule: Ng2MapModule,
+      ngModule: NguiMapModule,
       providers: [
         { provide: NG_MAP_CONFIG_TOKEN, useValue: config }
       ],

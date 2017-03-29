@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 let templateStr = `
   <h1>Map With Options - satellite view</h1>
-  <ng2-map [options]="allOptions" center="36.964, -122.015"></ng2-map>
+  <ngui-map [options]="allOptions" center="36.964, -122.015"></ngui-map>
   <code>
     <br/><b>HTML</b>
     <pre>{{templateStr | htmlCode:'-code'}}</pre>

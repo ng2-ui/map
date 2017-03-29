@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 
 let templateStr: string = `
   <h1>Map Change Multiple Properties</h1>
-  <ng2-map 
+  <ngui-map 
     [center]="mapProps.center"
     [zoom]="mapProps.zoom"
     (idle)="onIdle($event)"
-    [geoFallbackCenter]="[42.99, -77.79]"></ng2-map>
+    [geoFallbackCenter]="[42.99, -77.79]"></ngui-map>
   <div> center: {{mapInfo.center}},  zoom: {{mapInfo.zoom}} </div>
   <button id="change-props"
     (click)="mapProps = {center: 'New York', zoom: 8}">

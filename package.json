@@ -1,9 +1,9 @@
 {
-  "name": "ng2-map",
-  "version": "0.16.5",
+  "name": "@ngui/map",
+  "version": "0.17.0",
   "description": "Angular2 Google Map`",
   "license": "MIT",
-  "main": "dist/ng2-map.umd.js",
+  "main": "dist/map.umd.js",
   "module": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
@@ -23,18 +23,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ng2-ui/ng2-map.git"
+    "url": "git+https://github.com/ng2-ui/map.git"
   },
   "author": "Allen Kim<allenhwkim@gmail.com>",
   "bugs": {
-    "url": "https://github.com/ng2-ui/ng2-map/issues"
+    "url": "https://github.com/ng2-ui/map/issues"
   },
-  "homepage": "https://github.com/ng2-ui/ng2-map#readme",
+  "homepage": "https://github.com/ng2-ui/map#readme",
   "keywords": [
     "angular2",
     "google",
     "map"
   ],
+  "dependencies": {
+    "@ngui/utils": "^0.7.0"
+  },
   "devDependencies": {
     "@angular/common": "^2.4.9",
     "@angular/compiler": "^2.4.9",
@@ -53,7 +56,6 @@
     "core-js": "^2.4.1",
     "forever": "^0.15.3",
     "fs-extra": "^2.0.0",
-    "ng2-utils": "^0.6.1",
     "npm-run-all": "^4.0.2",
     "raw-loader": "^0.5.1",
     "rimraf": "^2.6.1",

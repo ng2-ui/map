@@ -12,9 +12,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
-import {Ng2UtilsModule} from 'ng2-utils';
+import {NguiUtilsModule} from '@ngui/utils';
 //noinspection TypeScriptCheckImport
-import { Ng2MapModule } from 'ng2-map';
+import { NguiMapModule } from '@ngui/map';
 
 import { AppComponent } from './app.component';
 
@@ -26,12 +26,12 @@ import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app.route';
     FormsModule,
     HttpModule,
     APP_ROUTER_PROVIDERS,
-    // Ng2MapModule,
-    Ng2MapModule.forRoot({
+    // NguiMapModule,
+    NguiMapModule.forRoot({
       apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +
       '&libraries=visualization,places,drawing',
     }),
-    Ng2UtilsModule ],
+    NguiUtilsModule ],
   declarations: [AppComponent, APP_ROUTER_COMPONENTS],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

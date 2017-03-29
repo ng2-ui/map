@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'ng2-map-app',
+  selector: 'ngui-map-app',
   templateUrl: './app.html',
 })
 export class AppComponent {

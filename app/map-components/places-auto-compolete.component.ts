@@ -6,7 +6,7 @@ let templateStr = `
     (place_changed)="placeChanged($event)"
     [types]="['geocode']" />
   <p>
-  <ng2-map [center]="center"></ng2-map>
+  <ngui-map [center]="center"></ngui-map>
   place: {{address | json}}
   </p>
   <code>

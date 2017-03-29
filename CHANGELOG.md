@@ -1,3 +1,7 @@
+# 0.17.0 (2017-03-29)
+
+  * renamed module to @ngui/map
+
 # 0.16.0 (2017-03-04)
  
   * Added @Output initialized$ on all dierctives
@@ -12,7 +16,7 @@
     * Fixed a bug of geocode callback losing setMethod name
     * Exposed `mapReady$` and `initialized$` as an Output
   * **0.15.3 (2017-02-13)**
-    * Made available for both imports of `Ng2MapModule` and `Ng2MapModule.forRoot()`
+    * Made available for both imports of `NguiMapModule` and `NguiMapModule.forRoot()`
   * **0.15.4 (2017-02-16)**
     * Upgraded webpack from 1.* tp 2.*
     * Fixed multiple map instance not loading on the first page.

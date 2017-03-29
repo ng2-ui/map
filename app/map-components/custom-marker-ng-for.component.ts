@@ -4,11 +4,11 @@ import 'rxjs/add/observable/of';
 
 let templateStr = `
   <h1>Custom Marker With *ngFor</h1>
-  <ng2-map zoom="13" center="Brampton, Canada">
+  <ngui-map zoom="13" center="Brampton, Canada">
     <custom-marker *ngFor="let pos of positions" [position]="pos">
       <div class="custom-icon">{{count}}</div>
     </custom-marker>
-  </ng2-map>
+  </ngui-map>
   <button (click)="positions = getRandomMarkers()">Show Random Markers</button> <br/>
   <button (click)="showMarkersFromObservable()">Show Random Markers From Observable</button> <br/>
   <button (click)="count = count + 1">Increment</button> <br/>

@@ -1,10 +1,10 @@
 import {Component, ViewChild, OnInit} from '@angular/core';
 //noinspection TypeScriptCheckImport
-import { DrawingManager } from 'ng2-map';
+import { DrawingManager } from '@ngui/map';
 
 let templateStr: string = `
   <h1>Drawing Manager</h1>
-  <ng2-map zoom="8" center="-34.397, 150.644">
+  <ngui-map zoom="8" center="-34.397, 150.644">
     <drawing-manager
       [drawingMode]="'marker'"
       [drawingControl]="true"
@@ -19,7 +19,7 @@ let templateStr: string = `
         editable: true,
         zIndex: 1
       }"></drawing-manager>
-  </ng2-map>
+  </ngui-map>
   selectedOverlay: {{selectedOverlay}} <br/>
   <button (click)="deleteSelectedOverlay()">Delete Selected Overlay</button>
   <code>

@@ -1,6 +1,6 @@
 import {Component, ViewChild, ChangeDetectorRef, OnInit} from '@angular/core';
 //noinspection TypeScriptCheckImport
-import { DirectionsRenderer } from 'ng2-map';
+import { DirectionsRenderer } from '@ngui/map';
 
 let templateStr = `
   <h1>Directions Renderer</h1>
@@ -19,7 +19,7 @@ let templateStr = `
   </select>
   </div>
   {{direction | json}}
-  <ng2-map zoom="13" center="40.771, -73.974">
+  <ngui-map zoom="13" center="40.771, -73.974">
     <directions-renderer
       [suppressMarkers]="true"
       [draggable]="true"
@@ -27,7 +27,7 @@ let templateStr = `
       (directions_changed)="directionsChanged()"
       [directions-request]="direction">
     </directions-renderer>
-  </ng2-map>
+  </ngui-map>
   <div id="my-panel"></div>
   <code>
     <br/><b>HTML</b>

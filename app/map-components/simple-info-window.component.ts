@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 
 let templateStr: string = `
   <h1>Simple InfoWindow</h1>
-  <ng2-map center="Brampton, Canada">
+  <ngui-map center="Brampton, Canada">
     <marker position="Brampton, Canada" draggable="true" (click)="clicked($event)"></marker>
     <info-window id="iw">
       lat: [[lat]], lng: [[lng]]
     </info-window>
-  </ng2-map>
+  </ngui-map>
   Please click the marker to see a info window
   
   <code>
@@ -25,7 +25,7 @@ export class SimpleInfoWindowComponent {
   templateStr: string = templateStr;
   clicked(event) {
     let marker = event.target;
-    marker.ng2MapComponent.openInfoWindow('iw', marker, {
+    marker.nguiMapComponent.openInfoWindow('iw', marker, {
       lat: marker.getPosition().lat(), lng: marker.getPosition().lng(),
     });
   }

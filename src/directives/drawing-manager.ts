@@ -1,7 +1,7 @@
 import { Directive, Output, EventEmitter } from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
-import { Ng2MapComponent } from '../components/ng2-map.component';
+import { NguiMapComponent } from '../components/ngui-map.component';
 
 const INPUTS = [
   'options',
@@ -14,15 +14,15 @@ const OUTPUTS = [
 ];
 
 @Directive({
-  selector: 'ng2-map > drawing-manager',
+  selector: 'ngui-map > drawing-manager',
   inputs: INPUTS,
   outputs: OUTPUTS,
 })
 export class DrawingManager extends BaseMapDirective {
   @Output() public initialized$: EventEmitter<any> = new EventEmitter();
 
-  constructor(ng2MapComp: Ng2MapComponent) {
-    super(ng2MapComp, 'DrawingManager', INPUTS, OUTPUTS);
+  constructor(nguiMapComp: NguiMapComponent) {
+    super(nguiMapComp, 'DrawingManager', INPUTS, OUTPUTS);
     this.libraryName = 'drawing';
   }
 }

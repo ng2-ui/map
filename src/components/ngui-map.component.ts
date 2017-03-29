@@ -11,7 +11,7 @@ import {
 import { OptionBuilder } from '../services/option-builder';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
 import { GeoCoder } from '../services/geo-coder';
-import { Ng2Map } from '../services/ng2-map';
+import { NguiMap } from '../services/ngui-map';
 import { NgMapApiLoader } from '../services/api-loader';
 
 
@@ -26,7 +26,7 @@ const INPUTS = [
   'streetView', 'styles', 'tilt', 'zoom', 'streetViewControl', 'zoomControl', 'zoomControlOptions', 'mapTypeControlOptions',
   'overviewMapControlOptions', 'rotateControlOptions', 'scaleControlOptions', 'streetViewControlOptions',
   'options',
-  // ng2-map-specific inputs
+  // ngui-map-specific inputs
   'geoFallbackCenter'
 ];
 
@@ -39,10 +39,10 @@ const OUTPUTS = [
 ];
 
 @Component({
-  selector: 'ng2-map',
-  providers: [Ng2Map, OptionBuilder, GeoCoder, NavigatorGeolocation],
+  selector: 'ngui-map',
+  providers: [NguiMap, OptionBuilder, GeoCoder, NavigatorGeolocation],
   styles: [`
-    ng2-map {display: block; height: 300px;}
+    ngui-map {display: block; height: 300px;}
     .google-map {width: 100%; height: 100%}
   `],
   inputs: INPUTS,
@@ -53,7 +53,7 @@ const OUTPUTS = [
     <ng-content></ng-content>
   `,
 })
-export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
+export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit {
   @Output() public mapReady$: EventEmitter<any> = new EventEmitter();
 
   public el: HTMLElement;
@@ -73,7 +73,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     public elementRef: ElementRef,
     public geolocation: NavigatorGeolocation,
     public geoCoder: GeoCoder,
-    public ng2Map: Ng2Map,
+    public nguiMap: NguiMap,
     public apiLoader: NgMapApiLoader,
   ) {
     apiLoader.load();
@@ -94,20 +94,20 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   initializeMap(): void {
     this.el = this.elementRef.nativeElement.querySelector('.google-map');
     this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-    console.log('ng2-map mapOptions', this.mapOptions);
+    console.log('ngui-map mapOptions', this.mapOptions);
 
     this.mapOptions.zoom = this.mapOptions.zoom || 15;
     typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
 
     this.map = new google.maps.Map(this.el, this.mapOptions);
-    this.map['mapObjectName'] = 'Ng2MapComponent';
+    this.map['mapObjectName'] = 'NguiMapComponent';
 
     if (!this.mapOptions.center) { // if center is not given as lat/lng
       this.setCenter();
     }
 
     // set google events listeners and emits to this outputs listeners
-    this.ng2Map.setObjectEvents(OUTPUTS, this, 'map');
+    this.nguiMap.setObjectEvents(OUTPUTS, this, 'map');
 
     this.map.addListener('idle', () => {
       if (!this.mapIdledOnce) {
@@ -120,11 +120,11 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
 
     // update map when input changes
     debounceTime.call(this.inputChanges$, 1000)
-      .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.map, changes));
+      .subscribe((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.map, changes));
 
-    if (typeof window !== 'undefined' && (<any>window)['ng2MapRef']) {
+    if (typeof window !== 'undefined' && (<any>window)['nguiMapRef']) {
       // expose map object for test and debugging on (<any>window)
-      (<any>window)['ng2MapRef'].map = this.map;
+      (<any>window)['nguiMapRef'].map = this.map;
     }
   }
 
@@ -137,7 +137,7 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
           this.map.setCenter(latLng);
         },
         error => {
-          console.error('ng2-map: Error finding the current position');
+          console.error('ngui-map: Error finding the current position');
           this.map.setCenter(this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
         }
       );

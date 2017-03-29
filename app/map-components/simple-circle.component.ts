@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 let templateStr: string = `
   <h1>Simple Circle</h1>
-  <ng2-map center="Brampton, Canada" scrollwheel="false">
+  <ngui-map center="Brampton, Canada" scrollwheel="false">
     <circle center="Brampton, Canada"
       [strokeColor]="'#FF0000'"
       [strokeOpacity]="0.8"
@@ -10,8 +10,8 @@ let templateStr: string = `
       [editable]="true"
       radius="100"
       draggable="true"></circle>
-  </ng2-map>
-  <ng2-map center="Brampton, Canada" scrollwheel="false">
+  </ngui-map>
+  <ngui-map center="Brampton, Canada" scrollwheel="false">
     <map-circle center="Brampton, Canada"
       [strokeColor]="'#FF0000'"
       [strokeOpacity]="0.8"
@@ -19,7 +19,7 @@ let templateStr: string = `
       [editable]="true"
       radius="100"
       draggable="true"></map-circle>
-  </ng2-map>
+  </ngui-map>
   <code>
     <br/><b>HTML</b>
     <pre>{{templateStr | htmlCode:'-code'}}</pre>

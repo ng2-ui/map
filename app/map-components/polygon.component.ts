@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 let templateStr: string = `
   <h1>Polygon</h1>
-  <ng2-map zoom="5" center="24.886, -70.268" scrollwheel="false">
+  <ngui-map zoom="5" center="24.886, -70.268" scrollwheel="false">
     <polygon [editable]="true"
       [paths]="paths"
       [strokeColor]="'#FFC107'"
@@ -10,8 +10,8 @@ let templateStr: string = `
       [strokeWeight]="2"
       [fillColor]="'#FFC107'"
       [fillOpacity]="0.35"></polygon>
-  </ng2-map>
-  <ng2-map zoom="5" center="24.886, -70.268" scrollwheel="false">
+  </ngui-map>
+  <ngui-map zoom="5" center="24.886, -70.268" scrollwheel="false">
     <map-polygon [editable]="true"
       [paths]="paths"
       [strokeColor]="'#FFC107'"
@@ -19,7 +19,7 @@ let templateStr: string = `
       [strokeWeight]="2"
       [fillColor]="'#FFC107'"
       [fillOpacity]="0.35"></map-polygon>
-  </ng2-map>
+  </ngui-map>
   <code>
     <br/><b>HTML</b>
     <pre>{{templateStr | htmlCode:'-code'}}</pre>

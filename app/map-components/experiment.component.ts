@@ -3,11 +3,11 @@ declare let google: any;
 
 let templateStr = `
   <h3 *ngFor="let pos of positions">{{pos}}</h3>
-  <ng2-map zoom="14" center="Brampton, Canada">
+  <ngui-map zoom="14" center="Brampton, Canada">
     <heatmap-layer dissipating="true" radius="25" 
       (initialized$)="onHeatmapInitialized($event)"></heatmap-layer>
     <marker *ngFor="let pos of positions" [position]="pos"></marker>
-  </ng2-map>
+  </ngui-map>
 `;
 // ver 16.
 @Component({

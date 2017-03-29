@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 
 let templateStr: string = `
   <h1>Simple Polyine</h1>
-  <ng2-map zoom="3" center="0, -180" mapTypeId="terrain" scrollwheel="false">
+  <ngui-map zoom="3" center="0, -180" mapTypeId="terrain" scrollwheel="false">
     <polyline [editable]="true"
       [path]="path"
       [geodesic]="true"
       [strokeColor]="'#FF0000'"
       [strokeOpacity]="1"
       [strokeWeight]="2"></polyline>
-  </ng2-map>
+  </ngui-map>
   <code>
     <br/><b>HTML</b>
     <pre>{{templateStr | htmlCode:'-code'}}</pre>

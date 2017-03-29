@@ -1,10 +1,10 @@
 import {Component, ViewChild, OnInit} from '@angular/core';
 //noinspection TypeScriptCheckImport
-import {HeatmapLayer} from 'ng2-map';
+import {HeatmapLayer} from '@ngui/map';
 
 let templateStr = `
   <h1>Heatmap Layer</h1>
-  <ng2-map zoom="13" center="37.782551, -122.445368">
+  <ngui-map zoom="13" center="37.782551, -122.445368">
     <div id="floating-panel">
       <button (click)="toggleHeatmap()">Toggle Heatmap</button>
       <button (click)="changeGradient()">Change gradient</button>
@@ -12,7 +12,7 @@ let templateStr = `
       <button (click)="changeOpacity()">Change opacity</button>
     </div>
     <heatmap-layer [data]="points"></heatmap-layer>
-  </ng2-map>
+  </ngui-map>
   <button (click)="loadRandomPoints()">Load Random Points</button>
   <br/>
   <button (click)="addPoint()">Add Point</button>

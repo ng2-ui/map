@@ -8,8 +8,8 @@ import {
 import {Subject} from 'rxjs/Subject';
 import {debounceTime} from 'rxjs/operator/debounceTime';
 
-import { Ng2Map } from '../services/ng2-map';
-import { Ng2MapComponent } from './ng2-map.component';
+import { NguiMap } from '../services/ngui-map';
+import { NguiMapComponent } from './ngui-map.component';
 
 
 const INPUTS = [
@@ -116,7 +116,7 @@ function getCustomMarkerOverlayView(htmlEl: HTMLElement, position: any) {
 }
 
 @Component({
-  selector: 'ng2-map > custom-marker',
+  selector: 'ngui-map > custom-marker',
   inputs: INPUTS,
   outputs: OUTPUTS,
   template: `
@@ -132,19 +132,19 @@ export class CustomMarker implements OnInit, OnDestroy, OnChanges {
   private el: HTMLElement;
   private mapObject: any;
 
-  constructor(private ng2MapComponent: Ng2MapComponent,
+  constructor(private nguiMapComponent: NguiMapComponent,
               private elementRef: ElementRef,
-              private ng2Map: Ng2Map) {
+              private nguiMap: NguiMap) {
     this.elementRef.nativeElement.style.display = 'none';
     OUTPUTS.forEach(output => this[output] = new EventEmitter());
   }
 
   // Initialize this map object when map is ready
   ngOnInit() {
-    if (this.ng2MapComponent.mapIdledOnce) { // map is ready already
+    if (this.nguiMapComponent.mapIdledOnce) { // map is ready already
       this.initialize();
     } else {
-      this.ng2MapComponent.mapReady$.subscribe(map => this.initialize());
+      this.nguiMapComponent.mapReady$.subscribe(map => this.initialize());
     }
   }
 
@@ -153,7 +153,7 @@ export class CustomMarker implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
-    this.ng2MapComponent.removeFromMapObjectGroup('CustomMarker', this.mapObject);
+    this.nguiMapComponent.removeFromMapObjectGroup('CustomMarker', this.mapObject);
 
     if (this.mapObject) {
       OUTPUTS.forEach(output => google.maps.event.clearListeners(this.mapObject, output));
@@ -167,16 +167,16 @@ export class CustomMarker implements OnInit, OnDestroy, OnChanges {
     this.el = this.elementRef.nativeElement;
 
     this.mapObject = getCustomMarkerOverlayView(this.el, this['position']);
-    this.mapObject.setMap(this.ng2MapComponent.map);
+    this.mapObject.setMap(this.nguiMapComponent.map);
 
     // set google events listeners and emits to this outputs listeners
-    this.ng2Map.setObjectEvents(OUTPUTS, this, 'mapObject');
+    this.nguiMap.setObjectEvents(OUTPUTS, this, 'mapObject');
 
     // update object when input changes
     debounceTime.call(this.inputChanges$, 1000)
-      .subscribe((changes: SimpleChanges) => this.ng2Map.updateGoogleObject(this.mapObject, changes));
+      .subscribe((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.mapObject, changes));
 
-    this.ng2MapComponent.addToMapObjectGroup('CustomMarker', this.mapObject);
+    this.nguiMapComponent.addToMapObjectGroup('CustomMarker', this.mapObject);
     this.initialized$.emit(this.mapObject);
   }
 
