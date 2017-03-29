@@ -60,6 +60,62 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   public map: google.maps.Map;
   public mapOptions: google.maps.MapOptions = {};
 
+  // INPUTS
+  public backgroundColor: any;
+  public center: any;
+  public disableDefaultUI: any;
+  public disableDoubleClickZoom: any;
+  public draggable: any;
+  public draggableCursor: any;
+  public draggingCursor: any;
+  public heading: any;
+  public keyboardShortcuts: any;
+  public mapMaker: any;
+  public mapTypeControl: any;
+  public mapTypeId: any;
+  public maxZoom: any;
+  public minZoom: any;
+  public noClear: any;
+  public overviewMapControl: any;
+  public panControl: any;
+  public panControlOptions: any;
+  public rotateControl: any;
+  public scaleControl: any;
+  public scrollwheel: any;
+  public streetView: any;
+  public styles: any;
+  public tilt: any;
+  public zoom: any;
+  public streetViewControl: any;
+  public zoomControl: any;
+  public mapTypeControlOptions: any;
+  public overviewMapControlOptions: any;
+  public rotateControlOptions: any;
+  public scaleControlOptions: any;
+  public streetViewControlOptions: any;
+  public options: any;
+
+  // OUTPUTS
+  public bounds_changed: any;
+  public center_changed: any;
+  public click: any;
+  public dblclick: any;
+  public drag: any;
+  public dragend: any;
+  public dragstart: any;
+  public heading_changed: any;
+  public idle: any;
+  public typeid_changed: any;
+  public mousemove: any;
+  public mouseout: any;
+  public mouseover: any;
+  public projection_changed: any;
+  public resize: any;
+  public rightclick: any;
+  public tilesloaded: any;
+  public tile_changed: any;
+  public zoom_changed: any;
+
   public inputChanges$ = new Subject();
 
   // map objects by group
