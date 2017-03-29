@@ -1,11 +1,11 @@
 import { ElementRef, EventEmitter, SimpleChanges, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import { Ng2Map } from '../services/ng2-map';
-import { Ng2MapComponent } from './ng2-map.component';
+import { NguiMap } from '../services/ngui-map';
+import { NguiMapComponent } from './ngui-map.component';
 export declare class CustomMarker implements OnInit, OnDestroy, OnChanges {
-    private ng2MapComponent;
+    private nguiMapComponent;
     private elementRef;
-    private ng2Map;
+    private nguiMap;
     position: any;
     animationChanged: any;
     click: any;
@@ -39,7 +39,7 @@ export declare class CustomMarker implements OnInit, OnDestroy, OnChanges {
     inputChanges$: Subject<{}>;
     private el;
     private mapObject;
-    constructor(ng2MapComponent: Ng2MapComponent, elementRef: ElementRef, ng2Map: Ng2Map);
+    constructor(nguiMapComponent: NguiMapComponent, elementRef: ElementRef, nguiMap: NguiMap);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;

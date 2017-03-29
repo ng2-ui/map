@@ -21,13 +21,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var base_map_directive_1 = require("./base-map-directive");
-var ng2_map_component_1 = require("../components/ng2-map.component");
+var ngui_map_component_1 = require("../components/ngui-map.component");
 var INPUTS = ['autoRefresh', 'options'];
 var OUTPUTS = [];
 var TrafficLayer = (function (_super) {
     __extends(TrafficLayer, _super);
-    function TrafficLayer(ng2MapComp) {
-        var _this = _super.call(this, ng2MapComp, 'TrafficLayer', INPUTS, OUTPUTS) || this;
+    function TrafficLayer(nguiMapComp) {
+        var _this = _super.call(this, nguiMapComp, 'TrafficLayer', INPUTS, OUTPUTS) || this;
         // declare OUTPUTS for AOT compiler
         _this.initialized$ = new core_1.EventEmitter();
         return _this;
@@ -40,11 +40,11 @@ __decorate([
 ], TrafficLayer.prototype, "initialized$", void 0);
 TrafficLayer = __decorate([
     core_1.Directive({
-        selector: 'ng2-map > traffic-layer',
+        selector: 'ngui-map > traffic-layer',
         inputs: INPUTS,
         outputs: OUTPUTS,
     }),
-    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent])
 ], TrafficLayer);
 exports.TrafficLayer = TrafficLayer;
 //# sourceMappingURL=traffic-layer.js.map

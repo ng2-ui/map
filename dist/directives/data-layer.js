@@ -21,7 +21,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var base_map_directive_1 = require("./base-map-directive");
-var ng2_map_component_1 = require("../components/ng2-map.component");
+var ngui_map_component_1 = require("../components/ngui-map.component");
 var INPUTS = ['controlPosition', 'controls', 'drawingMode', 'featureFactory', 'style', 'geoJson'];
 var OUTPUTS = [
     'addfeature', 'click', 'dblclick', 'mousedown', 'mouseout', 'mouseover',
@@ -29,8 +29,8 @@ var OUTPUTS = [
 ];
 var DataLayer = (function (_super) {
     __extends(DataLayer, _super);
-    function DataLayer(ng2MapComponent) {
-        var _this = _super.call(this, ng2MapComponent, 'Data', INPUTS, OUTPUTS) || this;
+    function DataLayer(nguiMapComponent) {
+        var _this = _super.call(this, nguiMapComponent, 'Data', INPUTS, OUTPUTS) || this;
         _this.initialized$ = new core_1.EventEmitter();
         return _this;
     }
@@ -38,18 +38,18 @@ var DataLayer = (function (_super) {
     DataLayer.prototype.initialize = function () {
         if (this['geoJson']) {
             console.log('this.geoJson', this['geoJson']);
-            this.ng2MapComponent.map.data.loadGeoJson(this['geoJson']);
+            this.nguiMapComponent.map.data.loadGeoJson(this['geoJson']);
         }
         else {
             this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
             console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
-            this.ng2MapComponent.map.data.add(this.objectOptions);
+            this.nguiMapComponent.map.data.add(this.objectOptions);
         }
         // unlike others, data belongs to map. e.g., map.data.loadGeoJson(), map.data.add()
-        this.mapObject = this.ng2MapComponent.map.data;
+        this.mapObject = this.nguiMapComponent.map.data;
         // set google events listeners and emits to this outputs listeners
-        this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
-        this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
+        this.nguiMap.setObjectEvents(this.outputs, this, 'mapObject');
+        this.nguiMapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
         this.initialized$.emit(this.mapObject);
     };
     return DataLayer;
@@ -60,11 +60,11 @@ __decorate([
 ], DataLayer.prototype, "initialized$", void 0);
 DataLayer = __decorate([
     core_1.Directive({
-        selector: 'ng2-map > data-layer',
+        selector: 'ngui-map > data-layer',
         inputs: INPUTS,
         outputs: OUTPUTS,
     }),
-    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent])
 ], DataLayer);
 exports.DataLayer = DataLayer;
 //# sourceMappingURL=data-layer.js.map

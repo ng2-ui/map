@@ -1,6 +1,6 @@
 import { EventEmitter } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
-import { Ng2MapComponent } from '../components/ng2-map.component';
+import { NguiMapComponent } from '../components/ngui-map.component';
 export declare class DataLayer extends BaseMapDirective {
     controlPosition: any;
     controls: any;
@@ -21,6 +21,6 @@ export declare class DataLayer extends BaseMapDirective {
     setgeometry: any;
     setproperty: any;
     initialized$: EventEmitter<any>;
-    constructor(ng2MapComponent: Ng2MapComponent);
+    constructor(nguiMapComponent: NguiMapComponent);
     initialize(): void;
 }

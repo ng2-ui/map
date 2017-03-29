@@ -21,11 +21,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var base_map_directive_1 = require("./base-map-directive");
-var ng2_map_component_1 = require("../components/ng2-map.component");
+var ngui_map_component_1 = require("../components/ngui-map.component");
 var INPUTS = [
     'center', 'clickable', 'draggable', 'editable', 'fillColor', 'fillOpacity', 'map', 'radius',
     'strokeColor', 'strokeOpacity', 'strokePosition', 'strokeWeight', 'visible', 'zIndex', 'options',
-    // ng2-map specific inputs
+    // ngui-map specific inputs
     'geoFallbackCenter'
 ];
 var OUTPUTS = [
@@ -34,9 +34,9 @@ var OUTPUTS = [
 ];
 var Circle = (function (_super) {
     __extends(Circle, _super);
-    function Circle(ng2MapComp) {
-        var _this = _super.call(this, ng2MapComp, 'Circle', INPUTS, OUTPUTS) || this;
-        _this.ng2MapComp = ng2MapComp;
+    function Circle(nguiMapComp) {
+        var _this = _super.call(this, nguiMapComp, 'Circle', INPUTS, OUTPUTS) || this;
+        _this.nguiMapComp = nguiMapComp;
         _this.initialized$ = new core_1.EventEmitter();
         _this.objectOptions = {};
         return _this;
@@ -48,21 +48,21 @@ var Circle = (function (_super) {
     Circle.prototype.setCenter = function () {
         var _this = this;
         if (!this['center']) {
-            this._subscriptions.push(this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (center) {
+            this._subscriptions.push(this.nguiMapComp.geolocation.getCurrentPosition().subscribe(function (center) {
                 console.log('setting circle center from current location');
                 var latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
                 _this.mapObject.setCenter(latLng);
             }, function (error) {
-                console.error('ng2-map, error in finding the current position');
+                console.error('ngui-map, error in finding the current position');
                 _this.mapObject.setCenter(_this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
             }));
         }
         else if (typeof this['center'] === 'string') {
-            this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
+            this._subscriptions.push(this.nguiMapComp.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
                 console.log('setting circle center from address', _this['center']);
                 _this.mapObject.setCenter(results[0].geometry.location);
             }, function (error) {
-                console.error('ng2-map, error in finding location from', _this['center']);
+                console.error('ngui-map, error in finding location from', _this['center']);
                 _this.mapObject.setCenter(_this.objectOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
             }));
         }
@@ -75,11 +75,11 @@ __decorate([
 ], Circle.prototype, "initialized$", void 0);
 Circle = __decorate([
     core_1.Directive({
-        selector: 'ng2-map>circle, ng2-map>map-circle',
+        selector: 'ngui-map>circle, ngui-map>map-circle',
         inputs: INPUTS,
         outputs: OUTPUTS,
     }),
-    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent])
 ], Circle);
 exports.Circle = Circle;
 //# sourceMappingURL=circle.js.map

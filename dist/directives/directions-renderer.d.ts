@@ -1,7 +1,7 @@
 /// <reference types="googlemaps" />
 import { SimpleChanges, EventEmitter, OnChanges } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
-import { Ng2MapComponent } from '../components/ng2-map.component';
+import { NguiMapComponent } from '../components/ngui-map.component';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
 export declare class DirectionsRenderer extends BaseMapDirective implements OnChanges {
     geolocation: NavigatorGeolocation;
@@ -23,7 +23,7 @@ export declare class DirectionsRenderer extends BaseMapDirective implements OnCh
     initialized$: EventEmitter<any>;
     directionsService: google.maps.DirectionsService;
     directionsRenderer: google.maps.DirectionsRenderer;
-    constructor(ng2MapComponent: Ng2MapComponent, geolocation: NavigatorGeolocation);
+    constructor(nguiMapComponent: NguiMapComponent, geolocation: NavigatorGeolocation);
     initialize(): void;
     ngOnChanges(changes: SimpleChanges): void;
     showDirections(directionsRequest: google.maps.DirectionsRequest): void;

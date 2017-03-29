@@ -21,13 +21,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var base_map_directive_1 = require("./base-map-directive");
-var ng2_map_component_1 = require("../components/ng2-map.component");
+var ngui_map_component_1 = require("../components/ngui-map.component");
 var INPUTS = ['clickable', 'preserveViewport', 'screenOverlays', 'suppressInfoWindows', 'url', 'zIndex', 'options'];
 var OUTPUTS = ['click', 'defaultviewport_changed', 'status_changed'];
 var KmlLayer = (function (_super) {
     __extends(KmlLayer, _super);
-    function KmlLayer(ng2MapComp) {
-        var _this = _super.call(this, ng2MapComp, 'KmlLayer', INPUTS, OUTPUTS) || this;
+    function KmlLayer(nguiMapComp) {
+        var _this = _super.call(this, nguiMapComp, 'KmlLayer', INPUTS, OUTPUTS) || this;
         _this.initialized$ = new core_1.EventEmitter();
         return _this;
     }
@@ -39,11 +39,11 @@ __decorate([
 ], KmlLayer.prototype, "initialized$", void 0);
 KmlLayer = __decorate([
     core_1.Directive({
-        selector: 'ng2-map > kml-layer',
+        selector: 'ngui-map > kml-layer',
         inputs: INPUTS,
         outputs: OUTPUTS,
     }),
-    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent])
 ], KmlLayer);
 exports.KmlLayer = KmlLayer;
 //# sourceMappingURL=kml-layer.js.map

@@ -54,25 +54,25 @@ var NgMapAsyncCallbackApiLoader = (function (_super) {
         if (util_1.isMapsApiLoaded()) {
             this.api$.next(google.maps);
         }
-        else if (!document.querySelector('#ng2-map-api')) {
-            window['ng2MapRef'] = window['ng2MapRef'] || [];
-            window['ng2MapRef'].push({ zone: this.zone, componentFn: function () { return _this.api$.next(google.maps); } });
+        else if (!document.querySelector('#ngui-map-api')) {
+            window['nguiMapRef'] = window['nguiMapRef'] || [];
+            window['nguiMapRef'].push({ zone: this.zone, componentFn: function () { return _this.api$.next(google.maps); } });
             this.addGoogleMapsApi();
         }
     };
     NgMapAsyncCallbackApiLoader.prototype.addGoogleMapsApi = function () {
-        window['initNg2Map'] = window['initNg2Map'] || function () {
-            window['ng2MapRef'].forEach(function (ng2MapRef) {
-                ng2MapRef.zone.run(function () { ng2MapRef.componentFn(); });
+        window['initNguiMap'] = window['initNguiMap'] || function () {
+            window['nguiMapRef'].forEach(function (nguiMapRef) {
+                nguiMapRef.zone.run(function () { nguiMapRef.componentFn(); });
             });
-            window['ng2MapRef'].splice(0, window['ng2MapRef'].length);
+            window['nguiMapRef'].splice(0, window['nguiMapRef'].length);
         };
         var script = document.createElement('script');
-        script.id = 'ng2-map-api';
-        // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
+        script.id = 'ngui-map-api';
+        // script.src = "https://maps.google.com/maps/api/js?callback=initNguiMap";
         var apiUrl = this.config.apiUrl;
         apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
-        script.src = apiUrl + 'callback=initNg2Map';
+        script.src = apiUrl + 'callback=initNguiMap';
         document.querySelector('body').appendChild(script);
     };
     return NgMapAsyncCallbackApiLoader;
@@ -96,9 +96,9 @@ var NgMapAsyncApiLoader = (function (_super) {
         if (util_1.isMapsApiLoaded()) {
             this.api$.next(google.maps);
         }
-        else if (!document.querySelector('#ng2-map-api')) {
+        else if (!document.querySelector('#ngui-map-api')) {
             var script = document.createElement('script');
-            script.id = 'ng2-map-api';
+            script.id = 'ngui-map-api';
             script.async = true;
             script.onload = function () { return _this.api$.next(google.maps); };
             script.src = this.config.apiUrl;

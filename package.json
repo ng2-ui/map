@@ -1,6 +1,6 @@
 {
   "name": "@ngui/map",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "description": "Angular2 Google Map`",
   "license": "MIT",
   "main": "dist/map.umd.js",

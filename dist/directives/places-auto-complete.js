@@ -37,10 +37,10 @@ var PlacesAutoComplete = (function () {
             _this.initialized$.emit(_this.autocomplete);
         };
         this.config = this.config || { apiUrl: 'https://maps.google.com/maps/api/js?libraries=places' };
-        // treat this as ng2Map because it requires google api on root level
-        window['ng2MapRef'] = window['ng2MapRef'] || [];
-        this.mapIndex = window['ng2MapRef'].length;
-        window['ng2MapRef'].push({
+        // treat this as nguiMap because it requires google api on root level
+        window['nguiMapRef'] = window['nguiMapRef'] || [];
+        this.mapIndex = window['nguiMapRef'].length;
+        window['nguiMapRef'].push({
             zone: this.zone,
             componentFn: function () { return _this.initialize(); }
         });
@@ -52,19 +52,19 @@ var PlacesAutoComplete = (function () {
         }
     }
     PlacesAutoComplete.prototype.addGoogleMapsApi = function () {
-        window['initNg2Map'] = window['initNg2Map'] || function () {
-            window['ng2MapRef'].forEach(function (ng2MapRef) {
-                ng2MapRef.zone.run(function () { ng2MapRef.componentFn(); });
+        window['initNguiMap'] = window['initNguiMap'] || function () {
+            window['nguiMapRef'].forEach(function (nguiMapRef) {
+                nguiMapRef.zone.run(function () { nguiMapRef.componentFn(); });
             });
-            window['ng2MapRef'] = [];
+            window['nguiMapRef'] = [];
         };
-        if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ng2-map-api')) {
+        if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ngui-map-api')) {
             var script = document.createElement('script');
-            script.id = 'ng2-map-api';
-            // script.src = "https://maps.google.com/maps/api/js?callback=initNg2Map";
+            script.id = 'ngui-map-api';
+            // script.src = "https://maps.google.com/maps/api/js?callback=initNguiMap";
             var apiUrl = this.config.apiUrl;
             apiUrl += apiUrl.indexOf('?') ? '&' : '?';
-            script.src = apiUrl + 'callback=initNg2Map';
+            script.src = apiUrl + 'callback=initNguiMap';
             document.querySelector('body').appendChild(script);
         }
     };

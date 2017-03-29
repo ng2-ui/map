@@ -21,7 +21,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var base_map_directive_1 = require("./base-map-directive");
-var ng2_map_component_1 = require("../components/ng2-map.component");
+var ngui_map_component_1 = require("../components/ngui-map.component");
 var INPUTS = [
     'selector', 'options',
     'addressControl', 'addressControlOptions', 'clickToGo', 'disableDefaultUI', 'disableDoubleClickZoom',
@@ -35,8 +35,8 @@ var OUTPUTS = [
 ];
 var StreetViewPanorama = (function (_super) {
     __extends(StreetViewPanorama, _super);
-    function StreetViewPanorama(ng2MapComp) {
-        var _this = _super.call(this, ng2MapComp, 'StreetViewPanorama', INPUTS, OUTPUTS) || this;
+    function StreetViewPanorama(nguiMapComp) {
+        var _this = _super.call(this, nguiMapComp, 'StreetViewPanorama', INPUTS, OUTPUTS) || this;
         _this.initialized$ = new core_1.EventEmitter();
         return _this;
     }
@@ -51,22 +51,22 @@ var StreetViewPanorama = (function (_super) {
             delete this.objectOptions.selector;
         }
         else {
-            element = this.ng2MapComponent.el;
+            element = this.nguiMapComponent.el;
         }
         // will be set after geocoded
         typeof this.objectOptions.position === 'string' && (delete this.objectOptions.position);
         this.mapObject = new google.maps[this.mapObjectName](element, this.objectOptions);
         this.mapObject['mapObjectName'] = this.mapObjectName;
-        this.mapObject['ng2MapComponent'] = this.ng2MapComponent;
+        this.mapObject['nguiMapComponent'] = this.nguiMapComponent;
         // set google events listeners and emits to this outputs listeners
-        this.ng2Map.setObjectEvents(this.outputs, this, 'mapObject');
-        this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
+        this.nguiMap.setObjectEvents(this.outputs, this, 'mapObject');
+        this.nguiMapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
         this.initialized$.emit(this.mapObject);
     };
     // When destroyed, remove event listener, and delete this object to prevent memory leak
     StreetViewPanorama.prototype.ngOnDestroy = function () {
         var _this = this;
-        if (this.ng2MapComponent.el) {
+        if (this.nguiMapComponent.el) {
             OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
         }
     };
@@ -78,11 +78,11 @@ __decorate([
 ], StreetViewPanorama.prototype, "initialized$", void 0);
 StreetViewPanorama = __decorate([
     core_1.Directive({
-        selector: 'ng2-map > street-view-panorama',
+        selector: 'ngui-map > street-view-panorama',
         inputs: INPUTS,
         outputs: OUTPUTS,
     }),
-    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent])
 ], StreetViewPanorama);
 exports.StreetViewPanorama = StreetViewPanorama;
 //# sourceMappingURL=street-view-panorama.js.map

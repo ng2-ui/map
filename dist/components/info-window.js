@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var Subject_1 = require("rxjs/Subject");
 var debounceTime_1 = require("rxjs/operator/debounceTime");
-var ng2_map_1 = require("../services/ng2-map");
-var ng2_map_component_1 = require("./ng2-map.component");
+var ngui_map_1 = require("../services/ngui-map");
+var ngui_map_component_1 = require("./ngui-map.component");
 var INPUTS = [
     'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
 ];
@@ -21,11 +21,11 @@ var OUTPUTS = [
     'closeclick', 'content_changed', 'domready', 'position_changed', 'zindex_changed'
 ];
 var InfoWindow = (function () {
-    function InfoWindow(ng2MapComponent, elementRef, ng2Map) {
+    function InfoWindow(nguiMapComponent, elementRef, nguiMap) {
         var _this = this;
-        this.ng2MapComponent = ng2MapComponent;
+        this.nguiMapComponent = nguiMapComponent;
         this.elementRef = elementRef;
-        this.ng2Map = ng2Map;
+        this.nguiMap = nguiMap;
         this.initialized$ = new core_1.EventEmitter();
         this.objectOptions = {};
         this.inputChanges$ = new Subject_1.Subject();
@@ -35,11 +35,11 @@ var InfoWindow = (function () {
     // Initialize this map object when map is ready
     InfoWindow.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.ng2MapComponent.mapIdledOnce) {
+        if (this.nguiMapComponent.mapIdledOnce) {
             this.initialize();
         }
         else {
-            this.ng2MapComponent.mapReady$.subscribe(function (map) { return _this.initialize(); });
+            this.nguiMapComponent.mapReady$.subscribe(function (map) { return _this.initialize(); });
         }
     };
     InfoWindow.prototype.ngOnChanges = function (changes) {
@@ -50,24 +50,24 @@ var InfoWindow = (function () {
         var _this = this;
         console.log('infowindow is being initialized');
         this.template = this.elementRef.nativeElement.innerHTML;
-        this.objectOptions = this.ng2MapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
+        this.objectOptions = this.nguiMapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
         this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
         this.infoWindow['mapObjectName'] = 'InfoWindow';
         console.log('INFOWINDOW objectOptions', this.objectOptions);
-        // register infoWindow ids to Ng2Map, so that it can be opened by id
+        // register infoWindow ids to NguiMap, so that it can be opened by id
         this.el = this.elementRef.nativeElement;
         if (this.el.id) {
-            this.ng2MapComponent.infoWindows[this.el.id] = this;
+            this.nguiMapComponent.infoWindows[this.el.id] = this;
         }
         else {
             console.error('An InfoWindow must have an id. e.g. id="detail"');
         }
         // set google events listeners and emits to this outputs listeners
-        this.ng2Map.setObjectEvents(OUTPUTS, this, 'infoWindow');
+        this.nguiMap.setObjectEvents(OUTPUTS, this, 'infoWindow');
         // update object when input changes
         debounceTime_1.debounceTime.call(this.inputChanges$, 1000)
-            .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.infoWindow, changes); });
-        this.ng2MapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
+            .subscribe(function (changes) { return _this.nguiMap.updateGoogleObject(_this.infoWindow, changes); });
+        this.nguiMapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
         this.initialized$.emit(this.infoWindow);
     };
     InfoWindow.prototype.open = function (anchor, data) {
@@ -78,7 +78,7 @@ var InfoWindow = (function () {
         }
         // set content and open it
         this.infoWindow.setContent(html);
-        this.infoWindow.open(this.ng2MapComponent.map, anchor);
+        this.infoWindow.open(this.nguiMapComponent.map, anchor);
     };
     InfoWindow.prototype.ngOnDestroy = function () {
         var _this = this;
@@ -95,14 +95,14 @@ __decorate([
 ], InfoWindow.prototype, "initialized$", void 0);
 InfoWindow = __decorate([
     core_1.Component({
-        selector: 'ng2-map > info-window',
+        selector: 'ngui-map > info-window',
         inputs: INPUTS,
         outputs: OUTPUTS,
         template: "<ng-content></ng-content>",
     }),
-    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent,
+    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent,
         core_1.ElementRef,
-        ng2_map_1.Ng2Map])
+        ngui_map_1.NguiMap])
 ], InfoWindow);
 exports.InfoWindow = InfoWindow;
 //# sourceMappingURL=info-window.js.map

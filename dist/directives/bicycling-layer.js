@@ -21,13 +21,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var base_map_directive_1 = require("./base-map-directive");
-var ng2_map_component_1 = require("../components/ng2-map.component");
+var ngui_map_component_1 = require("../components/ngui-map.component");
 var INPUTS = [];
 var OUTPUTS = [];
 var BicyclingLayer = (function (_super) {
     __extends(BicyclingLayer, _super);
-    function BicyclingLayer(ng2MapComp) {
-        var _this = _super.call(this, ng2MapComp, 'BicyclingLayer', INPUTS, OUTPUTS) || this;
+    function BicyclingLayer(nguiMapComp) {
+        var _this = _super.call(this, nguiMapComp, 'BicyclingLayer', INPUTS, OUTPUTS) || this;
         // declare INPUTS for AOT compiler
         // declare OUTPUTS for AOT compiler
         _this.initialized$ = new core_1.EventEmitter();
@@ -41,11 +41,11 @@ __decorate([
 ], BicyclingLayer.prototype, "initialized$", void 0);
 BicyclingLayer = __decorate([
     core_1.Directive({
-        selector: 'ng2-map > bicycling-layer',
+        selector: 'ngui-map > bicycling-layer',
         inputs: INPUTS,
         outputs: OUTPUTS,
     }),
-    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent])
 ], BicyclingLayer);
 exports.BicyclingLayer = BicyclingLayer;
 //# sourceMappingURL=bicycling-layer.js.map

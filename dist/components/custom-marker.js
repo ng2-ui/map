@@ -22,8 +22,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var Subject_1 = require("rxjs/Subject");
 var debounceTime_1 = require("rxjs/operator/debounceTime");
-var ng2_map_1 = require("../services/ng2-map");
-var ng2_map_component_1 = require("./ng2-map.component");
+var ngui_map_1 = require("../services/ngui-map");
+var ngui_map_component_1 = require("./ngui-map.component");
 var INPUTS = [
     'position'
 ];
@@ -116,11 +116,11 @@ function getCustomMarkerOverlayView(htmlEl, position) {
     return new CustomMarkerOverlayView(htmlEl, position);
 }
 var CustomMarker = (function () {
-    function CustomMarker(ng2MapComponent, elementRef, ng2Map) {
+    function CustomMarker(nguiMapComponent, elementRef, nguiMap) {
         var _this = this;
-        this.ng2MapComponent = ng2MapComponent;
+        this.nguiMapComponent = nguiMapComponent;
         this.elementRef = elementRef;
-        this.ng2Map = ng2Map;
+        this.nguiMap = nguiMap;
         this.initialized$ = new core_1.EventEmitter();
         this.inputChanges$ = new Subject_1.Subject();
         this.elementRef.nativeElement.style.display = 'none';
@@ -129,11 +129,11 @@ var CustomMarker = (function () {
     // Initialize this map object when map is ready
     CustomMarker.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.ng2MapComponent.mapIdledOnce) {
+        if (this.nguiMapComponent.mapIdledOnce) {
             this.initialize();
         }
         else {
-            this.ng2MapComponent.mapReady$.subscribe(function (map) { return _this.initialize(); });
+            this.nguiMapComponent.mapReady$.subscribe(function (map) { return _this.initialize(); });
         }
     };
     CustomMarker.prototype.ngOnChanges = function (changes) {
@@ -141,7 +141,7 @@ var CustomMarker = (function () {
     };
     CustomMarker.prototype.ngOnDestroy = function () {
         var _this = this;
-        this.ng2MapComponent.removeFromMapObjectGroup('CustomMarker', this.mapObject);
+        this.nguiMapComponent.removeFromMapObjectGroup('CustomMarker', this.mapObject);
         if (this.mapObject) {
             OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
             this.mapObject.setMap(null);
@@ -153,13 +153,13 @@ var CustomMarker = (function () {
         console.log('custom-marker is being initialized');
         this.el = this.elementRef.nativeElement;
         this.mapObject = getCustomMarkerOverlayView(this.el, this['position']);
-        this.mapObject.setMap(this.ng2MapComponent.map);
+        this.mapObject.setMap(this.nguiMapComponent.map);
         // set google events listeners and emits to this outputs listeners
-        this.ng2Map.setObjectEvents(OUTPUTS, this, 'mapObject');
+        this.nguiMap.setObjectEvents(OUTPUTS, this, 'mapObject');
         // update object when input changes
         debounceTime_1.debounceTime.call(this.inputChanges$, 1000)
-            .subscribe(function (changes) { return _this.ng2Map.updateGoogleObject(_this.mapObject, changes); });
-        this.ng2MapComponent.addToMapObjectGroup('CustomMarker', this.mapObject);
+            .subscribe(function (changes) { return _this.nguiMap.updateGoogleObject(_this.mapObject, changes); });
+        this.nguiMapComponent.addToMapObjectGroup('CustomMarker', this.mapObject);
         this.initialized$.emit(this.mapObject);
     };
     return CustomMarker;
@@ -170,14 +170,14 @@ __decorate([
 ], CustomMarker.prototype, "initialized$", void 0);
 CustomMarker = __decorate([
     core_1.Component({
-        selector: 'ng2-map > custom-marker',
+        selector: 'ngui-map > custom-marker',
         inputs: INPUTS,
         outputs: OUTPUTS,
         template: "\n    <ng-content></ng-content>\n  ",
     }),
-    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent,
+    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent,
         core_1.ElementRef,
-        ng2_map_1.Ng2Map])
+        ngui_map_1.NguiMap])
 ], CustomMarker);
 exports.CustomMarker = CustomMarker;
 //# sourceMappingURL=custom-marker.js.map

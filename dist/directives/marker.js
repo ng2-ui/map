@@ -21,11 +21,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var base_map_directive_1 = require("./base-map-directive");
-var ng2_map_component_1 = require("../components/ng2-map.component");
+var ngui_map_component_1 = require("../components/ngui-map.component");
 var INPUTS = [
     'anchorPoint', 'animation', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity',
     'optimized', 'place', 'position', 'shape', 'title', 'visible', 'zIndex', 'options',
-    // ng2-map specific inputs
+    // ngui-map specific inputs
     'geoFallbackPosition'
 ];
 var OUTPUTS = [
@@ -35,9 +35,9 @@ var OUTPUTS = [
 ];
 var Marker = (function (_super) {
     __extends(Marker, _super);
-    function Marker(ng2MapComp) {
-        var _this = _super.call(this, ng2MapComp, 'Marker', INPUTS, OUTPUTS) || this;
-        _this.ng2MapComp = ng2MapComp;
+    function Marker(nguiMapComp) {
+        var _this = _super.call(this, nguiMapComp, 'Marker', INPUTS, OUTPUTS) || this;
+        _this.nguiMapComp = nguiMapComp;
         _this.initialized$ = new core_1.EventEmitter();
         _this.objectOptions = {};
         console.log('marker constructor', 9999999);
@@ -46,11 +46,11 @@ var Marker = (function (_super) {
     // Initialize this map object when map is ready
     Marker.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.ng2MapComponent.mapIdledOnce) {
+        if (this.nguiMapComponent.mapIdledOnce) {
             this.initialize();
         }
         else {
-            this.ng2MapComponent.mapReady$.subscribe(function (map) { return _this.initialize(); });
+            this.nguiMapComponent.mapReady$.subscribe(function (map) { return _this.initialize(); });
         }
     };
     Marker.prototype.initialize = function () {
@@ -60,21 +60,21 @@ var Marker = (function (_super) {
     Marker.prototype.setPosition = function () {
         var _this = this;
         if (!this['position']) {
-            this._subscriptions.push(this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (position) {
+            this._subscriptions.push(this.nguiMapComp.geolocation.getCurrentPosition().subscribe(function (position) {
                 console.log('setting marker position from current location');
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 _this.mapObject.setPosition(latLng);
             }, function (error) {
-                console.error('ng2-map, error finding the current location');
+                console.error('ngui-map, error finding the current location');
                 _this.mapObject.setPosition(_this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
             }));
         }
         else if (typeof this['position'] === 'string') {
-            this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({ address: this['position'] }).subscribe(function (results) {
+            this._subscriptions.push(this.nguiMapComp.geoCoder.geocode({ address: this['position'] }).subscribe(function (results) {
                 console.log('setting marker position from address', _this['position']);
                 _this.mapObject.setPosition(results[0].geometry.location);
             }, function (error) {
-                console.error('ng2-map, error finding the location from', _this['position']);
+                console.error('ngui-map, error finding the location from', _this['position']);
                 _this.mapObject.setPosition(_this.objectOptions['geoFallbackPosition'] || new google.maps.LatLng(0, 0));
             }));
         }
@@ -87,11 +87,11 @@ __decorate([
 ], Marker.prototype, "initialized$", void 0);
 Marker = __decorate([
     core_1.Directive({
-        selector: 'ng2-map > marker',
+        selector: 'ngui-map > marker',
         inputs: INPUTS,
         outputs: OUTPUTS,
     }),
-    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent])
 ], Marker);
 exports.Marker = Marker;
 //# sourceMappingURL=marker.js.map

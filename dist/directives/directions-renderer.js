@@ -21,7 +21,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var base_map_directive_1 = require("./base-map-directive");
-var ng2_map_component_1 = require("../components/ng2-map.component");
+var ngui_map_component_1 = require("../components/ngui-map.component");
 var navigator_geolocation_1 = require("../services/navigator-geolocation");
 var INPUTS = [
     'directions', 'draggable', 'hideRouteList', 'infoWindow', 'panel', 'markerOptions',
@@ -31,8 +31,8 @@ var INPUTS = [
 var OUTPUTS = ['directions_changed'];
 var DirectionsRenderer = (function (_super) {
     __extends(DirectionsRenderer, _super);
-    function DirectionsRenderer(ng2MapComponent, geolocation) {
-        var _this = _super.call(this, ng2MapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS) || this;
+    function DirectionsRenderer(nguiMapComponent, geolocation) {
+        var _this = _super.call(this, nguiMapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS) || this;
         _this.geolocation = geolocation;
         _this.initialized$ = new core_1.EventEmitter();
         return _this;
@@ -46,11 +46,11 @@ var DirectionsRenderer = (function (_super) {
         console.log('DirectionsRenderer', 'initialization options', this.objectOptions, this.directionsRequest);
         this.directionsService = new google.maps.DirectionsService();
         this.directionsRenderer = new google.maps.DirectionsRenderer(this.objectOptions);
-        this.directionsRenderer.setMap(this.ng2MapComponent.map);
+        this.directionsRenderer.setMap(this.nguiMapComponent.map);
         // set google events listeners and emidirectionsRenderer to this outputs listeners
         this.showDirections(this.directionsRequest);
-        this.ng2Map.setObjectEvents(this.outputs, this, 'directionsRenderer');
-        this.ng2MapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
+        this.nguiMap.setObjectEvents(this.outputs, this, 'directionsRenderer');
+        this.nguiMapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
         this.initialized$.emit(this.directionsRenderer);
     };
     DirectionsRenderer.prototype.ngOnChanges = function (changes) {
@@ -87,11 +87,11 @@ __decorate([
 ], DirectionsRenderer.prototype, "initialized$", void 0);
 DirectionsRenderer = __decorate([
     core_1.Directive({
-        selector: 'ng2-map > directions-renderer',
+        selector: 'ngui-map > directions-renderer',
         inputs: INPUTS,
         outputs: OUTPUTS,
     }),
-    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent,
+    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent,
         navigator_geolocation_1.NavigatorGeolocation])
 ], DirectionsRenderer);
 exports.DirectionsRenderer = DirectionsRenderer;

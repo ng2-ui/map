@@ -21,7 +21,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var base_map_directive_1 = require("./base-map-directive");
-var ng2_map_component_1 = require("../components/ng2-map.component");
+var ngui_map_component_1 = require("../components/ngui-map.component");
 var INPUTS = [
     'options',
     'circleOptions', 'drawingControl', 'drawingControlOptions', 'drawingMode',
@@ -33,8 +33,8 @@ var OUTPUTS = [
 ];
 var DrawingManager = (function (_super) {
     __extends(DrawingManager, _super);
-    function DrawingManager(ng2MapComp) {
-        var _this = _super.call(this, ng2MapComp, 'DrawingManager', INPUTS, OUTPUTS) || this;
+    function DrawingManager(nguiMapComp) {
+        var _this = _super.call(this, nguiMapComp, 'DrawingManager', INPUTS, OUTPUTS) || this;
         _this.initialized$ = new core_1.EventEmitter();
         _this.libraryName = 'drawing';
         return _this;
@@ -47,11 +47,11 @@ __decorate([
 ], DrawingManager.prototype, "initialized$", void 0);
 DrawingManager = __decorate([
     core_1.Directive({
-        selector: 'ng2-map > drawing-manager',
+        selector: 'ngui-map > drawing-manager',
         inputs: INPUTS,
         outputs: OUTPUTS,
     }),
-    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent])
 ], DrawingManager);
 exports.DrawingManager = DrawingManager;
 //# sourceMappingURL=drawing-manager.js.map

@@ -21,13 +21,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var base_map_directive_1 = require("./base-map-directive");
-var ng2_map_component_1 = require("../components/ng2-map.component");
+var ngui_map_component_1 = require("../components/ngui-map.component");
 var INPUTS = ['data', 'dissipating', 'gradient', 'maxIntensity', 'opacity', 'radius', 'options'];
 var OUTPUTS = [];
 var HeatmapLayer = (function (_super) {
     __extends(HeatmapLayer, _super);
-    function HeatmapLayer(ng2MapComp) {
-        var _this = _super.call(this, ng2MapComp, 'HeatmapLayer', INPUTS, OUTPUTS) || this;
+    function HeatmapLayer(nguiMapComp) {
+        var _this = _super.call(this, nguiMapComp, 'HeatmapLayer', INPUTS, OUTPUTS) || this;
         // declare OUTPUTS for AOT compiler
         _this.initialized$ = new core_1.EventEmitter();
         _this.libraryName = 'visualization';
@@ -41,11 +41,11 @@ __decorate([
 ], HeatmapLayer.prototype, "initialized$", void 0);
 HeatmapLayer = __decorate([
     core_1.Directive({
-        selector: 'ng2-map > heatmap-layer',
+        selector: 'ngui-map > heatmap-layer',
         inputs: INPUTS,
         outputs: OUTPUTS,
     }),
-    __metadata("design:paramtypes", [ng2_map_component_1.Ng2MapComponent])
+    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent])
 ], HeatmapLayer);
 exports.HeatmapLayer = HeatmapLayer;
 //# sourceMappingURL=heatmap-layer.js.map

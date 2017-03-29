@@ -1,6 +1,6 @@
 import { EventEmitter } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
-import { Ng2MapComponent } from '../components/ng2-map.component';
+import { NguiMapComponent } from '../components/ngui-map.component';
 export declare class KmlLayer extends BaseMapDirective {
     clickable: any;
     preserveViewport: any;
@@ -13,5 +13,5 @@ export declare class KmlLayer extends BaseMapDirective {
     defaultviewport_changed: any;
     status_changed: any;
     initialized$: EventEmitter<any>;
-    constructor(ng2MapComp: Ng2MapComponent);
+    constructor(nguiMapComp: NguiMapComponent);
 }
