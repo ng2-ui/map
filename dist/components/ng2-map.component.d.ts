@@ -47,6 +47,8 @@ export declare class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewI
     rotateControlOptions: any;
     scaleControlOptions: any;
     streetViewControlOptions: any;
+    fullscreenControl: any;
+    fullscreenControlOptions: any;
     options: any;
     geoFallbackCenter: any;
     bounds_changed: any;
