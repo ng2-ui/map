@@ -99802,7 +99802,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var templateStr = "\n  <h1>Simple Map</h1>\n  <ngui-map center=\"Brampton, Canada\" \n    (mapClick)=\"onClick($event)\"\n    [fullscreenControl]=\"true\"\n    [fullscreenControlOptions]=\"{position: 'TOP_RIGHT'}\" \n></ng2-map>\n  \"center\" can be an;\n  <ul>\n    <li>lat/lng array e.g., [42.99, -77.79]\n    <li> an address. e.g. Brampton, Canada\n    <li> or, none(for the current position)\n  </ul>\n  <ngui-map center=\"some-invalid-location\"\n    [geoFallbackCenter]=\"[42.99, -77.79]\"></ngui-map>\n  \n  <code>\n    <br/><b>HTML</b>\n    <pre>{{templateStr | htmlCode:'-code'}}</pre>\n    \n    <b>function onClick</b> \n    <pre>{{onClick | jsCode}}</pre>\n  </code>\n";
+var templateStr = "\n  <h1>Simple Map</h1>\n  <ngui-map center=\"Brampton, Canada\" \n    (mapClick)=\"onClick($event)\"\n    [fullscreenControl]=\"true\"\n    [fullscreenControlOptions]=\"{position: 'TOP_RIGHT'}\" \n></ngui-map>\n  \"center\" can be an;\n  <ul>\n    <li>lat/lng array e.g., [42.99, -77.79]\n    <li> an address. e.g. Brampton, Canada\n    <li> or, none(for the current position)\n  </ul>\n  <ngui-map center=\"some-invalid-location\"\n    [geoFallbackCenter]=\"[42.99, -77.79]\"></ngui-map>\n  \n  <code>\n    <br/><b>HTML</b>\n    <pre>{{templateStr | htmlCode:'-code'}}</pre>\n    \n    <b>function onClick</b> \n    <pre>{{onClick | jsCode}}</pre>\n  </code>\n";
 var SimpleMapComponent = (function () {
     function SimpleMapComponent() {
         this.templateStr = templateStr;
