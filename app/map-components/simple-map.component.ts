@@ -6,7 +6,7 @@ let templateStr: string = `
     (mapClick)="onClick($event)"
     [fullscreenControl]="true"
     [fullscreenControlOptions]="{position: 'TOP_RIGHT'}" 
-></ng2-map>
+></ngui-map>
   "center" can be an;
   <ul>
     <li>lat/lng array e.g., [42.99, -77.79]
