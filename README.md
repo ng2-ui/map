@@ -50,7 +50,7 @@ If you like this, you also may like these;
         import { BrowserModule  } from '@angular/platform-browser';
 
         import { AppComponent } from './app.component';
-        import { Ngui2MapModule} from '@ngui/map';
+        import { NguiMapModule} from '@ngui/map';
 
         @NgModule({
           imports: [
