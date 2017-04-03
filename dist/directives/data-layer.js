@@ -37,12 +37,16 @@ var DataLayer = (function (_super) {
     // only called when map is ready
     DataLayer.prototype.initialize = function () {
         if (this['geoJson']) {
-            console.log('this.geoJson', this['geoJson']);
+            if (this.ng2MapComponent.loggingEnabled) {
+                console.log('this.geoJson', this['geoJson']);
+            }
             this.ng2MapComponent.map.data.loadGeoJson(this['geoJson']);
         }
         else {
             this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-            console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+            if (this.ng2MapComponent.loggingEnabled) {
+                console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+            }
             this.ng2MapComponent.map.data.add(this.objectOptions);
         }
         // unlike others, data belongs to map. e.g., map.data.loadGeoJson(), map.data.add()

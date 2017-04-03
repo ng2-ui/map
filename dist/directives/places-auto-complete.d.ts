@@ -9,6 +9,7 @@ export declare class PlacesAutoComplete {
     bounds: any;
     componentRestrictions: any;
     types: string[];
+    loggingEnabled: boolean;
     place_changed: EventEmitter<any>;
     initialized$: EventEmitter<any>;
     objectOptions: any;

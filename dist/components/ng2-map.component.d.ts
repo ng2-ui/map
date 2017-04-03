@@ -78,6 +78,7 @@ export declare class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewI
     mapDragend: any;
     mapDragstart: any;
     mapReady$: EventEmitter<any>;
+    loggingEnabled: boolean;
     el: HTMLElement;
     map: google.maps.Map;
     mapOptions: google.maps.MapOptions;

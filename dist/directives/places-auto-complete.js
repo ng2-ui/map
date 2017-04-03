@@ -28,9 +28,13 @@ var PlacesAutoComplete = (function () {
         this.initialize = function () {
             _this.objectOptions =
                 _this.optionBuilder.googlizeAllInputs(['bounds', 'componentRestrictions', 'types'], _this);
-            console.log('places autocomplete options', _this.objectOptions);
+            if (_this.loggingEnabled) {
+                console.log('places autocomplete options', _this.objectOptions);
+            }
             _this.autocomplete = new google.maps.places.Autocomplete(_this.elementRef.nativeElement, _this.objectOptions);
-            console.log('this.autocomplete', _this.autocomplete);
+            if (_this.loggingEnabled) {
+                console.log('this.autocomplete', _this.autocomplete);
+            }
             _this.autocomplete.addListener('place_changed', function (place) {
                 _this.place_changed.emit(_this.autocomplete.getPlace());
             });
@@ -82,6 +86,10 @@ __decorate([
     core_1.Input('types'),
     __metadata("design:type", Array)
 ], PlacesAutoComplete.prototype, "types", void 0);
+__decorate([
+    core_1.Input('loggingEnabled'),
+    __metadata("design:type", Boolean)
+], PlacesAutoComplete.prototype, "loggingEnabled", void 0);
 __decorate([
     core_1.Output('place_changed'),
     __metadata("design:type", core_1.EventEmitter)

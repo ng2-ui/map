@@ -36,7 +36,9 @@ var GroundOverlay = (function (_super) {
     GroundOverlay.prototype.initialize = function () {
         // url, bounds are not the options of GroundOverlay
         this.objectOptions = this.optionBuilder.googlizeAllInputs(['clickable', 'opacity'], this);
-        console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+        if (this.ng2MapComponent.loggingEnabled) {
+            console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+        }
         // noinspection TypeScriptUnresolvedFunction
         this.mapObject = new google.maps.GroundOverlay(this['url'], this['bounds'], this.objectOptions);
         this.mapObject.setMap(this.ng2MapComponent.map);

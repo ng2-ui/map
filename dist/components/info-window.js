@@ -48,12 +48,16 @@ var InfoWindow = (function () {
     // called when map is ready
     InfoWindow.prototype.initialize = function () {
         var _this = this;
-        console.log('infowindow is being initialized');
+        if (this.ng2MapComponent.loggingEnabled) {
+            console.log('infowindow is being initialized');
+        }
         this.template = this.elementRef.nativeElement.innerHTML;
         this.objectOptions = this.ng2MapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
         this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
         this.infoWindow['mapObjectName'] = 'InfoWindow';
-        console.log('INFOWINDOW objectOptions', this.objectOptions);
+        if (this.ng2MapComponent.loggingEnabled) {
+            console.log('INFOWINDOW objectOptions', this.objectOptions);
+        }
         // register infoWindow ids to Ng2Map, so that it can be opened by id
         this.el = this.elementRef.nativeElement;
         if (this.el.id) {

@@ -24,11 +24,15 @@ export class DataLayer extends BaseMapDirective {
   // only called when map is ready
   initialize(): void {
     if (this['geoJson']) {
-      console.log('this.geoJson', this['geoJson']);
+      if (this.ng2MapComponent.loggingEnabled) {
+        console.log('this.geoJson', this['geoJson']);
+      }
       this.ng2MapComponent.map.data.loadGeoJson(this['geoJson']);
     } else {
       this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-      console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+      if (this.ng2MapComponent.loggingEnabled) {
+        console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+      }
       this.ng2MapComponent.map.data.add(this.objectOptions);
     }
 

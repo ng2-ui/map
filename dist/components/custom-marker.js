@@ -38,11 +38,12 @@ var OUTPUTS = [
  * Wrapper to a create extend OverlayView at runtime, only after google maps is loaded.
  * Otherwise throws a google is unknown error.
  */
-function getCustomMarkerOverlayView(htmlEl, position) {
+function getCustomMarkerOverlayView(htmlEl, position, ng2MapComponent) {
     var CustomMarkerOverlayView = (function (_super) {
         __extends(CustomMarkerOverlayView, _super);
-        function CustomMarkerOverlayView(htmlEl, position) {
+        function CustomMarkerOverlayView(htmlEl, position, ng2MapComponent) {
             var _this = _super.call(this) || this;
+            _this.ng2MapComponent = ng2MapComponent;
             _this.visible = true;
             _this.setPosition = function (position) {
                 _this.htmlEl.style.visibility = 'hidden';
@@ -53,7 +54,9 @@ function getCustomMarkerOverlayView(htmlEl, position) {
                     var geocoder = new google.maps.Geocoder();
                     geocoder.geocode({ address: position }, function (results, status) {
                         if (status === google.maps.GeocoderStatus.OK) {
-                            console.log('setting custom marker position from address', position);
+                            if (_this.ng2MapComponent.loggingEnabled) {
+                                console.log('setting custom marker position from address', position);
+                            }
                             _this.setPosition(results[0].geometry.location);
                         }
                         else {
@@ -113,7 +116,7 @@ function getCustomMarkerOverlayView(htmlEl, position) {
         ;
         return CustomMarkerOverlayView;
     }(google.maps.OverlayView));
-    return new CustomMarkerOverlayView(htmlEl, position);
+    return new CustomMarkerOverlayView(htmlEl, position, ng2MapComponent);
 }
 var CustomMarker = (function () {
     function CustomMarker(ng2MapComponent, elementRef, ng2Map) {
@@ -150,9 +153,11 @@ var CustomMarker = (function () {
     };
     CustomMarker.prototype.initialize = function () {
         var _this = this;
-        console.log('custom-marker is being initialized');
+        if (this.ng2MapComponent.loggingEnabled) {
+            console.log('custom-marker is being initialized');
+        }
         this.el = this.elementRef.nativeElement;
-        this.mapObject = getCustomMarkerOverlayView(this.el, this['position']);
+        this.mapObject = getCustomMarkerOverlayView(this.el, this['position'], this.ng2MapComponent);
         this.mapObject.setMap(this.ng2MapComponent.map);
         // set google events listeners and emits to this outputs listeners
         this.ng2Map.setObjectEvents(OUTPUTS, this, 'mapObject');

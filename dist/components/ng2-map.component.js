@@ -67,7 +67,10 @@ var Ng2MapComponent = (function () {
         var _this = this;
         this.el = this.elementRef.nativeElement.querySelector('.google-map');
         this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-        console.log('ng2-map mapOptions', this.mapOptions);
+        // this.logging = this.optionBuilder.googlizeAllInputs(INPUTS, this);
+        if (this.loggingEnabled) {
+            console.log('ng2-map mapOptions', this.mapOptions);
+        }
         this.mapOptions.zoom = this.mapOptions.zoom || 15;
         typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
         this.map = new google.maps.Map(this.el, this.mapOptions);
@@ -97,7 +100,9 @@ var Ng2MapComponent = (function () {
         var _this = this;
         if (!this['center']) {
             this.geolocation.getCurrentPosition().subscribe(function (position) {
-                console.log('setting map center from current location');
+                if (_this.loggingEnabled) {
+                    console.log('setting map center from current location');
+                }
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 _this.map.setCenter(latLng);
             }, function (error) {
@@ -107,7 +112,9 @@ var Ng2MapComponent = (function () {
         }
         else if (typeof this['center'] === 'string') {
             this.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
-                console.log('setting map center from address', _this['center']);
+                if (_this.loggingEnabled) {
+                    console.log('setting map center from address', _this['center']);
+                }
                 _this.map.setCenter(results[0].geometry.location);
             }, function (error) {
                 _this.map.setCenter(_this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
@@ -133,7 +140,9 @@ var Ng2MapComponent = (function () {
         var groupName = util_1.toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
         if (this.map && this.map[groupName]) {
             var index = this.map[groupName].indexOf(mapObject);
-            console.log('index', mapObject, index);
+            if (this.loggingEnabled) {
+                console.log('index', mapObject, index);
+            }
             (index > -1) && this.map[groupName].splice(index, 1);
         }
     };
@@ -143,6 +152,10 @@ __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], Ng2MapComponent.prototype, "mapReady$", void 0);
+__decorate([
+    core_1.Input('loggingEnabled'),
+    __metadata("design:type", Boolean)
+], Ng2MapComponent.prototype, "loggingEnabled", void 0);
 Ng2MapComponent = __decorate([
     core_1.Component({
         selector: 'ng2-map',

@@ -3,7 +3,7 @@ import { Subject } from 'rxjs/Subject';
 import { Ng2Map } from '../services/ng2-map';
 import { Ng2MapComponent } from './ng2-map.component';
 export declare class CustomMarker implements OnInit, OnDestroy, OnChanges {
-    private ng2MapComponent;
+    protected ng2MapComponent: Ng2MapComponent;
     private elementRef;
     private ng2Map;
     position: any;

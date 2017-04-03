@@ -49,7 +49,9 @@ var Circle = (function (_super) {
         var _this = this;
         if (!this['center']) {
             this._subscriptions.push(this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (center) {
-                console.log('setting circle center from current location');
+                if (_this.ng2MapComponent.loggingEnabled) {
+                    console.log('setting circle center from current location');
+                }
                 var latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
                 _this.mapObject.setCenter(latLng);
             }, function (error) {
@@ -59,7 +61,9 @@ var Circle = (function (_super) {
         }
         else if (typeof this['center'] === 'string') {
             this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
-                console.log('setting circle center from address', _this['center']);
+                if (_this.ng2MapComponent.loggingEnabled) {
+                    console.log('setting circle center from address', _this['center']);
+                }
                 _this.mapObject.setCenter(results[0].geometry.location);
             }, function (error) {
                 console.error('ng2-map, error in finding location from', _this['center']);

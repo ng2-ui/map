@@ -43,7 +43,9 @@ var StreetViewPanorama = (function (_super) {
     // only called when map is ready
     StreetViewPanorama.prototype.initialize = function () {
         this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-        console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+        if (this.ng2MapComponent.loggingEnabled) {
+            console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+        }
         var element;
         if (this.objectOptions.selector) {
             // noinspection TypeScriptValidateTypes

@@ -41,7 +41,9 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   // only called when map is ready
   initialize(): void {
     this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-    console.log(this.mapObjectName, 'initialization options', this.objectOptions);
+    if (this.ng2MapComponent.loggingEnabled) {
+      console.log(this.mapObjectName, 'initialization options', this.objectOptions);
+    }
 
     // will be set after geocoded
     typeof this.objectOptions.position === 'string' && (delete this.objectOptions.position);
@@ -67,7 +69,9 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   // When input is changed, update object too.
   // e.g., when map center is changed by user, update center on the map
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.mapObjectName, 'objectOptions are changed', changes);
+    if (this.ng2MapComponent.loggingEnabled) {
+      console.log(this.mapObjectName, 'objectOptions are changed', changes);
+    }
     this.ng2Map.updateGoogleObject(this.mapObject, changes);
   }
 

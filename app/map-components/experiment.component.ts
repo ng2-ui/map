@@ -39,7 +39,8 @@ export class ExperimentComponent {
 
     this.positions.push([43.72723792568628, -79.7657115210506]);
     this.positions.push([randomLat, randomLon]);
-    console.log(this.positions);
+          console.log(this.positions);
+
     this.cdr.detectChanges();
   }
 

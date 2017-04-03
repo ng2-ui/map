@@ -40,7 +40,9 @@ var Marker = (function (_super) {
         _this.ng2MapComp = ng2MapComp;
         _this.initialized$ = new core_1.EventEmitter();
         _this.objectOptions = {};
-        console.log('marker constructor', 9999999);
+        if (_this.ng2MapComponent.loggingEnabled) {
+            console.log('marker constructor', 9999999);
+        }
         return _this;
     }
     // Initialize this map object when map is ready
@@ -61,7 +63,9 @@ var Marker = (function (_super) {
         var _this = this;
         if (!this['position']) {
             this._subscriptions.push(this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (position) {
-                console.log('setting marker position from current location');
+                if (_this.ng2MapComponent.loggingEnabled) {
+                    console.log('setting marker position from current location');
+                }
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 _this.mapObject.setPosition(latLng);
             }, function (error) {
@@ -71,7 +75,9 @@ var Marker = (function (_super) {
         }
         else if (typeof this['position'] === 'string') {
             this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({ address: this['position'] }).subscribe(function (results) {
-                console.log('setting marker position from address', _this['position']);
+                if (_this.ng2MapComponent.loggingEnabled) {
+                    console.log('setting marker position from address', _this['position']);
+                }
                 _this.mapObject.setPosition(results[0].geometry.location);
             }, function (error) {
                 console.error('ng2-map, error finding the location from', _this['position']);

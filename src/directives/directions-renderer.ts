@@ -37,9 +37,9 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges {
     if (typeof this.objectOptions['panel'] === 'string') { // find a Node for panel
       this.objectOptions['panel'] = document.querySelector(this.objectOptions['panel']);
     }
-
-    console.log('DirectionsRenderer', 'initialization options', this.objectOptions, this.directionsRequest);
-
+    if (this.ng2MapComponent.loggingEnabled) {
+      console.log('DirectionsRenderer', 'initialization options', this.objectOptions, this.directionsRequest);
+    }
     this.directionsService = new google.maps.DirectionsService();
     this.directionsRenderer = new google.maps.DirectionsRenderer(this.objectOptions);
 

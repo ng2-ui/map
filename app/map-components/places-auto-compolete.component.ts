@@ -4,7 +4,8 @@ let templateStr = `
   <h1>Place Autocomplete Address Form</h1>
   <input places-auto-complete
     (place_changed)="placeChanged($event)"
-    [types]="['geocode']" />
+    [types]="['geocode']"
+    [loggingEnabled]="true"/>
   <p>
   <ng2-map [center]="center"></ng2-map>
   place: {{address | json}}

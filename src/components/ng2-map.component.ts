@@ -5,6 +5,7 @@ import {
   EventEmitter,
   SimpleChanges,
   Output,
+  Input,
   AfterViewInit, OnChanges, OnDestroy
 } from '@angular/core';
 
@@ -55,6 +56,7 @@ const OUTPUTS = [
 })
 export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   @Output() public mapReady$: EventEmitter<any> = new EventEmitter();
+  @Input('loggingEnabled') loggingEnabled: boolean;
 
   public el: HTMLElement;
   public map: google.maps.Map;
@@ -94,7 +96,10 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
   initializeMap(): void {
     this.el = this.elementRef.nativeElement.querySelector('.google-map');
     this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-    console.log('ng2-map mapOptions', this.mapOptions);
+    // this.logging = this.optionBuilder.googlizeAllInputs(INPUTS, this);
+    if (this.loggingEnabled) {
+      console.log('ng2-map mapOptions', this.mapOptions);
+    }
 
     this.mapOptions.zoom = this.mapOptions.zoom || 15;
     typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
@@ -132,7 +137,9 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     if (!this['center']) { // center is not from user. Thus, we set the current location
       this.geolocation.getCurrentPosition().subscribe(
         position => {
-          console.log('setting map center from current location');
+          if (this.loggingEnabled) {
+            console.log('setting map center from current location');
+          }
           let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           this.map.setCenter(latLng);
         },
@@ -145,7 +152,9 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     else if (typeof this['center'] === 'string') {
       this.geoCoder.geocode({address: this['center']}).subscribe(
         results => {
-          console.log('setting map center from address', this['center']);
+          if (this.loggingEnabled) {
+            console.log('setting map center from address', this['center']);
+          }
           this.map.setCenter(results[0].geometry.location);
         },
         error => {
@@ -175,7 +184,9 @@ export class Ng2MapComponent implements OnChanges, OnDestroy, AfterViewInit {
     let groupName = toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
     if (this.map && this.map[groupName]) {
       let index = this.map[groupName].indexOf(mapObject);
-      console.log('index', mapObject, index);
+      if (this.loggingEnabled) {
+        console.log('index', mapObject, index);
+      }
       (index > -1) && this.map[groupName].splice(index, 1);
     }
   }

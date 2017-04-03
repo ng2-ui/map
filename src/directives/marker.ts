@@ -28,7 +28,9 @@ export class Marker extends BaseMapDirective implements OnInit {
 
   constructor(private ng2MapComp: Ng2MapComponent) {
     super(ng2MapComp, 'Marker', INPUTS, OUTPUTS);
-    console.log('marker constructor', 9999999 );
+    if (this.ng2MapComponent.loggingEnabled) {
+      console.log('marker constructor', 9999999);
+    }
   }
 
   // Initialize this map object when map is ready
@@ -49,7 +51,9 @@ export class Marker extends BaseMapDirective implements OnInit {
     if (!this['position']) {
       this._subscriptions.push(this.ng2MapComp.geolocation.getCurrentPosition().subscribe(
         position => {
-          console.log('setting marker position from current location');
+          if (this.ng2MapComponent.loggingEnabled) {
+            console.log('setting marker position from current location');
+          }
           let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           this.mapObject.setPosition(latLng);
         },
@@ -61,7 +65,9 @@ export class Marker extends BaseMapDirective implements OnInit {
     } else if (typeof this['position'] === 'string') {
       this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({address: this['position']}).subscribe(
         results => {
-          console.log('setting marker position from address', this['position']);
+          if (this.ng2MapComponent.loggingEnabled) {
+            console.log('setting marker position from address', this['position']);
+          }
           this.mapObject.setPosition(results[0].geometry.location);
         },
         error => {

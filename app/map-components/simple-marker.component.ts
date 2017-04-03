@@ -7,12 +7,15 @@ let templateStr: string = `
     [fullscreenControl]="true"
     [fullscreenControlOptions]="{position: 'TOP_CENTER'}" 
     (click)="log($event)"
-    [scrollwheel]="false">
+    [scrollwheel]="false"
+    [loggingEnabled]="true">
+    
     <marker position="will-fall-back-to-brampton-canada"
       [geoFallbackPosition]="[43.73154789999999, -79.7449296972229]"
       (dragstart)="log($event, 'dragstart')"
       (dragend)="log($event, 'dragend')"
-      draggable="true"></marker>
+      draggable="true">
+></marker>
   </ng2-map>
   <code>
     <br/><b>HTML</b>

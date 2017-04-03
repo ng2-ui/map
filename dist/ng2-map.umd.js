@@ -156,7 +156,10 @@ var Ng2MapComponent = (function () {
         var _this = this;
         this.el = this.elementRef.nativeElement.querySelector('.google-map');
         this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-        console.log('ng2-map mapOptions', this.mapOptions);
+        // this.logging = this.optionBuilder.googlizeAllInputs(INPUTS, this);
+        if (this.loggingEnabled) {
+            console.log('ng2-map mapOptions', this.mapOptions);
+        }
         this.mapOptions.zoom = this.mapOptions.zoom || 15;
         typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
         this.map = new google.maps.Map(this.el, this.mapOptions);
@@ -186,7 +189,9 @@ var Ng2MapComponent = (function () {
         var _this = this;
         if (!this['center']) {
             this.geolocation.getCurrentPosition().subscribe(function (position) {
-                console.log('setting map center from current location');
+                if (_this.loggingEnabled) {
+                    console.log('setting map center from current location');
+                }
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 _this.map.setCenter(latLng);
             }, function (error) {
@@ -196,7 +201,9 @@ var Ng2MapComponent = (function () {
         }
         else if (typeof this['center'] === 'string') {
             this.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
-                console.log('setting map center from address', _this['center']);
+                if (_this.loggingEnabled) {
+                    console.log('setting map center from address', _this['center']);
+                }
                 _this.map.setCenter(results[0].geometry.location);
             }, function (error) {
                 _this.map.setCenter(_this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
@@ -222,7 +229,9 @@ var Ng2MapComponent = (function () {
         var groupName = util_1.toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
         if (this.map && this.map[groupName]) {
             var index = this.map[groupName].indexOf(mapObject);
-            console.log('index', mapObject, index);
+            if (this.loggingEnabled) {
+                console.log('index', mapObject, index);
+            }
             (index > -1) && this.map[groupName].splice(index, 1);
         }
     };
@@ -232,6 +241,10 @@ __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], Ng2MapComponent.prototype, "mapReady$", void 0);
+__decorate([
+    core_1.Input('loggingEnabled'),
+    __metadata("design:type", Boolean)
+], Ng2MapComponent.prototype, "loggingEnabled", void 0);
 Ng2MapComponent = __decorate([
     core_1.Component({
         selector: 'ng2-map',
@@ -298,7 +311,9 @@ var BaseMapDirective = (function () {
     // only called when map is ready
     BaseMapDirective.prototype.initialize = function () {
         this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-        console.log(this.mapObjectName, 'initialization options', this.objectOptions);
+        if (this.ng2MapComponent.loggingEnabled) {
+            console.log(this.mapObjectName, 'initialization options', this.objectOptions);
+        }
         // will be set after geocoded
         typeof this.objectOptions.position === 'string' && (delete this.objectOptions.position);
         typeof this.objectOptions.center === 'string' && (delete this.objectOptions.center);
@@ -320,7 +335,9 @@ var BaseMapDirective = (function () {
     // When input is changed, update object too.
     // e.g., when map center is changed by user, update center on the map
     BaseMapDirective.prototype.ngOnChanges = function (changes) {
-        console.log(this.mapObjectName, 'objectOptions are changed', changes);
+        if (this.ng2MapComponent.loggingEnabled) {
+            console.log(this.mapObjectName, 'objectOptions are changed', changes);
+        }
         this.ng2Map.updateGoogleObject(this.mapObject, changes);
     };
     // When destroyed, remove event listener, and delete this object to prevent memory leak
@@ -441,7 +458,9 @@ var OptionBuilder = (function () {
         var options = {};
         // if options given from user, only take options and ignore other inputs
         if (userInputs.options) {
-            console.log('userInputs.options .................', userInputs.options);
+            if (userInputs.options.loggingEnabled) {
+                console.log('userInputs.options .................', userInputs.options);
+            }
             options = userInputs.options;
             if (!this.onlyOptionsGiven(definedInputs, userInputs)) {
                 console.error('when "options" are used, other options are ignored');
@@ -1014,11 +1033,12 @@ var OUTPUTS = [
  * Wrapper to a create extend OverlayView at runtime, only after google maps is loaded.
  * Otherwise throws a google is unknown error.
  */
-function getCustomMarkerOverlayView(htmlEl, position) {
+function getCustomMarkerOverlayView(htmlEl, position, ng2MapComponent) {
     var CustomMarkerOverlayView = (function (_super) {
         __extends(CustomMarkerOverlayView, _super);
-        function CustomMarkerOverlayView(htmlEl, position) {
+        function CustomMarkerOverlayView(htmlEl, position, ng2MapComponent) {
             var _this = _super.call(this) || this;
+            _this.ng2MapComponent = ng2MapComponent;
             _this.visible = true;
             _this.setPosition = function (position) {
                 _this.htmlEl.style.visibility = 'hidden';
@@ -1029,7 +1049,9 @@ function getCustomMarkerOverlayView(htmlEl, position) {
                     var geocoder = new google.maps.Geocoder();
                     geocoder.geocode({ address: position }, function (results, status) {
                         if (status === google.maps.GeocoderStatus.OK) {
-                            console.log('setting custom marker position from address', position);
+                            if (_this.ng2MapComponent.loggingEnabled) {
+                                console.log('setting custom marker position from address', position);
+                            }
                             _this.setPosition(results[0].geometry.location);
                         }
                         else {
@@ -1089,7 +1111,7 @@ function getCustomMarkerOverlayView(htmlEl, position) {
         ;
         return CustomMarkerOverlayView;
     }(google.maps.OverlayView));
-    return new CustomMarkerOverlayView(htmlEl, position);
+    return new CustomMarkerOverlayView(htmlEl, position, ng2MapComponent);
 }
 var CustomMarker = (function () {
     function CustomMarker(ng2MapComponent, elementRef, ng2Map) {
@@ -1126,9 +1148,11 @@ var CustomMarker = (function () {
     };
     CustomMarker.prototype.initialize = function () {
         var _this = this;
-        console.log('custom-marker is being initialized');
+        if (this.ng2MapComponent.loggingEnabled) {
+            console.log('custom-marker is being initialized');
+        }
         this.el = this.elementRef.nativeElement;
-        this.mapObject = getCustomMarkerOverlayView(this.el, this['position']);
+        this.mapObject = getCustomMarkerOverlayView(this.el, this['position'], this.ng2MapComponent);
         this.mapObject.setMap(this.ng2MapComponent.map);
         // set google events listeners and emits to this outputs listeners
         this.ng2Map.setObjectEvents(OUTPUTS, this, 'mapObject');
@@ -1213,12 +1237,16 @@ var InfoWindow = (function () {
     // called when map is ready
     InfoWindow.prototype.initialize = function () {
         var _this = this;
-        console.log('infowindow is being initialized');
+        if (this.ng2MapComponent.loggingEnabled) {
+            console.log('infowindow is being initialized');
+        }
         this.template = this.elementRef.nativeElement.innerHTML;
         this.objectOptions = this.ng2MapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
         this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
         this.infoWindow['mapObjectName'] = 'InfoWindow';
-        console.log('INFOWINDOW objectOptions', this.objectOptions);
+        if (this.ng2MapComponent.loggingEnabled) {
+            console.log('INFOWINDOW objectOptions', this.objectOptions);
+        }
         // register infoWindow ids to Ng2Map, so that it can be opened by id
         this.el = this.elementRef.nativeElement;
         if (this.el.id) {
@@ -1383,7 +1411,9 @@ var Circle = (function (_super) {
         var _this = this;
         if (!this['center']) {
             this._subscriptions.push(this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (center) {
-                console.log('setting circle center from current location');
+                if (_this.ng2MapComponent.loggingEnabled) {
+                    console.log('setting circle center from current location');
+                }
                 var latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
                 _this.mapObject.setCenter(latLng);
             }, function (error) {
@@ -1393,7 +1423,9 @@ var Circle = (function (_super) {
         }
         else if (typeof this['center'] === 'string') {
             this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
-                console.log('setting circle center from address', _this['center']);
+                if (_this.ng2MapComponent.loggingEnabled) {
+                    console.log('setting circle center from address', _this['center']);
+                }
                 _this.mapObject.setCenter(results[0].geometry.location);
             }, function (error) {
                 console.error('ng2-map, error in finding location from', _this['center']);
@@ -1462,12 +1494,16 @@ var DataLayer = (function (_super) {
     // only called when map is ready
     DataLayer.prototype.initialize = function () {
         if (this['geoJson']) {
-            console.log('this.geoJson', this['geoJson']);
+            if (this.ng2MapComponent.loggingEnabled) {
+                console.log('this.geoJson', this['geoJson']);
+            }
             this.ng2MapComponent.map.data.loadGeoJson(this['geoJson']);
         }
         else {
             this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-            console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+            if (this.ng2MapComponent.loggingEnabled) {
+                console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+            }
             this.ng2MapComponent.map.data.add(this.objectOptions);
         }
         // unlike others, data belongs to map. e.g., map.data.loadGeoJson(), map.data.add()
@@ -1544,7 +1580,9 @@ var DirectionsRenderer = (function (_super) {
         if (typeof this.objectOptions['panel'] === 'string') {
             this.objectOptions['panel'] = document.querySelector(this.objectOptions['panel']);
         }
-        console.log('DirectionsRenderer', 'initialization options', this.objectOptions, this.directionsRequest);
+        if (this.ng2MapComponent.loggingEnabled) {
+            console.log('DirectionsRenderer', 'initialization options', this.objectOptions, this.directionsRequest);
+        }
         this.directionsService = new google.maps.DirectionsService();
         this.directionsRenderer = new google.maps.DirectionsRenderer(this.objectOptions);
         this.directionsRenderer.setMap(this.ng2MapComponent.map);
@@ -1704,7 +1742,9 @@ var GroundOverlay = (function (_super) {
     GroundOverlay.prototype.initialize = function () {
         // url, bounds are not the options of GroundOverlay
         this.objectOptions = this.optionBuilder.googlizeAllInputs(['clickable', 'opacity'], this);
-        console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+        if (this.ng2MapComponent.loggingEnabled) {
+            console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+        }
         // noinspection TypeScriptUnresolvedFunction
         this.mapObject = new google.maps.GroundOverlay(this['url'], this['bounds'], this.objectOptions);
         this.mapObject.setMap(this.ng2MapComponent.map);
@@ -1889,7 +1929,9 @@ var Marker = (function (_super) {
         _this.ng2MapComp = ng2MapComp;
         _this.initialized$ = new core_1.EventEmitter();
         _this.objectOptions = {};
-        console.log('marker constructor', 9999999);
+        if (_this.ng2MapComponent.loggingEnabled) {
+            console.log('marker constructor', 9999999);
+        }
         return _this;
     }
     // Initialize this map object when map is ready
@@ -1910,7 +1952,9 @@ var Marker = (function (_super) {
         var _this = this;
         if (!this['position']) {
             this._subscriptions.push(this.ng2MapComp.geolocation.getCurrentPosition().subscribe(function (position) {
-                console.log('setting marker position from current location');
+                if (_this.ng2MapComponent.loggingEnabled) {
+                    console.log('setting marker position from current location');
+                }
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 _this.mapObject.setPosition(latLng);
             }, function (error) {
@@ -1920,7 +1964,9 @@ var Marker = (function (_super) {
         }
         else if (typeof this['position'] === 'string') {
             this._subscriptions.push(this.ng2MapComp.geoCoder.geocode({ address: this['position'] }).subscribe(function (results) {
-                console.log('setting marker position from address', _this['position']);
+                if (_this.ng2MapComponent.loggingEnabled) {
+                    console.log('setting marker position from address', _this['position']);
+                }
                 _this.mapObject.setPosition(results[0].geometry.location);
             }, function (error) {
                 console.error('ng2-map, error finding the location from', _this['position']);
@@ -1980,9 +2026,13 @@ var PlacesAutoComplete = (function () {
         this.initialize = function () {
             _this.objectOptions =
                 _this.optionBuilder.googlizeAllInputs(['bounds', 'componentRestrictions', 'types'], _this);
-            console.log('places autocomplete options', _this.objectOptions);
+            if (_this.loggingEnabled) {
+                console.log('places autocomplete options', _this.objectOptions);
+            }
             _this.autocomplete = new google.maps.places.Autocomplete(_this.elementRef.nativeElement, _this.objectOptions);
-            console.log('this.autocomplete', _this.autocomplete);
+            if (_this.loggingEnabled) {
+                console.log('this.autocomplete', _this.autocomplete);
+            }
             _this.autocomplete.addListener('place_changed', function (place) {
                 _this.place_changed.emit(_this.autocomplete.getPlace());
             });
@@ -2034,6 +2084,10 @@ __decorate([
     core_1.Input('types'),
     __metadata("design:type", Array)
 ], PlacesAutoComplete.prototype, "types", void 0);
+__decorate([
+    core_1.Input('loggingEnabled'),
+    __metadata("design:type", Boolean)
+], PlacesAutoComplete.prototype, "loggingEnabled", void 0);
 __decorate([
     core_1.Output('place_changed'),
     __metadata("design:type", core_1.EventEmitter)
@@ -2226,7 +2280,9 @@ var StreetViewPanorama = (function (_super) {
     // only called when map is ready
     StreetViewPanorama.prototype.initialize = function () {
         this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-        console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+        if (this.ng2MapComponent.loggingEnabled) {
+            console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
+        }
         var element;
         if (this.objectOptions.selector) {
             // noinspection TypeScriptValidateTypes

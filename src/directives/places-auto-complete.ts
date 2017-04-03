@@ -21,6 +21,7 @@ export class PlacesAutoComplete  {
   @Input('bounds') bounds: any;
   @Input('componentRestrictions') componentRestrictions: any;
   @Input('types') types: string[];
+  @Input('loggingEnabled') loggingEnabled: boolean;
 
   @Output('place_changed') place_changed: EventEmitter<any> = new EventEmitter();
   @Output('initialized$')  initialized$: EventEmitter<any> = new EventEmitter();
@@ -78,13 +79,17 @@ export class PlacesAutoComplete  {
   initialize = (): void => {
     this.objectOptions =
       this.optionBuilder.googlizeAllInputs(['bounds', 'componentRestrictions', 'types'], this);
-    console.log('places autocomplete options', this.objectOptions);
+    if (this.loggingEnabled) {
+      console.log('places autocomplete options', this.objectOptions);
+    }
 
     this.autocomplete = new google.maps.places.Autocomplete(
       this.elementRef.nativeElement,
       this.objectOptions
     );
-    console.log('this.autocomplete', this.autocomplete);
+    if (this.loggingEnabled) {
+      console.log('this.autocomplete', this.autocomplete);
+    }
 
     this.autocomplete.addListener('place_changed', place => {
       this.place_changed.emit(this.autocomplete.getPlace());
