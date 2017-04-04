@@ -247,6 +247,14 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
     $ npm install
     $ npm start
 
+### Before you make a PR
+  If you are planning to make a lot of code changes in the PR, we encourage to create an issue first;
+  
+  1. To avoid duplicate work
+  2. To encourage discussion of solution
+
+  We do not want to reject PR because of different approach or directions after a lot of effort has been made.
+
 ### List of available npm tasks
 
   * `npm run` : List all available tasks
