@@ -41,7 +41,7 @@ export class NguiMap {
                 object[setMethodName](results[0].geometry.location);
               } else {
                 console.error(
-                  'Not all options are dynamically updatable according to Googles Maps API V3 documentation.\n' + 
+                  'Not all options are dynamically updatable according to Googles Maps API V3 documentation.\n' +
                   'Please check Google Maps API documentation, and use "setOptions" instead.'
                 );
               }
