@@ -380,13 +380,25 @@ var NguiMap = (function () {
                         // To preserve setMethod name in Observable callback, wrap it as a function, then execute
                         (function (setMethodName) {
                             _this.geoCoder.geocode({ address: currentValue }).subscribe(function (results) {
-                                object[setMethodName](results[0].geometry.location);
+                                if (typeof object[setMethodName] === 'function') {
+                                    object[setMethodName](results[0].geometry.location);
+                                }
+                                else {
+                                    console.error('Not all options are dynamically updatable according to Googles Maps API V3 documentation.\n' +
+                                        'Please check Google Maps API documentation, and use "setOptions" instead.');
+                                }
                             });
                         })(setMethodName);
                     }
                     else {
                         val = _this.optionBuilder.googlize(currentValue);
-                        object[setMethodName](val);
+                        if (typeof object[setMethodName] === 'function') {
+                            object[setMethodName](val);
+                        }
+                        else {
+                            console.error('Not all options are dynamically updatable according to Googles Maps API V3 documentation.\n' +
+                                'Please check Google Maps API documentation, and use "setOptions" instead.');
+                        }
                     }
                 }
             }
