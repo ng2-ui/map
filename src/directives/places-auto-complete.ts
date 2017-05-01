@@ -4,14 +4,10 @@ import {
   Directive,
   EventEmitter,
   ElementRef,
-  Optional,
-  NgZone,
-  Inject
 } from '@angular/core';
 
-import { NG_MAP_CONFIG_TOKEN } from '../services/config';
+import { NgMapApiLoader } from '../services/api-loader';
 import { OptionBuilder } from '../services/option-builder';
-
 
 @Directive({
   selector: '[places-auto-complete]'
@@ -27,51 +23,14 @@ export class PlacesAutoComplete  {
 
   public objectOptions: any;
   public autocomplete: google.maps.places.Autocomplete;
-  private mapIndex: number;
 
   constructor(
     public optionBuilder: OptionBuilder,
     public elementRef: ElementRef,
-    public zone: NgZone,
-    @Optional() @Inject(NG_MAP_CONFIG_TOKEN) private config
+    public apiLoader: NgMapApiLoader,
   ) {
-    this.config = this.config || {apiUrl: 'https://maps.google.com/maps/api/js?libraries=places'};
-
-    // treat this as nguiMap because it requires google api on root level
-    window['nguiMapRef'] = window['nguiMapRef'] || [];
-    this.mapIndex = window['nguiMapRef'].length;
-    window['nguiMapRef'].push(
-      {
-        zone: this.zone,
-        componentFn: () => this.initialize()
-      });
-
-    if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
-      this.addGoogleMapsApi();
-    } else {
-      this.initialize();
-    }
-  }
-
-  addGoogleMapsApi(): void {
-
-    window['initNguiMap'] = window['initNguiMap'] || function() {
-      window['nguiMapRef'].forEach( nguiMapRef => {
-        nguiMapRef.zone.run(function() { nguiMapRef.componentFn(); });
-      });
-      window['nguiMapRef'] = [];
-    };
-
-    if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ngui-map-api')) {
-      let script = document.createElement( 'script' );
-      script.id = 'ngui-map-api';
-
-      // script.src = "https://maps.google.com/maps/api/js?callback=initNguiMap";
-      let apiUrl = this.config.apiUrl;
-      apiUrl += apiUrl.indexOf('?') ? '&' : '?';
-      script.src = apiUrl + 'callback=initNguiMap';
-      document.querySelector('body').appendChild(script);
-    }
+    apiLoader.load();
+    apiLoader.api$.subscribe(() => this.initialize());
   }
 
   // only called when map is ready
