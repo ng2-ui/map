@@ -5,6 +5,7 @@ import {
   EventEmitter,
   SimpleChanges,
   Output,
+  NgZone,
   AfterViewInit, OnChanges, OnDestroy
 } from '@angular/core';
 
@@ -13,11 +14,11 @@ import { NavigatorGeolocation } from '../services/navigator-geolocation';
 import { GeoCoder } from '../services/geo-coder';
 import { NguiMap } from '../services/ngui-map';
 import { NgMapApiLoader } from '../services/api-loader';
-
+import { InfoWindow } from './info-window';
 
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operator/debounceTime';
-import { IJson, toCamelCase } from '../services/util';
+import { toCamelCase } from '../services/util';
 
 const INPUTS = [
   'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
@@ -63,7 +64,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit {
   public inputChanges$ = new Subject();
 
   // map objects by group
-  public infoWindows: any = {};
+  public infoWindows: { [id: string]: InfoWindow } = { };
 
   // map has been fully initialized
   public mapIdledOnce: boolean = false;
@@ -75,6 +76,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit {
     public geoCoder: GeoCoder,
     public nguiMap: NguiMap,
     public apiLoader: NgMapApiLoader,
+    public zone: NgZone,
   ) {
     apiLoader.load();
 
@@ -99,33 +101,35 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit {
     this.mapOptions.zoom = this.mapOptions.zoom || 15;
     typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
 
-    this.map = new google.maps.Map(this.el, this.mapOptions);
-    this.map['mapObjectName'] = 'NguiMapComponent';
+    this.zone.runOutsideAngular(() => {
+      this.map = new google.maps.Map(this.el, this.mapOptions);
+      this.map['mapObjectName'] = 'NguiMapComponent';
 
-    if (!this.mapOptions.center) { // if center is not given as lat/lng
-      this.setCenter();
-    }
+      if (!this.mapOptions.center) { // if center is not given as lat/lng
+        this.setCenter();
+      }
 
-    // set google events listeners and emits to this outputs listeners
-    this.nguiMap.setObjectEvents(OUTPUTS, this, 'map');
+      // set google events listeners and emits to this outputs listeners
+      this.nguiMap.setObjectEvents(OUTPUTS, this, 'map');
 
-    this.map.addListener('idle', () => {
-      if (!this.mapIdledOnce) {
-        this.mapIdledOnce = true;
-        setTimeout(() => { // Why????, subsribe and emit must not be in the same cycle???
-          this.mapReady$.emit(this.map);
-        });
+      this.map.addListener('idle', () => {
+        if (!this.mapIdledOnce) {
+          this.mapIdledOnce = true;
+          setTimeout(() => { // Why????, subsribe and emit must not be in the same cycle???
+            this.mapReady$.emit(this.map);
+          });
+        }
+      });
+
+      // update map when input changes
+      debounceTime.call(this.inputChanges$, 1000)
+        .subscribe((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.map, changes));
+
+      if (typeof window !== 'undefined' && (<any>window)['nguiMapRef']) {
+        // expose map object for test and debugging on (<any>window)
+        (<any>window)['nguiMapRef'].map = this.map;
       }
     });
-
-    // update map when input changes
-    debounceTime.call(this.inputChanges$, 1000)
-      .subscribe((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.map, changes));
-
-    if (typeof window !== 'undefined' && (<any>window)['nguiMapRef']) {
-      // expose map object for test and debugging on (<any>window)
-      (<any>window)['nguiMapRef'].map = this.map;
-    }
   }
 
   setCenter(): void {
@@ -154,8 +158,8 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit {
     }
   }
 
-  openInfoWindow(id: string, anchor: google.maps.MVCObject, data: IJson) {
-    this.infoWindows[id].open(anchor, data);
+  openInfoWindow(id: string, anchor: google.maps.MVCObject) {
+    this.infoWindows[id].open(anchor);
   }
 
   ngOnDestroy() {

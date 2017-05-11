@@ -5,7 +5,10 @@ let templateStr: string = `
   <ngui-map center="Brampton, Canada">
     <marker position="Brampton, Canada" draggable="true" (click)="clicked($event)"></marker>
     <info-window id="iw">
-      lat: [[lat]], lng: [[lng]]
+      <div *ngIf="marker.display">
+        lat: {{ marker.lat }}, lng: {{ marker.lng }}
+      </div>
+      <button (click)="hideMarkerInfo()">Hide Info</button>
     </info-window>
   </ngui-map>
   Please click the marker to see a info window
@@ -23,10 +26,20 @@ let templateStr: string = `
 })
 export class SimpleInfoWindowComponent {
   templateStr: string = templateStr;
-  clicked(event) {
-    let marker = event.target;
-    marker.nguiMapComponent.openInfoWindow('iw', marker, {
-      lat: marker.getPosition().lat(), lng: marker.getPosition().lng(),
-    });
+  marker = {
+    display: true,
+    lat: null,
+    lng: null,
+  };
+
+  clicked({target: marker}) {
+    this.marker.lat = marker.getPosition().lat();
+    this.marker.lng = marker.getPosition().lng();
+
+    marker.nguiMapComponent.openInfoWindow('iw', marker);
+  }
+
+  hideMarkerInfo() {
+    this.marker.display = !this.marker.display;
   }
 }
