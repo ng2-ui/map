@@ -3,6 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   SimpleChanges,
+  ViewChild, ViewContainerRef,
   Output, OnInit, OnChanges, OnDestroy
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
@@ -21,22 +22,20 @@ const OUTPUTS = [
   selector: 'ngui-map > info-window',
   inputs: INPUTS,
   outputs: OUTPUTS,
-  template: `<ng-content></ng-content>`,
+  template: `<div #template><ng-content></ng-content></div>`,
 })
 export class InfoWindow implements OnInit, OnChanges, OnDestroy {
   @Output() public initialized$: EventEmitter<any> = new EventEmitter();
 
-  public el: HTMLElement;
   public infoWindow: google.maps.InfoWindow;
   public objectOptions: google.maps.InfoWindowOptions = {};
   public inputChanges$ = new Subject();
-
-  public template: string;
+  @ViewChild('template', {read: ViewContainerRef}) template: ViewContainerRef;
 
   constructor(
-    private nguiMapComponent: NguiMapComponent,
     private elementRef: ElementRef,
-    private nguiMap: NguiMap
+    private nguiMap: NguiMap,
+    private nguiMapComponent: NguiMapComponent,
   ) {
     this.elementRef.nativeElement.style.display = 'none';
     OUTPUTS.forEach(output => this[output] = new EventEmitter());
@@ -58,7 +57,6 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
   // called when map is ready
   initialize(): void {
     console.log('infowindow is being initialized');
-    this.template = this.elementRef.nativeElement.innerHTML;
 
     this.objectOptions = this.nguiMapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
     this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
@@ -66,9 +64,8 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     console.log('INFOWINDOW objectOptions', this.objectOptions);
 
     // register infoWindow ids to NguiMap, so that it can be opened by id
-    this.el = this.elementRef.nativeElement;
-    if (this.el.id) {
-      this.nguiMapComponent.infoWindows[this.el.id] = this;
+    if (this.elementRef.nativeElement.id) {
+      this.nguiMapComponent.infoWindows[this.elementRef.nativeElement.id] = this;
     } else {
       console.error('An InfoWindow must have an id. e.g. id="detail"');
     }
@@ -84,16 +81,9 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     this.initialized$.emit(this.infoWindow);
   }
 
-  open(anchor: google.maps.MVCObject, data: any) {
-    let html = this.template;
-
-    for (let key in data) {
-      this[key] = data[key];
-      html = html.replace(`[[${key}]]`, data[key]);
-    }
-
+  open(anchor: google.maps.MVCObject) {
     // set content and open it
-    this.infoWindow.setContent(html);
+    this.infoWindow.setContent(this.template.element.nativeElement);
     this.infoWindow.open(this.nguiMapComponent.map, anchor);
   }
 
