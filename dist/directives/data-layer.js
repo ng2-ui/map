@@ -22,7 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var base_map_directive_1 = require("./base-map-directive");
 var ngui_map_component_1 = require("../components/ngui-map.component");
-var INPUTS = ['controlPosition', 'controls', 'drawingMode', 'featureFactory', 'style', 'geoJson'];
+var INPUTS = ['controlPosition', 'controls', 'drawingMode', 'featureFactory', 'style', 'geoJson', 'geoJsonUrl'];
 var OUTPUTS = [
     'addfeature', 'click', 'dblclick', 'mousedown', 'mouseout', 'mouseover',
     'mouseup', 'removefeature', 'removeproperty', 'rightclick', 'setgeometry', 'setproperty'
@@ -37,8 +37,14 @@ var DataLayer = (function (_super) {
     // only called when map is ready
     DataLayer.prototype.initialize = function () {
         if (this['geoJson']) {
+            // addGeoJson from an object
             console.log('this.geoJson', this['geoJson']);
-            this.nguiMapComponent.map.data.loadGeoJson(this['geoJson']);
+            this.nguiMapComponent.map.data.addGeoJson(this['geoJson']);
+        }
+        else if (this['geoJsonUrl']) {
+            // loadGeoJson from a URL
+            console.log('this.geoJsonUrl', this['geoJsonUrl']);
+            this.nguiMapComponent.map.data.loadGeoJson(this['geoJsonUrl']);
         }
         else {
             this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);

@@ -8,6 +8,7 @@ export declare class DataLayer extends BaseMapDirective {
     featureFactory: any;
     style: any;
     geoJson: any;
+    geoJsonUrl: any;
     addfeature: any;
     click: any;
     dblclick: any;
