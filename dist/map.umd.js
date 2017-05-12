@@ -7,7 +7,7 @@
 		exports["map"] = factory(require("@angular/core"), require("rxjs/Subject"), require("rxjs/operator/debounceTime"), require("rxjs/Observable"), require("@angular/common"), require("rxjs/ReplaySubject"), require("rxjs/operator/first"));
 	else
 		root["map"] = factory(root["@angular/core"], root["rxjs/Subject"], root["rxjs/operator/debounceTime"], root["rxjs/Observable"], root["@angular/common"], root["rxjs/ReplaySubject"], root["rxjs/operator/first"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_10__, __WEBPACK_EXTERNAL_MODULE_11__, __WEBPACK_EXTERNAL_MODULE_29__, __WEBPACK_EXTERNAL_MODULE_31__, __WEBPACK_EXTERNAL_MODULE_32__, __WEBPACK_EXTERNAL_MODULE_33__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_10__, __WEBPACK_EXTERNAL_MODULE_11__, __WEBPACK_EXTERNAL_MODULE_29__, __WEBPACK_EXTERNAL_MODULE_32__, __WEBPACK_EXTERNAL_MODULE_33__, __WEBPACK_EXTERNAL_MODULE_34__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -16,9 +16,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 34);
+/******/ 	return __webpack_require__(__webpack_require__.s = 31);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -99,11 +99,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var option_builder_1 = __webpack_require__(4);
-var navigator_geolocation_1 = __webpack_require__(8);
-var geo_coder_1 = __webpack_require__(7);
-var ngui_map_1 = __webpack_require__(3);
-var api_loader_1 = __webpack_require__(5);
+var option_builder_1 = __webpack_require__(5);
+var navigator_geolocation_1 = __webpack_require__(7);
+var geo_coder_1 = __webpack_require__(6);
+var ngui_map_1 = __webpack_require__(4);
+var api_loader_1 = __webpack_require__(3);
 var Subject_1 = __webpack_require__(10);
 var debounceTime_1 = __webpack_require__(11);
 var util_1 = __webpack_require__(9);
@@ -125,7 +125,7 @@ var OUTPUTS = [
     'mapClick', 'mapMouseover', 'mapMouseout', 'mapMousemove', 'mapDrag', 'mapDragend', 'mapDragstart'
 ];
 var NguiMapComponent = (function () {
-    function NguiMapComponent(optionBuilder, elementRef, geolocation, geoCoder, nguiMap, apiLoader) {
+    function NguiMapComponent(optionBuilder, elementRef, geolocation, geoCoder, nguiMap, apiLoader, zone) {
         var _this = this;
         this.optionBuilder = optionBuilder;
         this.elementRef = elementRef;
@@ -133,6 +133,7 @@ var NguiMapComponent = (function () {
         this.geoCoder = geoCoder;
         this.nguiMap = nguiMap;
         this.apiLoader = apiLoader;
+        this.zone = zone;
         this.mapReady$ = new core_1.EventEmitter();
         this.mapOptions = {};
         this.inputChanges$ = new Subject_1.Subject();
@@ -159,28 +160,30 @@ var NguiMapComponent = (function () {
         console.log('ngui-map mapOptions', this.mapOptions);
         this.mapOptions.zoom = this.mapOptions.zoom || 15;
         typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
-        this.map = new google.maps.Map(this.el, this.mapOptions);
-        this.map['mapObjectName'] = 'NguiMapComponent';
-        if (!this.mapOptions.center) {
-            this.setCenter();
-        }
-        // set google events listeners and emits to this outputs listeners
-        this.nguiMap.setObjectEvents(OUTPUTS, this, 'map');
-        this.map.addListener('idle', function () {
-            if (!_this.mapIdledOnce) {
-                _this.mapIdledOnce = true;
-                setTimeout(function () {
-                    _this.mapReady$.emit(_this.map);
-                });
+        this.zone.runOutsideAngular(function () {
+            _this.map = new google.maps.Map(_this.el, _this.mapOptions);
+            _this.map['mapObjectName'] = 'NguiMapComponent';
+            if (!_this.mapOptions.center) {
+                _this.setCenter();
+            }
+            // set google events listeners and emits to this outputs listeners
+            _this.nguiMap.setObjectEvents(OUTPUTS, _this, 'map');
+            _this.map.addListener('idle', function () {
+                if (!_this.mapIdledOnce) {
+                    _this.mapIdledOnce = true;
+                    setTimeout(function () {
+                        _this.mapReady$.emit(_this.map);
+                    });
+                }
+            });
+            // update map when input changes
+            debounceTime_1.debounceTime.call(_this.inputChanges$, 1000)
+                .subscribe(function (changes) { return _this.nguiMap.updateGoogleObject(_this.map, changes); });
+            if (typeof window !== 'undefined' && window['nguiMapRef']) {
+                // expose map object for test and debugging on (<any>window)
+                window['nguiMapRef'].map = _this.map;
             }
         });
-        // update map when input changes
-        debounceTime_1.debounceTime.call(this.inputChanges$, 1000)
-            .subscribe(function (changes) { return _this.nguiMap.updateGoogleObject(_this.map, changes); });
-        if (typeof window !== 'undefined' && window['nguiMapRef']) {
-            // expose map object for test and debugging on (<any>window)
-            window['nguiMapRef'].map = this.map;
-        }
     };
     NguiMapComponent.prototype.setCenter = function () {
         var _this = this;
@@ -203,8 +206,8 @@ var NguiMapComponent = (function () {
             });
         }
     };
-    NguiMapComponent.prototype.openInfoWindow = function (id, anchor, data) {
-        this.infoWindows[id].open(anchor, data);
+    NguiMapComponent.prototype.openInfoWindow = function (id, anchor) {
+        this.infoWindows[id].open(anchor);
     };
     NguiMapComponent.prototype.ngOnDestroy = function () {
         var _this = this;
@@ -247,7 +250,8 @@ NguiMapComponent = __decorate([
         navigator_geolocation_1.NavigatorGeolocation,
         geo_coder_1.GeoCoder,
         ngui_map_1.NguiMap,
-        api_loader_1.NgMapApiLoader])
+        api_loader_1.NgMapApiLoader,
+        core_1.NgZone])
 ], NguiMapComponent);
 exports.NguiMapComponent = NguiMapComponent;
 
@@ -349,6 +353,128 @@ exports.BaseMapDirective = BaseMapDirective;
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var ReplaySubject_1 = __webpack_require__(33);
+var config_1 = __webpack_require__(8);
+var util_1 = __webpack_require__(9);
+var first_1 = __webpack_require__(34);
+var NgMapApiLoader = (function () {
+    function NgMapApiLoader(config) {
+        this.config = config;
+        this.api$ = first_1.first.call(new ReplaySubject_1.ReplaySubject(1));
+        this.config = this.config || { apiUrl: 'https://maps.google.com/maps/api/js' };
+    }
+    NgMapApiLoader.prototype.ngOnDestroy = function () {
+        this.api$.complete();
+    };
+    return NgMapApiLoader;
+}());
+exports.NgMapApiLoader = NgMapApiLoader;
+var NgMapAsyncCallbackApiLoader = (function (_super) {
+    __extends(NgMapAsyncCallbackApiLoader, _super);
+    function NgMapAsyncCallbackApiLoader(zone, config) {
+        var _this = _super.call(this, config) || this;
+        _this.zone = zone;
+        return _this;
+    }
+    NgMapAsyncCallbackApiLoader.prototype.load = function () {
+        var _this = this;
+        if (typeof window === 'undefined') {
+            return;
+        }
+        if (util_1.isMapsApiLoaded()) {
+            this.api$.next(google.maps);
+        }
+        else if (!document.querySelector('#ngui-map-api')) {
+            window['nguiMapRef'] = window['nguiMapRef'] || [];
+            window['nguiMapRef'].push({ zone: this.zone, componentFn: function () { return _this.api$.next(google.maps); } });
+            this.addGoogleMapsApi();
+        }
+    };
+    NgMapAsyncCallbackApiLoader.prototype.addGoogleMapsApi = function () {
+        window['initNguiMap'] = window['initNguiMap'] || function () {
+            window['nguiMapRef'].forEach(function (nguiMapRef) {
+                nguiMapRef.zone.run(function () { nguiMapRef.componentFn(); });
+            });
+            window['nguiMapRef'].splice(0, window['nguiMapRef'].length);
+        };
+        var script = document.createElement('script');
+        script.id = 'ngui-map-api';
+        // script.src = "https://maps.google.com/maps/api/js?callback=initNguiMap";
+        var apiUrl = this.config.apiUrl;
+        apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
+        script.src = apiUrl + 'callback=initNguiMap';
+        document.querySelector('body').appendChild(script);
+    };
+    return NgMapAsyncCallbackApiLoader;
+}(NgMapApiLoader));
+NgMapAsyncCallbackApiLoader = __decorate([
+    core_1.Injectable(),
+    __param(1, core_1.Optional()), __param(1, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)),
+    __metadata("design:paramtypes", [core_1.NgZone, Object])
+], NgMapAsyncCallbackApiLoader);
+exports.NgMapAsyncCallbackApiLoader = NgMapAsyncCallbackApiLoader;
+var NgMapAsyncApiLoader = (function (_super) {
+    __extends(NgMapAsyncApiLoader, _super);
+    function NgMapAsyncApiLoader(config) {
+        return _super.call(this, config) || this;
+    }
+    NgMapAsyncApiLoader.prototype.load = function () {
+        var _this = this;
+        if (typeof window === 'undefined') {
+            return;
+        }
+        if (util_1.isMapsApiLoaded()) {
+            this.api$.next(google.maps);
+        }
+        else if (!document.querySelector('#ngui-map-api')) {
+            var script = document.createElement('script');
+            script.id = 'ngui-map-api';
+            script.async = true;
+            script.onload = function () { return _this.api$.next(google.maps); };
+            script.src = this.config.apiUrl;
+            document.querySelector('body').appendChild(script);
+        }
+    };
+    return NgMapAsyncApiLoader;
+}(NgMapApiLoader));
+NgMapAsyncApiLoader = __decorate([
+    core_1.Injectable(),
+    __param(0, core_1.Optional()), __param(0, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)),
+    __metadata("design:paramtypes", [Object])
+], NgMapAsyncApiLoader);
+exports.NgMapAsyncApiLoader = NgMapAsyncApiLoader;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -360,16 +486,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var option_builder_1 = __webpack_require__(4);
-var geo_coder_1 = __webpack_require__(7);
+var option_builder_1 = __webpack_require__(5);
+var geo_coder_1 = __webpack_require__(6);
 /**
  * collection of map instance-related properties and methods
  */
 var NguiMap = (function () {
-    function NguiMap(geoCoder, optionBuilder) {
+    function NguiMap(geoCoder, optionBuilder, zone) {
         var _this = this;
         this.geoCoder = geoCoder;
         this.optionBuilder = optionBuilder;
+        this.zone = zone;
         this.updateGoogleObject = function (object, changes) {
             var val, currentValue, setMethodName;
             if (object) {
@@ -405,14 +532,16 @@ var NguiMap = (function () {
         };
     }
     NguiMap.prototype.setObjectEvents = function (definedEvents, thisObj, prefix) {
+        var _this = this;
         definedEvents.forEach(function (definedEvent) {
             var eventName = definedEvent
                 .replace(/([A-Z])/g, function ($1) { return "_" + $1.toLowerCase(); }) // positionChanged -> position_changed
                 .replace(/^map_/, ''); // map_click -> click  to avoid DOM conflicts
+            var zone = _this.zone;
             thisObj[prefix].addListener(eventName, function (event) {
                 var param = event ? event : {};
                 param.target = this;
-                thisObj[definedEvent].emit(param);
+                zone.run(function () { return thisObj[definedEvent].emit(param); });
             });
         });
     };
@@ -421,13 +550,14 @@ var NguiMap = (function () {
 NguiMap = __decorate([
     core_1.Injectable(),
     __metadata("design:paramtypes", [geo_coder_1.GeoCoder,
-        option_builder_1.OptionBuilder])
+        option_builder_1.OptionBuilder,
+        core_1.NgZone])
 ], NguiMap);
 exports.NguiMap = NguiMap;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -676,140 +806,7 @@ exports.OptionBuilder = OptionBuilder;
 
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(0);
-var ReplaySubject_1 = __webpack_require__(32);
-var config_1 = __webpack_require__(6);
-var util_1 = __webpack_require__(9);
-var first_1 = __webpack_require__(33);
-var NgMapApiLoader = (function () {
-    function NgMapApiLoader(config) {
-        this.config = config;
-        this.api$ = first_1.first.call(new ReplaySubject_1.ReplaySubject(1));
-        this.config = this.config || { apiUrl: 'https://maps.google.com/maps/api/js' };
-    }
-    NgMapApiLoader.prototype.ngOnDestroy = function () {
-        this.api$.complete();
-    };
-    return NgMapApiLoader;
-}());
-exports.NgMapApiLoader = NgMapApiLoader;
-var NgMapAsyncCallbackApiLoader = (function (_super) {
-    __extends(NgMapAsyncCallbackApiLoader, _super);
-    function NgMapAsyncCallbackApiLoader(zone, config) {
-        var _this = _super.call(this, config) || this;
-        _this.zone = zone;
-        return _this;
-    }
-    NgMapAsyncCallbackApiLoader.prototype.load = function () {
-        var _this = this;
-        if (typeof window === 'undefined') {
-            return;
-        }
-        if (util_1.isMapsApiLoaded()) {
-            this.api$.next(google.maps);
-        }
-        else if (!document.querySelector('#ngui-map-api')) {
-            window['nguiMapRef'] = window['nguiMapRef'] || [];
-            window['nguiMapRef'].push({ zone: this.zone, componentFn: function () { return _this.api$.next(google.maps); } });
-            this.addGoogleMapsApi();
-        }
-    };
-    NgMapAsyncCallbackApiLoader.prototype.addGoogleMapsApi = function () {
-        window['initNguiMap'] = window['initNguiMap'] || function () {
-            window['nguiMapRef'].forEach(function (nguiMapRef) {
-                nguiMapRef.zone.run(function () { nguiMapRef.componentFn(); });
-            });
-            window['nguiMapRef'].splice(0, window['nguiMapRef'].length);
-        };
-        var script = document.createElement('script');
-        script.id = 'ngui-map-api';
-        // script.src = "https://maps.google.com/maps/api/js?callback=initNguiMap";
-        var apiUrl = this.config.apiUrl;
-        apiUrl += apiUrl.indexOf('?') !== -1 ? '&' : '?';
-        script.src = apiUrl + 'callback=initNguiMap';
-        document.querySelector('body').appendChild(script);
-    };
-    return NgMapAsyncCallbackApiLoader;
-}(NgMapApiLoader));
-NgMapAsyncCallbackApiLoader = __decorate([
-    core_1.Injectable(),
-    __param(1, core_1.Optional()), __param(1, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)),
-    __metadata("design:paramtypes", [core_1.NgZone, Object])
-], NgMapAsyncCallbackApiLoader);
-exports.NgMapAsyncCallbackApiLoader = NgMapAsyncCallbackApiLoader;
-var NgMapAsyncApiLoader = (function (_super) {
-    __extends(NgMapAsyncApiLoader, _super);
-    function NgMapAsyncApiLoader(config) {
-        return _super.call(this, config) || this;
-    }
-    NgMapAsyncApiLoader.prototype.load = function () {
-        var _this = this;
-        if (typeof window === 'undefined') {
-            return;
-        }
-        if (util_1.isMapsApiLoaded()) {
-            this.api$.next(google.maps);
-        }
-        else if (!document.querySelector('#ngui-map-api')) {
-            var script = document.createElement('script');
-            script.id = 'ngui-map-api';
-            script.async = true;
-            script.onload = function () { return _this.api$.next(google.maps); };
-            script.src = this.config.apiUrl;
-            document.querySelector('body').appendChild(script);
-        }
-    };
-    return NgMapAsyncApiLoader;
-}(NgMapApiLoader));
-NgMapAsyncApiLoader = __decorate([
-    core_1.Injectable(),
-    __param(0, core_1.Optional()), __param(0, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)),
-    __metadata("design:paramtypes", [Object])
-], NgMapAsyncApiLoader);
-exports.NgMapAsyncApiLoader = NgMapAsyncApiLoader;
-
-
-/***/ }),
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(0);
-exports.NG_MAP_CONFIG_TOKEN = new core_1.OpaqueToken('NG_MAP_CONFIG_TOKEN');
-
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -826,7 +823,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Observable_1 = __webpack_require__(29);
-var api_loader_1 = __webpack_require__(5);
+var api_loader_1 = __webpack_require__(3);
 /**
  *   Provides [defered/promise API](https://docs.angularjs.org/api/ng/service/$q)
  *   service for Google Geocoder service
@@ -864,7 +861,7 @@ exports.GeoCoder = GeoCoder;
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -905,6 +902,17 @@ NavigatorGeolocation = __decorate([
     core_1.Injectable()
 ], NavigatorGeolocation);
 exports.NavigatorGeolocation = NavigatorGeolocation;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+exports.NG_MAP_CONFIG_TOKEN = new core_1.OpaqueToken('NG_MAP_CONFIG_TOKEN');
 
 
 /***/ }),
@@ -1010,7 +1018,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(10);
 var debounceTime_1 = __webpack_require__(11);
-var ngui_map_1 = __webpack_require__(3);
+var ngui_map_1 = __webpack_require__(4);
 var ngui_map_component_1 = __webpack_require__(1);
 var INPUTS = [
     'position'
@@ -1189,7 +1197,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(10);
 var debounceTime_1 = __webpack_require__(11);
-var ngui_map_1 = __webpack_require__(3);
+var ngui_map_1 = __webpack_require__(4);
 var ngui_map_component_1 = __webpack_require__(1);
 var INPUTS = [
     'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
@@ -1198,11 +1206,11 @@ var OUTPUTS = [
     'closeclick', 'content_changed', 'domready', 'position_changed', 'zindex_changed'
 ];
 var InfoWindow = (function () {
-    function InfoWindow(nguiMapComponent, elementRef, nguiMap) {
+    function InfoWindow(elementRef, nguiMap, nguiMapComponent) {
         var _this = this;
-        this.nguiMapComponent = nguiMapComponent;
         this.elementRef = elementRef;
         this.nguiMap = nguiMap;
+        this.nguiMapComponent = nguiMapComponent;
         this.initialized$ = new core_1.EventEmitter();
         this.objectOptions = {};
         this.inputChanges$ = new Subject_1.Subject();
@@ -1226,15 +1234,13 @@ var InfoWindow = (function () {
     InfoWindow.prototype.initialize = function () {
         var _this = this;
         console.log('infowindow is being initialized');
-        this.template = this.elementRef.nativeElement.innerHTML;
         this.objectOptions = this.nguiMapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
         this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
         this.infoWindow['mapObjectName'] = 'InfoWindow';
         console.log('INFOWINDOW objectOptions', this.objectOptions);
         // register infoWindow ids to NguiMap, so that it can be opened by id
-        this.el = this.elementRef.nativeElement;
-        if (this.el.id) {
-            this.nguiMapComponent.infoWindows[this.el.id] = this;
+        if (this.elementRef.nativeElement.id) {
+            this.nguiMapComponent.infoWindows[this.elementRef.nativeElement.id] = this;
         }
         else {
             console.error('An InfoWindow must have an id. e.g. id="detail"');
@@ -1247,14 +1253,9 @@ var InfoWindow = (function () {
         this.nguiMapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
         this.initialized$.emit(this.infoWindow);
     };
-    InfoWindow.prototype.open = function (anchor, data) {
-        var html = this.template;
-        for (var key in data) {
-            this[key] = data[key];
-            html = html.replace("[[" + key + "]]", data[key]);
-        }
+    InfoWindow.prototype.open = function (anchor) {
         // set content and open it
-        this.infoWindow.setContent(html);
+        this.infoWindow.setContent(this.template.element.nativeElement);
         this.infoWindow.open(this.nguiMapComponent.map, anchor);
     };
     InfoWindow.prototype.ngOnDestroy = function () {
@@ -1270,16 +1271,20 @@ __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], InfoWindow.prototype, "initialized$", void 0);
+__decorate([
+    core_1.ViewChild('template', { read: core_1.ViewContainerRef }),
+    __metadata("design:type", core_1.ViewContainerRef)
+], InfoWindow.prototype, "template", void 0);
 InfoWindow = __decorate([
     core_1.Component({
         selector: 'ngui-map > info-window',
         inputs: INPUTS,
         outputs: OUTPUTS,
-        template: "<ng-content></ng-content>",
+        template: "<div #template><ng-content></ng-content></div>",
     }),
-    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent,
-        core_1.ElementRef,
-        ngui_map_1.NguiMap])
+    __metadata("design:paramtypes", [core_1.ElementRef,
+        ngui_map_1.NguiMap,
+        ngui_map_component_1.NguiMapComponent])
 ], InfoWindow);
 exports.InfoWindow = InfoWindow;
 
@@ -1535,7 +1540,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var base_map_directive_1 = __webpack_require__(2);
 var ngui_map_component_1 = __webpack_require__(1);
-var navigator_geolocation_1 = __webpack_require__(8);
+var navigator_geolocation_1 = __webpack_require__(7);
 var INPUTS = [
     'directions', 'draggable', 'hideRouteList', 'infoWindow', 'panel', 'markerOptions',
     'polylineOptions', 'preserveViewport', 'routeIndex', 'suppressBicyclingLayer',
@@ -1972,20 +1977,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var config_1 = __webpack_require__(6);
-var option_builder_1 = __webpack_require__(4);
+var api_loader_1 = __webpack_require__(3);
+var option_builder_1 = __webpack_require__(5);
 var PlacesAutoComplete = (function () {
-    function PlacesAutoComplete(optionBuilder, elementRef, zone, config) {
+    function PlacesAutoComplete(optionBuilder, elementRef, apiLoader) {
         var _this = this;
         this.optionBuilder = optionBuilder;
         this.elementRef = elementRef;
-        this.zone = zone;
-        this.config = config;
+        this.apiLoader = apiLoader;
         this.place_changed = new core_1.EventEmitter();
         this.initialized$ = new core_1.EventEmitter();
         // only called when map is ready
@@ -2000,38 +2001,9 @@ var PlacesAutoComplete = (function () {
             });
             _this.initialized$.emit(_this.autocomplete);
         };
-        this.config = this.config || { apiUrl: 'https://maps.google.com/maps/api/js?libraries=places' };
-        // treat this as nguiMap because it requires google api on root level
-        window['nguiMapRef'] = window['nguiMapRef'] || [];
-        this.mapIndex = window['nguiMapRef'].length;
-        window['nguiMapRef'].push({
-            zone: this.zone,
-            componentFn: function () { return _this.initialize(); }
-        });
-        if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
-            this.addGoogleMapsApi();
-        }
-        else {
-            this.initialize();
-        }
+        apiLoader.load();
+        apiLoader.api$.subscribe(function () { return _this.initialize(); });
     }
-    PlacesAutoComplete.prototype.addGoogleMapsApi = function () {
-        window['initNguiMap'] = window['initNguiMap'] || function () {
-            window['nguiMapRef'].forEach(function (nguiMapRef) {
-                nguiMapRef.zone.run(function () { nguiMapRef.componentFn(); });
-            });
-            window['nguiMapRef'] = [];
-        };
-        if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ngui-map-api')) {
-            var script = document.createElement('script');
-            script.id = 'ngui-map-api';
-            // script.src = "https://maps.google.com/maps/api/js?callback=initNguiMap";
-            var apiUrl = this.config.apiUrl;
-            apiUrl += apiUrl.indexOf('?') ? '&' : '?';
-            script.src = apiUrl + 'callback=initNguiMap';
-            document.querySelector('body').appendChild(script);
-        }
-    };
     return PlacesAutoComplete;
 }());
 __decorate([
@@ -2058,10 +2030,9 @@ PlacesAutoComplete = __decorate([
     core_1.Directive({
         selector: '[places-auto-complete]'
     }),
-    __param(3, core_1.Optional()), __param(3, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)),
     __metadata("design:paramtypes", [option_builder_1.OptionBuilder,
         core_1.ElementRef,
-        core_1.NgZone, Object])
+        api_loader_1.NgMapApiLoader])
 ], PlacesAutoComplete);
 exports.PlacesAutoComplete = PlacesAutoComplete;
 
@@ -2412,12 +2383,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(31);
-var option_builder_1 = __webpack_require__(4);
-var geo_coder_1 = __webpack_require__(7);
-var navigator_geolocation_1 = __webpack_require__(8);
-var config_1 = __webpack_require__(6);
-var api_loader_1 = __webpack_require__(5);
+var common_1 = __webpack_require__(32);
+var option_builder_1 = __webpack_require__(5);
+var geo_coder_1 = __webpack_require__(6);
+var navigator_geolocation_1 = __webpack_require__(7);
+var config_1 = __webpack_require__(8);
+var api_loader_1 = __webpack_require__(3);
 var ngui_map_component_1 = __webpack_require__(1);
 var info_window_1 = __webpack_require__(13);
 var custom_marker_1 = __webpack_require__(12);
@@ -2430,7 +2401,7 @@ var ground_overlay_1 = __webpack_require__(19);
 var heatmap_layer_1 = __webpack_require__(20);
 var kml_layer_1 = __webpack_require__(21);
 var marker_1 = __webpack_require__(22);
-var ngui_map_1 = __webpack_require__(3);
+var ngui_map_1 = __webpack_require__(4);
 var places_auto_complete_1 = __webpack_require__(23);
 var polygon_1 = __webpack_require__(24);
 var polyline_1 = __webpack_require__(25);
@@ -2478,24 +2449,6 @@ var NguiMapModule_1;
 
 /***/ }),
 /* 31 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_31__;
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_32__;
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_33__;
-
-/***/ }),
-/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2503,13 +2456,13 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_33__;
 Object.defineProperty(exports, "__esModule", { value: true });
 var bicycling_layer_1 = __webpack_require__(14);
 exports.BicyclingLayer = bicycling_layer_1.BicyclingLayer;
-var navigator_geolocation_1 = __webpack_require__(8);
+var navigator_geolocation_1 = __webpack_require__(7);
 exports.NavigatorGeolocation = navigator_geolocation_1.NavigatorGeolocation;
-var option_builder_1 = __webpack_require__(4);
+var option_builder_1 = __webpack_require__(5);
 exports.OptionBuilder = option_builder_1.OptionBuilder;
-var config_1 = __webpack_require__(6);
+var config_1 = __webpack_require__(8);
 exports.NG_MAP_CONFIG_TOKEN = config_1.NG_MAP_CONFIG_TOKEN;
-var api_loader_1 = __webpack_require__(5);
+var api_loader_1 = __webpack_require__(3);
 exports.NgMapApiLoader = api_loader_1.NgMapApiLoader;
 exports.NgMapAsyncApiLoader = api_loader_1.NgMapAsyncApiLoader;
 exports.NgMapAsyncCallbackApiLoader = api_loader_1.NgMapAsyncCallbackApiLoader;
@@ -2527,7 +2480,7 @@ var directions_renderer_1 = __webpack_require__(17);
 exports.DirectionsRenderer = directions_renderer_1.DirectionsRenderer;
 var drawing_manager_1 = __webpack_require__(18);
 exports.DrawingManager = drawing_manager_1.DrawingManager;
-var geo_coder_1 = __webpack_require__(7);
+var geo_coder_1 = __webpack_require__(6);
 exports.GeoCoder = geo_coder_1.GeoCoder;
 var ground_overlay_1 = __webpack_require__(19);
 exports.GroundOverlay = ground_overlay_1.GroundOverlay;
@@ -2537,7 +2490,7 @@ var kml_layer_1 = __webpack_require__(21);
 exports.KmlLayer = kml_layer_1.KmlLayer;
 var marker_1 = __webpack_require__(22);
 exports.Marker = marker_1.Marker;
-var ngui_map_1 = __webpack_require__(3);
+var ngui_map_1 = __webpack_require__(4);
 exports.NguiMap = ngui_map_1.NguiMap;
 var places_auto_complete_1 = __webpack_require__(23);
 exports.PlacesAutoComplete = places_auto_complete_1.PlacesAutoComplete;
@@ -2554,6 +2507,24 @@ exports.TransitLayer = transit_layer_1.TransitLayer;
 var ngui_map_module_1 = __webpack_require__(30);
 exports.NguiMapModule = ngui_map_module_1.NguiMapModule;
 
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_32__;
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_33__;
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_34__;
 
 /***/ })
 /******/ ]);

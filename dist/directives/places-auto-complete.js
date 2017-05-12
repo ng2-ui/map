@@ -8,20 +8,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var config_1 = require("../services/config");
+var api_loader_1 = require("../services/api-loader");
 var option_builder_1 = require("../services/option-builder");
 var PlacesAutoComplete = (function () {
-    function PlacesAutoComplete(optionBuilder, elementRef, zone, config) {
+    function PlacesAutoComplete(optionBuilder, elementRef, apiLoader) {
         var _this = this;
         this.optionBuilder = optionBuilder;
         this.elementRef = elementRef;
-        this.zone = zone;
-        this.config = config;
+        this.apiLoader = apiLoader;
         this.place_changed = new core_1.EventEmitter();
         this.initialized$ = new core_1.EventEmitter();
         // only called when map is ready
@@ -36,38 +32,9 @@ var PlacesAutoComplete = (function () {
             });
             _this.initialized$.emit(_this.autocomplete);
         };
-        this.config = this.config || { apiUrl: 'https://maps.google.com/maps/api/js?libraries=places' };
-        // treat this as nguiMap because it requires google api on root level
-        window['nguiMapRef'] = window['nguiMapRef'] || [];
-        this.mapIndex = window['nguiMapRef'].length;
-        window['nguiMapRef'].push({
-            zone: this.zone,
-            componentFn: function () { return _this.initialize(); }
-        });
-        if (typeof google === 'undefined' || typeof google.maps === 'undefined' || !google.maps.Map) {
-            this.addGoogleMapsApi();
-        }
-        else {
-            this.initialize();
-        }
+        apiLoader.load();
+        apiLoader.api$.subscribe(function () { return _this.initialize(); });
     }
-    PlacesAutoComplete.prototype.addGoogleMapsApi = function () {
-        window['initNguiMap'] = window['initNguiMap'] || function () {
-            window['nguiMapRef'].forEach(function (nguiMapRef) {
-                nguiMapRef.zone.run(function () { nguiMapRef.componentFn(); });
-            });
-            window['nguiMapRef'] = [];
-        };
-        if ((!window['google'] || !window['google']['maps']) && !document.querySelector('#ngui-map-api')) {
-            var script = document.createElement('script');
-            script.id = 'ngui-map-api';
-            // script.src = "https://maps.google.com/maps/api/js?callback=initNguiMap";
-            var apiUrl = this.config.apiUrl;
-            apiUrl += apiUrl.indexOf('?') ? '&' : '?';
-            script.src = apiUrl + 'callback=initNguiMap';
-            document.querySelector('body').appendChild(script);
-        }
-    };
     return PlacesAutoComplete;
 }());
 __decorate([
@@ -94,10 +61,9 @@ PlacesAutoComplete = __decorate([
     core_1.Directive({
         selector: '[places-auto-complete]'
     }),
-    __param(3, core_1.Optional()), __param(3, core_1.Inject(config_1.NG_MAP_CONFIG_TOKEN)),
     __metadata("design:paramtypes", [option_builder_1.OptionBuilder,
         core_1.ElementRef,
-        core_1.NgZone, Object])
+        api_loader_1.NgMapApiLoader])
 ], PlacesAutoComplete);
 exports.PlacesAutoComplete = PlacesAutoComplete;
 //# sourceMappingURL=places-auto-complete.js.map

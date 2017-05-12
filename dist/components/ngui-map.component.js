@@ -36,7 +36,7 @@ var OUTPUTS = [
     'mapClick', 'mapMouseover', 'mapMouseout', 'mapMousemove', 'mapDrag', 'mapDragend', 'mapDragstart'
 ];
 var NguiMapComponent = (function () {
-    function NguiMapComponent(optionBuilder, elementRef, geolocation, geoCoder, nguiMap, apiLoader) {
+    function NguiMapComponent(optionBuilder, elementRef, geolocation, geoCoder, nguiMap, apiLoader, zone) {
         var _this = this;
         this.optionBuilder = optionBuilder;
         this.elementRef = elementRef;
@@ -44,6 +44,7 @@ var NguiMapComponent = (function () {
         this.geoCoder = geoCoder;
         this.nguiMap = nguiMap;
         this.apiLoader = apiLoader;
+        this.zone = zone;
         this.mapReady$ = new core_1.EventEmitter();
         this.mapOptions = {};
         this.inputChanges$ = new Subject_1.Subject();
@@ -70,28 +71,30 @@ var NguiMapComponent = (function () {
         console.log('ngui-map mapOptions', this.mapOptions);
         this.mapOptions.zoom = this.mapOptions.zoom || 15;
         typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
-        this.map = new google.maps.Map(this.el, this.mapOptions);
-        this.map['mapObjectName'] = 'NguiMapComponent';
-        if (!this.mapOptions.center) {
-            this.setCenter();
-        }
-        // set google events listeners and emits to this outputs listeners
-        this.nguiMap.setObjectEvents(OUTPUTS, this, 'map');
-        this.map.addListener('idle', function () {
-            if (!_this.mapIdledOnce) {
-                _this.mapIdledOnce = true;
-                setTimeout(function () {
-                    _this.mapReady$.emit(_this.map);
-                });
+        this.zone.runOutsideAngular(function () {
+            _this.map = new google.maps.Map(_this.el, _this.mapOptions);
+            _this.map['mapObjectName'] = 'NguiMapComponent';
+            if (!_this.mapOptions.center) {
+                _this.setCenter();
+            }
+            // set google events listeners and emits to this outputs listeners
+            _this.nguiMap.setObjectEvents(OUTPUTS, _this, 'map');
+            _this.map.addListener('idle', function () {
+                if (!_this.mapIdledOnce) {
+                    _this.mapIdledOnce = true;
+                    setTimeout(function () {
+                        _this.mapReady$.emit(_this.map);
+                    });
+                }
+            });
+            // update map when input changes
+            debounceTime_1.debounceTime.call(_this.inputChanges$, 1000)
+                .subscribe(function (changes) { return _this.nguiMap.updateGoogleObject(_this.map, changes); });
+            if (typeof window !== 'undefined' && window['nguiMapRef']) {
+                // expose map object for test and debugging on (<any>window)
+                window['nguiMapRef'].map = _this.map;
             }
         });
-        // update map when input changes
-        debounceTime_1.debounceTime.call(this.inputChanges$, 1000)
-            .subscribe(function (changes) { return _this.nguiMap.updateGoogleObject(_this.map, changes); });
-        if (typeof window !== 'undefined' && window['nguiMapRef']) {
-            // expose map object for test and debugging on (<any>window)
-            window['nguiMapRef'].map = this.map;
-        }
     };
     NguiMapComponent.prototype.setCenter = function () {
         var _this = this;
@@ -114,8 +117,8 @@ var NguiMapComponent = (function () {
             });
         }
     };
-    NguiMapComponent.prototype.openInfoWindow = function (id, anchor, data) {
-        this.infoWindows[id].open(anchor, data);
+    NguiMapComponent.prototype.openInfoWindow = function (id, anchor) {
+        this.infoWindows[id].open(anchor);
     };
     NguiMapComponent.prototype.ngOnDestroy = function () {
         var _this = this;
@@ -158,7 +161,8 @@ NguiMapComponent = __decorate([
         navigator_geolocation_1.NavigatorGeolocation,
         geo_coder_1.GeoCoder,
         ngui_map_1.NguiMap,
-        api_loader_1.NgMapApiLoader])
+        api_loader_1.NgMapApiLoader,
+        core_1.NgZone])
 ], NguiMapComponent);
 exports.NguiMapComponent = NguiMapComponent;
 //# sourceMappingURL=ngui-map.component.js.map

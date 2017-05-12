@@ -1,12 +1,12 @@
 /// <reference types="googlemaps" />
-import { ElementRef, EventEmitter, SimpleChanges, OnInit, OnChanges, OnDestroy } from '@angular/core';
+import { ElementRef, EventEmitter, SimpleChanges, ViewContainerRef, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { NguiMap } from '../services/ngui-map';
 import { NguiMapComponent } from './ngui-map.component';
 export declare class InfoWindow implements OnInit, OnChanges, OnDestroy {
-    private nguiMapComponent;
     private elementRef;
     private nguiMap;
+    private nguiMapComponent;
     content: any;
     disableAutoPan: any;
     maxWidth: any;
@@ -20,15 +20,14 @@ export declare class InfoWindow implements OnInit, OnChanges, OnDestroy {
     position_changed: any;
     zindex_changed: any;
     initialized$: EventEmitter<any>;
-    el: HTMLElement;
     infoWindow: google.maps.InfoWindow;
     objectOptions: google.maps.InfoWindowOptions;
     inputChanges$: Subject<{}>;
-    template: string;
-    constructor(nguiMapComponent: NguiMapComponent, elementRef: ElementRef, nguiMap: NguiMap);
+    template: ViewContainerRef;
+    constructor(elementRef: ElementRef, nguiMap: NguiMap, nguiMapComponent: NguiMapComponent);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     initialize(): void;
-    open(anchor: google.maps.MVCObject, data: any): void;
+    open(anchor: google.maps.MVCObject): void;
     ngOnDestroy(): void;
 }

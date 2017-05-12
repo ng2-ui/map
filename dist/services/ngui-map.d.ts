@@ -1,4 +1,4 @@
-import { SimpleChanges } from '@angular/core';
+import { SimpleChanges, NgZone } from '@angular/core';
 import { OptionBuilder } from './option-builder';
 import { GeoCoder } from './geo-coder';
 /**
@@ -7,7 +7,8 @@ import { GeoCoder } from './geo-coder';
 export declare class NguiMap {
     private geoCoder;
     private optionBuilder;
-    constructor(geoCoder: GeoCoder, optionBuilder: OptionBuilder);
+    private zone;
+    constructor(geoCoder: GeoCoder, optionBuilder: OptionBuilder, zone: NgZone);
     setObjectEvents(definedEvents: string[], thisObj: any, prefix: string): void;
     updateGoogleObject: (object: any, changes: SimpleChanges) => void;
 }

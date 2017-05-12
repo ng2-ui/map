@@ -21,11 +21,11 @@ var OUTPUTS = [
     'closeclick', 'content_changed', 'domready', 'position_changed', 'zindex_changed'
 ];
 var InfoWindow = (function () {
-    function InfoWindow(nguiMapComponent, elementRef, nguiMap) {
+    function InfoWindow(elementRef, nguiMap, nguiMapComponent) {
         var _this = this;
-        this.nguiMapComponent = nguiMapComponent;
         this.elementRef = elementRef;
         this.nguiMap = nguiMap;
+        this.nguiMapComponent = nguiMapComponent;
         this.initialized$ = new core_1.EventEmitter();
         this.objectOptions = {};
         this.inputChanges$ = new Subject_1.Subject();
@@ -49,15 +49,13 @@ var InfoWindow = (function () {
     InfoWindow.prototype.initialize = function () {
         var _this = this;
         console.log('infowindow is being initialized');
-        this.template = this.elementRef.nativeElement.innerHTML;
         this.objectOptions = this.nguiMapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
         this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
         this.infoWindow['mapObjectName'] = 'InfoWindow';
         console.log('INFOWINDOW objectOptions', this.objectOptions);
         // register infoWindow ids to NguiMap, so that it can be opened by id
-        this.el = this.elementRef.nativeElement;
-        if (this.el.id) {
-            this.nguiMapComponent.infoWindows[this.el.id] = this;
+        if (this.elementRef.nativeElement.id) {
+            this.nguiMapComponent.infoWindows[this.elementRef.nativeElement.id] = this;
         }
         else {
             console.error('An InfoWindow must have an id. e.g. id="detail"');
@@ -70,14 +68,9 @@ var InfoWindow = (function () {
         this.nguiMapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
         this.initialized$.emit(this.infoWindow);
     };
-    InfoWindow.prototype.open = function (anchor, data) {
-        var html = this.template;
-        for (var key in data) {
-            this[key] = data[key];
-            html = html.replace("[[" + key + "]]", data[key]);
-        }
+    InfoWindow.prototype.open = function (anchor) {
         // set content and open it
-        this.infoWindow.setContent(html);
+        this.infoWindow.setContent(this.template.element.nativeElement);
         this.infoWindow.open(this.nguiMapComponent.map, anchor);
     };
     InfoWindow.prototype.ngOnDestroy = function () {
@@ -93,16 +86,20 @@ __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], InfoWindow.prototype, "initialized$", void 0);
+__decorate([
+    core_1.ViewChild('template', { read: core_1.ViewContainerRef }),
+    __metadata("design:type", core_1.ViewContainerRef)
+], InfoWindow.prototype, "template", void 0);
 InfoWindow = __decorate([
     core_1.Component({
         selector: 'ngui-map > info-window',
         inputs: INPUTS,
         outputs: OUTPUTS,
-        template: "<ng-content></ng-content>",
+        template: "<div #template><ng-content></ng-content></div>",
     }),
-    __metadata("design:paramtypes", [ngui_map_component_1.NguiMapComponent,
-        core_1.ElementRef,
-        ngui_map_1.NguiMap])
+    __metadata("design:paramtypes", [core_1.ElementRef,
+        ngui_map_1.NguiMap,
+        ngui_map_component_1.NguiMapComponent])
 ], InfoWindow);
 exports.InfoWindow = InfoWindow;
 //# sourceMappingURL=info-window.js.map

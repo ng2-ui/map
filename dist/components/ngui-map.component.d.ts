@@ -1,12 +1,12 @@
 /// <reference types="googlemaps" />
-import { ElementRef, EventEmitter, SimpleChanges, AfterViewInit, OnChanges, OnDestroy } from '@angular/core';
+import { ElementRef, EventEmitter, SimpleChanges, NgZone, AfterViewInit, OnChanges, OnDestroy } from '@angular/core';
 import { OptionBuilder } from '../services/option-builder';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
 import { GeoCoder } from '../services/geo-coder';
 import { NguiMap } from '../services/ngui-map';
 import { NgMapApiLoader } from '../services/api-loader';
+import { InfoWindow } from './info-window';
 import { Subject } from 'rxjs/Subject';
-import { IJson } from '../services/util';
 export declare class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit {
     optionBuilder: OptionBuilder;
     elementRef: ElementRef;
@@ -14,6 +14,7 @@ export declare class NguiMapComponent implements OnChanges, OnDestroy, AfterView
     geoCoder: GeoCoder;
     nguiMap: NguiMap;
     apiLoader: NgMapApiLoader;
+    zone: NgZone;
     backgroundColor: any;
     center: any;
     disableDefaultUI: any;
@@ -82,14 +83,16 @@ export declare class NguiMapComponent implements OnChanges, OnDestroy, AfterView
     map: google.maps.Map;
     mapOptions: google.maps.MapOptions;
     inputChanges$: Subject<{}>;
-    infoWindows: any;
+    infoWindows: {
+        [id: string]: InfoWindow;
+    };
     mapIdledOnce: boolean;
-    constructor(optionBuilder: OptionBuilder, elementRef: ElementRef, geolocation: NavigatorGeolocation, geoCoder: GeoCoder, nguiMap: NguiMap, apiLoader: NgMapApiLoader);
+    constructor(optionBuilder: OptionBuilder, elementRef: ElementRef, geolocation: NavigatorGeolocation, geoCoder: GeoCoder, nguiMap: NguiMap, apiLoader: NgMapApiLoader, zone: NgZone);
     ngAfterViewInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     initializeMap(): void;
     setCenter(): void;
-    openInfoWindow(id: string, anchor: google.maps.MVCObject, data: IJson): void;
+    openInfoWindow(id: string, anchor: google.maps.MVCObject): void;
     ngOnDestroy(): void;
     addToMapObjectGroup(mapObjectName: string, mapObject: any): void;
     removeFromMapObjectGroup(mapObjectName: string, mapObject: any): void;

@@ -16,10 +16,11 @@ var geo_coder_1 = require("./geo-coder");
  * collection of map instance-related properties and methods
  */
 var NguiMap = (function () {
-    function NguiMap(geoCoder, optionBuilder) {
+    function NguiMap(geoCoder, optionBuilder, zone) {
         var _this = this;
         this.geoCoder = geoCoder;
         this.optionBuilder = optionBuilder;
+        this.zone = zone;
         this.updateGoogleObject = function (object, changes) {
             var val, currentValue, setMethodName;
             if (object) {
@@ -55,14 +56,16 @@ var NguiMap = (function () {
         };
     }
     NguiMap.prototype.setObjectEvents = function (definedEvents, thisObj, prefix) {
+        var _this = this;
         definedEvents.forEach(function (definedEvent) {
             var eventName = definedEvent
                 .replace(/([A-Z])/g, function ($1) { return "_" + $1.toLowerCase(); }) // positionChanged -> position_changed
                 .replace(/^map_/, ''); // map_click -> click  to avoid DOM conflicts
+            var zone = _this.zone;
             thisObj[prefix].addListener(eventName, function (event) {
                 var param = event ? event : {};
                 param.target = this;
-                thisObj[definedEvent].emit(param);
+                zone.run(function () { return thisObj[definedEvent].emit(param); });
             });
         });
     };
@@ -71,7 +74,8 @@ var NguiMap = (function () {
 NguiMap = __decorate([
     core_1.Injectable(),
     __metadata("design:paramtypes", [geo_coder_1.GeoCoder,
-        option_builder_1.OptionBuilder])
+        option_builder_1.OptionBuilder,
+        core_1.NgZone])
 ], NguiMap);
 exports.NguiMap = NguiMap;
 //# sourceMappingURL=ngui-map.js.map
