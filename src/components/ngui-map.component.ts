@@ -6,7 +6,7 @@ import {
   SimpleChanges,
   Output,
   NgZone,
-  AfterViewInit, OnChanges, OnDestroy
+  AfterViewInit, AfterViewChecked, OnChanges, OnDestroy
 } from '@angular/core';
 
 import { OptionBuilder } from '../services/option-builder';
@@ -15,7 +15,6 @@ import { GeoCoder } from '../services/geo-coder';
 import { NguiMap } from '../services/ngui-map';
 import { NgMapApiLoader } from '../services/api-loader';
 import { InfoWindow } from './info-window';
-
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operator/debounceTime';
 import { toCamelCase } from '../services/util';
@@ -54,7 +53,7 @@ const OUTPUTS = [
     <ng-content></ng-content>
   `,
 })
-export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit {
+export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, AfterViewChecked {
   @Output() public mapReady$: EventEmitter<any> = new EventEmitter();
 
   public el: HTMLElement;
@@ -68,6 +67,8 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit {
 
   // map has been fully initialized
   public mapIdledOnce: boolean = false;
+
+  private initializeMapAfterDisplayed = false;
 
   constructor(
     public optionBuilder: OptionBuilder,
@@ -89,12 +90,24 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit {
     this.apiLoader.api$.subscribe(() => this.initializeMap());
   }
 
+  ngAfterViewChecked() {
+      if (this.initializeMapAfterDisplayed && this.el && this.el.offsetWidth > 0) {
+        this.initializeMap();
+      }
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     this.inputChanges$.next(changes);
   }
 
   initializeMap(): void {
     this.el = this.elementRef.nativeElement.querySelector('.google-map');
+    if (this.el && this.el.offsetWidth === 0) {
+        this.initializeMapAfterDisplayed = true;
+        return;
+    }
+
+    this.initializeMapAfterDisplayed = false;
     this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
     console.log('ngui-map mapOptions', this.mapOptions);
 
@@ -163,7 +176,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    if (this.el) {
+    if (this.el && !this.initializeMapAfterDisplayed) {
       OUTPUTS.forEach(output => google.maps.event.clearListeners(this.map, output));
     }
   }
