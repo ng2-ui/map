@@ -37,8 +37,14 @@ var DataLayer = (function (_super) {
     // only called when map is ready
     DataLayer.prototype.initialize = function () {
         if (this['geoJson']) {
+            // addGeoJson from an object
             console.log('this.geoJson', this['geoJson']);
-            this.nguiMapComponent.map.data.loadGeoJson(this['geoJson']);
+            this.nguiMapComponent.map.data.addGeoJson(this['geoJson']);
+        }
+        else if (this['geoJsonUrl']) {
+            // loadGeoJson from a URL
+            console.log('this.geoJsonUrl', this['geoJsonUrl']);
+            this.nguiMapComponent.map.data.loadGeoJson(this['geoJsonUrl']);
         }
         else {
             this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);

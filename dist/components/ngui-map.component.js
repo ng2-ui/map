@@ -52,6 +52,7 @@ var NguiMapComponent = (function () {
         this.infoWindows = {};
         // map has been fully initialized
         this.mapIdledOnce = false;
+        this.initializeMapAfterDisplayed = false;
         apiLoader.load();
         // all outputs needs to be initialized,
         // http://stackoverflow.com/questions/37765519/angular2-directive-cannot-read-property-subscribe-of-undefined-with-outputs
@@ -61,12 +62,22 @@ var NguiMapComponent = (function () {
         var _this = this;
         this.apiLoader.api$.subscribe(function () { return _this.initializeMap(); });
     };
+    NguiMapComponent.prototype.ngAfterViewChecked = function () {
+        if (this.initializeMapAfterDisplayed && this.el && this.el.offsetWidth > 0) {
+            this.initializeMap();
+        }
+    };
     NguiMapComponent.prototype.ngOnChanges = function (changes) {
         this.inputChanges$.next(changes);
     };
     NguiMapComponent.prototype.initializeMap = function () {
         var _this = this;
         this.el = this.elementRef.nativeElement.querySelector('.google-map');
+        if (this.el && this.el.offsetWidth === 0) {
+            this.initializeMapAfterDisplayed = true;
+            return;
+        }
+        this.initializeMapAfterDisplayed = false;
         this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
         console.log('ngui-map mapOptions', this.mapOptions);
         this.mapOptions.zoom = this.mapOptions.zoom || 15;
@@ -122,7 +133,7 @@ var NguiMapComponent = (function () {
     };
     NguiMapComponent.prototype.ngOnDestroy = function () {
         var _this = this;
-        if (this.el) {
+        if (this.el && !this.initializeMapAfterDisplayed) {
             OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.map, output); });
         }
     };

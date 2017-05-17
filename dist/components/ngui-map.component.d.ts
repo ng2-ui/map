@@ -1,5 +1,5 @@
 /// <reference types="googlemaps" />
-import { ElementRef, EventEmitter, SimpleChanges, NgZone, AfterViewInit, OnChanges, OnDestroy } from '@angular/core';
+import { ElementRef, EventEmitter, SimpleChanges, NgZone, AfterViewInit, AfterViewChecked, OnChanges, OnDestroy } from '@angular/core';
 import { OptionBuilder } from '../services/option-builder';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
 import { GeoCoder } from '../services/geo-coder';
@@ -7,7 +7,7 @@ import { NguiMap } from '../services/ngui-map';
 import { NgMapApiLoader } from '../services/api-loader';
 import { InfoWindow } from './info-window';
 import { Subject } from 'rxjs/Subject';
-export declare class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit {
+export declare class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, AfterViewChecked {
     optionBuilder: OptionBuilder;
     elementRef: ElementRef;
     geolocation: NavigatorGeolocation;
@@ -87,8 +87,10 @@ export declare class NguiMapComponent implements OnChanges, OnDestroy, AfterView
         [id: string]: InfoWindow;
     };
     mapIdledOnce: boolean;
+    private initializeMapAfterDisplayed;
     constructor(optionBuilder: OptionBuilder, elementRef: ElementRef, geolocation: NavigatorGeolocation, geoCoder: GeoCoder, nguiMap: NguiMap, apiLoader: NgMapApiLoader, zone: NgZone);
     ngAfterViewInit(): void;
+    ngAfterViewChecked(): void;
     ngOnChanges(changes: SimpleChanges): void;
     initializeMap(): void;
     setCenter(): void;
