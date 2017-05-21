@@ -1,6 +1,6 @@
 .idea
-src
+app
 tsconfig.json
-typings.json
 node_modules
+npm-debug.log
 .tmp
