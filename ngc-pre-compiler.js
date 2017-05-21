@@ -22,6 +22,11 @@ fs.copySync('src', tmpDir);
     let jsPath = path.join(dirPath, fileName);
 
     js = fs.readFileSync(jsPath, 'utf8');
+    // https://github.com/yahoo/strip-loader/blob/master/lib/index.js#L17
+    let regexPattern = new RegExp('(?:^|\\n)[ \\t]*(console.log)\\(((\\"[^\\"]*\\")|(\\\'[^\\\']*\\\')|[^\\);]|\\([^\\);]*\\))*\\)[ \\t]*(?:$|[;\\n])', 'g');
+    fs.writeFileSync(jsPath, js.replace(regexPattern, '\n'));
+
+    js = fs.readFileSync(jsPath, 'utf8');
     let outputMatches = js.match(/OUTPUTS\s*=\s*(\[[^\]]*?\])/m);
     if (outputMatches) {
       let outputs = eval(outputMatches[1]);
