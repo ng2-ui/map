@@ -35,10 +35,8 @@
     "google",
     "map"
   ],
-  "dependencies": {
-    "@ngui/utils": "^0.7.0"
-  },
   "devDependencies": {
+    "@ngui/utils": "^0.7.0",
     "@angular/common": "^2.4.9",
     "@angular/compiler": "^2.4.9",
     "@angular/compiler-cli": "^2.4.9",
