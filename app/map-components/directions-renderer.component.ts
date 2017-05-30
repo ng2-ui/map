@@ -65,6 +65,7 @@ export class DirectionsRendererComponent implements OnInit {
   ngOnInit() {
     this.directionsRendererDirective['initialized$'].subscribe( directionsRenderer => {
       this.directionsRenderer = directionsRenderer;
+      this.directionsRenderer.setPanel(document.querySelector('#my-panel'));
     });
   }
 
