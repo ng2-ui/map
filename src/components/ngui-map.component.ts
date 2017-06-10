@@ -176,6 +176,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
   }
 
   ngOnDestroy() {
+    this.inputChanges$.complete();
     if (this.el && !this.initializeMapAfterDisplayed) {
       OUTPUTS.forEach(output => google.maps.event.clearListeners(this.map, output));
     }

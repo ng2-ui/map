@@ -153,6 +153,7 @@ export class CustomMarker implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
+    this.inputChanges$.complete();
     this.nguiMapComponent.removeFromMapObjectGroup('CustomMarker', this.mapObject);
 
     if (this.mapObject) {
