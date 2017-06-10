@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 726);
+/******/ 	return __webpack_require__(__webpack_require__.s = 725);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -3864,7 +3864,7 @@ var /** @type {?} */ AnimationTransition = __WEBPACK_IMPORTED_MODULE_0__angular_
 "use strict";
 
 var root_1 = __webpack_require__(53);
-var toSubscriber_1 = __webpack_require__(724);
+var toSubscriber_1 = __webpack_require__(723);
 var observable_1 = __webpack_require__(174);
 /**
  * A representation of any set of values over any amount of time. This the most basic building block
@@ -4631,7 +4631,7 @@ var NguiMapComponent = (function () {
     }
     NguiMapComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
-        this.apiLoader.api$.subscribe(function () { return _this.initializeMap(); });
+        this.apiLoaderSub = this.apiLoader.api$.subscribe(function () { return _this.initializeMap(); });
     };
     NguiMapComponent.prototype.ngAfterViewChecked = function () {
         if (this.initializeMapAfterDisplayed && this.el && this.el.offsetWidth > 0) {
@@ -4703,9 +4703,12 @@ var NguiMapComponent = (function () {
         this.infoWindows[id].open(anchor);
     };
     NguiMapComponent.prototype.ngOnDestroy = function () {
-        var _this = this;
+        this.inputChanges$.complete();
         if (this.el && !this.initializeMapAfterDisplayed) {
-            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.map, output); });
+            this.nguiMap.clearObjectEvents(OUTPUTS, this, 'map');
+        }
+        if (this.apiLoaderSub) {
+            this.apiLoaderSub.unsubscribe();
         }
     };
     // map.markers, map.circles, map.heatmapLayers.. etc
@@ -5675,13 +5678,10 @@ var BaseMapDirective = (function () {
     };
     // When destroyed, remove event listener, and delete this object to prevent memory leak
     BaseMapDirective.prototype.ngOnDestroy = function () {
-        var _this = this;
         this._subscriptions.map(function (subscription) { return subscription.unsubscribe(); });
         this.nguiMapComponent.removeFromMapObjectGroup(this.mapObjectName, this.mapObject);
         if (this.mapObject) {
-            this.outputs.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
-            this.mapObject['setMap'](null);
-            delete this.mapObject;
+            this.nguiMap.clearObjectEvents(this.outputs, this, 'mapObject');
         }
     };
     return BaseMapDirective;
@@ -7698,7 +7698,7 @@ function templateVisitAll(visitor, asts, context) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NG_ASYNC_VALIDATORS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Validators; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_operator_toPromise__ = __webpack_require__(716);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_operator_toPromise__ = __webpack_require__(715);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_operator_toPromise__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__facade_collection__ = __webpack_require__(329);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__facade_lang__ = __webpack_require__(86);
@@ -8378,7 +8378,7 @@ function ControlContainer_tsickle_Closure_declarations() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operator_concatAll___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operator_concatAll__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_every__ = __webpack_require__(396);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_every___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_operator_every__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_last__ = __webpack_require__(714);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_last__ = __webpack_require__(713);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_last___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_operator_last__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_operator_map__ = __webpack_require__(173);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_operator_map__);
@@ -22742,7 +22742,7 @@ var XSRFStrategy = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_operator_map__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_operator_mergeMap__ = __webpack_require__(121);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_operator_mergeMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_rxjs_operator_mergeMap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_operator_reduce__ = __webpack_require__(715);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_operator_reduce__ = __webpack_require__(714);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_operator_reduce___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_rxjs_operator_reduce__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__apply_redirects__ = __webpack_require__(535);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__config__ = __webpack_require__(536);
@@ -24430,9 +24430,9 @@ module.exports = {};
 var isArray_1 = __webpack_require__(401);
 var isObject_1 = __webpack_require__(404);
 var isFunction_1 = __webpack_require__(403);
-var tryCatch_1 = __webpack_require__(725);
+var tryCatch_1 = __webpack_require__(724);
 var errorObject_1 = __webpack_require__(400);
-var UnsubscriptionError_1 = __webpack_require__(722);
+var UnsubscriptionError_1 = __webpack_require__(721);
 /**
  * Represents a disposable resource, such as the execution of an Observable. A
  * Subscription has one important method, `unsubscribe`, that takes no argument
@@ -24827,7 +24827,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var ReplaySubject_1 = __webpack_require__(708);
+var ReplaySubject_1 = __webpack_require__(707);
 var config_1 = __webpack_require__(266);
 var util_1 = __webpack_require__(267);
 var first_1 = __webpack_require__(259);
@@ -24988,12 +24988,30 @@ var NguiMap = (function () {
                 .replace(/([A-Z])/g, function ($1) { return "_" + $1.toLowerCase(); }) // positionChanged -> position_changed
                 .replace(/^map_/, ''); // map_click -> click  to avoid DOM conflicts
             var zone = _this.zone;
-            thisObj[prefix].addListener(eventName, function (event) {
-                var param = event ? event : {};
-                param.target = this;
-                zone.run(function () { return thisObj[definedEvent].emit(param); });
+            zone.runOutsideAngular(function () {
+                thisObj[prefix].addListener(eventName, function (event) {
+                    var param = event ? event : {};
+                    param.target = this;
+                    zone.run(function () { return thisObj[definedEvent].emit(param); });
+                });
             });
         });
+    };
+    NguiMap.prototype.clearObjectEvents = function (definedEvents, thisObj, prefix) {
+        var _this = this;
+        definedEvents.forEach(function (definedEvent) {
+            var eventName = definedEvent
+                .replace(/([A-Z])/g, function ($1) { return "_" + $1.toLowerCase(); }) // positionChanged -> position_changed
+                .replace(/^map_/, ''); // map_click -> click  to avoid DOM conflicts
+            _this.zone.runOutsideAngular(function () {
+                google.maps.event.clearListeners(thisObj[prefix], eventName);
+            });
+        });
+        if (thisObj[prefix] && thisObj[prefix].setMap) {
+            thisObj[prefix].setMap(null);
+            delete thisObj[prefix].nguiMapComponent;
+            delete thisObj[prefix];
+        }
     };
     return NguiMap;
 }());
@@ -25350,7 +25368,7 @@ var traffic_layer_1 = __webpack_require__(421);
 exports.TrafficLayer = traffic_layer_1.TrafficLayer;
 var transit_layer_1 = __webpack_require__(422);
 exports.TransitLayer = transit_layer_1.TransitLayer;
-var ngui_map_module_1 = __webpack_require__(754);
+var ngui_map_module_1 = __webpack_require__(753);
 exports.NguiMapModule = ngui_map_module_1.NguiMapModule;
 
 
@@ -34970,13 +34988,17 @@ var api_loader_1 = __webpack_require__(122);
 var GeoCoder = (function () {
     function GeoCoder(apiLoader) {
         this.apiLoader = apiLoader;
+        this.apiLoaderSubs = [];
     }
     GeoCoder.prototype.geocode = function (options) {
         var _this = this;
         return new Observable_1.Observable(function (responseObserver) {
-            _this.apiLoader.api$
-                .subscribe(function () { return _this.requestGeocode(options, responseObserver); });
+            _this.apiLoaderSubs.push(_this.apiLoader.api$
+                .subscribe(function () { return _this.requestGeocode(options, responseObserver); }));
         });
+    };
+    GeoCoder.prototype.ngOnDestroy = function () {
+        this.apiLoaderSubs.map(function (sub) { return sub.unsubscribe(); });
     };
     GeoCoder.prototype.requestGeocode = function (options, observer) {
         var geocoder = new google.maps.Geocoder();
@@ -51422,7 +51444,7 @@ exports.OuterSubscriber = OuterSubscriber;
 
 "use strict";
 
-var FromObservable_1 = __webpack_require__(711);
+var FromObservable_1 = __webpack_require__(710);
 exports.from = FromObservable_1.FromObservable.create;
 //# sourceMappingURL=from.js.map
 
@@ -51448,7 +51470,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subscriber_1 = __webpack_require__(26);
-var async_1 = __webpack_require__(720);
+var async_1 = __webpack_require__(719);
 /**
  * Emits a value from the source Observable only after a particular time span
  * has passed without another source emission.
@@ -51972,7 +51994,7 @@ var isPromise_1 = __webpack_require__(405);
 var isObject_1 = __webpack_require__(404);
 var Observable_1 = __webpack_require__(12);
 var iterator_1 = __webpack_require__(261);
-var InnerSubscriber_1 = __webpack_require__(706);
+var InnerSubscriber_1 = __webpack_require__(705);
 var observable_1 = __webpack_require__(174);
 function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
     var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
@@ -62401,13 +62423,13 @@ var /** @type {?} */ TRANSLATIONS_FORMAT = new __WEBPACK_IMPORTED_MODULE_0__di_o
 /* 311 */
 /***/ (function(module, exports) {
 
-function webpackEmptyContext(req) {
-	throw new Error("Cannot find module '" + req + "'.");
+function webpackEmptyAsyncContext(req) {
+	return new Promise(function(resolve, reject) { reject(new Error("Cannot find module '" + req + "'.")); });
 }
-webpackEmptyContext.keys = function() { return []; };
-webpackEmptyContext.resolve = webpackEmptyContext;
-module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 311;
+webpackEmptyAsyncContext.keys = function() { return []; };
+webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
+module.exports = webpackEmptyAsyncContext;
+webpackEmptyAsyncContext.id = 311;
 
 /***/ }),
 /* 312 */
@@ -69719,7 +69741,7 @@ function provideRouterInitializer() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_operator_catch__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_concatMap__ = __webpack_require__(395);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_concatMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_operator_concatMap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_operator_filter__ = __webpack_require__(713);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_operator_filter__ = __webpack_require__(712);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_operator_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_operator_filter__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_operator_mergeAll__ = __webpack_require__(260);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_operator_mergeAll___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_operator_mergeAll__);
@@ -70967,7 +70989,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var Observable_1 = __webpack_require__(12);
 var ScalarObservable_1 = __webpack_require__(392);
 var EmptyObservable_1 = __webpack_require__(390);
-var isScheduler_1 = __webpack_require__(723);
+var isScheduler_1 = __webpack_require__(722);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -71711,7 +71733,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subscriber_1 = __webpack_require__(26);
-var Notification_1 = __webpack_require__(707);
+var Notification_1 = __webpack_require__(706);
 /**
  *
  * Re-emits all notifications from source Observable with specified scheduler.
@@ -71830,7 +71852,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var root_1 = __webpack_require__(53);
-var Action_1 = __webpack_require__(717);
+var Action_1 = __webpack_require__(716);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
@@ -71977,7 +71999,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Scheduler_1 = __webpack_require__(709);
+var Scheduler_1 = __webpack_require__(708);
 var AsyncScheduler = (function (_super) {
     __extends(AsyncScheduler, _super);
     function AsyncScheduler() {
@@ -72234,12 +72256,10 @@ var CustomMarker = (function () {
         this.inputChanges$.next(changes);
     };
     CustomMarker.prototype.ngOnDestroy = function () {
-        var _this = this;
+        this.inputChanges$.complete();
         this.nguiMapComponent.removeFromMapObjectGroup('CustomMarker', this.mapObject);
         if (this.mapObject) {
-            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
-            this.mapObject.setMap(null);
-            delete this.mapObject;
+            this.nguiMap.clearObjectEvents(OUTPUTS, this, 'mapObject');
         }
     };
     CustomMarker.prototype.initialize = function () {
@@ -72357,9 +72377,9 @@ var InfoWindow = (function () {
         this.infoWindow.open(this.nguiMapComponent.map, anchor);
     };
     InfoWindow.prototype.ngOnDestroy = function () {
-        var _this = this;
+        this.inputChanges$.complete();
         if (this.infoWindow) {
-            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.infoWindow, output); });
+            this.nguiMap.clearObjectEvents(OUTPUTS, this, 'infoWindow');
             delete this.infoWindow;
         }
     };
@@ -72421,16 +72441,10 @@ var OUTPUTS = [];
 var BicyclingLayer = (function (_super) {
     __extends(BicyclingLayer, _super);
     function BicyclingLayer(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'BicyclingLayer', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'BicyclingLayer', INPUTS, OUTPUTS) || this;
     }
     return BicyclingLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], BicyclingLayer.prototype, "initialized$", void 0);
 BicyclingLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > bicycling-layer',
@@ -72486,7 +72500,6 @@ var Circle = (function (_super) {
     function Circle(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'Circle', INPUTS, OUTPUTS) || this;
         _this.nguiMapComp = nguiMapComp;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.objectOptions = {};
         return _this;
     }
@@ -72518,10 +72531,6 @@ var Circle = (function (_super) {
     };
     return Circle;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Circle.prototype, "initialized$", void 0);
 Circle = __decorate([
     core_1.Directive({
         selector: 'ngui-map>circle, ngui-map>map-circle',
@@ -72570,9 +72579,7 @@ var OUTPUTS = [
 var DataLayer = (function (_super) {
     __extends(DataLayer, _super);
     function DataLayer(nguiMapComponent) {
-        var _this = _super.call(this, nguiMapComponent, 'Data', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComponent, 'Data', INPUTS, OUTPUTS) || this;
     }
     // only called when map is ready
     DataLayer.prototype.initialize = function () {
@@ -72600,10 +72607,6 @@ var DataLayer = (function (_super) {
     };
     return DataLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], DataLayer.prototype, "initialized$", void 0);
 DataLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > data-layer',
@@ -72656,7 +72659,6 @@ var DirectionsRenderer = (function (_super) {
     function DirectionsRenderer(nguiMapComponent, geolocation) {
         var _this = _super.call(this, nguiMapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS) || this;
         _this.geolocation = geolocation;
-        _this.initialized$ = new core_1.EventEmitter();
         return _this;
     }
     // only called when map is ready
@@ -72703,10 +72705,6 @@ __decorate([
     core_1.Input('directions-request'),
     __metadata("design:type", Object)
 ], DirectionsRenderer.prototype, "directionsRequest", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], DirectionsRenderer.prototype, "initialized$", void 0);
 DirectionsRenderer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > directions-renderer',
@@ -72761,16 +72759,11 @@ var DrawingManager = (function (_super) {
     __extends(DrawingManager, _super);
     function DrawingManager(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'DrawingManager', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.libraryName = 'drawing';
         return _this;
     }
     return DrawingManager;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], DrawingManager.prototype, "initialized$", void 0);
 DrawingManager = __decorate([
     core_1.Directive({
         selector: 'ngui-map > drawing-manager',
@@ -72817,7 +72810,6 @@ var GroundOverlay = (function (_super) {
     __extends(GroundOverlay, _super);
     function GroundOverlay(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'GroundOverlay', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.objectOptions = {};
         return _this;
     }
@@ -72837,10 +72829,6 @@ var GroundOverlay = (function (_super) {
     };
     return GroundOverlay;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], GroundOverlay.prototype, "initialized$", void 0);
 GroundOverlay = __decorate([
     core_1.Directive({
         selector: 'ngui-map > ground-overlay',
@@ -72887,16 +72875,11 @@ var HeatmapLayer = (function (_super) {
     __extends(HeatmapLayer, _super);
     function HeatmapLayer(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'HeatmapLayer', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.libraryName = 'visualization';
         return _this;
     }
     return HeatmapLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], HeatmapLayer.prototype, "initialized$", void 0);
 HeatmapLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > heatmap-layer',
@@ -72942,16 +72925,10 @@ var OUTPUTS = ['click', 'defaultviewport_changed', 'status_changed'];
 var KmlLayer = (function (_super) {
     __extends(KmlLayer, _super);
     function KmlLayer(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'KmlLayer', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'KmlLayer', INPUTS, OUTPUTS) || this;
     }
     return KmlLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], KmlLayer.prototype, "initialized$", void 0);
 KmlLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > kml-layer',
@@ -73008,7 +72985,6 @@ var Marker = (function (_super) {
     function Marker(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'Marker', INPUTS, OUTPUTS) || this;
         _this.nguiMapComp = nguiMapComp;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.objectOptions = {};
         console.log('marker constructor', 9999999);
         return _this;
@@ -73051,10 +73027,6 @@ var Marker = (function (_super) {
     };
     return Marker;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Marker.prototype, "initialized$", void 0);
 Marker = __decorate([
     core_1.Directive({
         selector: 'ngui-map > marker',
@@ -73127,7 +73099,7 @@ __decorate([
     __metadata("design:type", core_1.EventEmitter)
 ], PlacesAutoComplete.prototype, "place_changed", void 0);
 __decorate([
-    core_1.Output('initialized$'),
+    core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], PlacesAutoComplete.prototype, "initialized$", void 0);
 PlacesAutoComplete = __decorate([
@@ -73181,16 +73153,10 @@ var OUTPUTS = [
 var Polygon = (function (_super) {
     __extends(Polygon, _super);
     function Polygon(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'Polygon', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'Polygon', INPUTS, OUTPUTS) || this;
     }
     return Polygon;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Polygon.prototype, "initialized$", void 0);
 Polygon = __decorate([
     core_1.Directive({
         selector: 'ngui-map>polygon, ngui-map>map-polygon',
@@ -73242,16 +73208,10 @@ var OUTPUTS = [
 var Polyline = (function (_super) {
     __extends(Polyline, _super);
     function Polyline(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'Polyline', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'Polyline', INPUTS, OUTPUTS) || this;
     }
     return Polyline;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Polyline.prototype, "initialized$", void 0);
 Polyline = __decorate([
     core_1.Directive({
         selector: 'ngui-map > polyline',
@@ -73306,9 +73266,7 @@ var OUTPUTS = [
 var StreetViewPanorama = (function (_super) {
     __extends(StreetViewPanorama, _super);
     function StreetViewPanorama(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'StreetViewPanorama', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'StreetViewPanorama', INPUTS, OUTPUTS) || this;
     }
     // only called when map is ready
     StreetViewPanorama.prototype.initialize = function () {
@@ -73335,17 +73293,12 @@ var StreetViewPanorama = (function (_super) {
     };
     // When destroyed, remove event listener, and delete this object to prevent memory leak
     StreetViewPanorama.prototype.ngOnDestroy = function () {
-        var _this = this;
         if (this.nguiMapComponent.el) {
-            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
+            this.nguiMap.clearObjectEvents(this.outputs, this, 'mapObject');
         }
     };
     return StreetViewPanorama;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], StreetViewPanorama.prototype, "initialized$", void 0);
 StreetViewPanorama = __decorate([
     core_1.Directive({
         selector: 'ngui-map > street-view-panorama',
@@ -73391,16 +73344,10 @@ var OUTPUTS = [];
 var TrafficLayer = (function (_super) {
     __extends(TrafficLayer, _super);
     function TrafficLayer(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'TrafficLayer', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'TrafficLayer', INPUTS, OUTPUTS) || this;
     }
     return TrafficLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], TrafficLayer.prototype, "initialized$", void 0);
 TrafficLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > traffic-layer',
@@ -73446,16 +73393,10 @@ var OUTPUTS = [];
 var TransitLayer = (function (_super) {
     __extends(TransitLayer, _super);
     function TransitLayer(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'TransitLayer', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'TransitLayer', INPUTS, OUTPUTS) || this;
     }
     return TransitLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], TransitLayer.prototype, "initialized$", void 0);
 TransitLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > transit-layer',
@@ -73808,7 +73749,7 @@ var AppComponent = (function () {
 AppComponent = __decorate([
     core_1.Component({
         selector: 'ngui-map-app',
-        template: __webpack_require__(705),
+        template: __webpack_require__(704),
     })
 ], AppComponent);
 exports.AppComponent = AppComponent;
@@ -73822,33 +73763,33 @@ exports.AppComponent = AppComponent;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var router_1 = __webpack_require__(534);
-var simple_info_window_component_1 = __webpack_require__(747);
-var simple_map_component_1 = __webpack_require__(748);
-var simple_circle_component_1 = __webpack_require__(745);
-var simple_marker_component_1 = __webpack_require__(749);
-var marker_ng_for_component_1 = __webpack_require__(740);
-var multiple_map_component_1 = __webpack_require__(742);
-var polygon_component_1 = __webpack_require__(744);
-var map_with_options_component_1 = __webpack_require__(738);
-var simple_polyline_component_1 = __webpack_require__(750);
-var simple_ground_overlay_component_1 = __webpack_require__(746);
-var bicycling_layer_component_1 = __webpack_require__(727);
-var traffic_layer_component_1 = __webpack_require__(752);
-var transit_layer_component_1 = __webpack_require__(753);
-var heatmap_layer_component_1 = __webpack_require__(735);
-var kml_layer_component_1 = __webpack_require__(736);
-var data_layer_component_1 = __webpack_require__(730);
-var street_view_panorama_component_1 = __webpack_require__(751);
-var places_auto_compolete_component_1 = __webpack_require__(743);
-var directions_renderer_component_1 = __webpack_require__(731);
-var drawing_manager_component_1 = __webpack_require__(732);
-var event_arguments_component_1 = __webpack_require__(733);
-var custom_marker_component_1 = __webpack_require__(729);
-var custom_marker_ng_for_component_1 = __webpack_require__(728);
-var map_with_streetview_1 = __webpack_require__(739);
-var map_change_multiple_properties_component_1 = __webpack_require__(737);
-var marker_with_custom_icon_component_1 = __webpack_require__(741);
-var experiment_component_1 = __webpack_require__(734);
+var simple_info_window_component_1 = __webpack_require__(746);
+var simple_map_component_1 = __webpack_require__(747);
+var simple_circle_component_1 = __webpack_require__(744);
+var simple_marker_component_1 = __webpack_require__(748);
+var marker_ng_for_component_1 = __webpack_require__(739);
+var multiple_map_component_1 = __webpack_require__(741);
+var polygon_component_1 = __webpack_require__(743);
+var map_with_options_component_1 = __webpack_require__(737);
+var simple_polyline_component_1 = __webpack_require__(749);
+var simple_ground_overlay_component_1 = __webpack_require__(745);
+var bicycling_layer_component_1 = __webpack_require__(726);
+var traffic_layer_component_1 = __webpack_require__(751);
+var transit_layer_component_1 = __webpack_require__(752);
+var heatmap_layer_component_1 = __webpack_require__(734);
+var kml_layer_component_1 = __webpack_require__(735);
+var data_layer_component_1 = __webpack_require__(729);
+var street_view_panorama_component_1 = __webpack_require__(750);
+var places_auto_compolete_component_1 = __webpack_require__(742);
+var directions_renderer_component_1 = __webpack_require__(730);
+var drawing_manager_component_1 = __webpack_require__(731);
+var event_arguments_component_1 = __webpack_require__(732);
+var custom_marker_component_1 = __webpack_require__(728);
+var custom_marker_ng_for_component_1 = __webpack_require__(727);
+var map_with_streetview_1 = __webpack_require__(738);
+var map_change_multiple_properties_component_1 = __webpack_require__(736);
+var marker_with_custom_icon_component_1 = __webpack_require__(740);
+var experiment_component_1 = __webpack_require__(733);
 exports.routes = [
     { path: 'bicycling-layer', component: bicycling_layer_component_1.BicyclingLayerComponent },
     { path: 'data-layer', component: data_layer_component_1.DataLayerComponent },
@@ -73915,7 +73856,7 @@ exports.APP_ROUTER_COMPONENTS = [
 /* 431 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global, process) {/**
+/* WEBPACK VAR INJECTION */(function(global) {/**
 * @license
 * Copyright Google Inc. All Rights Reserved.
 *
@@ -74081,9 +74022,19 @@ var Zone$1 = (function (global) {
             }
         };
         Zone.prototype.runTask = function (task, applyThis, applyArgs) {
-            if (task.zone != this)
+            if (task.zone != this) {
                 throw new Error('A task can only be run in the zone of creation! (Creation: ' +
                     (task.zone || NO_ZONE).name + '; Execution: ' + this.name + ')');
+            }
+            // https://github.com/angular/zone.js/issues/778, sometimes eventTask
+            // will run in notScheduled(canceled) state, we should not try to
+            // run such kind of task but just return
+            // we have to define an variable here, if not
+            // typescript compiler will complain below
+            var isNotScheduled = task.state === notScheduled;
+            if (isNotScheduled && task.type === eventTask) {
+                return;
+            }
             var reEntryGuard = task.state != running;
             reEntryGuard && task._transitionTo(running, scheduled);
             task.runCount++;
@@ -74515,7 +74466,10 @@ var Zone$1 = (function (global) {
         onUnhandledError: noop,
         microtaskDrainDone: noop,
         scheduleMicroTask: scheduleMicroTask,
-        showUncaughtError: function () { return !Zone[__symbol__('ignoreConsoleErrorUncaughtError')]; }
+        showUncaughtError: function () { return !Zone[__symbol__('ignoreConsoleErrorUncaughtError')]; },
+        patchEventTargetMethods: function () { return false; },
+        patchOnProperties: noop,
+        patchMethod: function () { return noop; }
     };
     var _currentZoneFrame = { parent: null, zone: new Zone(null, null) };
     var _currentTask = null;
@@ -74905,18 +74859,29 @@ function patchPrototype(prototype, fnNames) {
     }
 }
 var isWebWorker = (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScope);
-var isNode = (!('nw' in _global) && typeof process !== 'undefined' &&
-    {}.toString.call(process) === '[object process]');
+// Make sure to access `process` through `_global` so that WebPack does not accidently browserify
+// this code.
+var isNode = (!('nw' in _global) && typeof _global.process !== 'undefined' &&
+    {}.toString.call(_global.process) === '[object process]');
 var isBrowser = !isNode && !isWebWorker && !!(typeof window !== 'undefined' && window['HTMLElement']);
 // we are in electron of nw, so we are both browser and nodejs
-var isMix = typeof process !== 'undefined' &&
-    {}.toString.call(process) === '[object process]' && !isWebWorker &&
+// Make sure to access `process` through `_global` so that WebPack does not accidently browserify
+// this code.
+var isMix = typeof _global.process !== 'undefined' &&
+    {}.toString.call(_global.process) === '[object process]' && !isWebWorker &&
     !!(typeof window !== 'undefined' && window['HTMLElement']);
-function patchProperty(obj, prop) {
-    var desc = Object.getOwnPropertyDescriptor(obj, prop) || { enumerable: true, configurable: true };
-    // if the descriptor is not configurable
+function patchProperty(obj, prop, prototype) {
+    var desc = Object.getOwnPropertyDescriptor(obj, prop);
+    if (!desc && prototype) {
+        // when patch window object, use prototype to check prop exist or not
+        var prototypeDesc = Object.getOwnPropertyDescriptor(prototype, prop);
+        if (prototypeDesc) {
+            desc = { enumerable: true, configurable: true };
+        }
+    }
+    // if the descriptor not exists or is not configurable
     // just return
-    if (!desc.configurable) {
+    if (!desc || !desc.configurable) {
         return;
     }
     // A property descriptor cannot have getter/setter and be writable
@@ -74994,10 +74959,10 @@ function patchProperty(obj, prop) {
     };
     Object.defineProperty(obj, prop, desc);
 }
-function patchOnProperties(obj, properties) {
+function patchOnProperties(obj, properties, prototype) {
     if (properties) {
         for (var i = 0; i < properties.length; i++) {
-            patchProperty(obj, 'on' + properties[i]);
+            patchProperty(obj, 'on' + properties[i], prototype);
         }
     }
     else {
@@ -75008,7 +74973,7 @@ function patchOnProperties(obj, properties) {
             }
         }
         for (var j = 0; j < onProperties.length; j++) {
-            patchProperty(obj, onProperties[j]);
+            patchProperty(obj, onProperties[j], prototype);
         }
     }
 }
@@ -75323,7 +75288,28 @@ function patchMethod(target, name, patchFn) {
     return delegate;
 }
 // TODO: @JiaLiPassion, support cancel task later if necessary
-
+function patchMacroTask(obj, funcName, metaCreator) {
+    var setNative = null;
+    function scheduleTask(task) {
+        var data = task.data;
+        data.args[data.callbackIndex] = function () {
+            task.invoke.apply(this, arguments);
+        };
+        setNative.apply(data.target, data.args);
+        return task;
+    }
+    setNative = patchMethod(obj, funcName, function (delegate) { return function (self, args) {
+        var meta = metaCreator(self, args);
+        if (meta.callbackIndex >= 0 && typeof args[meta.callbackIndex] === 'function') {
+            var task = Zone.current.scheduleMacroTask(meta.name, args[meta.callbackIndex], meta, scheduleTask, null);
+            return task;
+        }
+        else {
+            // cause an error by calling it directly.
+            return delegate.apply(self, args);
+        }
+    }; });
+}
 
 function findEventTask(target, evtName) {
     var eventTasks = target[zoneSymbol('eventTasks')];
@@ -75343,8 +75329,6 @@ function findEventTask(target, evtName) {
 function attachOriginToPatched(patched, original) {
     patched[zoneSymbol('OriginalDelegate')] = original;
 }
-Zone[zoneSymbol('patchEventTargetMethods')] = patchEventTargetMethods;
-Zone[zoneSymbol('patchOnProperties')] = patchOnProperties;
 
 /**
  * @license
@@ -75360,8 +75344,14 @@ Zone.__load_patch('toString', function (global, Zone, api) {
     var originalFunctionToString = Function.prototype.toString;
     Function.prototype.toString = function () {
         if (typeof this === 'function') {
-            if (this[zoneSymbol('OriginalDelegate')]) {
-                return originalFunctionToString.apply(this[zoneSymbol('OriginalDelegate')], arguments);
+            var originalDelegate = this[zoneSymbol('OriginalDelegate')];
+            if (originalDelegate) {
+                if (typeof originalDelegate === 'function') {
+                    return originalFunctionToString.apply(this[zoneSymbol('OriginalDelegate')], arguments);
+                }
+                else {
+                    return Object.prototype.toString.call(originalDelegate);
+                }
             }
             if (this === Promise) {
                 var nativePromise = global[zoneSymbol('Promise')];
@@ -75658,8 +75648,215 @@ function apply(_global) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-var eventNames = 'copy cut paste abort blur focus canplay canplaythrough change click contextmenu dblclick drag dragend dragenter dragleave dragover dragstart drop durationchange emptied ended input invalid keydown keypress keyup load loadeddata loadedmetadata loadstart message mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup pause play playing progress ratechange reset scroll seeked seeking select show stalled submit suspend timeupdate volumechange waiting mozfullscreenchange mozfullscreenerror mozpointerlockchange mozpointerlockerror error webglcontextrestored webglcontextlost webglcontextcreationerror'
-    .split(' ');
+var globalEventHandlersEventNames = [
+    'abort',
+    'animationcancel',
+    'animationend',
+    'animationiteration',
+    'auxclick',
+    'beforeinput',
+    'blur',
+    'cancel',
+    'canplay',
+    'canplaythrough',
+    'change',
+    'compositionstart',
+    'compositionupdate',
+    'compositionend',
+    'cuechange',
+    'click',
+    'close',
+    'contextmenu',
+    'curechange',
+    'dblclick',
+    'drag',
+    'dragend',
+    'dragenter',
+    'dragexit',
+    'dragleave',
+    'dragover',
+    'drop',
+    'durationchange',
+    'emptied',
+    'ended',
+    'error',
+    'focus',
+    'focusin',
+    'focusout',
+    'gotpointercapture',
+    'input',
+    'invalid',
+    'keydown',
+    'keypress',
+    'keyup',
+    'load',
+    'loadstart',
+    'loadeddata',
+    'loadedmetadata',
+    'lostpointercapture',
+    'mousedown',
+    'mouseenter',
+    'mouseleave',
+    'mousemove',
+    'mouseout',
+    'mouseover',
+    'mouseup',
+    'mousewheel',
+    'pause',
+    'play',
+    'playing',
+    'pointercancel',
+    'pointerdown',
+    'pointerenter',
+    'pointerleave',
+    'pointerlockchange',
+    'mozpointerlockchange',
+    'webkitpointerlockerchange',
+    'pointerlockerror',
+    'mozpointerlockerror',
+    'webkitpointerlockerror',
+    'pointermove',
+    'pointout',
+    'pointerover',
+    'pointerup',
+    'progress',
+    'ratechange',
+    'reset',
+    'resize',
+    'scroll',
+    'seeked',
+    'seeking',
+    'select',
+    'selectionchange',
+    'selectstart',
+    'show',
+    'sort',
+    'stalled',
+    'submit',
+    'suspend',
+    'timeupdate',
+    'volumechange',
+    'touchcancel',
+    'touchmove',
+    'touchstart',
+    'transitioncancel',
+    'transitionend',
+    'waiting',
+    'wheel'
+];
+var documentEventNames = [
+    'afterscriptexecute', 'beforescriptexecute', 'DOMContentLoaded', 'fullscreenchange',
+    'mozfullscreenchange', 'webkitfullscreenchange', 'msfullscreenchange', 'fullscreenerror',
+    'mozfullscreenerror', 'webkitfullscreenerror', 'msfullscreenerror', 'readystatechange'
+];
+var windowEventNames = [
+    'absolutedeviceorientation',
+    'afterinput',
+    'afterprint',
+    'appinstalled',
+    'beforeinstallprompt',
+    'beforeprint',
+    'beforeunload',
+    'devicelight',
+    'devicemotion',
+    'deviceorientation',
+    'deviceorientationabsolute',
+    'deviceproximity',
+    'hashchange',
+    'languagechange',
+    'message',
+    'mozbeforepaint',
+    'offline',
+    'online',
+    'paint',
+    'pageshow',
+    'pagehide',
+    'popstate',
+    'rejectionhandled',
+    'storage',
+    'unhandledrejection',
+    'unload',
+    'userproximity',
+    'vrdisplyconnected',
+    'vrdisplaydisconnected',
+    'vrdisplaypresentchange'
+];
+var htmlElementEventNames = [
+    'beforecopy', 'beforecut', 'beforepaste', 'copy', 'cut', 'paste', 'dragstart', 'loadend',
+    'animationstart', 'search', 'transitionrun', 'transitionstart', 'webkitanimationend',
+    'webkitanimationiteration', 'webkitanimationstart', 'webkittransitionend'
+];
+var mediaElementEventNames = ['encrypted', 'waitingforkey', 'msneedkey', 'mozinterruptbegin', 'mozinterruptend'];
+var ieElementEventNames = [
+    'activate',
+    'afterupdate',
+    'ariarequest',
+    'beforeactivate',
+    'beforedeactivate',
+    'beforeeditfocus',
+    'beforeupdate',
+    'cellchange',
+    'controlselect',
+    'dataavailable',
+    'datasetchanged',
+    'datasetcomplete',
+    'errorupdate',
+    'filterchange',
+    'layoutcomplete',
+    'losecapture',
+    'move',
+    'moveend',
+    'movestart',
+    'propertychange',
+    'resizeend',
+    'resizestart',
+    'rowenter',
+    'rowexit',
+    'rowsdelete',
+    'rowsinserted',
+    'command',
+    'compassneedscalibration',
+    'deactivate',
+    'help',
+    'mscontentzoom',
+    'msmanipulationstatechanged',
+    'msgesturechange',
+    'msgesturedoubletap',
+    'msgestureend',
+    'msgesturehold',
+    'msgesturestart',
+    'msgesturetap',
+    'msgotpointercapture',
+    'msinertiastart',
+    'mslostpointercapture',
+    'mspointercancel',
+    'mspointerdown',
+    'mspointerenter',
+    'mspointerhover',
+    'mspointerleave',
+    'mspointermove',
+    'mspointerout',
+    'mspointerover',
+    'mspointerup',
+    'pointerout',
+    'mssitemodejumplistitemremoved',
+    'msthumbnailclick',
+    'stop',
+    'storagecommit'
+];
+var webglEventNames = ['webglcontextrestored', 'webglcontextlost', 'webglcontextcreationerror'];
+var formEventNames = ['autocomplete', 'autocompleteerror'];
+var detailEventNames = ['toggle'];
+var frameEventNames = ['load'];
+var frameSetEventNames = ['blur', 'error', 'focus', 'load', 'resize', 'scroll'];
+var marqueeEventNames = ['bounce', 'finish', 'start'];
+var XMLHttpRequestEventNames = [
+    'loadstart', 'progress', 'abort', 'error', 'load', 'progress', 'timeout', 'loadend',
+    'readystatechange'
+];
+var IDBIndexEventNames = ['upgradeneeded', 'complete', 'abort', 'success', 'error', 'blocked', 'versionchange', 'close'];
+var websocketEventNames = ['close', 'error', 'open', 'message'];
+var eventNames = globalEventHandlersEventNames.concat(webglEventNames, formEventNames, detailEventNames, documentEventNames, windowEventNames, htmlElementEventNames, ieElementEventNames);
 function propertyDescriptorPatch(_global) {
     if (isNode && !isMix) {
         return;
@@ -75668,24 +75865,40 @@ function propertyDescriptorPatch(_global) {
     if (canPatchViaPropertyDescriptor()) {
         // for browsers that we can patch the descriptor:  Chrome & Firefox
         if (isBrowser) {
-            patchOnProperties(window, eventNames.concat(['resize']));
+            // in IE/Edge, onProp not exist in window object, but in WindowPrototype
+            // so we need to pass WindowPrototype to check onProp exist or not
+            patchOnProperties(window, eventNames, Object.getPrototypeOf(window));
             patchOnProperties(Document.prototype, eventNames);
             if (typeof window['SVGElement'] !== 'undefined') {
                 patchOnProperties(window['SVGElement'].prototype, eventNames);
             }
+            patchOnProperties(Element.prototype, eventNames);
             patchOnProperties(HTMLElement.prototype, eventNames);
+            patchOnProperties(HTMLMediaElement.prototype, mediaElementEventNames);
+            patchOnProperties(HTMLFrameSetElement.prototype, windowEventNames.concat(frameSetEventNames));
+            patchOnProperties(HTMLBodyElement.prototype, windowEventNames.concat(frameSetEventNames));
+            patchOnProperties(HTMLFrameElement.prototype, frameEventNames);
+            patchOnProperties(HTMLIFrameElement.prototype, frameEventNames);
+            var HTMLMarqueeElement_1 = window['HTMLMarqueeElement'];
+            if (HTMLMarqueeElement_1) {
+                patchOnProperties(HTMLMarqueeElement_1.prototype, marqueeEventNames);
+            }
         }
-        patchOnProperties(XMLHttpRequest.prototype, null);
+        patchOnProperties(XMLHttpRequest.prototype, XMLHttpRequestEventNames);
+        var XMLHttpRequestEventTarget = _global['XMLHttpRequestEventTarget'];
+        if (XMLHttpRequestEventTarget) {
+            patchOnProperties(XMLHttpRequestEventTarget && XMLHttpRequestEventTarget.prototype, XMLHttpRequestEventNames);
+        }
         if (typeof IDBIndex !== 'undefined') {
-            patchOnProperties(IDBIndex.prototype, null);
-            patchOnProperties(IDBRequest.prototype, null);
-            patchOnProperties(IDBOpenDBRequest.prototype, null);
-            patchOnProperties(IDBDatabase.prototype, null);
-            patchOnProperties(IDBTransaction.prototype, null);
-            patchOnProperties(IDBCursor.prototype, null);
+            patchOnProperties(IDBIndex.prototype, IDBIndexEventNames);
+            patchOnProperties(IDBRequest.prototype, IDBIndexEventNames);
+            patchOnProperties(IDBOpenDBRequest.prototype, IDBIndexEventNames);
+            patchOnProperties(IDBDatabase.prototype, IDBIndexEventNames);
+            patchOnProperties(IDBTransaction.prototype, IDBIndexEventNames);
+            patchOnProperties(IDBCursor.prototype, IDBIndexEventNames);
         }
         if (supportsWebSocket) {
-            patchOnProperties(WebSocket.prototype, null);
+            patchOnProperties(WebSocket.prototype, websocketEventNames);
         }
     }
     else {
@@ -75859,6 +76072,15 @@ Zone.__load_patch('on_property', function (global, Zone, api) {
     propertyPatch();
     registerElementPatch(global);
 });
+Zone.__load_patch('canvas', function (global, Zone, api) {
+    var HTMLCanvasElement = global['HTMLCanvasElement'];
+    if (typeof HTMLCanvasElement !== 'undefined' && HTMLCanvasElement.prototype &&
+        HTMLCanvasElement.prototype.toBlob) {
+        patchMacroTask(HTMLCanvasElement.prototype, 'toBlob', function (self, args) {
+            return { name: 'HTMLCanvasElement.toBlob', target: self, callbackIndex: 0, args: args };
+        });
+    }
+});
 Zone.__load_patch('XHR', function (global, Zone, api) {
     // Treat XMLHTTPRequest as a macrotask.
     patchXHR(global);
@@ -75876,8 +76098,10 @@ Zone.__load_patch('XHR', function (global, Zone, api) {
             var data = task.data;
             // remove existing event listener
             var listener = data.target[XHR_LISTENER];
+            var oriAddListener = data.target[zoneSymbol('addEventListener')];
+            var oriRemoveListener = data.target[zoneSymbol('removeEventListener')];
             if (listener) {
-                data.target.removeEventListener('readystatechange', listener);
+                oriRemoveListener.apply(data.target, ['readystatechange', listener]);
             }
             var newListener = data.target[XHR_LISTENER] = function () {
                 if (data.target.readyState === data.target.DONE) {
@@ -75889,7 +76113,7 @@ Zone.__load_patch('XHR', function (global, Zone, api) {
                     }
                 }
             };
-            data.target.addEventListener('readystatechange', newListener);
+            oriAddListener.apply(data.target, ['readystatechange', newListener]);
             var storedTask = data.target[XHR_TASK];
             if (!storedTask) {
                 data.target[XHR_TASK] = task;
@@ -75968,6 +76192,11 @@ Zone.__load_patch('PromiseRejectionEvent', function (global, Zone, api) {
             findPromiseRejectionHandler('rejectionhandled');
     }
 });
+Zone.__load_patch('util', function (global, Zone, api) {
+    api.patchEventTargetMethods = patchEventTargetMethods;
+    api.patchOnProperties = patchOnProperties;
+    api.patchMethod = patchMethod;
+});
 
 /**
  * @license
@@ -75979,7 +76208,7 @@ Zone.__load_patch('PromiseRejectionEvent', function (global, Zone, api) {
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(68), __webpack_require__(704)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(68)))
 
 /***/ }),
 /* 432 */
@@ -97296,200 +97525,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*jshint curly:t
 /* 704 */
 /***/ (function(module, exports) {
 
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-/* 705 */
-/***/ (function(module, exports) {
-
 module.exports = "<ul class=\"ls\">\n  <h3> Examples </h3>\n  <li routerLink=\"/simple-map\">Simple Map</li>\n  <li routerLink=\"/simple-circle\">Simple Circle</li>\n  <li routerLink=\"/simple-marker\">Simple Marker</li>\n  <li routerLink=\"/marker-ng-for\">Marker With *ngFor</li>\n  <li routerLink=\"/marker-with-custom-icon\">Marker With Custom Icon</li>\n  <li routerLink=\"/simple-info-window\">Simple InfoWindow</li>\n  <li routerLink=\"/multiple-map\">Multiple Map</li>\n  <li routerLink=\"/polygon\">Polygon</li>\n  <li routerLink=\"/map-with-options\">Map With Options</li>\n  <li routerLink=\"/map-with-streetview\">Map With Streetview</li>\n  <li routerLink=\"/map-change-multiple-properties\">Change Multiple Properties Of Map</li>\n  <li routerLink=\"/simple-polyline\">Simple Polyline</li>\n  <li routerLink=\"/simple-ground-overlay\">Simple Ground Overlay</li>\n  <li routerLink=\"/bicycling-layer\">Bicycling Layer</li>\n  <li routerLink=\"/traffic-layer\">Traffic Layer</li>\n  <li routerLink=\"/transit-layer\">Transit Layer</li>\n  <li routerLink=\"/heatmap-layer\">Heatmap Layer</li>\n  <li routerLink=\"/kml-layer\">KML Layer</li>\n  <li routerLink=\"/data-layer\">Data Layer</li>\n  <li routerLink=\"/street-view-panorama\">Street View Panorama</li>\n  <li routerLink=\"/places-auto-complete\">Places Auto Complete</li>\n  <li routerLink=\"/directions-renderer\">Directions Renderer</li>\n  <li routerLink=\"/drawing-manager\">Drawing Manager</li>\n  <li routerLink=\"/event-arguments\">Event Arguments</li>\n  <li routerLink=\"/custom-marker\">Custom Marker</li>\n  <li routerLink=\"/custom-marker-ng-for\">Custom Marker *ngFor</li>\n  <li routerLink=\"/experiment\">Experiment</li>\n</ul>\n<router-outlet></router-outlet>\n"
 
 /***/ }),
-/* 706 */
+/* 705 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97531,7 +97570,7 @@ exports.InnerSubscriber = InnerSubscriber;
 //# sourceMappingURL=InnerSubscriber.js.map
 
 /***/ }),
-/* 707 */
+/* 706 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97664,7 +97703,7 @@ exports.Notification = Notification;
 //# sourceMappingURL=Notification.js.map
 
 /***/ }),
-/* 708 */
+/* 707 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97675,7 +97714,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subject_1 = __webpack_require__(33);
-var queue_1 = __webpack_require__(721);
+var queue_1 = __webpack_require__(720);
 var Subscription_1 = __webpack_require__(120);
 var observeOn_1 = __webpack_require__(397);
 var ObjectUnsubscribedError_1 = __webpack_require__(264);
@@ -97772,7 +97811,7 @@ var ReplayEvent = (function () {
 //# sourceMappingURL=ReplaySubject.js.map
 
 /***/ }),
-/* 709 */
+/* 708 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97827,7 +97866,7 @@ exports.Scheduler = Scheduler;
 //# sourceMappingURL=Scheduler.js.map
 
 /***/ }),
-/* 710 */
+/* 709 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97903,7 +97942,7 @@ exports.ArrayLikeObservable = ArrayLikeObservable;
 //# sourceMappingURL=ArrayLikeObservable.js.map
 
 /***/ }),
-/* 711 */
+/* 710 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97917,9 +97956,9 @@ var isArray_1 = __webpack_require__(401);
 var isArrayLike_1 = __webpack_require__(402);
 var isPromise_1 = __webpack_require__(405);
 var PromiseObservable_1 = __webpack_require__(391);
-var IteratorObservable_1 = __webpack_require__(712);
+var IteratorObservable_1 = __webpack_require__(711);
 var ArrayObservable_1 = __webpack_require__(389);
-var ArrayLikeObservable_1 = __webpack_require__(710);
+var ArrayLikeObservable_1 = __webpack_require__(709);
 var iterator_1 = __webpack_require__(261);
 var Observable_1 = __webpack_require__(12);
 var observeOn_1 = __webpack_require__(397);
@@ -98031,7 +98070,7 @@ exports.FromObservable = FromObservable;
 //# sourceMappingURL=FromObservable.js.map
 
 /***/ }),
-/* 712 */
+/* 711 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98200,7 +98239,7 @@ function sign(value) {
 //# sourceMappingURL=IteratorObservable.js.map
 
 /***/ }),
-/* 713 */
+/* 712 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98299,7 +98338,7 @@ var FilterSubscriber = (function (_super) {
 //# sourceMappingURL=filter.js.map
 
 /***/ }),
-/* 714 */
+/* 713 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98424,7 +98463,7 @@ var LastSubscriber = (function (_super) {
 //# sourceMappingURL=last.js.map
 
 /***/ }),
-/* 715 */
+/* 714 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98556,7 +98595,7 @@ exports.ReduceSubscriber = ReduceSubscriber;
 //# sourceMappingURL=reduce.js.map
 
 /***/ }),
-/* 716 */
+/* 715 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98634,7 +98673,7 @@ exports.toPromise = toPromise;
 //# sourceMappingURL=toPromise.js.map
 
 /***/ }),
-/* 717 */
+/* 716 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98684,7 +98723,7 @@ exports.Action = Action;
 //# sourceMappingURL=Action.js.map
 
 /***/ }),
-/* 718 */
+/* 717 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98739,7 +98778,7 @@ exports.QueueAction = QueueAction;
 //# sourceMappingURL=QueueAction.js.map
 
 /***/ }),
-/* 719 */
+/* 718 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98761,7 +98800,7 @@ exports.QueueScheduler = QueueScheduler;
 //# sourceMappingURL=QueueScheduler.js.map
 
 /***/ }),
-/* 720 */
+/* 719 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98814,13 +98853,13 @@ exports.async = new AsyncScheduler_1.AsyncScheduler(AsyncAction_1.AsyncAction);
 //# sourceMappingURL=async.js.map
 
 /***/ }),
-/* 721 */
+/* 720 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var QueueAction_1 = __webpack_require__(718);
-var QueueScheduler_1 = __webpack_require__(719);
+var QueueAction_1 = __webpack_require__(717);
+var QueueScheduler_1 = __webpack_require__(718);
 /**
  *
  * Queue Scheduler
@@ -98886,7 +98925,7 @@ exports.queue = new QueueScheduler_1.QueueScheduler(QueueAction_1.QueueAction);
 //# sourceMappingURL=queue.js.map
 
 /***/ }),
-/* 722 */
+/* 721 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98917,7 +98956,7 @@ exports.UnsubscriptionError = UnsubscriptionError;
 //# sourceMappingURL=UnsubscriptionError.js.map
 
 /***/ }),
-/* 723 */
+/* 722 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98929,7 +98968,7 @@ exports.isScheduler = isScheduler;
 //# sourceMappingURL=isScheduler.js.map
 
 /***/ }),
-/* 724 */
+/* 723 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98955,7 +98994,7 @@ exports.toSubscriber = toSubscriber;
 //# sourceMappingURL=toSubscriber.js.map
 
 /***/ }),
-/* 725 */
+/* 724 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -98980,7 +99019,7 @@ exports.tryCatch = tryCatch;
 //# sourceMappingURL=tryCatch.js.map
 
 /***/ }),
-/* 726 */
+/* 725 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99039,7 +99078,7 @@ platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(AppModule);
 
 
 /***/ }),
-/* 727 */
+/* 726 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99068,7 +99107,7 @@ exports.BicyclingLayerComponent = BicyclingLayerComponent;
 
 
 /***/ }),
-/* 728 */
+/* 727 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99126,7 +99165,7 @@ exports.CustomMarkerNgForComponent = CustomMarkerNgForComponent;
 
 
 /***/ }),
-/* 729 */
+/* 728 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99153,7 +99192,7 @@ exports.CustomMarkerComponent = CustomMarkerComponent;
 
 
 /***/ }),
-/* 730 */
+/* 729 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99182,7 +99221,7 @@ exports.DataLayerComponent = DataLayerComponent;
 
 
 /***/ }),
-/* 731 */
+/* 730 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99240,7 +99279,7 @@ exports.DirectionsRendererComponent = DirectionsRendererComponent;
 
 
 /***/ }),
-/* 732 */
+/* 731 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99299,7 +99338,7 @@ exports.DrawingManagerComponent = DrawingManagerComponent;
 
 
 /***/ }),
-/* 733 */
+/* 732 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99335,7 +99374,7 @@ exports.EventArgumentsComponent = EventArgumentsComponent;
 
 
 /***/ }),
-/* 734 */
+/* 733 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99391,7 +99430,7 @@ exports.ExperimentComponent = ExperimentComponent;
 
 
 /***/ }),
-/* 735 */
+/* 734 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99413,15 +99452,16 @@ var templateStr = "\n  <h1>Heatmap Layer</h1>\n  <ngui-map zoom=\"13\" center=\"
 var HeatmapLayerComponent = (function () {
     function HeatmapLayerComponent() {
         this.templateStr = templateStr;
-        this.points = [
-            new google.maps.LatLng(37.782551, -122.445368),
-            new google.maps.LatLng(37.782745, -122.444586),
-            new google.maps.LatLng(37.782842, -122.443688)
-        ];
+        this.points = [];
     }
     HeatmapLayerComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.heatmapLayer['initialized$'].subscribe(function (heatmap) {
+            _this.points = [
+                new google.maps.LatLng(37.782551, -122.445368),
+                new google.maps.LatLng(37.782745, -122.444586),
+                new google.maps.LatLng(37.782842, -122.443688)
+            ];
             _this.heatmap = heatmap;
             _this.map = _this.heatmap.getMap();
         });
@@ -99482,7 +99522,7 @@ exports.HeatmapLayerComponent = HeatmapLayerComponent;
 
 
 /***/ }),
-/* 736 */
+/* 735 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99511,7 +99551,7 @@ exports.KmlLayerComponent = KmlLayerComponent;
 
 
 /***/ }),
-/* 737 */
+/* 736 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99550,7 +99590,7 @@ exports.MapChangeMultiplePropertiesComponent = MapChangeMultiplePropertiesCompon
 
 
 /***/ }),
-/* 738 */
+/* 737 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99585,7 +99625,7 @@ exports.MapWithOptionsComponent = MapWithOptionsComponent;
 
 
 /***/ }),
-/* 739 */
+/* 738 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99615,7 +99655,7 @@ exports.MapWithStreetviewComponent = MapWithStreetviewComponent;
 
 
 /***/ }),
-/* 740 */
+/* 739 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99669,7 +99709,7 @@ exports.MarkerNgForComponent = MarkerNgForComponent;
 
 
 /***/ }),
-/* 741 */
+/* 740 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99696,7 +99736,7 @@ exports.MarkerWithCustomIconComponent = MarkerWithCustomIconComponent;
 
 
 /***/ }),
-/* 742 */
+/* 741 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99726,7 +99766,7 @@ exports.MultipleMapComponent = MultipleMapComponent;
 
 
 /***/ }),
-/* 743 */
+/* 742 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99772,7 +99812,7 @@ exports.PlacesAutoCompleteComponent = PlacesAutoCompleteComponent;
 
 
 /***/ }),
-/* 744 */
+/* 743 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99810,7 +99850,7 @@ exports.PolygonComponent = PolygonComponent;
 
 
 /***/ }),
-/* 745 */
+/* 744 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99839,7 +99879,7 @@ exports.SimpleCircleComponent = SimpleCircleComponent;
 
 
 /***/ }),
-/* 746 */
+/* 745 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99869,7 +99909,7 @@ exports.SimpleGroundOverlayComponent = SimpleGroundOverlayComponent;
 
 
 /***/ }),
-/* 747 */
+/* 746 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99912,7 +99952,7 @@ exports.SimpleInfoWindowComponent = SimpleInfoWindowComponent;
 
 
 /***/ }),
-/* 748 */
+/* 747 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99947,7 +99987,7 @@ exports.SimpleMapComponent = SimpleMapComponent;
 
 
 /***/ }),
-/* 749 */
+/* 748 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99980,7 +100020,7 @@ exports.SimpleMarkerComponent = SimpleMarkerComponent;
 
 
 /***/ }),
-/* 750 */
+/* 749 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -100015,7 +100055,7 @@ exports.SimplePolylineComponent = SimplePolylineComponent;
 
 
 /***/ }),
-/* 751 */
+/* 750 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -100044,7 +100084,7 @@ exports.StreetViewPanoramaComponent = StreetViewPanoramaComponent;
 
 
 /***/ }),
-/* 752 */
+/* 751 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -100073,7 +100113,7 @@ exports.TrafficLayerComponent = TrafficLayerComponent;
 
 
 /***/ }),
-/* 753 */
+/* 752 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -100102,7 +100142,7 @@ exports.TransitLayerComponent = TransitLayerComponent;
 
 
 /***/ }),
-/* 754 */
+/* 753 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

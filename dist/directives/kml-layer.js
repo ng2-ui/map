@@ -27,16 +27,10 @@ var OUTPUTS = ['click', 'defaultviewport_changed', 'status_changed'];
 var KmlLayer = (function (_super) {
     __extends(KmlLayer, _super);
     function KmlLayer(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'KmlLayer', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'KmlLayer', INPUTS, OUTPUTS) || this;
     }
     return KmlLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], KmlLayer.prototype, "initialized$", void 0);
 KmlLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > kml-layer',

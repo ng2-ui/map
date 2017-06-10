@@ -88,6 +88,7 @@ export declare class NguiMapComponent implements OnChanges, OnDestroy, AfterView
     };
     mapIdledOnce: boolean;
     private initializeMapAfterDisplayed;
+    private apiLoaderSub;
     constructor(optionBuilder: OptionBuilder, elementRef: ElementRef, geolocation: NavigatorGeolocation, geoCoder: GeoCoder, nguiMap: NguiMap, apiLoader: NgMapApiLoader, zone: NgZone);
     ngAfterViewInit(): void;
     ngAfterViewChecked(): void;

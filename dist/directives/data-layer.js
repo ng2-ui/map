@@ -30,25 +30,20 @@ var OUTPUTS = [
 var DataLayer = (function (_super) {
     __extends(DataLayer, _super);
     function DataLayer(nguiMapComponent) {
-        var _this = _super.call(this, nguiMapComponent, 'Data', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComponent, 'Data', INPUTS, OUTPUTS) || this;
     }
     // only called when map is ready
     DataLayer.prototype.initialize = function () {
         if (this['geoJson']) {
             // addGeoJson from an object
-            console.log('this.geoJson', this['geoJson']);
             this.nguiMapComponent.map.data.addGeoJson(this['geoJson']);
         }
         else if (this['geoJsonUrl']) {
             // loadGeoJson from a URL
-            console.log('this.geoJsonUrl', this['geoJsonUrl']);
             this.nguiMapComponent.map.data.loadGeoJson(this['geoJsonUrl']);
         }
         else {
             this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-            console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
             this.nguiMapComponent.map.data.add(this.objectOptions);
         }
         // unlike others, data belongs to map. e.g., map.data.loadGeoJson(), map.data.add()
@@ -60,10 +55,6 @@ var DataLayer = (function (_super) {
     };
     return DataLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], DataLayer.prototype, "initialized$", void 0);
 DataLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > data-layer',

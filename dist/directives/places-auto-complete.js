@@ -24,9 +24,7 @@ var PlacesAutoComplete = (function () {
         this.initialize = function () {
             _this.objectOptions =
                 _this.optionBuilder.googlizeAllInputs(['bounds', 'componentRestrictions', 'types'], _this);
-            console.log('places autocomplete options', _this.objectOptions);
             _this.autocomplete = new google.maps.places.Autocomplete(_this.elementRef.nativeElement, _this.objectOptions);
-            console.log('this.autocomplete', _this.autocomplete);
             _this.autocomplete.addListener('place_changed', function (place) {
                 _this.place_changed.emit(_this.autocomplete.getPlace());
             });
@@ -54,7 +52,7 @@ __decorate([
     __metadata("design:type", core_1.EventEmitter)
 ], PlacesAutoComplete.prototype, "place_changed", void 0);
 __decorate([
-    core_1.Output('initialized$'),
+    core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], PlacesAutoComplete.prototype, "initialized$", void 0);
 PlacesAutoComplete = __decorate([

@@ -1,5 +1,4 @@
 /// <reference types="googlemaps" />
-import { EventEmitter } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
 export declare class Circle extends BaseMapDirective {
@@ -33,7 +32,6 @@ export declare class Circle extends BaseMapDirective {
     mouseup: any;
     radiusChanged: any;
     rightclick: any;
-    initialized$: EventEmitter<any>;
     mapObject: google.maps.Circle;
     objectOptions: google.maps.CircleOptions;
     constructor(nguiMapComp: NguiMapComponent);

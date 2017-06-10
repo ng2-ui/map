@@ -33,16 +33,10 @@ var OUTPUTS = [
 var Polyline = (function (_super) {
     __extends(Polyline, _super);
     function Polyline(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'Polyline', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'Polyline', INPUTS, OUTPUTS) || this;
     }
     return Polyline;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Polyline.prototype, "initialized$", void 0);
 Polyline = __decorate([
     core_1.Directive({
         selector: 'ngui-map > polyline',

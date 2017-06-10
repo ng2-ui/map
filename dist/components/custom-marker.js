@@ -53,11 +53,9 @@ function getCustomMarkerOverlayView(htmlEl, position) {
                     var geocoder = new google.maps.Geocoder();
                     geocoder.geocode({ address: position }, function (results, status) {
                         if (status === google.maps.GeocoderStatus.OK) {
-                            console.log('setting custom marker position from address', position);
                             _this.setPosition(results[0].geometry.location);
                         }
                         else {
-                            console.log('Error in custom marker geo coding, position');
                         }
                     });
                 }
@@ -140,17 +138,14 @@ var CustomMarker = (function () {
         this.inputChanges$.next(changes);
     };
     CustomMarker.prototype.ngOnDestroy = function () {
-        var _this = this;
+        this.inputChanges$.complete();
         this.nguiMapComponent.removeFromMapObjectGroup('CustomMarker', this.mapObject);
         if (this.mapObject) {
-            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
-            this.mapObject.setMap(null);
-            delete this.mapObject;
+            this.nguiMap.clearObjectEvents(OUTPUTS, this, 'mapObject');
         }
     };
     CustomMarker.prototype.initialize = function () {
         var _this = this;
-        console.log('custom-marker is being initialized');
         this.el = this.elementRef.nativeElement;
         this.mapObject = getCustomMarkerOverlayView(this.el, this['position']);
         this.mapObject.setMap(this.nguiMapComponent.map);

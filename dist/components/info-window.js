@@ -48,11 +48,9 @@ var InfoWindow = (function () {
     // called when map is ready
     InfoWindow.prototype.initialize = function () {
         var _this = this;
-        console.log('infowindow is being initialized');
         this.objectOptions = this.nguiMapComponent.optionBuilder.googlizeAllInputs(INPUTS, this);
         this.infoWindow = new google.maps.InfoWindow(this.objectOptions);
         this.infoWindow['mapObjectName'] = 'InfoWindow';
-        console.log('INFOWINDOW objectOptions', this.objectOptions);
         // register infoWindow ids to NguiMap, so that it can be opened by id
         if (this.elementRef.nativeElement.id) {
             this.nguiMapComponent.infoWindows[this.elementRef.nativeElement.id] = this;
@@ -74,9 +72,9 @@ var InfoWindow = (function () {
         this.infoWindow.open(this.nguiMapComponent.map, anchor);
     };
     InfoWindow.prototype.ngOnDestroy = function () {
-        var _this = this;
+        this.inputChanges$.complete();
         if (this.infoWindow) {
-            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.infoWindow, output); });
+            this.nguiMap.clearObjectEvents(OUTPUTS, this, 'infoWindow');
             delete this.infoWindow;
         }
     };

@@ -38,9 +38,7 @@ var Marker = (function (_super) {
     function Marker(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'Marker', INPUTS, OUTPUTS) || this;
         _this.nguiMapComp = nguiMapComp;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.objectOptions = {};
-        console.log('marker constructor', 9999999);
         return _this;
     }
     // Initialize this map object when map is ready
@@ -61,7 +59,6 @@ var Marker = (function (_super) {
         var _this = this;
         if (!this['position']) {
             this._subscriptions.push(this.nguiMapComp.geolocation.getCurrentPosition().subscribe(function (position) {
-                console.log('setting marker position from current location');
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 _this.mapObject.setPosition(latLng);
             }, function (error) {
@@ -71,7 +68,6 @@ var Marker = (function (_super) {
         }
         else if (typeof this['position'] === 'string') {
             this._subscriptions.push(this.nguiMapComp.geoCoder.geocode({ address: this['position'] }).subscribe(function (results) {
-                console.log('setting marker position from address', _this['position']);
                 _this.mapObject.setPosition(results[0].geometry.location);
             }, function (error) {
                 console.error('ngui-map, error finding the location from', _this['position']);
@@ -81,10 +77,6 @@ var Marker = (function (_super) {
     };
     return Marker;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Marker.prototype, "initialized$", void 0);
 Marker = __decorate([
     core_1.Directive({
         selector: 'ngui-map > marker',

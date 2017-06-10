@@ -1,4 +1,4 @@
-import { EventEmitter, OnDestroy } from '@angular/core';
+import { OnDestroy } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
 export declare class StreetViewPanorama extends BaseMapDirective implements OnDestroy {
@@ -34,7 +34,6 @@ export declare class StreetViewPanorama extends BaseMapDirective implements OnDe
     status_changed: any;
     visible_changed: any;
     zoom_changed: any;
-    initialized$: EventEmitter<any>;
     constructor(nguiMapComp: NguiMapComponent);
     initialize(): void;
     ngOnDestroy(): void;

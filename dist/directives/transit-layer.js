@@ -26,19 +26,13 @@ var INPUTS = [];
 var OUTPUTS = [];
 var TransitLayer = (function (_super) {
     __extends(TransitLayer, _super);
+    // declare INPUTS for AOT compiler
+    // declare OUTPUTS for AOT compiler
     function TransitLayer(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'TransitLayer', INPUTS, OUTPUTS) || this;
-        // declare INPUTS for AOT compiler
-        // declare OUTPUTS for AOT compiler
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'TransitLayer', INPUTS, OUTPUTS) || this;
     }
     return TransitLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], TransitLayer.prototype, "initialized$", void 0);
 TransitLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > transit-layer',

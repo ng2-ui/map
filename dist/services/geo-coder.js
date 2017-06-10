@@ -19,13 +19,17 @@ var api_loader_1 = require("./api-loader");
 var GeoCoder = (function () {
     function GeoCoder(apiLoader) {
         this.apiLoader = apiLoader;
+        this.apiLoaderSubs = [];
     }
     GeoCoder.prototype.geocode = function (options) {
         var _this = this;
         return new Observable_1.Observable(function (responseObserver) {
-            _this.apiLoader.api$
-                .subscribe(function () { return _this.requestGeocode(options, responseObserver); });
+            _this.apiLoaderSubs.push(_this.apiLoader.api$
+                .subscribe(function () { return _this.requestGeocode(options, responseObserver); }));
         });
+    };
+    GeoCoder.prototype.ngOnDestroy = function () {
+        this.apiLoaderSubs.map(function (sub) { return sub.unsubscribe(); });
     };
     GeoCoder.prototype.requestGeocode = function (options, observer) {
         var geocoder = new google.maps.Geocoder();

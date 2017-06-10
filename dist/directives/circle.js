@@ -37,7 +37,6 @@ var Circle = (function (_super) {
     function Circle(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'Circle', INPUTS, OUTPUTS) || this;
         _this.nguiMapComp = nguiMapComp;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.objectOptions = {};
         return _this;
     }
@@ -49,7 +48,6 @@ var Circle = (function (_super) {
         var _this = this;
         if (!this['center']) {
             this._subscriptions.push(this.nguiMapComp.geolocation.getCurrentPosition().subscribe(function (center) {
-                console.log('setting circle center from current location');
                 var latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
                 _this.mapObject.setCenter(latLng);
             }, function (error) {
@@ -59,7 +57,6 @@ var Circle = (function (_super) {
         }
         else if (typeof this['center'] === 'string') {
             this._subscriptions.push(this.nguiMapComp.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
-                console.log('setting circle center from address', _this['center']);
                 _this.mapObject.setCenter(results[0].geometry.location);
             }, function (error) {
                 console.error('ngui-map, error in finding location from', _this['center']);
@@ -69,10 +66,6 @@ var Circle = (function (_super) {
     };
     return Circle;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Circle.prototype, "initialized$", void 0);
 Circle = __decorate([
     core_1.Directive({
         selector: 'ngui-map>circle, ngui-map>map-circle',

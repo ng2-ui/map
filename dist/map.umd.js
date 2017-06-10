@@ -149,7 +149,7 @@ var NguiMapComponent = (function () {
     }
     NguiMapComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
-        this.apiLoader.api$.subscribe(function () { return _this.initializeMap(); });
+        this.apiLoaderSub = this.apiLoader.api$.subscribe(function () { return _this.initializeMap(); });
     };
     NguiMapComponent.prototype.ngAfterViewChecked = function () {
         if (this.initializeMapAfterDisplayed && this.el && this.el.offsetWidth > 0) {
@@ -221,9 +221,12 @@ var NguiMapComponent = (function () {
         this.infoWindows[id].open(anchor);
     };
     NguiMapComponent.prototype.ngOnDestroy = function () {
-        var _this = this;
+        this.inputChanges$.complete();
         if (this.el && !this.initializeMapAfterDisplayed) {
-            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.map, output); });
+            this.nguiMap.clearObjectEvents(OUTPUTS, this, 'map');
+        }
+        if (this.apiLoaderSub) {
+            this.apiLoaderSub.unsubscribe();
         }
     };
     // map.markers, map.circles, map.heatmapLayers.. etc
@@ -340,13 +343,10 @@ var BaseMapDirective = (function () {
     };
     // When destroyed, remove event listener, and delete this object to prevent memory leak
     BaseMapDirective.prototype.ngOnDestroy = function () {
-        var _this = this;
         this._subscriptions.map(function (subscription) { return subscription.unsubscribe(); });
         this.nguiMapComponent.removeFromMapObjectGroup(this.mapObjectName, this.mapObject);
         if (this.mapObject) {
-            this.outputs.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
-            this.mapObject['setMap'](null);
-            delete this.mapObject;
+            this.nguiMap.clearObjectEvents(this.outputs, this, 'mapObject');
         }
     };
     return BaseMapDirective;
@@ -549,12 +549,30 @@ var NguiMap = (function () {
                 .replace(/([A-Z])/g, function ($1) { return "_" + $1.toLowerCase(); }) // positionChanged -> position_changed
                 .replace(/^map_/, ''); // map_click -> click  to avoid DOM conflicts
             var zone = _this.zone;
-            thisObj[prefix].addListener(eventName, function (event) {
-                var param = event ? event : {};
-                param.target = this;
-                zone.run(function () { return thisObj[definedEvent].emit(param); });
+            zone.runOutsideAngular(function () {
+                thisObj[prefix].addListener(eventName, function (event) {
+                    var param = event ? event : {};
+                    param.target = this;
+                    zone.run(function () { return thisObj[definedEvent].emit(param); });
+                });
             });
         });
+    };
+    NguiMap.prototype.clearObjectEvents = function (definedEvents, thisObj, prefix) {
+        var _this = this;
+        definedEvents.forEach(function (definedEvent) {
+            var eventName = definedEvent
+                .replace(/([A-Z])/g, function ($1) { return "_" + $1.toLowerCase(); }) // positionChanged -> position_changed
+                .replace(/^map_/, ''); // map_click -> click  to avoid DOM conflicts
+            _this.zone.runOutsideAngular(function () {
+                google.maps.event.clearListeners(thisObj[prefix], eventName);
+            });
+        });
+        if (thisObj[prefix] && thisObj[prefix].setMap) {
+            thisObj[prefix].setMap(null);
+            delete thisObj[prefix].nguiMapComponent;
+            delete thisObj[prefix];
+        }
     };
     return NguiMap;
 }());
@@ -842,13 +860,17 @@ var api_loader_1 = __webpack_require__(3);
 var GeoCoder = (function () {
     function GeoCoder(apiLoader) {
         this.apiLoader = apiLoader;
+        this.apiLoaderSubs = [];
     }
     GeoCoder.prototype.geocode = function (options) {
         var _this = this;
         return new Observable_1.Observable(function (responseObserver) {
-            _this.apiLoader.api$
-                .subscribe(function () { return _this.requestGeocode(options, responseObserver); });
+            _this.apiLoaderSubs.push(_this.apiLoader.api$
+                .subscribe(function () { return _this.requestGeocode(options, responseObserver); }));
         });
+    };
+    GeoCoder.prototype.ngOnDestroy = function () {
+        this.apiLoaderSubs.map(function (sub) { return sub.unsubscribe(); });
     };
     GeoCoder.prototype.requestGeocode = function (options, observer) {
         var geocoder = new google.maps.Geocoder();
@@ -1147,12 +1169,10 @@ var CustomMarker = (function () {
         this.inputChanges$.next(changes);
     };
     CustomMarker.prototype.ngOnDestroy = function () {
-        var _this = this;
+        this.inputChanges$.complete();
         this.nguiMapComponent.removeFromMapObjectGroup('CustomMarker', this.mapObject);
         if (this.mapObject) {
-            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
-            this.mapObject.setMap(null);
-            delete this.mapObject;
+            this.nguiMap.clearObjectEvents(OUTPUTS, this, 'mapObject');
         }
     };
     CustomMarker.prototype.initialize = function () {
@@ -1270,9 +1290,9 @@ var InfoWindow = (function () {
         this.infoWindow.open(this.nguiMapComponent.map, anchor);
     };
     InfoWindow.prototype.ngOnDestroy = function () {
-        var _this = this;
+        this.inputChanges$.complete();
         if (this.infoWindow) {
-            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.infoWindow, output); });
+            this.nguiMap.clearObjectEvents(OUTPUTS, this, 'infoWindow');
             delete this.infoWindow;
         }
     };
@@ -1334,16 +1354,10 @@ var OUTPUTS = [];
 var BicyclingLayer = (function (_super) {
     __extends(BicyclingLayer, _super);
     function BicyclingLayer(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'BicyclingLayer', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'BicyclingLayer', INPUTS, OUTPUTS) || this;
     }
     return BicyclingLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], BicyclingLayer.prototype, "initialized$", void 0);
 BicyclingLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > bicycling-layer',
@@ -1399,7 +1413,6 @@ var Circle = (function (_super) {
     function Circle(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'Circle', INPUTS, OUTPUTS) || this;
         _this.nguiMapComp = nguiMapComp;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.objectOptions = {};
         return _this;
     }
@@ -1431,10 +1444,6 @@ var Circle = (function (_super) {
     };
     return Circle;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Circle.prototype, "initialized$", void 0);
 Circle = __decorate([
     core_1.Directive({
         selector: 'ngui-map>circle, ngui-map>map-circle',
@@ -1483,9 +1492,7 @@ var OUTPUTS = [
 var DataLayer = (function (_super) {
     __extends(DataLayer, _super);
     function DataLayer(nguiMapComponent) {
-        var _this = _super.call(this, nguiMapComponent, 'Data', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComponent, 'Data', INPUTS, OUTPUTS) || this;
     }
     // only called when map is ready
     DataLayer.prototype.initialize = function () {
@@ -1513,10 +1520,6 @@ var DataLayer = (function (_super) {
     };
     return DataLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], DataLayer.prototype, "initialized$", void 0);
 DataLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > data-layer',
@@ -1569,7 +1572,6 @@ var DirectionsRenderer = (function (_super) {
     function DirectionsRenderer(nguiMapComponent, geolocation) {
         var _this = _super.call(this, nguiMapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS) || this;
         _this.geolocation = geolocation;
-        _this.initialized$ = new core_1.EventEmitter();
         return _this;
     }
     // only called when map is ready
@@ -1616,10 +1618,6 @@ __decorate([
     core_1.Input('directions-request'),
     __metadata("design:type", Object)
 ], DirectionsRenderer.prototype, "directionsRequest", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], DirectionsRenderer.prototype, "initialized$", void 0);
 DirectionsRenderer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > directions-renderer',
@@ -1674,16 +1672,11 @@ var DrawingManager = (function (_super) {
     __extends(DrawingManager, _super);
     function DrawingManager(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'DrawingManager', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.libraryName = 'drawing';
         return _this;
     }
     return DrawingManager;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], DrawingManager.prototype, "initialized$", void 0);
 DrawingManager = __decorate([
     core_1.Directive({
         selector: 'ngui-map > drawing-manager',
@@ -1730,7 +1723,6 @@ var GroundOverlay = (function (_super) {
     __extends(GroundOverlay, _super);
     function GroundOverlay(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'GroundOverlay', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.objectOptions = {};
         return _this;
     }
@@ -1750,10 +1742,6 @@ var GroundOverlay = (function (_super) {
     };
     return GroundOverlay;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], GroundOverlay.prototype, "initialized$", void 0);
 GroundOverlay = __decorate([
     core_1.Directive({
         selector: 'ngui-map > ground-overlay',
@@ -1800,16 +1788,11 @@ var HeatmapLayer = (function (_super) {
     __extends(HeatmapLayer, _super);
     function HeatmapLayer(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'HeatmapLayer', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.libraryName = 'visualization';
         return _this;
     }
     return HeatmapLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], HeatmapLayer.prototype, "initialized$", void 0);
 HeatmapLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > heatmap-layer',
@@ -1855,16 +1838,10 @@ var OUTPUTS = ['click', 'defaultviewport_changed', 'status_changed'];
 var KmlLayer = (function (_super) {
     __extends(KmlLayer, _super);
     function KmlLayer(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'KmlLayer', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'KmlLayer', INPUTS, OUTPUTS) || this;
     }
     return KmlLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], KmlLayer.prototype, "initialized$", void 0);
 KmlLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > kml-layer',
@@ -1921,7 +1898,6 @@ var Marker = (function (_super) {
     function Marker(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'Marker', INPUTS, OUTPUTS) || this;
         _this.nguiMapComp = nguiMapComp;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.objectOptions = {};
         console.log('marker constructor', 9999999);
         return _this;
@@ -1964,10 +1940,6 @@ var Marker = (function (_super) {
     };
     return Marker;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Marker.prototype, "initialized$", void 0);
 Marker = __decorate([
     core_1.Directive({
         selector: 'ngui-map > marker',
@@ -2040,7 +2012,7 @@ __decorate([
     __metadata("design:type", core_1.EventEmitter)
 ], PlacesAutoComplete.prototype, "place_changed", void 0);
 __decorate([
-    core_1.Output('initialized$'),
+    core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], PlacesAutoComplete.prototype, "initialized$", void 0);
 PlacesAutoComplete = __decorate([
@@ -2094,16 +2066,10 @@ var OUTPUTS = [
 var Polygon = (function (_super) {
     __extends(Polygon, _super);
     function Polygon(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'Polygon', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'Polygon', INPUTS, OUTPUTS) || this;
     }
     return Polygon;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Polygon.prototype, "initialized$", void 0);
 Polygon = __decorate([
     core_1.Directive({
         selector: 'ngui-map>polygon, ngui-map>map-polygon',
@@ -2155,16 +2121,10 @@ var OUTPUTS = [
 var Polyline = (function (_super) {
     __extends(Polyline, _super);
     function Polyline(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'Polyline', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'Polyline', INPUTS, OUTPUTS) || this;
     }
     return Polyline;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Polyline.prototype, "initialized$", void 0);
 Polyline = __decorate([
     core_1.Directive({
         selector: 'ngui-map > polyline',
@@ -2219,9 +2179,7 @@ var OUTPUTS = [
 var StreetViewPanorama = (function (_super) {
     __extends(StreetViewPanorama, _super);
     function StreetViewPanorama(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'StreetViewPanorama', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'StreetViewPanorama', INPUTS, OUTPUTS) || this;
     }
     // only called when map is ready
     StreetViewPanorama.prototype.initialize = function () {
@@ -2248,17 +2206,12 @@ var StreetViewPanorama = (function (_super) {
     };
     // When destroyed, remove event listener, and delete this object to prevent memory leak
     StreetViewPanorama.prototype.ngOnDestroy = function () {
-        var _this = this;
         if (this.nguiMapComponent.el) {
-            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
+            this.nguiMap.clearObjectEvents(this.outputs, this, 'mapObject');
         }
     };
     return StreetViewPanorama;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], StreetViewPanorama.prototype, "initialized$", void 0);
 StreetViewPanorama = __decorate([
     core_1.Directive({
         selector: 'ngui-map > street-view-panorama',
@@ -2304,16 +2257,10 @@ var OUTPUTS = [];
 var TrafficLayer = (function (_super) {
     __extends(TrafficLayer, _super);
     function TrafficLayer(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'TrafficLayer', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'TrafficLayer', INPUTS, OUTPUTS) || this;
     }
     return TrafficLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], TrafficLayer.prototype, "initialized$", void 0);
 TrafficLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > traffic-layer',
@@ -2359,16 +2306,10 @@ var OUTPUTS = [];
 var TransitLayer = (function (_super) {
     __extends(TransitLayer, _super);
     function TransitLayer(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'TransitLayer', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'TransitLayer', INPUTS, OUTPUTS) || this;
     }
     return TransitLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], TransitLayer.prototype, "initialized$", void 0);
 TransitLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > transit-layer',

@@ -28,7 +28,6 @@ var GroundOverlay = (function (_super) {
     __extends(GroundOverlay, _super);
     function GroundOverlay(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'GroundOverlay', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.objectOptions = {};
         return _this;
     }
@@ -36,7 +35,6 @@ var GroundOverlay = (function (_super) {
     GroundOverlay.prototype.initialize = function () {
         // url, bounds are not the options of GroundOverlay
         this.objectOptions = this.optionBuilder.googlizeAllInputs(['clickable', 'opacity'], this);
-        console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
         // noinspection TypeScriptUnresolvedFunction
         this.mapObject = new google.maps.GroundOverlay(this['url'], this['bounds'], this.objectOptions);
         this.mapObject.setMap(this.nguiMapComponent.map);
@@ -48,10 +46,6 @@ var GroundOverlay = (function (_super) {
     };
     return GroundOverlay;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], GroundOverlay.prototype, "initialized$", void 0);
 GroundOverlay = __decorate([
     core_1.Directive({
         selector: 'ngui-map > ground-overlay',

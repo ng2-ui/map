@@ -29,16 +29,11 @@ var HeatmapLayer = (function (_super) {
     function HeatmapLayer(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'HeatmapLayer', INPUTS, OUTPUTS) || this;
         // declare OUTPUTS for AOT compiler
-        _this.initialized$ = new core_1.EventEmitter();
         _this.libraryName = 'visualization';
         return _this;
     }
     return HeatmapLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], HeatmapLayer.prototype, "initialized$", void 0);
 HeatmapLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > heatmap-layer',

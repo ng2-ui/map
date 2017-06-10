@@ -1,5 +1,5 @@
 /// <reference types="googlemaps" />
-import { SimpleChanges, EventEmitter, OnChanges } from '@angular/core';
+import { SimpleChanges, OnChanges } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
@@ -20,7 +20,6 @@ export declare class DirectionsRenderer extends BaseMapDirective implements OnCh
     suppressPolylines: any;
     directions_changed: any;
     directionsRequest: google.maps.DirectionsRequest;
-    initialized$: EventEmitter<any>;
     directionsService: google.maps.DirectionsService;
     directionsRenderer: google.maps.DirectionsRenderer;
     constructor(nguiMapComponent: NguiMapComponent, geolocation: NavigatorGeolocation);

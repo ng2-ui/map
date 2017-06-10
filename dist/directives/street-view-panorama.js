@@ -36,14 +36,11 @@ var OUTPUTS = [
 var StreetViewPanorama = (function (_super) {
     __extends(StreetViewPanorama, _super);
     function StreetViewPanorama(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'StreetViewPanorama', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'StreetViewPanorama', INPUTS, OUTPUTS) || this;
     }
     // only called when map is ready
     StreetViewPanorama.prototype.initialize = function () {
         this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-        console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
         var element;
         if (this.objectOptions.selector) {
             // noinspection TypeScriptValidateTypes
@@ -65,17 +62,12 @@ var StreetViewPanorama = (function (_super) {
     };
     // When destroyed, remove event listener, and delete this object to prevent memory leak
     StreetViewPanorama.prototype.ngOnDestroy = function () {
-        var _this = this;
         if (this.nguiMapComponent.el) {
-            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
+            this.nguiMap.clearObjectEvents(this.outputs, this, 'mapObject');
         }
     };
     return StreetViewPanorama;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], StreetViewPanorama.prototype, "initialized$", void 0);
 StreetViewPanorama = __decorate([
     core_1.Directive({
         selector: 'ngui-map > street-view-panorama',

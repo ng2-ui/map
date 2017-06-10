@@ -33,16 +33,10 @@ var OUTPUTS = [
 var Polygon = (function (_super) {
     __extends(Polygon, _super);
     function Polygon(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'Polygon', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'Polygon', INPUTS, OUTPUTS) || this;
     }
     return Polygon;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Polygon.prototype, "initialized$", void 0);
 Polygon = __decorate([
     core_1.Directive({
         selector: 'ngui-map>polygon, ngui-map>map-polygon',

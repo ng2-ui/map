@@ -60,7 +60,7 @@ var NguiMapComponent = (function () {
     }
     NguiMapComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
-        this.apiLoader.api$.subscribe(function () { return _this.initializeMap(); });
+        this.apiLoaderSub = this.apiLoader.api$.subscribe(function () { return _this.initializeMap(); });
     };
     NguiMapComponent.prototype.ngAfterViewChecked = function () {
         if (this.initializeMapAfterDisplayed && this.el && this.el.offsetWidth > 0) {
@@ -79,7 +79,6 @@ var NguiMapComponent = (function () {
         }
         this.initializeMapAfterDisplayed = false;
         this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-        console.log('ngui-map mapOptions', this.mapOptions);
         this.mapOptions.zoom = this.mapOptions.zoom || 15;
         typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
         this.zone.runOutsideAngular(function () {
@@ -111,7 +110,6 @@ var NguiMapComponent = (function () {
         var _this = this;
         if (!this['center']) {
             this.geolocation.getCurrentPosition().subscribe(function (position) {
-                console.log('setting map center from current location');
                 var latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 _this.map.setCenter(latLng);
             }, function (error) {
@@ -121,7 +119,6 @@ var NguiMapComponent = (function () {
         }
         else if (typeof this['center'] === 'string') {
             this.geoCoder.geocode({ address: this['center'] }).subscribe(function (results) {
-                console.log('setting map center from address', _this['center']);
                 _this.map.setCenter(results[0].geometry.location);
             }, function (error) {
                 _this.map.setCenter(_this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
@@ -132,9 +129,12 @@ var NguiMapComponent = (function () {
         this.infoWindows[id].open(anchor);
     };
     NguiMapComponent.prototype.ngOnDestroy = function () {
-        var _this = this;
+        this.inputChanges$.complete();
         if (this.el && !this.initializeMapAfterDisplayed) {
-            OUTPUTS.forEach(function (output) { return google.maps.event.clearListeners(_this.map, output); });
+            this.nguiMap.clearObjectEvents(OUTPUTS, this, 'map');
+        }
+        if (this.apiLoaderSub) {
+            this.apiLoaderSub.unsubscribe();
         }
     };
     // map.markers, map.circles, map.heatmapLayers.. etc
@@ -147,7 +147,6 @@ var NguiMapComponent = (function () {
         var groupName = util_1.toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
         if (this.map && this.map[groupName]) {
             var index = this.map[groupName].indexOf(mapObject);
-            console.log('index', mapObject, index);
             (index > -1) && this.map[groupName].splice(index, 1);
         }
     };

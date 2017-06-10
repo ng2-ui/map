@@ -1,4 +1,3 @@
-import { EventEmitter } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
 export declare class DataLayer extends BaseMapDirective {
@@ -20,7 +19,6 @@ export declare class DataLayer extends BaseMapDirective {
     rightclick: any;
     setgeometry: any;
     setproperty: any;
-    initialized$: EventEmitter<any>;
     constructor(nguiMapComponent: NguiMapComponent);
     initialize(): void;
 }

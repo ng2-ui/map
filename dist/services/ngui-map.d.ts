@@ -10,5 +10,6 @@ export declare class NguiMap {
     private zone;
     constructor(geoCoder: GeoCoder, optionBuilder: OptionBuilder, zone: NgZone);
     setObjectEvents(definedEvents: string[], thisObj: any, prefix: string): void;
+    clearObjectEvents(definedEvents: string[], thisObj: any, prefix: string): void;
     updateGoogleObject: (object: any, changes: SimpleChanges) => void;
 }

@@ -26,19 +26,13 @@ var INPUTS = [];
 var OUTPUTS = [];
 var BicyclingLayer = (function (_super) {
     __extends(BicyclingLayer, _super);
+    // declare INPUTS for AOT compiler
+    // declare OUTPUTS for AOT compiler
     function BicyclingLayer(nguiMapComp) {
-        var _this = _super.call(this, nguiMapComp, 'BicyclingLayer', INPUTS, OUTPUTS) || this;
-        // declare INPUTS for AOT compiler
-        // declare OUTPUTS for AOT compiler
-        _this.initialized$ = new core_1.EventEmitter();
-        return _this;
+        return _super.call(this, nguiMapComp, 'BicyclingLayer', INPUTS, OUTPUTS) || this;
     }
     return BicyclingLayer;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], BicyclingLayer.prototype, "initialized$", void 0);
 BicyclingLayer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > bicycling-layer',

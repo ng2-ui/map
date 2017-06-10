@@ -1,4 +1,3 @@
-import { EventEmitter } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
 export declare class HeatmapLayer extends BaseMapDirective {
@@ -9,7 +8,6 @@ export declare class HeatmapLayer extends BaseMapDirective {
     opacity: any;
     radius: any;
     options: any;
-    initialized$: EventEmitter<any>;
     libraryName: string;
     constructor(nguiMapComp: NguiMapComponent);
 }

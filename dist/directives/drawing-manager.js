@@ -35,16 +35,11 @@ var DrawingManager = (function (_super) {
     __extends(DrawingManager, _super);
     function DrawingManager(nguiMapComp) {
         var _this = _super.call(this, nguiMapComp, 'DrawingManager', INPUTS, OUTPUTS) || this;
-        _this.initialized$ = new core_1.EventEmitter();
         _this.libraryName = 'drawing';
         return _this;
     }
     return DrawingManager;
 }(base_map_directive_1.BaseMapDirective));
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], DrawingManager.prototype, "initialized$", void 0);
 DrawingManager = __decorate([
     core_1.Directive({
         selector: 'ngui-map > drawing-manager',

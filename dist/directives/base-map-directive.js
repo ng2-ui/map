@@ -39,7 +39,6 @@ var BaseMapDirective = (function () {
     // only called when map is ready
     BaseMapDirective.prototype.initialize = function () {
         this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-        console.log(this.mapObjectName, 'initialization options', this.objectOptions);
         // will be set after geocoded
         typeof this.objectOptions.position === 'string' && (delete this.objectOptions.position);
         typeof this.objectOptions.center === 'string' && (delete this.objectOptions.center);
@@ -61,18 +60,14 @@ var BaseMapDirective = (function () {
     // When input is changed, update object too.
     // e.g., when map center is changed by user, update center on the map
     BaseMapDirective.prototype.ngOnChanges = function (changes) {
-        console.log(this.mapObjectName, 'objectOptions are changed', changes);
         this.nguiMap.updateGoogleObject(this.mapObject, changes);
     };
     // When destroyed, remove event listener, and delete this object to prevent memory leak
     BaseMapDirective.prototype.ngOnDestroy = function () {
-        var _this = this;
         this._subscriptions.map(function (subscription) { return subscription.unsubscribe(); });
         this.nguiMapComponent.removeFromMapObjectGroup(this.mapObjectName, this.mapObject);
         if (this.mapObject) {
-            this.outputs.forEach(function (output) { return google.maps.event.clearListeners(_this.mapObject, output); });
-            this.mapObject['setMap'](null);
-            delete this.mapObject;
+            this.nguiMap.clearObjectEvents(this.outputs, this, 'mapObject');
         }
     };
     return BaseMapDirective;

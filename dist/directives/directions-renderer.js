@@ -34,7 +34,6 @@ var DirectionsRenderer = (function (_super) {
     function DirectionsRenderer(nguiMapComponent, geolocation) {
         var _this = _super.call(this, nguiMapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS) || this;
         _this.geolocation = geolocation;
-        _this.initialized$ = new core_1.EventEmitter();
         return _this;
     }
     // only called when map is ready
@@ -43,7 +42,6 @@ var DirectionsRenderer = (function (_super) {
         if (typeof this.objectOptions['panel'] === 'string') {
             this.objectOptions['panel'] = document.querySelector(this.objectOptions['panel']);
         }
-        console.log('DirectionsRenderer', 'initialization options', this.objectOptions, this.directionsRequest);
         this.directionsService = new google.maps.DirectionsService();
         this.directionsRenderer = new google.maps.DirectionsRenderer(this.objectOptions);
         this.directionsRenderer.setMap(this.nguiMapComponent.map);
@@ -81,10 +79,6 @@ __decorate([
     core_1.Input('directions-request'),
     __metadata("design:type", Object)
 ], DirectionsRenderer.prototype, "directionsRequest", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], DirectionsRenderer.prototype, "initialized$", void 0);
 DirectionsRenderer = __decorate([
     core_1.Directive({
         selector: 'ngui-map > directions-renderer',

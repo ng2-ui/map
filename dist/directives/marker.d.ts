@@ -1,5 +1,5 @@
 /// <reference types="googlemaps" />
-import { EventEmitter, OnInit } from '@angular/core';
+import { OnInit } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
 export declare class Marker extends BaseMapDirective implements OnInit {
@@ -42,7 +42,6 @@ export declare class Marker extends BaseMapDirective implements OnInit {
     titleChanged: any;
     visibleChanged: any;
     zindexChanged: any;
-    initialized$: EventEmitter<any>;
     mapObject: google.maps.Marker;
     objectOptions: google.maps.MarkerOptions;
     constructor(nguiMapComp: NguiMapComponent);

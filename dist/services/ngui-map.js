@@ -62,12 +62,30 @@ var NguiMap = (function () {
                 .replace(/([A-Z])/g, function ($1) { return "_" + $1.toLowerCase(); }) // positionChanged -> position_changed
                 .replace(/^map_/, ''); // map_click -> click  to avoid DOM conflicts
             var zone = _this.zone;
-            thisObj[prefix].addListener(eventName, function (event) {
-                var param = event ? event : {};
-                param.target = this;
-                zone.run(function () { return thisObj[definedEvent].emit(param); });
+            zone.runOutsideAngular(function () {
+                thisObj[prefix].addListener(eventName, function (event) {
+                    var param = event ? event : {};
+                    param.target = this;
+                    zone.run(function () { return thisObj[definedEvent].emit(param); });
+                });
             });
         });
+    };
+    NguiMap.prototype.clearObjectEvents = function (definedEvents, thisObj, prefix) {
+        var _this = this;
+        definedEvents.forEach(function (definedEvent) {
+            var eventName = definedEvent
+                .replace(/([A-Z])/g, function ($1) { return "_" + $1.toLowerCase(); }) // positionChanged -> position_changed
+                .replace(/^map_/, ''); // map_click -> click  to avoid DOM conflicts
+            _this.zone.runOutsideAngular(function () {
+                google.maps.event.clearListeners(thisObj[prefix], eventName);
+            });
+        });
+        if (thisObj[prefix] && thisObj[prefix].setMap) {
+            thisObj[prefix].setMap(null);
+            delete thisObj[prefix].nguiMapComponent;
+            delete thisObj[prefix];
+        }
     };
     return NguiMap;
 }());
