@@ -1,4 +1,4 @@
-import {Directive, Output, EventEmitter, OnInit} from '@angular/core';
+import {Directive, OnInit} from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
@@ -22,8 +22,6 @@ const OUTPUTS = [
   outputs: OUTPUTS,
 })
 export class Marker extends BaseMapDirective implements OnInit {
-  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
-
   public mapObject: google.maps.Marker;
   public objectOptions: google.maps.MarkerOptions = <google.maps.MarkerOptions>{};
 

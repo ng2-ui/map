@@ -1,4 +1,4 @@
-import { Directive, Output, EventEmitter } from '@angular/core';
+import { Directive } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
 
@@ -11,8 +11,6 @@ const OUTPUTS = [ ];
   outputs: OUTPUTS,
 })
 export class TrafficLayer extends BaseMapDirective {
-  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
-
   constructor(nguiMapComp: NguiMapComponent) {
     super(nguiMapComp, 'TrafficLayer', INPUTS, OUTPUTS);
   }

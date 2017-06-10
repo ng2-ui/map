@@ -1,4 +1,4 @@
-import { Directive, Output, EventEmitter } from '@angular/core';
+import { Directive } from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
@@ -20,8 +20,6 @@ const OUTPUTS = [
   outputs: OUTPUTS,
 })
 export class Circle extends BaseMapDirective {
-  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
-
   public mapObject: google.maps.Circle;
   public objectOptions: google.maps.CircleOptions = <google.maps.CircleOptions>{};
 

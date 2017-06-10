@@ -1,4 +1,4 @@
-import {Directive, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {Directive, OnDestroy} from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
@@ -21,8 +21,6 @@ const OUTPUTS = [
   outputs: OUTPUTS,
 })
 export class StreetViewPanorama extends BaseMapDirective implements OnDestroy {
-  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
-
   constructor(nguiMapComp: NguiMapComponent) {
     super(nguiMapComp, 'StreetViewPanorama', INPUTS, OUTPUTS);
   }
