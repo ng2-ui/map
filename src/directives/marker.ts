@@ -2,7 +2,6 @@ import {Directive, OnInit} from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
-import { first } from 'rxjs/operator/first';
 
 const INPUTS = [
   'anchorPoint', 'animation', 'clickable', 'cursor', 'draggable', 'icon', 'label', 'opacity',
@@ -35,7 +34,7 @@ export class Marker extends BaseMapDirective implements OnInit {
     if (this.nguiMapComponent.mapIdledOnce) { // map is ready already
       this.initialize();
     } else {
-      first.call(this.nguiMapComponent.mapReady$).subscribe(map => this.initialize());
+      this.nguiMapComponent.mapReady$.subscribe(map => this.initialize());
     }
   }
 

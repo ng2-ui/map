@@ -56,7 +56,7 @@ export class StreetViewPanorama extends BaseMapDirective implements OnDestroy {
   // When destroyed, remove event listener, and delete this object to prevent memory leak
   ngOnDestroy() {
     if (this.nguiMapComponent.el) {
-      OUTPUTS.forEach(output => google.maps.event.clearListeners(this.mapObject, output));
+      this.nguiMap.clearObjectEvents(this.outputs, this, 'mapObject');
     }
   }
 }

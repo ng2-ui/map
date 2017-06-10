@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operator/debounceTime';
-import { first } from 'rxjs/operator/first';
 import { NguiMap } from '../services/ngui-map';
 import { NguiMapComponent } from './ngui-map.component';
 
@@ -26,7 +25,7 @@ const OUTPUTS = [
   template: `<div #template><ng-content></ng-content></div>`,
 })
 export class InfoWindow implements OnInit, OnChanges, OnDestroy {
-  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
+  @Output() initialized$: EventEmitter<any> = new EventEmitter();
 
   public infoWindow: google.maps.InfoWindow;
   public objectOptions: google.maps.InfoWindowOptions = {};
@@ -47,7 +46,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     if (this.nguiMapComponent.mapIdledOnce) { // map is ready already
       this.initialize();
     } else {
-      first.call(this.nguiMapComponent.mapReady$).subscribe(map => this.initialize());
+      this.nguiMapComponent.mapReady$.subscribe(map => this.initialize());
     }
   }
 
@@ -90,9 +89,8 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.inputChanges$.complete();
-    this.initialized$.complete();
     if (this.infoWindow) {
-      OUTPUTS.forEach(output => google.maps.event.clearListeners(this.infoWindow, output));
+      this.nguiMap.clearObjectEvents(OUTPUTS, this, 'infoWindow');
       delete this.infoWindow;
     }
   }

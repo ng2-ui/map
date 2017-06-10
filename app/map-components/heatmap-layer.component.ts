@@ -59,13 +59,14 @@ export class HeatmapLayerComponent implements OnInit {
   templateStr: string = templateStr;
   heatmap: google.maps.visualization.HeatmapLayer;
   map: google.maps.Map;
-  points = [
-    new google.maps.LatLng(37.782551, -122.445368),
-    new google.maps.LatLng(37.782745, -122.444586),
-    new google.maps.LatLng(37.782842, -122.443688)
-  ];
+  points = [];
   ngOnInit() {
     this.heatmapLayer['initialized$'].subscribe(heatmap => {
+      this.points = [
+        new google.maps.LatLng(37.782551, -122.445368),
+        new google.maps.LatLng(37.782745, -122.444586),
+        new google.maps.LatLng(37.782842, -122.443688)
+      ];
       this.heatmap = heatmap;
       this.map = this.heatmap.getMap();
     });

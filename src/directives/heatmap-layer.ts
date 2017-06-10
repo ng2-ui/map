@@ -12,10 +12,9 @@ const OUTPUTS = [];
   outputs: OUTPUTS,
 })
 export class HeatmapLayer extends BaseMapDirective {
-  public libraryName: string;
+  public libraryName = 'visualization';
 
   constructor(nguiMapComp: NguiMapComponent) {
     super(nguiMapComp, 'HeatmapLayer', INPUTS, OUTPUTS);
-    this.libraryName = 'visualization';
   }
 }
