@@ -5,8 +5,9 @@ import {
   EventEmitter,
   SimpleChanges, OnInit, OnDestroy, OnChanges,
 } from '@angular/core';
-import {Subject} from 'rxjs/Subject';
-import {debounceTime} from 'rxjs/operator/debounceTime';
+import { Subject } from 'rxjs/Subject';
+import { debounceTime } from 'rxjs/operator/debounceTime';
+import { first } from 'rxjs/operator/first';
 
 import { NguiMap } from '../services/ngui-map';
 import { NguiMapComponent } from './ngui-map.component';
@@ -144,7 +145,7 @@ export class CustomMarker implements OnInit, OnDestroy, OnChanges {
     if (this.nguiMapComponent.mapIdledOnce) { // map is ready already
       this.initialize();
     } else {
-      this.nguiMapComponent.mapReady$.subscribe(map => this.initialize());
+      first.call(this.nguiMapComponent.mapReady$).subscribe(map => this.initialize());
     }
   }
 

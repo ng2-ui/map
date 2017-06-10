@@ -3,7 +3,7 @@ import {EventEmitter, SimpleChanges, Output, OnInit, OnChanges, OnDestroy} from 
 import { OptionBuilder } from '../services/option-builder';
 import { NguiMap } from '../services/ngui-map';
 import { NguiMapComponent } from '../components/ngui-map.component';
-
+import { first } from 'rxjs/operator/first';
 export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   // this should be redefined on each childr directive
   @Output() public initialized$: EventEmitter<any> = new EventEmitter();
@@ -34,7 +34,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
     if (this.nguiMapComponent.mapIdledOnce) { // map is ready already
       this.initialize();
     } else {
-      this.nguiMapComponent.mapReady$.subscribe(map => this.initialize());
+      first.call(this.nguiMapComponent.mapReady$).subscribe(map => this.initialize());
     }
   }
 
