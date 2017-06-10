@@ -25,7 +25,7 @@ const OUTPUTS = [
   template: `<div #template><ng-content></ng-content></div>`,
 })
 export class InfoWindow implements OnInit, OnChanges, OnDestroy {
-  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
+  @Output() initialized$: EventEmitter<any> = new EventEmitter();
 
   public infoWindow: google.maps.InfoWindow;
   public objectOptions: google.maps.InfoWindowOptions = {};
@@ -88,8 +88,9 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.inputChanges$.complete();
     if (this.infoWindow) {
-      OUTPUTS.forEach(output => google.maps.event.clearListeners(this.infoWindow, output));
+      this.nguiMap.clearObjectEvents(OUTPUTS, this, 'infoWindow');
       delete this.infoWindow;
     }
   }

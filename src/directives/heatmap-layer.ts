@@ -1,4 +1,4 @@
-import { Directive, Output, EventEmitter } from '@angular/core';
+import { Directive } from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
@@ -12,12 +12,9 @@ const OUTPUTS = [];
   outputs: OUTPUTS,
 })
 export class HeatmapLayer extends BaseMapDirective {
-  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
-
-  public libraryName: string;
+  public libraryName = 'visualization';
 
   constructor(nguiMapComp: NguiMapComponent) {
     super(nguiMapComp, 'HeatmapLayer', INPUTS, OUTPUTS);
-    this.libraryName = 'visualization';
   }
 }

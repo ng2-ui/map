@@ -1,4 +1,4 @@
-import { Directive, Output, EventEmitter } from '@angular/core';
+import { Directive } from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
@@ -12,8 +12,6 @@ const OUTPUTS = [ 'click', 'defaultviewport_changed', 'status_changed' ];
   outputs: OUTPUTS,
 })
 export class KmlLayer extends BaseMapDirective {
-  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
-
   constructor(nguiMapComp: NguiMapComponent) {
     super(nguiMapComp, 'KmlLayer', INPUTS, OUTPUTS);
   }

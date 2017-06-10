@@ -5,8 +5,8 @@ import {
   EventEmitter,
   SimpleChanges, OnInit, OnDestroy, OnChanges,
 } from '@angular/core';
-import {Subject} from 'rxjs/Subject';
-import {debounceTime} from 'rxjs/operator/debounceTime';
+import { Subject } from 'rxjs/Subject';
+import { debounceTime } from 'rxjs/operator/debounceTime';
 
 import { NguiMap } from '../services/ngui-map';
 import { NguiMapComponent } from './ngui-map.component';
@@ -125,7 +125,7 @@ function getCustomMarkerOverlayView(htmlEl: HTMLElement, position: any) {
 })
 
 export class CustomMarker implements OnInit, OnDestroy, OnChanges {
-  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
+  @Output() initialized$: EventEmitter<any> = new EventEmitter();
 
   public inputChanges$ = new Subject();
 
@@ -153,12 +153,11 @@ export class CustomMarker implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
+    this.inputChanges$.complete();
     this.nguiMapComponent.removeFromMapObjectGroup('CustomMarker', this.mapObject);
 
     if (this.mapObject) {
-      OUTPUTS.forEach(output => google.maps.event.clearListeners(this.mapObject, output));
-      this.mapObject.setMap(null);
-      delete this.mapObject;
+      this.nguiMap.clearObjectEvents(OUTPUTS, this, 'mapObject');
     }
   }
 

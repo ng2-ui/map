@@ -3,10 +3,9 @@ import {EventEmitter, SimpleChanges, Output, OnInit, OnChanges, OnDestroy} from 
 import { OptionBuilder } from '../services/option-builder';
 import { NguiMap } from '../services/ngui-map';
 import { NguiMapComponent } from '../components/ngui-map.component';
-
 export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   // this should be redefined on each childr directive
-  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
+  @Output() initialized$: EventEmitter<any> = new EventEmitter();
 
   public mapObject: any; // e.g. google.maps.Marker
   public objectOptions: any; // e.g. google.maps.MarkerOptions
@@ -77,9 +76,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
     this.nguiMapComponent.removeFromMapObjectGroup(this.mapObjectName, this.mapObject);
 
     if (this.mapObject) {
-      this.outputs.forEach(output => google.maps.event.clearListeners(this.mapObject, output));
-      this.mapObject['setMap'](null);
-      delete this.mapObject;
+      this.nguiMap.clearObjectEvents(this.outputs, this, 'mapObject');
     }
   }
 }

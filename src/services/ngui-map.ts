@@ -21,12 +21,33 @@ export class NguiMap {
         .replace(/^map_/, '');                               // map_click -> click  to avoid DOM conflicts
 
       let zone = this.zone;
-      thisObj[prefix].addListener(eventName, function(event: google.maps.event) {
-        let param: any = event ? event : {};
-        param.target = this;
-        zone.run(() => thisObj[definedEvent].emit(param));
+      zone.runOutsideAngular(() => {
+        thisObj[prefix].addListener(eventName, function(event: google.maps.event) {
+          let param: any = event ? event : {};
+          param.target = this;
+          zone.run(() => thisObj[definedEvent].emit(param));
+        });
       });
     });
+  }
+
+  clearObjectEvents(definedEvents: string[], thisObj: any, prefix: string) {
+    definedEvents.forEach(definedEvent => {
+      let eventName = definedEvent
+        .replace(/([A-Z])/g, ($1) => `_${$1.toLowerCase()}`) // positionChanged -> position_changed
+        .replace(/^map_/, '');                               // map_click -> click  to avoid DOM conflicts
+
+      this.zone.runOutsideAngular(() => {
+        google.maps.event.clearListeners(thisObj[prefix], eventName);
+      });
+    });
+
+    if (thisObj[prefix] && thisObj[prefix].setMap) {
+      thisObj[prefix].setMap(null);
+      delete thisObj[prefix].nguiMapComponent;
+      delete thisObj[prefix];
+    }
+
   }
 
   updateGoogleObject = (object: any, changes: SimpleChanges)  => {

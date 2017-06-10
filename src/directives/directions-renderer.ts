@@ -1,4 +1,4 @@
-import {Input, Directive, SimpleChanges, Output, EventEmitter, OnChanges} from '@angular/core';
+import {Input, Directive, SimpleChanges, OnChanges} from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
@@ -19,7 +19,6 @@ const OUTPUTS = ['directions_changed'];
 export class DirectionsRenderer extends BaseMapDirective implements OnChanges {
   // tslint:disable-next-line
   @Input('directions-request') directionsRequest: google.maps.DirectionsRequest;
-  @Output() public initialized$: EventEmitter<any> = new EventEmitter();
 
   directionsService: google.maps.DirectionsService;
   directionsRenderer: google.maps.DirectionsRenderer;

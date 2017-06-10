@@ -69,6 +69,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
   public mapIdledOnce: boolean = false;
 
   private initializeMapAfterDisplayed = false;
+  private apiLoaderSub;
 
   constructor(
     public optionBuilder: OptionBuilder,
@@ -87,7 +88,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
   }
 
   ngAfterViewInit() {
-    this.apiLoader.api$.subscribe(() => this.initializeMap());
+    this.apiLoaderSub = this.apiLoader.api$.subscribe(() => this.initializeMap());
   }
 
   ngAfterViewChecked() {
@@ -176,8 +177,12 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
   }
 
   ngOnDestroy() {
+    this.inputChanges$.complete();
     if (this.el && !this.initializeMapAfterDisplayed) {
-      OUTPUTS.forEach(output => google.maps.event.clearListeners(this.map, output));
+      this.nguiMap.clearObjectEvents(OUTPUTS, this, 'map');
+    }
+    if (this.apiLoaderSub) {
+      this.apiLoaderSub.unsubscribe();
     }
   }
 

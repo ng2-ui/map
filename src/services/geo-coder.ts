@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { NgMapApiLoader } from './api-loader';
@@ -9,14 +9,19 @@ import { NgMapApiLoader } from './api-loader';
  */
 
 @Injectable()
-export class GeoCoder {
+export class GeoCoder implements OnDestroy {
+  private apiLoaderSubs = [];
   constructor(private apiLoader: NgMapApiLoader) {}
 
   geocode(options: google.maps.GeocoderRequest) {
     return new Observable((responseObserver: Observer<any>) => {
-        this.apiLoader.api$
-          .subscribe(() => this.requestGeocode(options, responseObserver));
+        this.apiLoaderSubs.push(this.apiLoader.api$
+          .subscribe(() => this.requestGeocode(options, responseObserver)));
     });
+  }
+
+  ngOnDestroy() {
+    this.apiLoaderSubs.map(sub => sub.unsubscribe());
   }
 
   private requestGeocode(options, observer) {

@@ -12,14 +12,13 @@ import { OptionBuilder } from '../services/option-builder';
 @Directive({
   selector: '[places-auto-complete]'
 })
-export class PlacesAutoComplete  {
-
+export class PlacesAutoComplete {
   @Input('bounds') bounds: any;
   @Input('componentRestrictions') componentRestrictions: any;
   @Input('types') types: string[];
 
   @Output('place_changed') place_changed: EventEmitter<any> = new EventEmitter();
-  @Output('initialized$')  initialized$: EventEmitter<any> = new EventEmitter();
+  @Output() initialized$: EventEmitter<any> = new EventEmitter();
 
   public objectOptions: any;
   public autocomplete: google.maps.places.Autocomplete;
