@@ -73,6 +73,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
 
   // When destroyed, remove event listener, and delete this object to prevent memory leak
   ngOnDestroy() {
+    this.initialized$.complete();
     this._subscriptions.map(subscription => subscription.unsubscribe());
     this.nguiMapComponent.removeFromMapObjectGroup(this.mapObjectName, this.mapObject);
 
