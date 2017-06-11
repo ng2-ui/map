@@ -81,8 +81,10 @@ var NguiMap = (function () {
                 google.maps.event.clearListeners(thisObj[prefix], eventName);
             });
         });
-        if (thisObj[prefix] && thisObj[prefix].setMap) {
-            thisObj[prefix].setMap(null);
+        if (thisObj[prefix]) {
+            if (thisObj[prefix].setMap) {
+                thisObj[prefix].setMap(null);
+            }
             delete thisObj[prefix].nguiMapComponent;
             delete thisObj[prefix];
         }

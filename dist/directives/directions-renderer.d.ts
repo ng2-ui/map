@@ -1,9 +1,9 @@
 /// <reference types="googlemaps" />
-import { SimpleChanges, OnChanges } from '@angular/core';
+import { SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
 import { NavigatorGeolocation } from '../services/navigator-geolocation';
-export declare class DirectionsRenderer extends BaseMapDirective implements OnChanges {
+export declare class DirectionsRenderer extends BaseMapDirective implements OnChanges, OnDestroy {
     geolocation: NavigatorGeolocation;
     directions: any;
     draggable: any;
@@ -26,4 +26,5 @@ export declare class DirectionsRenderer extends BaseMapDirective implements OnCh
     initialize(): void;
     ngOnChanges(changes: SimpleChanges): void;
     showDirections(directionsRequest: google.maps.DirectionsRequest): void;
+    ngOnDestroy(): void;
 }

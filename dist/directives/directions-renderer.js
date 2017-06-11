@@ -73,6 +73,10 @@ var DirectionsRenderer = (function (_super) {
             }
         });
     };
+    DirectionsRenderer.prototype.ngOnDestroy = function () {
+        _super.prototype.ngOnDestroy.call(this);
+        this.nguiMap.clearObjectEvents(this.outputs, this, 'directionsRenderer');
+    };
     return DirectionsRenderer;
 }(base_map_directive_1.BaseMapDirective));
 __decorate([

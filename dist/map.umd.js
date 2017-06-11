@@ -568,8 +568,10 @@ var NguiMap = (function () {
                 google.maps.event.clearListeners(thisObj[prefix], eventName);
             });
         });
-        if (thisObj[prefix] && thisObj[prefix].setMap) {
-            thisObj[prefix].setMap(null);
+        if (thisObj[prefix]) {
+            if (thisObj[prefix].setMap) {
+                thisObj[prefix].setMap(null);
+            }
             delete thisObj[prefix].nguiMapComponent;
             delete thisObj[prefix];
         }
@@ -1611,6 +1613,10 @@ var DirectionsRenderer = (function (_super) {
                 console.error('Directions request failed due to ' + status);
             }
         });
+    };
+    DirectionsRenderer.prototype.ngOnDestroy = function () {
+        _super.prototype.ngOnDestroy.call(this);
+        this.nguiMap.clearObjectEvents(this.outputs, this, 'directionsRenderer');
     };
     return DirectionsRenderer;
 }(base_map_directive_1.BaseMapDirective));
