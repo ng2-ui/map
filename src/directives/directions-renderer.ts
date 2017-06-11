@@ -1,4 +1,4 @@
-import {Input, Directive, SimpleChanges, OnChanges} from '@angular/core';
+import { Input, Directive, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
@@ -16,7 +16,7 @@ const OUTPUTS = ['directions_changed'];
   inputs: INPUTS,
   outputs: OUTPUTS,
 })
-export class DirectionsRenderer extends BaseMapDirective implements OnChanges {
+export class DirectionsRenderer extends BaseMapDirective implements OnChanges, OnDestroy {
   // tslint:disable-next-line
   @Input('directions-request') directionsRequest: google.maps.DirectionsRequest;
 
@@ -78,4 +78,8 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges {
     );
   }
 
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    this.nguiMap.clearObjectEvents(this.outputs, this, 'directionsRenderer');
+  }
 }
