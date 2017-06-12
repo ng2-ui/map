@@ -7,17 +7,17 @@ Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
 ## IMPORTANT NOTICE
 
-After 0.17.0 or higher, `ng2-map` has been changed to @ngui/map. Here are the changes;
+After 0.17.0 or higher, `ng2-map` has been changed to `@ngui/map`. Here are the changes;
 
  * Module `ng2-map` has been changed to `@ngui/map`.
- * Direvtive `ng2-map` is moved to `ngui-map`.
+ * Directive `ng2-map` is moved to `ngui-map`.
  * Class name `Ng2Map`/`Ng2MapModule` is moved to `NguiMap`/`NguiMapModule`.
 
 * **[![Imgur](http://i.imgur.com/O2EOCxf.png)](https://rawgit.com/ng2-ui/map/master/app/index.html)**		
 * [Plunker Example](https://plnkr.co/edit/6e1qWK?p=preview)
 * [Place Auto Complete Plunker Example](https://plnkr.co/edit/AT3fxW?p=preview)
 
-If you like this, you also may like these;
+If you like this, you may also like these;
 * [ng-map](https://github.com/allenhwkim/angularjs-google-maps) Google Maps Wrapper for Angular 1.*
 * [react-openlayers](https://github.com/allenhwkim/react-openlayers) React + OpenLayers
 * [geo-coder](https://github.com/allenhwkim/geocoder) Google/Bing/OpenStreetMap Geocoding/autocomplete/reverse lookup
@@ -30,8 +30,8 @@ If you like this, you also may like these;
 
 2. **Expose all original Google Maps V3 api to the user without any exception.**
 
-   No hiding, nor manipulation. By doing so, programmers don't need to learn any about this convenient module.
-   If you know Google Maps V3 API, there shouldn't be no problem using this module.
+   No hiding or manipulation. By doing so, programmers don't need to learn anything about this convenient module.
+   If you know Google Maps V3 API, there shouldn't be a problem using this module.
 
 ### Usage
 
@@ -74,7 +74,7 @@ or,
 <ngui-map [options]="mapOptions"></ngui-map>
 ```
 
-For full example, please check out `app` directory to see the example of;
+For a full example, please check out the `app` directory to see the example:
 
   - `main.ts`
   -  and `app/map-components`.
@@ -99,7 +99,7 @@ For full example, please check out `app` directory to see the example of;
 </ngui-map>
 ```
 
-In your app component, 
+In your app component:
 
 ```TypeScript
 export class MyAppComponent {
@@ -124,17 +124,17 @@ export class MyAppComponent {
  
 This `ngui-map` module is only improved and maintained by volunteers like you;
 
-As a volunteer, it's NOT required to be skilled in Javascript nor Angular2.
+As a volunteer, it's NOT required to be skilled in Javascript or Angular2.
 It’s required to be open-minded and interested in helping others.
 You can contribute to the following;
 
   * Updating README.md
-  * Making more and clearer comments
+  * Adding clear and descriptive comments
   * Answering issues and building FAQ
   * Documentation
   * Translation
 
-In result of your active contribution, you will be listed as a core contributor
+As a result of your active contribution, you will be listed as a core contributor
 on https://ng2-ui.github.io, and a member of ng2-ui too.
 
 If you are interested in becoming a contributor and/or a member of ng-ui,
@@ -248,12 +248,12 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
     $ npm start
 
 ### Before you make a PR
-  If you are planning to make a lot of code changes in the PR, we encourage to create an issue first;
+  If you are planning to make a lot of code changes in the PR, we encourage to create an issue first:
   
   1. To avoid duplicate work
-  2. To encourage discussion of solution
+  2. To encourage discussion of solutions
 
-  We do not want to reject PR because of different approach or directions after a lot of effort has been made.
+  We do not want to reject a PR because of you've chosen a wrong approach or direction after a lot of effort has been made.
 
 ### List of available npm tasks
 
