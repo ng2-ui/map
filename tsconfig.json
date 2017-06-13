@@ -7,6 +7,7 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "strictNullChecks": false,
+    "importHelpers": true,
     "lib": ["dom", "es2016"],
     "baseUrl": "src",
     "paths": {

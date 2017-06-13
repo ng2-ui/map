@@ -35,6 +35,9 @@
     "google",
     "map"
   ],
+  "dependencies": {
+    "tslib": "^1.7.1"
+  },
   "devDependencies": {
     "@ngui/utils": "^0.7.0",
     "@angular/common": "^2.4.9",
