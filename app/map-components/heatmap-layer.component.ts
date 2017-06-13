@@ -1,6 +1,5 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
-//noinspection TypeScriptCheckImport
-import {HeatmapLayer} from '@ngui/map';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { HeatmapLayer } from '@ngui/map';
 
 let templateStr = `
   <h1>Heatmap Layer</h1>

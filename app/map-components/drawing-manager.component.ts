@@ -1,5 +1,4 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
-//noinspection TypeScriptCheckImport
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { DrawingManager } from '@ngui/map';
 
 let templateStr: string = `
