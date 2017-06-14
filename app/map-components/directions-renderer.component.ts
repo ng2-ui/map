@@ -1,5 +1,4 @@
-import {Component, ViewChild, ChangeDetectorRef, OnInit} from '@angular/core';
-//noinspection TypeScriptCheckImport
+import { Component, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
 import { DirectionsRenderer } from '@ngui/map';
 
 let templateStr = `

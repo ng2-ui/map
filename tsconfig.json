@@ -1,38 +1,29 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["es5", "es6", "dom"],
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
-    "noEmitHelpers": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "pretty": true,
-    "allowUnreachableCode": true,
-    "allowUnusedLabels": true,
-    "noImplicitAny": false,
-    "noImplicitReturns": false,
-    "noImplicitUseStrict": false,
-    "noFallthroughCasesInSwitch": false,
-    "allowSyntheticDefaultImports": true,
-    "suppressExcessPropertyErrors": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "outDir": "dist",
+    "strictNullChecks": false,
+    "importHelpers": true,
+    "lib": ["dom", "es2016"],
     "baseUrl": "src",
     "paths": {
       "@ngui/map": ["./index"]
-    }
+    },
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
-  "types": [
-    "googlemaps"
-  ],
-  "files": [
-    "src/index.ts",
-    "node_modules/@types/googlemaps/index.d.ts"
+  "include": [
+    "src/**/*.ts",
+    "app/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "app/build"
   ],
   "compileOnSave": false,
   "buildOnSave": false,

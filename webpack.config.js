@@ -34,10 +34,12 @@ var config = {
 
 //Different Environment Setup
 
-if (process.env.NODE_ENV === 'prod') {
-  config.module.rules.push({
-    test: /\.ts$/, use: 'strip-loader?strip[]=debug,strip[]=console.log'
-  });
-}
+module.exports = function(env) {
+  if (process.env.NODE_ENV === 'production') {
+    config.module.rules.push({
+      test: /\.ts$/, use: 'strip-loader?strip[]=debug,strip[]=console.log'
+    });
+  }
 
-module.exports = config;
+  return config;
+};

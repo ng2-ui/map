@@ -11,7 +11,6 @@ import { debounceTime } from 'rxjs/operator/debounceTime';
 import { NguiMap } from '../services/ngui-map';
 import { NguiMapComponent } from './ngui-map.component';
 
-
 const INPUTS = [
   'position'
 ];

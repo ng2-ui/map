@@ -1,4 +1,4 @@
-var path = require('path');
+const path = require('path');
 const webpack = require('webpack');
 
 const config = {
@@ -8,7 +8,6 @@ const config = {
       '@ngui/map': path.join(__dirname, '..', 'src', 'index')
     }
   },
-  devtool: 'source-map',
   entry: './app/main.ts',
   module: {
     rules: [
@@ -35,13 +34,16 @@ const config = {
   }
 };
 
-if (process.env.NODE_ENV === 'prod') {
-  config.plugins = [
-    new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
-  ];
-  config.module.rules.push({
-    test: /\.ts$/, use: 'strip-loader?strip[]=debug,strip[]=console.log'
-  });
-}
+module.exports =  function(env) {
+  config.devtool = env === 'production' ? false : 'source-map';
+  if (env === 'production') {
+    config.plugins = [
+      new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
+    ];
+    config.module.rules.push({
+      test: /\.ts$/, use: 'strip-loader?strip[]=debug,strip[]=console.log'
+    });
+  }
 
-module.exports = config;
+  return config;
+}
