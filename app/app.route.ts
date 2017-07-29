@@ -17,7 +17,7 @@ import { HeatmapLayerComponent } from './map-components/heatmap-layer.component'
 import { KmlLayerComponent } from './map-components/kml-layer.component';
 import { DataLayerComponent } from './map-components/data-layer.component';
 import { StreetViewPanoramaComponent } from './map-components/street-view-panorama.component';
-import { PlacesAutoCompleteComponent } from './map-components/places-auto-compolete.component';
+import { PlacesAutoCompleteComponent } from './map-components/places-auto-complete.component';
 import { DirectionsRendererComponent } from './map-components/directions-renderer.component';
 import { DrawingManagerComponent } from './map-components/drawing-manager.component';
 import { EventArgumentsComponent } from './map-components/event-arguments.component';
