@@ -86,8 +86,10 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     this.infoWindow.setContent(this.template.element.nativeElement);
     this.infoWindow.open(this.nguiMapComponent.map, anchor);
   }
-  close(anchor: google.maps.MVCObject) {
-    this.infoWindow.close();
+  close() {
+    // check if infoWindow exists, and closes it
+    if(this.infoWindow)
+      this.infoWindow.close();
   }
   ngOnDestroy() {
     this.inputChanges$.complete();
