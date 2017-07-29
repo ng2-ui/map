@@ -88,7 +88,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
   }
   close() {
     // check if infoWindow exists, and closes it
-    if(this.infoWindow)
+    if (this.infoWindow)
       this.infoWindow.close();
   }
   ngOnDestroy() {
