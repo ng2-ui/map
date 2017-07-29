@@ -175,6 +175,12 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
   openInfoWindow(id: string, anchor: google.maps.MVCObject) {
     this.infoWindows[id].open(anchor);
   }
+  
+	closeInfoWindow(id: string, anchor: google.maps.MVCObject) {
+	  console.log(id);
+	  console.log(anchor);
+    	this.infoWindows[id].close(anchor);
+  }
 
   ngOnDestroy() {
     this.inputChanges$.complete();
