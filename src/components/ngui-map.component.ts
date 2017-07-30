@@ -176,6 +176,12 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
     this.infoWindows[id].open(anchor);
   }
 
+  closeInfoWindow(id: string) {
+    // if infoWindow for id exists, close the infoWindow
+    if (this.infoWindows[id])
+      this.infoWindows[id].close();
+  }
+
   ngOnDestroy() {
     this.inputChanges$.complete();
     if (this.el && !this.initializeMapAfterDisplayed) {
