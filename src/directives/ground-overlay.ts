@@ -23,7 +23,6 @@ export class GroundOverlay extends BaseMapDirective {
   initialize(): void {
     // url, bounds are not the options of GroundOverlay
     this.objectOptions = this.optionBuilder.googlizeAllInputs(['clickable', 'opacity'], this);
-    console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
 
     // noinspection TypeScriptUnresolvedFunction
     this.mapObject = new google.maps.GroundOverlay(this['url'], this['bounds'], this.objectOptions);

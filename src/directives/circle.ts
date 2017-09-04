@@ -36,7 +36,6 @@ export class Circle extends BaseMapDirective {
     if (!this['center']) {
       this._subscriptions.push(this.nguiMapComp.geolocation.getCurrentPosition().subscribe(
         center => {
-          console.log('setting circle center from current location');
           let latLng = new google.maps.LatLng(center.coords.latitude, center.coords.longitude);
           this.mapObject.setCenter(latLng);
         },
@@ -48,7 +47,6 @@ export class Circle extends BaseMapDirective {
     } else if (typeof this['center'] === 'string') {
       this._subscriptions.push(this.nguiMapComp.geoCoder.geocode({address: this['center']}).subscribe(
         results => {
-          console.log('setting circle center from address', this['center']);
           this.mapObject.setCenter(results[0].geometry.location);
         },
         error => {

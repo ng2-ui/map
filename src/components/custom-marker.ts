@@ -72,7 +72,6 @@ function getCustomMarkerOverlayView(htmlEl: HTMLElement, position: any) {
 
         geocoder.geocode({address: position}, (results, status) => {
           if (status === google.maps.GeocoderStatus.OK) {
-            console.log('setting custom marker position from address', position);
             this.setPosition(results[0].geometry.location);
           } else {
             console.log('Error in custom marker geo coding, position');
@@ -161,7 +160,6 @@ export class CustomMarker implements OnInit, OnDestroy, OnChanges {
   }
 
   private initialize(): void {
-    console.log('custom-marker is being initialized');
     this.el = this.elementRef.nativeElement;
 
     this.mapObject = getCustomMarkerOverlayView(this.el, this['position']);
