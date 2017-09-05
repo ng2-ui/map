@@ -110,7 +110,6 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
 
     this.initializeMapAfterDisplayed = false;
     this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-    console.log('ngui-map mapOptions', this.mapOptions);
 
     this.mapOptions.zoom = this.mapOptions.zoom || 15;
     typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
@@ -150,7 +149,6 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
     if (!this['center']) { // center is not from user. Thus, we set the current location
       this.geolocation.getCurrentPosition().subscribe(
         position => {
-          console.log('setting map center from current location');
           let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           this.map.setCenter(latLng);
         },
@@ -163,7 +161,6 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
     else if (typeof this['center'] === 'string') {
       this.geoCoder.geocode({address: this['center']}).subscribe(
         results => {
-          console.log('setting map center from address', this['center']);
           this.map.setCenter(results[0].geometry.location);
         },
         error => {
@@ -203,7 +200,6 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
     let groupName = toCamelCase(mapObjectName.toLowerCase()) + 's'; // e.g. markers
     if (this.map && this.map[groupName]) {
       let index = this.map[groupName].indexOf(mapObject);
-      console.log('index', mapObject, index);
       (index > -1) && this.map[groupName].splice(index, 1);
     }
   }

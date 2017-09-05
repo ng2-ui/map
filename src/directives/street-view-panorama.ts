@@ -28,7 +28,6 @@ export class StreetViewPanorama extends BaseMapDirective implements OnDestroy {
   // only called when map is ready
   initialize(): void {
     this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
-    console.log(this.mapObjectName, 'initialization objectOptions', this.objectOptions);
 
     let element: HTMLElement;
     if (this.objectOptions.selector) {

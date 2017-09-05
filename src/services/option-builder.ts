@@ -13,7 +13,6 @@ export class OptionBuilder {
 
     // if options given from user, only take options and ignore other inputs
     if (userInputs.options) {
-      console.log('userInputs.options .................', userInputs.options);
       options = userInputs.options;
       if (!this.onlyOptionsGiven(definedInputs, userInputs)) {
         console.error('when "options" are used, other options are ignored');

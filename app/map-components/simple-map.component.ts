@@ -33,6 +33,5 @@ export class SimpleMapComponent {
     if (event instanceof MouseEvent)  {
       return false;
     }
-    console.log('map is clicked', event, event.target);
   }
 }
