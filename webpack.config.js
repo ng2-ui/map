@@ -35,7 +35,7 @@ var config = {
 //Different Environment Setup
 
 module.exports = function(env) {
-  if (process.env.NODE_ENV === 'production') {
+  if (env === 'production') {
     config.module.rules.push({
       test: /\.ts$/, use: 'strip-loader?strip[]=debug,strip[]=console.log'
     });
