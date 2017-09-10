@@ -24,7 +24,7 @@ import { SourceCodeService } from '../source-code.service';
 export class SimpleMapComponent {
   code: string;
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('SimpleMapComponent').subscribe(text => this.code = text);
   }
   onClick(event) {
     if (event instanceof MouseEvent)  {

@@ -21,7 +21,7 @@ export class MapWithOptionsComponent {
   };
   
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('MapWithOptionsComponent').subscribe(text => this.code = text);
   }
   
 }

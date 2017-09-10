@@ -34,7 +34,7 @@ export class DrawingManagerComponent implements OnInit {
   @ViewChild(DrawingManager) drawingManager: DrawingManager;
 
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('DrawingManagerComponent').subscribe(text => this.code = text);
   }
   
   ngOnInit() {

@@ -48,7 +48,7 @@ export class DirectionsRendererComponent implements OnInit {
   };
 
   constructor(private cdr: ChangeDetectorRef, public sc: SourceCodeService) {
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('DirectionsRendererComponent').subscribe(text => this.code = text);
   }
 
   ngOnInit() {

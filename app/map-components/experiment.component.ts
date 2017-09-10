@@ -21,7 +21,7 @@ export class ExperimentComponent {
   code: string;
   
   constructor(private cdr: ChangeDetectorRef, public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('ExperimentComponent').subscribe(text => this.code = text);
   }
 
   onHeatmapInitialized = (evt) => {

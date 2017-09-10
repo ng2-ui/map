@@ -28,7 +28,7 @@ export class SimpleInfoWindowComponent {
   code: string;
 
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('SimpleInfoWindowComponent').subscribe(text => this.code = text);
   }
 
   clicked({target: marker}) {

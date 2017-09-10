@@ -24,6 +24,6 @@ export class MultipleMapComponent {
   positions = [];
   code: string;
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('MultipleMapComponent').subscribe(text => this.code = text);
   }
 }

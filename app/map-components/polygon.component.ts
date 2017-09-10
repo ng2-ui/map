@@ -40,6 +40,6 @@ export class PolygonComponent {
 
   code: string;
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('PolygonComponent').subscribe(text => this.code = text);
   }
 }

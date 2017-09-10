@@ -21,6 +21,6 @@ import { SourceCodeService } from '../source-code.service';
 export class SimpleCircleComponent {
   code: string;
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('SimpleCircleComponent').subscribe(text => this.code = text);
   }
 }

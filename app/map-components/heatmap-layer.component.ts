@@ -46,7 +46,7 @@ export class HeatmapLayerComponent implements OnInit {
   code: string;
 
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('HeatmapLayerComponent').subscribe(text => this.code = text);
   }
   
   ngOnInit() {

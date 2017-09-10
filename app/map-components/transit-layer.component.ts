@@ -15,6 +15,6 @@ import { SourceCodeService } from '../source-code.service';
 export class TransitLayerComponent {
   code: string;
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('TransitLayerComponent').subscribe(text => this.code = text);
   }
 }

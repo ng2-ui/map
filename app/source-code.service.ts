@@ -8,9 +8,9 @@ export class SourceCodeService {
  
   constructor(private http: Http) { }
  
-  getText(klass: any) {
+  getText(klassName: string) {
     let urlPrefix = 'https://raw.githubusercontent.com/ng2-ui/map/master/app/map-components';
-    let fileName = klass.constructor.name.
+    let fileName = klassName.
       replace('Directive','.directive.ts').
       replace('Service','.service.ts').
       replace('Component','.component.ts').
@@ -19,7 +19,7 @@ export class SourceCodeService {
     let url = `${urlPrefix}/${fileName}`; 
 
     return this.http.get(url).
-      map((res: Response) => res.text());
+      map((res: Response) => appComponentTsCode(res.text()));
   }
 
   plnkr(code: string) {
@@ -101,8 +101,11 @@ function appComponentTsCode(code) {
     .replace(`sc.getText(this).subscribe(text => this.code = text);`,'')
     .replace(/[, public]*sc: SourceCodeService\)/, ')')
     .replace(/<code>[\s\S]*<\/code>/, '')
-    .replace(`code: string;\n?`, '')
-    .replace(/export class [A-Za-z0-9]+Component/, 'export class AppComponent');
+    .replace(`code: string;`, '')
+    .replace(/constructor\s*\(\)\s*{\s*}/m,'')
+    .replace(`<button (click)="sc.plnkr(code)">See in plunker</button>`, '')
+    .replace(/export class [A-Za-z0-9]+Component/, 'export class AppComponent')
+    .replace(/^\s*\n/gm, '\n');
 }
 
 function systemjsConfigJsCode() {

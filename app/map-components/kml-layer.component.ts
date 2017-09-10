@@ -15,6 +15,6 @@ import { SourceCodeService } from '../source-code.service';
 export class KmlLayerComponent {
   code: string;
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('KmlLayerComponent').subscribe(text => this.code = text);
   }
 }

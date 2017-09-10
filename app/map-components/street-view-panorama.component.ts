@@ -20,6 +20,6 @@ export class StreetViewPanoramaComponent {
   code: string;
   
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('StreetViewPanoramaComponent').subscribe(text => this.code = text);
   }
 }

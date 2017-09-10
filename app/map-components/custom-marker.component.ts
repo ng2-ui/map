@@ -21,6 +21,6 @@ import { SourceCodeService } from '../source-code.service';
 export class CustomMarkerComponent {
   code: string;
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('CustomMarkerComponent').subscribe(text => this.code = text);
   }
 }

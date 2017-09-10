@@ -23,7 +23,7 @@ export class PlacesAutoCompleteComponent {
   code: string;
 
   constructor(private ref: ChangeDetectorRef, public sc: SourceCodeService) {
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('PlacesAutoCompleteComponent').subscribe(text => this.code = text);
   }
 
   initialized(autocomplete: any) {

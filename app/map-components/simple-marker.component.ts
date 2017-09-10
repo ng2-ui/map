@@ -24,7 +24,7 @@ import { SourceCodeService } from '../source-code.service';
 export class SimpleMarkerComponent {
   code: string;
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('SimpleMarkerComponent').subscribe(text => this.code = text);
   }
   log(event, str) {
     if (event instanceof MouseEvent) {

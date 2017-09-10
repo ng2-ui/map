@@ -39,7 +39,7 @@ export class CustomMarkerNgForComponent {
 
   constructor(public sc: SourceCodeService) {
     this.positions = this.getRandomMarkers();
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('CustomMarkerNgForComponent').subscribe(text => this.code = text);
   }
 
   getRandomMarkers() {

@@ -20,7 +20,7 @@ export class EventArgumentsComponent {
   code: string;
   
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('EventArgumentsComponent').subscribe(text => this.code = text);
   }
 
   onClick(event) {

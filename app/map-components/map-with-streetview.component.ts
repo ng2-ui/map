@@ -23,7 +23,7 @@ export class MapWithStreetviewComponent {
   code: string;
 
   constructor(public sc: SourceCodeService){
-    sc.getText(this).subscribe(text => this.code = text);
+    sc.getText('MapWithStreetviewComponent').subscribe(text => this.code = text);
   }
   
 }
