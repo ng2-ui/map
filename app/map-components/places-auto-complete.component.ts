@@ -1,33 +1,30 @@
 import {Component, ChangeDetectorRef} from '@angular/core';
-
-let templateStr = `
-  <h1>Place Autocomplete Address Form</h1>
-  <input places-auto-complete
-    (place_changed)="placeChanged($event)"
-    [types]="['geocode']" />
-  <p>
-  <ngui-map [center]="center"></ngui-map>
-  place: {{address | json}}
-  </p>
-  <code>
-    <br/><b>HTML</b>
-    <pre>{{templateStr | htmlCode:'-code'}}</pre>
-    
-    <b>function placeChanged</b> 
-    <pre>{{placeChanged | jsCode}}</pre>
-  </code>
-`;
+import { SourceCodeService } from '../source-code.service';
 
 @Component({
-  template: templateStr
-})
+  template: `
+    <h1>Place Autocomplete Address Form</h1>
+    <input places-auto-complete
+      (place_changed)="placeChanged($event)"
+      [types]="['geocode']" />
+    <p>
+    <ngui-map [center]="center"></ngui-map>
+    place: {{address | json}}
+    </p>
+
+    <button (click)="sc.plnkr(code)">See in plunker</button>
+
+    <pre class="prettyprint">{{code}}</pre>
+  ` })
 export class PlacesAutoCompleteComponent {
   autocomplete: any;
   address: any = {};
-  templateStr: string = templateStr;
   center: any;
+  code: string;
 
-  constructor(private ref: ChangeDetectorRef) {}
+  constructor(private ref: ChangeDetectorRef, public sc: SourceCodeService) {
+    sc.getText(this).subscribe(text => this.code = text);
+  }
 
   initialized(autocomplete: any) {
     this.autocomplete = autocomplete;

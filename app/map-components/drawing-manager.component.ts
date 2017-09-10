@@ -1,43 +1,42 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { DrawingManager } from '@ngui/map';
+import { SourceCodeService } from '../source-code.service';
 
-let templateStr: string = `
-  <h1>Drawing Manager</h1>
-  <ngui-map zoom="8" center="-34.397, 150.644">
-    <drawing-manager
-      [drawingMode]="'marker'"
-      [drawingControl]="true"
-      [drawingControlOptions]="{
-        position: 2,
-        drawingModes: ['marker', 'circle', 'polygon', 'polyline', 'rectangle']
-       }"
-      [circleOptions]="{
-        fillColor: '#ffff00',
-        fillOpacity: 1,
-        strokeWeight: 5,
-        editable: true,
-        zIndex: 1
-      }"></drawing-manager>
-  </ngui-map>
-  selectedOverlay: {{selectedOverlay}} <br/>
-  <button (click)="deleteSelectedOverlay()">Delete Selected Overlay</button>
-  <code>
-    <br/><b>HTML</b>
-    <pre>{{templateStr | htmlCode:'-code'}}</pre>
-    <br/><b>ngOnInit function</b>
-    <pre>{{ngOnInit | jsCode}}</pre>
-    <br/><b>deleteSelectedOverlay function</b>
-    <pre>{{deleteSelectedOverlay | jsCode}}</pre>
-  </code>
-`;
 @Component({
-  template: templateStr
-})
+  template: `
+    <h1>Drawing Manager</h1>
+    <ngui-map zoom="8" center="-34.397, 150.644">
+      <drawing-manager
+        [drawingMode]="'marker'"
+        [drawingControl]="true"
+        [drawingControlOptions]="{
+          position: 2,
+          drawingModes: ['marker', 'circle', 'polygon', 'polyline', 'rectangle']
+         }"
+        [circleOptions]="{
+          fillColor: '#ffff00',
+          fillOpacity: 1,
+          strokeWeight: 5,
+          editable: true,
+          zIndex: 1
+        }"></drawing-manager>
+    </ngui-map>
+    selectedOverlay: {{selectedOverlay}} <br/>
+    <button (click)="deleteSelectedOverlay()">Delete Selected Overlay</button>
+
+    <button (click)="sc.plnkr(code)">See in plunker</button>
+
+    <pre class="prettyprint">{{code}}</pre>
+  `})
 export class DrawingManagerComponent implements OnInit {
-  templateStr: string = templateStr;
+  code: string;
   selectedOverlay: any;
   @ViewChild(DrawingManager) drawingManager: DrawingManager;
 
+  constructor(public sc: SourceCodeService){
+    sc.getText(this).subscribe(text => this.code = text);
+  }
+  
   ngOnInit() {
     this.drawingManager['initialized$'].subscribe(dm => {
       google.maps.event.addListener(dm, 'overlaycomplete', event => {

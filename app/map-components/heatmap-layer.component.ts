@@ -1,42 +1,27 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { HeatmapLayer } from '@ngui/map';
+import { SourceCodeService } from '../source-code.service';
 
-let templateStr = `
-  <h1>Heatmap Layer</h1>
-  <ngui-map zoom="13" center="37.782551, -122.445368">
-    <div id="floating-panel">
-      <button (click)="toggleHeatmap()">Toggle Heatmap</button>
-      <button (click)="changeGradient()">Change gradient</button>
-      <button (click)="changeRadius()">Change radius</button>
-      <button (click)="changeOpacity()">Change opacity</button>
-    </div>
-    <heatmap-layer [data]="points"></heatmap-layer>
-  </ngui-map>
-  <button (click)="loadRandomPoints()">Load Random Points</button>
-  <br/>
-  <button (click)="addPoint()">Add Point</button>
-  <code>
-    <br/><b>HTML</b>
-    <pre>{{templateStr | htmlCode:'-code'}}</pre>
-    
-    <b>function ngOnInit</b> 
-    <pre>{{ ngOnInit | jsCode}}</pre>
-    
-    <b>function toggleHeatmap</b> 
-    <pre>{{ toggleHeatmap | jsCode}}</pre>
-    
-    <b>function changeGradient</b> 
-    <pre>{{ changeGradient | jsCode}}</pre>
-    
-    <b>function changeOpacity</b> 
-    <pre>{{ changeOpacity | jsCode}}</pre>
-
-    <b>function loadRandomPoints()</b> 
-    <pre>{{ loadRandomPoints | jsCode}}</pre>
-  </code>
-`;
 @Component({
-  template: templateStr,
+  template: `
+    <h1>Heatmap Layer</h1>
+    <ngui-map zoom="13" center="37.782551, -122.445368">
+      <div id="floating-panel">
+        <button (click)="toggleHeatmap()">Toggle Heatmap</button>
+        <button (click)="changeGradient()">Change gradient</button>
+        <button (click)="changeRadius()">Change radius</button>
+        <button (click)="changeOpacity()">Change opacity</button>
+      </div>
+      <heatmap-layer [data]="points"></heatmap-layer>
+    </ngui-map>
+    <button (click)="loadRandomPoints()">Load Random Points</button>
+    <br/>
+    <button (click)="addPoint()">Add Point</button>
+
+    <button (click)="sc.plnkr(code)">See in plunker</button>
+
+    <pre class="prettyprint">{{code}}</pre>
+  `,
   styles: [`
     #floating-panel {
       position: absolute;
@@ -55,10 +40,15 @@ let templateStr = `
 })
 export class HeatmapLayerComponent implements OnInit {
   @ViewChild(HeatmapLayer) heatmapLayer: HeatmapLayer;
-  templateStr: string = templateStr;
   heatmap: google.maps.visualization.HeatmapLayer;
   map: google.maps.Map;
   points = [];
+  code: string;
+
+  constructor(public sc: SourceCodeService){
+    sc.getText(this).subscribe(text => this.code = text);
+  }
+  
   ngOnInit() {
     this.heatmapLayer['initialized$'].subscribe(heatmap => {
       this.points = [

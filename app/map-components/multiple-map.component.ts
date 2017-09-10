@@ -1,28 +1,29 @@
 import { Component } from '@angular/core';
-
-let templateStr = `
-  <h1>Simple Map 1</h1>
-  <ngui-map zoom="13" center="Brampton, Canada" scrollwheel="false">
-    <marker *ngFor="let pos of positions" [position]="pos"></marker>
-  </ngui-map>
-
-  <h1>Simple Map 2</h1>
-  <ngui-map center="43.99, -78.79"></ngui-map>
-
-  <h1>Simple Map 3</h1>
-  <ngui-map center="Brampton, Canada" scrollwheel="false">
-    <marker position="Brampton, Canada"></marker>
-  </ngui-map>
-  <code>
-    <br/><b>HTML</b>
-    <pre>{{templateStr | htmlCode:'-code'}}</pre>
-  </code>
-`;
+import { SourceCodeService } from '../source-code.service';
 
 @Component({
-  template: templateStr
-})
+  template: `
+    <h1>Simple Map 1</h1>
+    <ngui-map zoom="13" center="Brampton, Canada" scrollwheel="false">
+      <marker *ngFor="let pos of positions" [position]="pos"></marker>
+    </ngui-map>
+
+    <h1>Simple Map 2</h1>
+    <ngui-map center="43.99, -78.79"></ngui-map>
+
+    <h1>Simple Map 3</h1>
+    <ngui-map center="Brampton, Canada" scrollwheel="false">
+      <marker position="Brampton, Canada"></marker>
+    </ngui-map>
+
+    <button (click)="sc.plnkr(code)">See in plunker</button>
+
+    <pre class="prettyprint">{{code}}</pre>
+  `})
 export class MultipleMapComponent {
   positions = [];
-  templateStr: string = templateStr;
+  code: string;
+  constructor(public sc: SourceCodeService){
+    sc.getText(this).subscribe(text => this.code = text);
+  }
 }

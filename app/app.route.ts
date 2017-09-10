@@ -23,7 +23,7 @@ import { DrawingManagerComponent } from './map-components/drawing-manager.compon
 import { EventArgumentsComponent } from './map-components/event-arguments.component';
 import { CustomMarkerComponent } from './map-components/custom-marker.component';
 import { CustomMarkerNgForComponent } from './map-components/custom-marker-ng-for.component';
-import { MapWithStreetviewComponent } from './map-components/map-with-streetview';
+import { MapWithStreetviewComponent } from './map-components/map-with-streetview.component';
 import { MapChangeMultiplePropertiesComponent } from './map-components/map-change-multiple-properties.component';
 import { MarkerWithCustomIconComponent } from './map-components/marker-with-custom-icon.component';
 import { ExperimentComponent } from './map-components/experiment.component';

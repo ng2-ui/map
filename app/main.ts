@@ -14,8 +14,10 @@ import { HttpModule } from '@angular/http';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { NguiUtilsModule } from '@ngui/utils';
 import { NguiMapModule } from '@ngui/map';
+import { SourceCodeService } from './source-code.service';
 
 import { AppComponent } from './app.component';
+// import { Codeblock } from 'ng2-prism/codeblock';
 
 import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app.route';
 
@@ -33,6 +35,7 @@ import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app.route';
     NguiUtilsModule ],
   declarations: [AppComponent, APP_ROUTER_COMPONENTS],
   providers: [
+    SourceCodeService, 
     { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [ AppComponent ],

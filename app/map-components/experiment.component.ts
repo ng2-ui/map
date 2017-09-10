@@ -1,23 +1,28 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 declare let google: any;
+import { SourceCodeService } from '../source-code.service';
 
-let templateStr = `
-  <h3 *ngFor="let pos of positions">{{pos}}</h3>
-  <ngui-map zoom="14" center="Brampton, Canada">
-    <heatmap-layer dissipating="true" radius="25" 
-      (initialized$)="onHeatmapInitialized($event)"></heatmap-layer>
-    <marker *ngFor="let pos of positions" [position]="pos"></marker>
-  </ngui-map>
-`;
-// ver 16.
 @Component({
-  template: templateStr,
-})
+  template: `
+    <h3 *ngFor="let pos of positions">{{pos}}</h3>
+    <ngui-map zoom="14" center="Brampton, Canada">
+      <heatmap-layer dissipating="true" radius="25" 
+        (initialized$)="onHeatmapInitialized($event)"></heatmap-layer>
+      <marker *ngFor="let pos of positions" [position]="pos"></marker>
+    </ngui-map>
+
+    <button (click)="sc.plnkr(code)">See in plunker</button>
+
+    <pre class="prettyprint">{{code}}</pre>
+  `})
 export class ExperimentComponent {
   positions = [];
   heatmap: any;
-
-  constructor(private cdr: ChangeDetectorRef) { }
+  code: string;
+  
+  constructor(private cdr: ChangeDetectorRef, public sc: SourceCodeService){
+    sc.getText(this).subscribe(text => this.code = text);
+  }
 
   onHeatmapInitialized = (evt) => {
     this.heatmap = evt;

@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
+import { SourceCodeService } from '../source-code.service';
 
-let templateStr = `
-  <h1>Bicycling Layer</h1>
-  <ngui-map zoom="14" center="42.3726399, -71.1096528">
-    <bicycling-layer></bicycling-layer>
-  </ngui-map>
-  <code>
-    <br/><b>HTML</b>
-    <pre>{{templateStr | htmlCode:'-code'}}</pre>
-  </code>
-`;
 @Component({
-  template: templateStr
+  template: `
+    <h1>Bicycling Layer</h1>
+    <ngui-map zoom="14" center="42.3726399, -71.1096528">
+      <bicycling-layer></bicycling-layer>
+    </ngui-map>
+    <button (click)="sc.plnkr(code)">See in plunker</button>
+    <pre class="prettyprint">{{code}}</pre>`
 })
 export class BicyclingLayerComponent {
-  templateStr: string = templateStr;
+  code: string;
+  constructor(public sc: SourceCodeService){
+    sc.getText(this).subscribe(text => this.code = text);
+  }
 }

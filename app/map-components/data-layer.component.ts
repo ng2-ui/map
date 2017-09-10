@@ -1,18 +1,20 @@
 import {Component} from '@angular/core';
+import { SourceCodeService } from '../source-code.service';
 
-let templateStr = `
-  <h1>Data Layer</h1>
-  <ngui-map zoom="4" center="-28, 137">
-    <data-layer geoJsonUrl="https://storage.googleapis.com/mapsdevsite/json/google.json"></data-layer>
-  </ngui-map>
-  <code>
-    <br/><b>HTML</b>
-    <pre>{{templateStr | htmlCode:'-code'}}</pre>
-  </code>
-`;
 @Component({
-  template: templateStr
-})
+  template: `
+    <h1>Data Layer</h1>
+    <ngui-map zoom="4" center="-28, 137">
+      <data-layer geoJsonUrl="https://storage.googleapis.com/mapsdevsite/json/google.json"></data-layer>
+    </ngui-map>
+
+    <button (click)="sc.plnkr(code)">See in plunker</button>
+
+    <pre class="prettyprint">{{code}}</pre>
+  `})
 export class DataLayerComponent {
-  templateStr: string = templateStr;
+  code: string;
+  constructor(public sc: SourceCodeService){
+    sc.getText(this).subscribe(text => this.code = text);
+  }
 }

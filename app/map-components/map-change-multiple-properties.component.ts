@@ -1,33 +1,35 @@
 import { Component } from '@angular/core';
+import { SourceCodeService } from '../source-code.service';
 
-let templateStr: string = `
-  <h1>Map Change Multiple Properties</h1>
-  <ngui-map 
-    [center]="mapProps.center"
-    [zoom]="mapProps.zoom"
-    (idle)="onIdle($event)"
-    [geoFallbackCenter]="[42.99, -77.79]"></ngui-map>
-  <div> center: {{mapInfo.center}},  zoom: {{mapInfo.zoom}} </div>
-  <button id="change-props"
-    (click)="mapProps = {center: 'New York', zoom: 8}">
-    Change Multiple Map Props
-  </button>
-  
-  <code>
-    <br/><b>HTML</b>
-    <pre>{{templateStr | htmlCode:'-code'}}</pre>
-  </code>
-`;
 @Component({
-  template: templateStr
-})
+  template: `
+    <h1>Map Change Multiple Properties</h1>
+    <ngui-map 
+      [center]="mapProps.center"
+      [zoom]="mapProps.zoom"
+      (idle)="onIdle($event)"
+      [geoFallbackCenter]="[42.99, -77.79]"></ngui-map>
+    <div> center: {{mapInfo.center}},  zoom: {{mapInfo.zoom}} </div>
+    <button id="change-props"
+      (click)="mapProps = {center: 'New York', zoom: 8}">
+      Change Multiple Map Props
+    </button>
+    
+    <button (click)="sc.plnkr(code)">See in plunker</button>
+
+    <pre class="prettyprint">{{code}}</pre>
+  `})
 export class MapChangeMultiplePropertiesComponent {
-  templateStr: string = templateStr;
   mapProps: any = {
     center: 'some-invalid-location',
     zoom: 11
   };
   mapInfo: any = {};
+  code: string;
+
+  constructor(public sc: SourceCodeService){
+    sc.getText(this).subscribe(text => this.code = text);
+  }
 
   onIdle(event) {
     let map = event.target;

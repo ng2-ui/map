@@ -1,30 +1,31 @@
 import { Component } from '@angular/core';
+import { SourceCodeService } from '../source-code.service';
 
-let templateStr: string = `
-  <h1>Simple Marker</h1>
-  <ngui-map center="Brampton, Canada" 
-    [zoomControlOptions]="{position: 'TOP_CENTER'}"
-    [fullscreenControl]="true"
-    [fullscreenControlOptions]="{position: 'TOP_CENTER'}" 
-    (click)="log($event)"
-    [scrollwheel]="false">
-    <marker position="will-fall-back-to-brampton-canada"
-      [geoFallbackPosition]="[43.73154789999999, -79.7449296972229]"
-      (dragstart)="log($event, 'dragstart')"
-      (dragend)="log($event, 'dragend')"
-      draggable="true"></marker>
-  </ngui-map>
-  <code>
-    <br/><b>HTML</b>
-    <pre>{{templateStr | htmlCode:'-code'}}</pre>
-    <b>log function</b> 
-    <pre>{{log|jsCode}}</pre>
-  </code>
-`;
+@Component({ 
+  template: `
+    <h1>Simple Marker</h1>
+    <ngui-map center="Brampton, Canada" 
+      [zoomControlOptions]="{position: 'TOP_CENTER'}"
+      [fullscreenControl]="true"
+      [fullscreenControlOptions]="{position: 'TOP_CENTER'}" 
+      (click)="log($event)"
+      [scrollwheel]="false">
+      <marker position="will-fall-back-to-brampton-canada"
+        [geoFallbackPosition]="[43.73154789999999, -79.7449296972229]"
+        (dragstart)="log($event, 'dragstart')"
+        (dragend)="log($event, 'dragend')"
+        draggable="true"></marker>
+    </ngui-map>
 
-@Component({ template: templateStr })
+    <button (click)="sc.plnkr(code)">See in plunker</button>
+    
+    <pre class="prettyprint">{{code}}</pre>`
+})
 export class SimpleMarkerComponent {
-  templateStr: string = templateStr;
+  code: string;
+  constructor(public sc: SourceCodeService){
+    sc.getText(this).subscribe(text => this.code = text);
+  }
   log(event, str) {
     if (event instanceof MouseEvent) {
       return false;
