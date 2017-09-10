@@ -11,6 +11,7 @@ import { SourceCodeService } from '../source-code.service';
       tilt="45"
       streetView="StreetViewPanorama(document.querySelector('div#sv'), {position:new google.maps.LatLng(40.688738,-74.043871)})">
     </ngui-map>
+    <div id="sv"></div> 
 
     <button (click)="sc.plnkr(code)">See in plunker</button>
 
