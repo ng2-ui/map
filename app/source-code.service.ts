@@ -98,7 +98,7 @@ function appComponentTsCode(code) {
     .replace(`@Component({`, `@Component({\n  selector: 'my-app',`)
     .replace(`\nimport { SourceCodeService } from '../source-code.service';`, '')
     .replace(`<pre class="prettyprint">{{code}}</pre>`,'')
-    .replace(`sc.getText(this).subscribe(text => this.code = text);`,'')
+    .replace(/sc\.getText\(['"A-Za-z0-9]+\)\.subscribe\(text => this\.code = text\);/,'')
     .replace(/[, public]*sc: SourceCodeService\)/, ')')
     .replace(/<code>[\s\S]*<\/code>/, '')
     .replace(`code: string;`, '')
