@@ -5,14 +5,6 @@
 
 Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
-## IMPORTANT NOTICE
-
-After 0.17.0 or higher, `ng2-map` has been changed to `@ngui/map`. Here are the changes;
-
- * Module `ng2-map` has been changed to `@ngui/map`.
- * Directive `ng2-map` is moved to `ngui-map`.
- * Class name `Ng2Map`/`Ng2MapModule` is moved to `NguiMap`/`NguiMapModule`.
-
 * **[![Imgur](http://i.imgur.com/O2EOCxf.png)](https://rawgit.com/ng2-ui/map/master/app/index.html)**		
 * [Plunker Example](https://plnkr.co/edit/6e1qWK?p=preview)
 * [Place Auto Complete Plunker Example](https://plnkr.co/edit/AT3fxW?p=preview)
