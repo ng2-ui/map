@@ -19,9 +19,9 @@ export class MapWithOptionsComponent {
     mapTypeId: 'satellite',
     tilt: 45
   };
-  
-  constructor(public sc: SourceCodeService){
+
+  constructor(public sc: SourceCodeService) {
     sc.getText('MapWithOptionsComponent').subscribe(text => this.code = text);
   }
-  
+
 }

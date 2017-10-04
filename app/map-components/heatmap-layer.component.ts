@@ -45,10 +45,10 @@ export class HeatmapLayerComponent implements OnInit {
   points = [];
   code: string;
 
-  constructor(public sc: SourceCodeService){
+  constructor(public sc: SourceCodeService) {
     sc.getText('HeatmapLayerComponent').subscribe(text => this.code = text);
   }
-  
+
   ngOnInit() {
     this.heatmapLayer['initialized$'].subscribe(heatmap => {
       this.points = [

@@ -14,7 +14,7 @@ import { SourceCodeService } from '../source-code.service';
   `})
 export class DataLayerComponent {
   code: string;
-  constructor(public sc: SourceCodeService){
+  constructor(public sc: SourceCodeService) {
     sc.getText('DataLayerComponent').subscribe(text => this.code = text);
   }
 }

@@ -25,8 +25,8 @@ export class SimplePolylineComponent {
     {lat: -27.467, lng: 153.027}
   ];
   code: string;
-  
-  constructor(public sc: SourceCodeService){
+
+  constructor(public sc: SourceCodeService) {
     sc.getText('SimplePolylineComponent').subscribe(text => this.code = text);
   }
 }

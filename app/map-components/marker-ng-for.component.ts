@@ -20,7 +20,7 @@ export class MarkerNgForComponent {
   public positions= [];
 
   code: string;
-  
+
   constructor(public sc: SourceCodeService) {
     this.positions = this.getRandomMarkers();
     sc.getText('MarkerNgForComponent').subscribe(text => this.code = text);

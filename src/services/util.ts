@@ -18,7 +18,7 @@ export function jsonize(str: string): string {
         }
       );
   }
-};
+}
 
 /**
  * Returns string to an object by using JSON.parse()
@@ -33,7 +33,7 @@ export function getJSON(input: any): any {
   } else {
     return input;
   }
-};
+}
 
 /**
  * json type definition

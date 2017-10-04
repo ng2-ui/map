@@ -1,6 +1,6 @@
 {
   "name": "@ngui/map",
-  "version": "0.18.8",
+  "version": "0.19.0",
   "description": "Angular2 Google Map`",
   "license": "MIT",
   "main": "dist/map.umd.js",
@@ -9,6 +9,7 @@
   "scripts": {
     "start": "set NODE_ENV=dev && webpack-dev-server --quiet --port 9001 --content-base app --config app/webpack.config --open",
     "lint": "tslint 'src/**/*.ts' 'app/**/*.ts'",
+    "lint-fix": "tslint --fix 'src/**/*.ts' 'app/**/*.ts' --type-check -p tsconfig.json",
     "clean": "rimraf dist",
     "build": "npm-run-all --serial clean build:ngc:pre build:ngc build:umd build:app",
     "build:ngc:pre": "node ngc-pre-compiler.js",
@@ -38,37 +39,40 @@
   "dependencies": {
     "tslib": "^1.7.1"
   },
+  "peerDependencies": {
+    "@angular/common": ">=4.0.0"
+  },
   "devDependencies": {
-    "@angular/common": "^2.4.9",
-    "@angular/compiler": "^2.4.9",
-    "@angular/compiler-cli": "^2.4.9",
-    "@angular/core": "^2.4.9",
-    "@angular/forms": "^2.4.9",
-    "@angular/http": "^2.4.9",
-    "@angular/platform-browser": "^2.4.9",
-    "@angular/platform-browser-dynamic": "^2.4.9",
-    "@angular/router": "^3.4.9",
-    "@ngui/utils": "^0.7.0",
+    "@angular/common": "^4.4.4",
+    "@angular/compiler": "^4.4.4",
+    "@angular/compiler-cli": "^4.4.4",
+    "@angular/core": "^4.4.4",
+    "@angular/forms": "^4.4.4",
+    "@angular/http": "^4.4.4",
+    "@angular/platform-browser": "^4.4.4",
+    "@angular/platform-browser-dynamic": "^4.4.4",
+    "@angular/router": "^4.4.4",
+    "@ngui/utils": "^0.8.1",
     "@types/googlemaps": "^3.26.13",
     "@types/hammerjs": "^2.0.34",
     "@types/node": "^7.0.29",
     "angular2-template-loader": "^0.6.2",
-    "codelyzer": "^2.0.1",
+    "codelyzer": "^3.2.0",
     "core-js": "^2.4.1",
     "create-plunker": "^1.3.0",
     "forever": "^0.15.3",
-    "fs-extra": "^2.0.0",
+    "fs-extra": "^4.0.2",
     "npm-run-all": "^4.0.2",
     "raw-loader": "^0.5.1",
     "rimraf": "^2.6.1",
     "rxjs": "^5.2.0",
     "strip-loader": "^0.1.2",
     "ts-loader": "^2.0.1",
-    "tslint": "^4.5.1",
-    "typescript": "2.2.1",
-    "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.4.1",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.3",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.9.1",
     "webtest": "^0.3.8",
-    "zone.js": "^0.8.12"
+    "zone.js": "^0.8.18"
   }
 }

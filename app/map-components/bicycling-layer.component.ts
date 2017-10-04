@@ -12,7 +12,7 @@ import { SourceCodeService } from '../source-code.service';
 })
 export class BicyclingLayerComponent {
   code: string;
-  constructor(public sc: SourceCodeService){
+  constructor(public sc: SourceCodeService) {
     sc.getText('BicyclingLayerComponent').subscribe(text => this.code = text);
   }
 }

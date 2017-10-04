@@ -35,7 +35,7 @@ import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app.route';
     NguiUtilsModule ],
   declarations: [AppComponent, APP_ROUTER_COMPONENTS],
   providers: [
-    SourceCodeService, 
+    SourceCodeService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [ AppComponent ],

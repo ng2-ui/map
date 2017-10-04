@@ -10,7 +10,7 @@ import { SourceCodeService } from '../source-code.service';
     <ngui-map zoom="4" center="-25.363882, 131.044922" (click)="onClick($event)">
       <marker *ngFor="let pos of positions" [position]="pos"></marker>
     </ngui-map>
-    
+
     <button (click)="sc.plnkr(code)">See in plunker</button>
 
     <pre class="prettyprint">{{code}}</pre>
@@ -18,8 +18,8 @@ import { SourceCodeService } from '../source-code.service';
 export class EventArgumentsComponent {
   positions: any[] = [];
   code: string;
-  
-  constructor(public sc: SourceCodeService){
+
+  constructor(public sc: SourceCodeService) {
     sc.getText('EventArgumentsComponent').subscribe(text => this.code = text);
   }
 

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SourceCodeService } from '../source-code.service';
 
-@Component({ 
+@Component({
   template: `
     <h1>Marker With Custom Icon</h1>
     <ngui-map center="Brampton, Canada">
@@ -21,7 +21,7 @@ import { SourceCodeService } from '../source-code.service';
   `})
 export class MarkerWithCustomIconComponent {
   code: string;
-  constructor(public sc: SourceCodeService){
+  constructor(public sc: SourceCodeService) {
     sc.getText('MarkerWithCustomIconComponent').subscribe(text => this.code = text);
   }
 }

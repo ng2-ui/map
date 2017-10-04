@@ -4,7 +4,7 @@ import { SourceCodeService } from '../source-code.service';
 @Component({
   template: `
     <h1>Simple Map</h1>
-    <ngui-map center="Brampton, Canada" 
+    <ngui-map center="Brampton, Canada"
       (mapClick)="onClick($event)"
       [fullscreenControl]="true"
       [fullscreenControlOptions]="{position: 'TOP_RIGHT'}"></ngui-map>
@@ -16,14 +16,14 @@ import { SourceCodeService } from '../source-code.service';
     </ul>
     <ngui-map center="some-invalid-location"
       [geoFallbackCenter]="[42.99, -77.79]"></ngui-map>
-      
+
     <button (click)="sc.plnkr(code)">See in plunker</button>
 
     <pre class="prettyprint">{{code}}</pre>`
 })
 export class SimpleMapComponent {
   code: string;
-  constructor(public sc: SourceCodeService){
+  constructor(public sc: SourceCodeService) {
     sc.getText('SimpleMapComponent').subscribe(text => this.code = text);
   }
   onClick(event) {
