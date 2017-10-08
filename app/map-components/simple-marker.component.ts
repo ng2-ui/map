@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { SourceCodeService } from '../source-code.service';
 
-@Component({ 
+@Component({
   template: `
     <h1>Simple Marker</h1>
-    <ngui-map center="Brampton, Canada" 
+    <ngui-map center="Brampton, Canada"
       [zoomControlOptions]="{position: 'TOP_CENTER'}"
       [fullscreenControl]="true"
-      [fullscreenControlOptions]="{position: 'TOP_CENTER'}" 
+      [fullscreenControlOptions]="{position: 'TOP_CENTER'}"
       (click)="log($event)"
       [scrollwheel]="false">
       <marker position="will-fall-back-to-brampton-canada"
@@ -18,12 +18,12 @@ import { SourceCodeService } from '../source-code.service';
     </ngui-map>
 
     <button (click)="sc.plnkr(code)">See in plunker</button>
-    
+
     <pre class="prettyprint">{{code}}</pre>`
 })
 export class SimpleMarkerComponent {
   code: string;
-  constructor(public sc: SourceCodeService){
+  constructor(public sc: SourceCodeService) {
     sc.getText('SimpleMarkerComponent').subscribe(text => this.code = text);
   }
   log(event, str) {

@@ -6,7 +6,7 @@ import { SourceCodeService } from '../source-code.service';
   template: `
     <h3 *ngFor="let pos of positions">{{pos}}</h3>
     <ngui-map zoom="14" center="Brampton, Canada">
-      <heatmap-layer dissipating="true" radius="25" 
+      <heatmap-layer dissipating="true" radius="25"
         (initialized$)="onHeatmapInitialized($event)"></heatmap-layer>
       <marker *ngFor="let pos of positions" [position]="pos"></marker>
     </ngui-map>
@@ -19,8 +19,8 @@ export class ExperimentComponent {
   positions = [];
   heatmap: any;
   code: string;
-  
-  constructor(private cdr: ChangeDetectorRef, public sc: SourceCodeService){
+
+  constructor(private cdr: ChangeDetectorRef, public sc: SourceCodeService) {
     sc.getText('ExperimentComponent').subscribe(text => this.code = text);
   }
 

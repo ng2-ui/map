@@ -10,13 +10,13 @@ import { Router, NavigationEnd } from '@angular/router';
 export class AppComponent {
   public center = 'Brampton, Canada';
   public positions = [ ];
-  constructor(router:Router) {
+  constructor(router: Router) {
     router.events.subscribe( event => {
-      //TODO: bad idea to deal with document directly
+      // TODO: bad idea to deal with document directly
       if (document.querySelector('.prettyprinted')) {
         document.querySelector('.prettyprinted').classList.remove('prettyprinted');
       }
-      if(event instanceof NavigationEnd) { //Start, Cancel, Error 
+      if (event instanceof NavigationEnd) { // Start, Cancel, Error
         setTimeout(e => PR.prettyPrint(), 500);
       }
     });

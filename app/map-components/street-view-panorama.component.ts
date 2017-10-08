@@ -18,8 +18,8 @@ import { SourceCodeService } from '../source-code.service';
   `})
 export class StreetViewPanoramaComponent {
   code: string;
-  
-  constructor(public sc: SourceCodeService){
+
+  constructor(public sc: SourceCodeService) {
     sc.getText('StreetViewPanoramaComponent').subscribe(text => this.code = text);
   }
 }

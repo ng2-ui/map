@@ -14,7 +14,7 @@ import { SourceCodeService } from '../source-code.service';
   `})
 export class TrafficLayerComponent {
   code: string;
-  constructor(public sc: SourceCodeService){
+  constructor(public sc: SourceCodeService) {
     sc.getText('TrafficLayerComponent').subscribe(text => this.code = text);
   }
 }

@@ -2,21 +2,21 @@ import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {Plunker} from 'create-plunker';
 import 'rxjs/add/operator/map';
- 
+
 @Injectable()
 export class SourceCodeService {
- 
+
   constructor(private http: Http) { }
- 
+
   getText(klassName: string) {
     let urlPrefix = 'https://raw.githubusercontent.com/ng2-ui/map/master/app/map-components';
     let fileName = klassName.
-      replace('Directive','.directive.ts').
-      replace('Service','.service.ts').
-      replace('Component','.component.ts').
-      replace(/([A-Z])/g,(_,$1)=> `-${$1.toLowerCase()}`).
-      replace(/^-/,'')
-    let url = `${urlPrefix}/${fileName}`; 
+      replace('Directive', '.directive.ts').
+      replace('Service', '.service.ts').
+      replace('Component', '.component.ts').
+      replace(/([A-Z])/g, (_, $1) => `-${$1.toLowerCase()}`).
+      replace(/^-/, '');
+    let url = `${urlPrefix}/${fileName}`;
 
     return this.http.get(url).
       map((res: Response) => appComponentTsCode(res.text()));
@@ -36,9 +36,9 @@ export class SourceCodeService {
       .addFile({name: 'main.ts', contents: mainTsCode()})
       .addFile({name: 'systemjs.config.js', contents: systemjsConfigJsCode()})
       .addFile({name: 'tsconfig.json', contents: tsconfigJsonCode()})
-      .addIndexHeadLine(`<script> System.import('app');</script>`) 
+      .addIndexHeadLine(`<script> System.import('app');</script>`)
       .setIndexBody(`<my-app>Loading...</my-app>`)
-      .save(); 
+      .save();
   }
 }
 
@@ -76,9 +76,9 @@ import { NguiMapModule } from '@ngui/map';
 
 @NgModule({
   imports: [
-    BrowserModule, 
-    FormsModule, 
-    ReactiveFormsModule, 
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     NguiMapModule.forRoot({
       apiUrl: 'https://maps.google.com/maps/api/js?libraries=visualization,places,drawing'
     })
@@ -97,12 +97,12 @@ function appComponentTsCode(code) {
   return code
     .replace(`@Component({`, `@Component({\n  selector: 'my-app',`)
     .replace(`\nimport { SourceCodeService } from '../source-code.service';`, '')
-    .replace(`<pre class="prettyprint">{{code}}</pre>`,'')
-    .replace(/sc\.getText\(['"A-Za-z0-9]+\)\.subscribe\(text => this\.code = text\);/,'')
+    .replace(`<pre class="prettyprint">{{code}}</pre>`, '')
+    .replace(/sc\.getText\(['"A-Za-z0-9]+\)\.subscribe\(text => this\.code = text\);/, '')
     .replace(/[, public]*sc: SourceCodeService\)/, ')')
     .replace(/<code>[\s\S]*<\/code>/, '')
     .replace(`code: string;`, '')
-    .replace(/constructor\s*\(\)\s*{\s*}/m,'')
+    .replace(/constructor\s*\(\)\s*{\s*}/m, '')
     .replace(`<button (click)="sc.plnkr(code)">See in plunker</button>`, '')
     .replace(/export class [A-Za-z0-9]+Component/, 'export class AppComponent')
     .replace(/^\s*\n/gm, '\n');
@@ -142,7 +142,7 @@ System.config({
     'rxjs':                       'npm:rxjs',
     'ts':                         'npm:plugin-typescript@4.0.10/lib/plugin.js',
     'typescript':                 'npm:typescript@2.0.2/lib/typescript.js',
-    
+
     '@ngui/map': 'npm:@ngui/map/dist/map.umd.js'
   },
   packages: {   // packages tells the System loader how to load when no filename and/or no extension

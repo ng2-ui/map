@@ -4,14 +4,14 @@ import { SourceCodeService } from '../source-code.service';
 @Component({
   template: `
     <h1>Map With StreetView</h1>
-    <ngui-map 
+    <ngui-map
       center="40.6892,-74.0444"
       zoom="18"
       map-type-id="MapTypeId.SATELLITE"
       tilt="45"
       streetView="StreetViewPanorama(document.querySelector('div#sv'), {position:new google.maps.LatLng(40.688738,-74.043871)})">
     </ngui-map>
-    <div id="sv"></div> 
+    <div id="sv"></div>
 
     <button (click)="sc.plnkr(code)">See in plunker</button>
 
@@ -22,8 +22,8 @@ import { SourceCodeService } from '../source-code.service';
 export class MapWithStreetviewComponent {
   code: string;
 
-  constructor(public sc: SourceCodeService){
+  constructor(public sc: SourceCodeService) {
     sc.getText('MapWithStreetviewComponent').subscribe(text => this.code = text);
   }
-  
+
 }

@@ -14,7 +14,7 @@ import { SourceCodeService } from '../source-code.service';
       </info-window>
     </ngui-map>
     Please click the marker to see a info window
-    
+
     <button (click)="sc.plnkr(code)">See in plunker</button>
 
     <pre class="prettyprint">{{code}}</pre>
@@ -27,7 +27,7 @@ export class SimpleInfoWindowComponent {
   };
   code: string;
 
-  constructor(public sc: SourceCodeService){
+  constructor(public sc: SourceCodeService) {
     sc.getText('SimpleInfoWindowComponent').subscribe(text => this.code = text);
   }
 

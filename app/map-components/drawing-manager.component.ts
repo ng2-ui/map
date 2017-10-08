@@ -33,10 +33,10 @@ export class DrawingManagerComponent implements OnInit {
   selectedOverlay: any;
   @ViewChild(DrawingManager) drawingManager: DrawingManager;
 
-  constructor(public sc: SourceCodeService){
+  constructor(public sc: SourceCodeService) {
     sc.getText('DrawingManagerComponent').subscribe(text => this.code = text);
   }
-  
+
   ngOnInit() {
     this.drawingManager['initialized$'].subscribe(dm => {
       google.maps.event.addListener(dm, 'overlaycomplete', event => {

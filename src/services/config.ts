@@ -1,6 +1,6 @@
-import { OpaqueToken } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 
-export const NG_MAP_CONFIG_TOKEN = new OpaqueToken('NG_MAP_CONFIG_TOKEN');
+export const NG_MAP_CONFIG_TOKEN = new InjectionToken<ConfigOption>('NG_MAP_CONFIG_TOKEN');
 export interface ConfigOption {
   apiUrl?: string;
 }

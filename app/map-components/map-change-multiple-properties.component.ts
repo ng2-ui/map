@@ -4,7 +4,7 @@ import { SourceCodeService } from '../source-code.service';
 @Component({
   template: `
     <h1>Map Change Multiple Properties</h1>
-    <ngui-map 
+    <ngui-map
       [center]="mapProps.center"
       [zoom]="mapProps.zoom"
       (idle)="onIdle($event)"
@@ -14,7 +14,7 @@ import { SourceCodeService } from '../source-code.service';
       (click)="mapProps = {center: 'New York', zoom: 8}">
       Change Multiple Map Props
     </button>
-    
+
     <button (click)="sc.plnkr(code)">See in plunker</button>
 
     <pre class="prettyprint">{{code}}</pre>
@@ -27,7 +27,7 @@ export class MapChangeMultiplePropertiesComponent {
   mapInfo: any = {};
   code: string;
 
-  constructor(public sc: SourceCodeService){
+  constructor(public sc: SourceCodeService) {
     sc.getText('MapChangeMultiplePropertiesComponent').subscribe(text => this.code = text);
   }
 

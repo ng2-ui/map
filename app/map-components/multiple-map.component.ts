@@ -23,7 +23,7 @@ import { SourceCodeService } from '../source-code.service';
 export class MultipleMapComponent {
   positions = [];
   code: string;
-  constructor(public sc: SourceCodeService){
+  constructor(public sc: SourceCodeService) {
     sc.getText('MultipleMapComponent').subscribe(text => this.code = text);
   }
 }

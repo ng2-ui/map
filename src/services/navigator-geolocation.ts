@@ -26,5 +26,5 @@ export class NavigatorGeolocation {
         responseObserver.error('Browser Geolocation service failed.');
       }
     });
-  };
+  }
 }

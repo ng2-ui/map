@@ -60,7 +60,7 @@ function getCustomMarkerOverlayView(htmlEl: HTMLElement, position: any) {
 
     getPosition() {
       return this.position;
-    };
+    }
 
     setPosition = (position?: any) => {
       this.htmlEl.style.visibility = 'hidden';
@@ -108,7 +108,7 @@ function getCustomMarkerOverlayView(htmlEl: HTMLElement, position: any) {
     setVisible(visible: boolean) {
       this.htmlEl.style.display = visible ? 'inline-block' : 'none';
       this.visible = visible;
-    };
+    }
   }
 
   return new CustomMarkerOverlayView(htmlEl, position);
