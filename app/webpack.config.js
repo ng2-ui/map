@@ -33,7 +33,16 @@ module.exports =  function(env) {
   config.devtool = env === 'production' ? false : 'source-map';
   if (env === 'production') {
     config.plugins = [
-      new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } })
+      new webpack.optimize.UglifyJsPlugin({
+        mangle: { screw_ie8: true },
+        compress: {
+          warnings: false,
+        },
+        ascii_only: true,
+        output: { ascii_only: false },
+        sourceMap: false,
+        comments: false
+      })
     ];
     config.module.rules.push({
       test: /\.ts$/, use: 'strip-loader?strip[]=debug,strip[]=console.log'
