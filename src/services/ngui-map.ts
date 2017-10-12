@@ -38,7 +38,9 @@ export class NguiMap {
         .replace(/^map_/, '');                               // map_click -> click  to avoid DOM conflicts
 
       this.zone.runOutsideAngular(() => {
-        google.maps.event.clearListeners(thisObj[prefix], eventName);
+        if (thisObj[prefix]) {
+          google.maps.event.clearListeners(thisObj[prefix], eventName);
+        }
       });
     });
 
