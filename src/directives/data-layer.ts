@@ -3,7 +3,7 @@ import { Directive } from '@angular/core';
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
 
-const INPUTS = ['controlPosition', 'controls', 'drawingMode', 'featureFactory', 'style', 'geoJson'];
+const INPUTS = ['controlPosition', 'controls', 'drawingMode', 'featureFactory', 'style', 'geoJson', 'geoJsonUrl'];
 const OUTPUTS = [
   'addfeature', 'click', 'dblclick', 'mousedown', 'mouseout', 'mouseover',
   'mouseup', 'removefeature', 'removeproperty', 'rightclick', 'setgeometry', 'setproperty'
