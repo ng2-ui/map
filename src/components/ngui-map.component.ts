@@ -5,6 +5,7 @@ import {
   EventEmitter,
   SimpleChanges,
   Output,
+  Inject,
   NgZone,
   AfterViewInit, AfterViewChecked, OnChanges, OnDestroy
 } from '@angular/core';
@@ -18,6 +19,7 @@ import { InfoWindow } from './info-window';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operator/debounceTime';
 import { toCamelCase } from '../services/util';
+import { NG_MAP_CONFIG_TOKEN, ConfigOption } from '../services/config';
 
 const INPUTS = [
   'backgroundColor', 'center', 'disableDefaultUI', 'disableDoubleClickZoom', 'draggable', 'draggableCursor',
@@ -79,6 +81,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
     public nguiMap: NguiMap,
     public apiLoader: NgMapApiLoader,
     public zone: NgZone,
+    @Inject(NG_MAP_CONFIG_TOKEN) public config: ConfigOption,
   ) {
     apiLoader.load();
 
@@ -136,7 +139,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
       });
 
       // update map when input changes
-      debounceTime.call(this.inputChanges$, 1000)
+      debounceTime.call(this.inputChanges$, typeof this.config.inputDebounceTime === 'number' ? this.config.inputDebounceTime : 1000)
         .subscribe((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.map, changes));
 
       if (typeof window !== 'undefined' && (<any>window)['nguiMapRef']) {
