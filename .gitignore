@@ -3,5 +3,7 @@ typings
 *.log
 *.tgz
 .idea
+tmp
 .tmp
+.ng_build
 dist
