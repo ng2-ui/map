@@ -9,7 +9,7 @@
 var path = require("path");
 var fs = require('fs-extra');
 
-var tmpDir = path.join('.tmp', 'src');
+var tmpDir = path.join('tmp');
 fs.ensureDirSync(tmpDir);
 fs.emptyDirSync(tmpDir);
 fs.copySync('src', tmpDir);
