@@ -6,3 +6,10 @@ before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - sleep 5
+
+after_success:
+  - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && npm run gh-pages
+
+env:
+  global:
+    secure: rERtYBPaeGIlU96ATx7Omp0vHjCZMbwTgFGqEA2KY0MQwBSTZ9buW1zpkSATr/Qgtv+/1xcWl2MAT9fg7LzRp3WAnTVkyV0zJwVhjn9METTgDuRoC7d8ktE9W4Munq6w4dOb5ai/shdxQnoEcRy+sE+3Lr3FyEw9C7FTjlZJhD7a5+A5UGOfqD0rhFyoSwgqGeKEa6LQjEZVs5DwKF5JIorTXN8so0AiBJFQI3wDUHLqZs4wyk6eA/y/q+G2OZos+To2E3qlvinhAM8DPwito9Kf4Q3Xw4ncli02M4B7/iG8b1YYr6POL30qaPCZQ7z9RlFV72BTtd99q9wmBYd0MsXgToGASbfpA+VSLYtcfQMb/gknF2WVwpjLb+tD8bJCP4cFeKjjOouQ0sTe9/w8nHgdEarDyUEUF2dR42OAUpbKOZtmARsvSsAYI/Zt+XZDlXkRBgq70WgXPFlg8xxeYopGRURz18fNoO6qm+/y6HJWv+btmgcsVu+RYIzTz4yWHxp+a9WjUwJiUwUvEI5M0dIOjjRSV9POaSlN423oxyH6krXmsTT1MOCZiiqLl/ilcduM05WYT4PxpzPH2imla7I+zNUhPxs6PhxloSV/lFejyxfAoPMn5dIjC7PrEoPivnRUjplWLhB+J7/u9s0j+64WA0J/9cHavxSQCOHI31M=

@@ -14,8 +14,6 @@
     "use-pipe-transform-interface": true,
     "pipe-naming": [false, "camelCase", "ngui-map"],
     "import-spacing": true,
-    "templates-use-public": true,
-    "invoke-injectable": true,
     "class-name": true,
     "comment-format": [true, "check-space"],
     "indent": [true, "spaces"],
