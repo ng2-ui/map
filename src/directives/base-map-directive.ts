@@ -3,6 +3,7 @@ import {EventEmitter, SimpleChanges, Output, OnInit, OnChanges, OnDestroy} from 
 import { OptionBuilder } from '../services/option-builder';
 import { NguiMap } from '../services/ngui-map';
 import { NguiMapComponent } from '../components/ngui-map.component';
+import { missingLibraryError } from '../services/util';
 export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   // this should be redefined on each childr directive
   @Output() initialized$: EventEmitter<any> = new EventEmitter();
@@ -48,6 +49,9 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
 
     // noinspection TypeScriptUnresolvedFunction
     if (this.libraryName) {
+      if (!google.maps[this.libraryName]) {
+        throw missingLibraryError(this.mapObjectName, this.libraryName);
+      }
       this.mapObject = new google.maps[this.libraryName][this.mapObjectName](this.objectOptions);
     } else {
       this.mapObject = new google.maps[this.mapObjectName](this.objectOptions);
