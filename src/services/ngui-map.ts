@@ -16,11 +16,8 @@ export class NguiMap {
 
   setObjectEvents(definedEvents: string[], thisObj: any, prefix: string) {
     definedEvents.forEach(definedEvent => {
-      let eventName = definedEvent
-        .replace(/([A-Z])/g, ($1) => `_${$1.toLowerCase()}`) // positionChanged -> position_changed
-        .replace(/^map_/, '');                               // map_click -> click  to avoid DOM conflicts
-
-      let zone = this.zone;
+      const eventName = this.getEventName(definedEvent),
+        zone = this.zone;
       zone.runOutsideAngular(() => {
         thisObj[prefix].addListener(eventName, function(event: google.maps.event) {
           let param: any = event ? event : {};
@@ -33,10 +30,7 @@ export class NguiMap {
 
   clearObjectEvents(definedEvents: string[], thisObj: any, prefix: string) {
     definedEvents.forEach(definedEvent => {
-      let eventName = definedEvent
-        .replace(/([A-Z])/g, ($1) => `_${$1.toLowerCase()}`) // positionChanged -> position_changed
-        .replace(/^map_/, '');                               // map_click -> click  to avoid DOM conflicts
-
+      const eventName = this.getEventName(definedEvent);
       this.zone.runOutsideAngular(() => {
         if (thisObj[prefix]) {
           google.maps.event.clearListeners(thisObj[prefix], eventName);
@@ -88,5 +82,11 @@ export class NguiMap {
         }
       }
     }
+  }
+
+  private getEventName(definedEvent) {
+    return definedEvent
+      .replace(/([A-Z])/g, ($1) => `_${$1.toLowerCase()}`) // positionChanged -> position_changed
+      .replace(/^map_/, '');                               // map_click -> click  to avoid DOM conflicts
   }
 }
