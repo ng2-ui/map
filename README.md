@@ -5,7 +5,7 @@
 
 Angular2 Google Map ([ng-map](https://ngmap.github.io) version 2)
 
-* **[![Imgur](http://i.imgur.com/O2EOCxf.png)](https://rawgit.com/ng2-ui/map/master/app/index.html)**		
+* **[![Imgur](http://i.imgur.com/O2EOCxf.png)](https://ng2-ui.github.io/map/)**		
 * [Plunker Example](https://plnkr.co/edit/6e1qWK?p=preview)
 * [Place Auto Complete Plunker Example](https://plnkr.co/edit/AT3fxW?p=preview)
 
@@ -140,88 +140,88 @@ please send me email to `allenhwkim AT gmail.com` with your github id.
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#MapOptions">MapOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Map">Map Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/map-simple">Google Simple Map Example</a> <br/>
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/simple-map">ngui-map example</a>
+           <a href="https://ng2-ui.github.io/map/#/simple-map">ngui-map example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Marker">Marker</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#MarkerOptions">MarkerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Marker">Marker Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/marker-simple">Google Simple Marker Example</a> <br/> 
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/simple-marker">ngui-map marker example</a>
+           <a href="https://ng2-ui.github.io/map/#/simple-marker">ngui-map marker example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindow">InfoWindow</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindowOptions">InfoWindowOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#InfoWindow">InfoWindow Events</a>
       <td>  <a href="https://developers.google.com/maps/documentation/javascript/examples/infowindow-simple">Google Infowindows Example</a> <br/>
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/simple-info-window">ngui-map info-window example</a>
+           <a href="https://ng2-ui.github.io/map/#/simple-info-window">ngui-map info-window example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Circle">Circle</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#CircleOptions">CircleOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Circle">Circle Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/circle-simple">Google Circle example</a>  <br/>
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/simple-circle">ngui-map circle example</a>
+           <a href="https://ng2-ui.github.io/map/#/simple-circle">ngui-map circle example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Polygon">Polygon</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#PolygonOptions">PolygonOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Polygon">Polygon Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/polygon-hole">Google Polygon example</a> <br/>
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/polygon">ngui-map polygon example</a> 
+           <a href="https://ng2-ui.github.io/map/#/polygon">ngui-map polygon example</a> 
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Polyline">Polyline</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#PolylineOptions">PolylineOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Polyline">Polyline Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/polyline-simple">Google Polyline Example</a> <br/>
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/simple-polyline">ngui-map polyline  example</a>
+           <a href="https://ng2-ui.github.io/map/#/simple-polyline">ngui-map polyline  example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#GroundOverlay">GroundOverlay</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#GroundOverlayOptions">GroundOverlayOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#GroundOverlay">GroundOverlay Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/groundoverlay-simple">Google Simple Ground Overlay Example</a><br/>
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/simple-ground-overlay">ngui-map ground-overlay example</a>
+           <a href="https://ng2-ui.github.io/map/#/simple-ground-overlay">ngui-map ground-overlay example</a>
   <tr><td> FusionTablesLayer <td> FusionTablesLayerOptions <td> FusionTablesLayer Events <td> Experimental Status - No Plan to implement
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#HeatmapLayer">HeatmapLayer</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#HeatmapLayerOptions">HeatmapLayerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#HeatmapLayer">HeatmapLayer Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-heatmap">Google Heatmap Layer</a> <br/> 
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/heatmap-layer">ngui-map heatmap-layer example</a>
+           <a href="https://ng2-ui.github.io/map/#/heatmap-layer">ngui-map heatmap-layer example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#KmlLayer">KmlLayer</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#KmlLayerOptions">KmlLayerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#KmlLayer">KmlLayer Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-kml">Google Kml Layer</a> <br/> 
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/heatmap-layer">ngui-map kml-layer example</a> 
+           <a href="https://ng2-ui.github.io/map/#/heatmap-layer">ngui-map kml-layer example</a> 
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Data">Data</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DataOptions">DataOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#Data">Data Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-data-simple">Google Layer Data Example</a> <br/> 
-           <xa href="https://rawgit.com/ng2-ui/map/master/app/index.html#/data-layer">ngui-map data example</xa>
+           <xa href="https://ng2-ui.github.io/map/#/data-layer">ngui-map data example</xa>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayer">BicyclingLayer</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayerOptions">BicyclingLayerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#BicyclingLayer">BicyclingLayer Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-bicycling">Google Bycycling Layer Example</a> <br/>
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/bicycling-layer">ngui-map bicycling-layer example</a>
+           <a href="https://ng2-ui.github.io/map/#/bicycling-layer">ngui-map bicycling-layer example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TrafficLayer">TrafficLayer</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TrafficLayerOptions">TrafficLayerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TrafficLayer">TrafficLayer Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-traffic">Google Traffic Layer Example</a> <br/>
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/traffic-layer">ngui-map traffic-layer example</a>
+           <a href="https://ng2-ui.github.io/map/#/traffic-layer">ngui-map traffic-layer example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TransitLayer">TransitLayer</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TransitLayerOptions">TransitLayerOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#TransitLayer">TransitLayer Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/layer-transit">Google Transit Layer Example</a> <br/>
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/transit-layer">ngui-map transit-layer example</a>
+           <a href="https://ng2-ui.github.io/map/#/transit-layer">ngui-map transit-layer example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#StreetViewPanorama">StreetViewPanorama</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#StreetViewPanoramaOptions">StreetViewPanoramaOptions</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#StreetViewPanorama">StreetViewPanorama Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/streetview-embed">Google Streetview Example</a> <br/>
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/street-view-panorama">ngui-map streetview-panorama example</a>
+           <a href="https://ng2-ui.github.io/map/#/street-view-panorama">ngui-map streetview-panorama example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#AutoComplete">AutoComplete</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#AutoCompleteOptions">AutoComplete Options</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#AutoComplete">AutoComplete Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete">Google Places Autocomplete Example</a> <br/>
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/palces-auto-complete">ngui-map places-auto-complete example</a>
+           <a href="https://ng2-ui.github.io/map/#/palces-auto-complete">ngui-map places-auto-complete example</a>
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRenderer">DirectionsRenderer</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRendererOptions">DirectionsRenderer Options</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DirectionsRenderer">DirectionsRenderer Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/directions-complex">Google Directions Example</a> <br/>
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/directions-renderer">ngui-map directions-renderer example</a> 
+           <a href="https://ng2-ui.github.io/map/#/directions-renderer">ngui-map directions-renderer example</a> 
   <tr><td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DrawingManager">DrawingManager</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DrawingManagerOptions">DrawingManager Options</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/reference#DrawingManager">DrawingManager Events</a>
       <td> <a href="https://developers.google.com/maps/documentation/javascript/examples/drawing-tools">Google Drawing Manager Example</a> <br/>
-           <a href="https://rawgit.com/ng2-ui/map/master/app/index.html#/drawing-manager">ngui-map drawing-manager example</a> 
+           <a href="https://ng2-ui.github.io/map/#/drawing-manager">ngui-map drawing-manager example</a> 
 </table>
 
 ### Custom Directives

@@ -59,3 +59,12 @@ export function toCamelCase(str: string): string {
 export function isMapsApiLoaded() {
   return typeof google === 'object' && typeof google.maps === 'object';
 }
+
+export function missingLibraryError(component, libName) {
+  return Error(`${component}: library '${libName}' is missing, please ensure to include it in a 'libraries' parameter.
+    Example:
+      NguiMapModule.forRoot({
+        apiUrl: 'https://maps.googleapis.com/maps/api/js?libraries=${libName}'
+      })
+  `);
+}

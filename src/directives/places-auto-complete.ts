@@ -8,6 +8,7 @@ import {
 
 import { NgMapApiLoader } from '../services/api-loader';
 import { OptionBuilder } from '../services/option-builder';
+import { missingLibraryError } from '../services/util';
 
 @Directive({
   selector: '[places-auto-complete]'
@@ -37,6 +38,10 @@ export class PlacesAutoComplete {
     this.objectOptions =
       this.optionBuilder.googlizeAllInputs(['bounds', 'componentRestrictions', 'types'], this);
     console.log('places autocomplete options', this.objectOptions);
+
+    if (!google.maps.places) {
+      throw missingLibraryError('PlacesAutoComplete', 'places');
+    }
 
     this.autocomplete = new google.maps.places.Autocomplete(
       this.elementRef.nativeElement,

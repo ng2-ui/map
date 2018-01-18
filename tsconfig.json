@@ -11,7 +11,9 @@
     "lib": ["dom", "es2016"],
     "baseUrl": "src",
     "paths": {
-      "@ngui/map": ["./index"]
+      "@ngui/map": ["./index"],
+      // workaround for https://github.com/ng2-ui/utils/issues/5
+      "@ngui/utils": ["../node_modules/@ngui/utils/src/index.ts"]
     },
     "typeRoots": [
       "./node_modules/@types"
