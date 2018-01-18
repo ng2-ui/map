@@ -143,7 +143,7 @@ System.config({
     'ts':                         'npm:plugin-typescript@4.0.10/lib/plugin.js',
     'typescript':                 'npm:typescript@2.0.2/lib/typescript.js',
 
-    '@ngui/map': 'npm:@ngui/map/dist/map.umd.js'
+    '@ngui/map': 'npm:@ngui/map/dist/bundles/map.umd.js'
   },
   packages: {   // packages tells the System loader how to load when no filename and/or no extension
     app: { main: './main.ts', defaultExtension: 'ts' },
