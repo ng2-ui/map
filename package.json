@@ -15,7 +15,7 @@
     "build:ngc:pre": "node ngc-pre-compiler.js",
     "build:ngc": "ng-packagr -p ng-package.json",
     "gh-pages": "ng build --prod --no-aot --base-href=\"/map/\" && ngh --dir dist/app --repo=https://GH_TOKEN@github.com/ng2-ui/map.git",
-    "test": "npm-run-all --serial lint test:start test:webtest test:stop",
+    "test": "npm-run-all --serial test:start test:webtest test:stop",
     "test:start": "forever start --silent node_modules/.bin/ng serve --port 9239",
     "test:stop": "forever stopall",
     "test:webtest": "webtest webtest.txt",
