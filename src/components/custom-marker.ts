@@ -84,7 +84,11 @@ function getCustomMarkerOverlayView(htmlEl: HTMLElement, position: any) {
 
       if (this.getProjection() && typeof this.position.lng === 'function') {
         let positionOnMap = () => {
-          let posPixel = this.getProjection().fromLatLngToDivPixel(this.position);
+          let projection = this.getProjection();
+          if (!projection) {
+            return;
+          }
+          let posPixel = projection.fromLatLngToDivPixel(this.position);
           let x = Math.round(posPixel.x - (this.htmlEl.offsetWidth / 2));
           let y = Math.round(posPixel.y - this.htmlEl.offsetHeight / 2);
           this.htmlEl.style.left = x + 'px';
