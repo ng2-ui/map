@@ -14,7 +14,7 @@ fs.ensureDirSync(tmpDir);
 fs.emptyDirSync(tmpDir);
 fs.copySync('src', tmpDir);
 
-['components', 'directives'].forEach(dirName => {
+['components', 'directives', 'services'].forEach(dirName => {
   let dirPath = path.join(tmpDir, dirName);
   let files = fs.readdirSync(dirPath);
   let js;
