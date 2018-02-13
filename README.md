@@ -35,7 +35,7 @@ If you like this, you may also like these;
 
         map['@ngui/map'] = 'node_modules/@ngui/map/dist/map.umd.js';
 
-3. import NguiMapeModule to your AppModule
+3. import NguiMapModule to your AppModule
 
         import { NgModule } from '@angular/core';
         import { FormsModule } from "@angular/forms";
