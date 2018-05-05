@@ -1,11 +1,11 @@
 import { Injectable, Inject, Optional, NgZone, OnDestroy } from '@angular/core';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { ReplaySubject } from 'rxjs';
 import { NG_MAP_CONFIG_TOKEN } from './config';
 import { isMapsApiLoaded } from './util';
-import { first } from 'rxjs/operator/first';
 
 export abstract class NgMapApiLoader implements OnDestroy {
-  api$: ReplaySubject<any> = first.call(new ReplaySubject(1));
+  api$: ReplaySubject<any> = new ReplaySubject(1);
+
   abstract load();
 
   constructor(protected config) {

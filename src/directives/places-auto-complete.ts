@@ -9,6 +9,7 @@ import {
 import { NgMapApiLoader } from '../services/api-loader';
 import { OptionBuilder } from '../services/option-builder';
 import { missingLibraryError } from '../services/util';
+import { first } from 'rxjs/operators';
 
 @Directive({
   selector: '[places-auto-complete]'
@@ -30,7 +31,9 @@ export class PlacesAutoComplete {
     public apiLoader: NgMapApiLoader,
   ) {
     apiLoader.load();
-    apiLoader.api$.subscribe(() => this.initialize());
+    apiLoader.api$
+      .pipe(first())
+      .subscribe(() => this.initialize());
   }
 
   // only called when map is ready

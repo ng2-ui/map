@@ -15,8 +15,8 @@ import { GeoCoder } from '../services/geo-coder';
 import { NguiMap } from '../services/ngui-map';
 import { NgMapApiLoader } from '../services/api-loader';
 import { InfoWindow } from './info-window';
-import { Subject } from 'rxjs/Subject';
-import { debounceTime } from 'rxjs/operator/debounceTime';
+import { Subject } from 'rxjs';
+import { debounceTime, tap, first } from 'rxjs/operators';
 import { toCamelCase } from '../services/util';
 
 const INPUTS = [
@@ -88,7 +88,9 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
   }
 
   ngAfterViewInit() {
-    this.apiLoaderSub = this.apiLoader.api$.subscribe(() => this.initializeMap());
+    this.apiLoaderSub = this.apiLoader.api$
+      .pipe(first())
+      .subscribe(() => this.initializeMap());
   }
 
   ngAfterViewChecked() {
@@ -136,8 +138,10 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
       });
 
       // update map when input changes
-      debounceTime.call(this.inputChanges$, 1000)
-        .subscribe((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.map, changes));
+      this.inputChanges$.pipe(
+        debounceTime(1000),
+        tap((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.map, changes)),
+      ).subscribe();
 
       if (typeof window !== 'undefined' && (<any>window)['nguiMapRef']) {
         // expose map object for test and debugging on (<any>window)
