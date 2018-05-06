@@ -6,8 +6,8 @@ import {
   ViewChild, ViewContainerRef,
   Output, OnInit, OnChanges, OnDestroy
 } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { debounceTime } from 'rxjs/operator/debounceTime';
+import { Subject } from 'rxjs';
+import { debounceTime, tap } from 'rxjs/operators';
 import { NguiMap } from '../services/ngui-map';
 import { NguiMapComponent } from './ngui-map.component';
 
@@ -74,8 +74,10 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     this.nguiMap.setObjectEvents(OUTPUTS, this, 'infoWindow');
 
     // update object when input changes
-    debounceTime.call(this.inputChanges$, 1000)
-      .subscribe((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.infoWindow, changes));
+    this.inputChanges$.pipe(
+      debounceTime(1000),
+      tap((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.infoWindow, changes))
+    ).subscribe();
 
     this.nguiMapComponent.addToMapObjectGroup('InfoWindow', this.infoWindow);
     this.initialized$.emit(this.infoWindow);
