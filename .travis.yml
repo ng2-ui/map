@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "6"
+  - "8"
 # To start firefox, xvfb(X virtual framebuffer)
 before_script:
   - export DISPLAY=:99.0
