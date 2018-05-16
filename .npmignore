@@ -3,4 +3,4 @@ app
 tsconfig.json
 node_modules
 npm-debug.log
-.tmp
+tmp
