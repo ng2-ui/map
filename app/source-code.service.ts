@@ -1,12 +1,13 @@
+import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
 import {Plunker} from 'create-plunker';
-import 'rxjs/add/operator/map';
+import {HttpClient} from '@angular/common/http';
+
 
 @Injectable()
 export class SourceCodeService {
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
   getText(klassName: string) {
     let urlPrefix = 'https://raw.githubusercontent.com/ng2-ui/map/master/app/map-components';
@@ -18,8 +19,8 @@ export class SourceCodeService {
       replace(/^-/, '');
     let url = `${urlPrefix}/${fileName}`;
 
-    return this.http.get(url).
-      map((res: Response) => appComponentTsCode(res.text()));
+    return this.http.get(url, { responseType: 'text'}).pipe(
+      map((res) => appComponentTsCode(res)));
   }
 
   plnkr(code: string) {

@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { NguiUtilsModule } from '@ngui/utils';
 import { NguiMapModule } from '@ngui/map';
 import { SourceCodeService } from './source-code.service';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 // import { Codeblock } from 'ng2-prism/codeblock';
@@ -17,7 +17,7 @@ import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app.route';
     imports: [
         BrowserModule,
         FormsModule,
-        HttpModule,
+        HttpClientModule,
         APP_ROUTER_PROVIDERS,
         // NguiMapModule,
         NguiMapModule.forRoot({
