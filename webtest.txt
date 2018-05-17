@@ -2,7 +2,6 @@ Ngui Map Test On Browser
 
 START
   open browser
-  sleep 10000 "wait for build to complete"
   go to http://localhost:9239
 
 Simple Map
