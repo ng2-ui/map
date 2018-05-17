@@ -1,7 +1,7 @@
+import { of } from 'rxjs';
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { SourceCodeService } from '../source-code.service';
-import 'rxjs/add/observable/of';
+
 
 @Component({
   template: `
@@ -17,7 +17,7 @@ import 'rxjs/add/observable/of';
     <pre class="prettyprint">{{code}}</pre>
   `})
 export class MarkerNgForComponent {
-  public positions= [];
+  public positions = [];
 
   code: string;
 
@@ -39,7 +39,7 @@ export class MarkerNgForComponent {
   }
 
   showMarkersFromObservable() {
-    Observable.of(this.getRandomMarkers()) // Think this as http call
+    of(this.getRandomMarkers()) // Think this as http call
       .subscribe( positions => {
         this.positions = positions;
       });
