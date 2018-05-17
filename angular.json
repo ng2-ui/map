@@ -3,28 +3,38 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "@ngui/map": {
+    "@ngui/map-demo": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
+      "prefix": "ngui",
+      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/app",
-            "index": "app/index.html",
-            "main": "app/main.ts",
-            "tsConfig": "app/tsconfig.app.json",
-            "polyfills": "app/polyfills.ts",
+            "outputPath": "dist/map-demo",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.app.json",
             "assets": [
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
-              "app/styles.css"
+              "src/styles.css"
             ],
             "scripts": []
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -33,45 +43,41 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "app/environments/environment.ts",
-                  "with": "app/environments/environment.prod.ts"
-                }
-              ]
+              "buildOptimizer": true
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "@ngui/map:build"
+            "browserTarget": "@ngui/map-demo:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "@ngui/map:build:production"
+              "browserTarget": "@ngui/map-demo:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "@ngui/map:build"
+            "browserTarget": "@ngui/map-demo:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "app/test.ts",
-            "karmaConfig": "./karma.conf.js",
-            "polyfills": "app/polyfills.ts",
-            "tsConfig": "app/tsconfig.spec.json",
-            "scripts": [],
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "app/styles.css"
+              "src/styles.css"
             ],
+            "scripts": [],
             "assets": [
+              "src/favicon.ico",
+              "src/assets"
             ]
           }
         },
@@ -89,23 +95,60 @@
         }
       }
     },
-    "@ngui/map-e2e": {
-      "root": "",
-      "sourceRoot": "",
+    "@ngui/map-demo-e2e": {
+      "root": "e2e/",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
-            "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "@ngui/map:serve"
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "@ngui/map-demo:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "@ngui/map": {
+      "root": "projects/ngui-map",
+      "sourceRoot": "projects/ngui-map/src",
+      "projectType": "library",
+      "prefix": "ngui",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngui-map/tsconfig.lib.json",
+            "project": "projects/ngui-map/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/ngui-map/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngui-map/src/test.ts",
+            "tsConfig": "projects/ngui-map/tsconfig.spec.json",
+            "karmaConfig": "projects/ngui-map/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "e2e/tsconfig.e2e.json"
+              "projects/ngui-map/tsconfig.lib.json",
+              "projects/ngui-map/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -115,7 +158,7 @@
       }
     }
   },
-  "defaultProject": "@ngui/map",
+  "defaultProject": "@ngui/map-demo",
   "schematics": {
     "@schematics/angular:class": {
       "spec": false

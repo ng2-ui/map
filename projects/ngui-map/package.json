@@ -1,0 +1,23 @@
+{
+  "name": "@ngui/map",
+  "version": "0.30.1",
+  "description": "Angular2 Google Map`",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ng2-ui/map.git"
+  },
+  "author": "Allen Kim<allenhwkim@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/ng2-ui/map/issues"
+  },
+  "homepage": "https://github.com/ng2-ui/map#readme",
+  "keywords": [
+    "angular",
+    "google",
+    "map"
+  ],
+  "peerDependencies": {
+    "@angular/common": ">=5.0.0",
+    "rxjs": ">=6.0.0"
+  }
+}
