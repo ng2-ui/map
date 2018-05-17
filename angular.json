@@ -72,8 +72,6 @@
               "app/styles.css"
             ],
             "assets": [
-              "app/assets",
-              "app/favicon.ico"
             ]
           }
         },

@@ -56,7 +56,7 @@ Map -- Change Multiple Properties
   verify script "nguiMapRef.map.getCenter().lat() == 42.99"
   click button#change-props
   verify script "nguiMapRef.map.getZoom() === 8"
-  verify script "nguiMapRef.map.getCenter().lat() == 40.7127837"
+  verify script "nguiMapRef.map.getCenter().lat() == 40.7127753"
 
 Simple Polyline
   click "li[routerlink='/simple-polyline']"
@@ -113,9 +113,9 @@ Places Autocomplete
 Directions Renderer
   click "li[routerlink='/directions-renderer']"
   verify script "nguiMapRef.map.getCenter()"
-  see 'Pennsylvania Station, New York, NY 10119, USA'
+  see 'New York, NY 10119, USA'
   enter text "Grand" into select
-  see 'Grand Central Terminal'
+  see '89 E 42nd St, New York, NY 10017, USA'
 
 Drawing Manager
   click "li[routerlink='/drawing-manager']"

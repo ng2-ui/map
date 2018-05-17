@@ -39,8 +39,8 @@
     "tslib": "^1.7.1"
   },
   "peerDependencies": {
-    "@angular/common": "6.0.2",
-    "rxjs": "^6.1.0"
+    "@angular/common": ">=5.0.0",
+    "rxjs": ">=6.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.6.1",

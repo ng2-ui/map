@@ -33,7 +33,7 @@ import { SourceCodeService } from '../source-code.service';
   ]
 })
 export class CustomMarkerNgForComponent {
-  public positions= [];
+  public positions = [];
   public count: number = 0;
   public code: string;
 

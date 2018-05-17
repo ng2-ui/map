@@ -17,7 +17,7 @@ import { SourceCodeService } from '../source-code.service';
     <pre class="prettyprint">{{code}}</pre>
   `})
 export class MarkerNgForComponent {
-  public positions= [];
+  public positions = [];
 
   code: string;
 

@@ -15,9 +15,9 @@ import { first } from 'rxjs/operators';
   selector: '[places-auto-complete]'
 })
 export class PlacesAutoComplete {
-  @Input('bounds') bounds: any;
-  @Input('componentRestrictions') componentRestrictions: any;
-  @Input('types') types: string[];
+  @Input() bounds: any;
+  @Input() componentRestrictions: any;
+  @Input() types: string[];
 
   @Output('place_changed') place_changed: EventEmitter<any> = new EventEmitter();
   @Output() initialized$: EventEmitter<any> = new EventEmitter();
