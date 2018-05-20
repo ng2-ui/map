@@ -106,7 +106,6 @@ export class MyAppComponent {
     console.log('marker', marker);
   }
   onMapClick(event) {
-    this.positions.push(event.latLng);
     event.target.panTo(event.latLng);
   }
 }

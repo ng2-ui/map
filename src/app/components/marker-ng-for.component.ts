@@ -1,12 +1,13 @@
-import { of } from 'rxjs';
-import { Component } from '@angular/core';
-import { SourceCodeService } from '../services/source-code.service';
+import {of} from 'rxjs';
+import {Component} from '@angular/core';
+import {SourceCodeService} from '../services/source-code.service';
+import {MapListenerService} from '../services/map-listener.service';
 
 
 @Component({
   template: `
     <h1>Marker Wigh *ngFor</h1>
-    <ngui-map zoom="13" center="Brampton, Canada">
+    <ngui-map zoom="13" center="Brampton, Canada" (mapReady)="mls.mapReady($event)">
       <marker *ngFor="let pos of positions" [position]="pos"></marker>
     </ngui-map>
     <button (click)="positions = getRandomMarkers()">Show Random Markers</button> <br/>
@@ -15,13 +16,14 @@ import { SourceCodeService } from '../services/source-code.service';
     <button (click)="sc.plnkr(code)">See in plunker</button>
 
     <pre class="prettyprint">{{code}}</pre>
-  `})
+  `
+})
 export class MarkerNgForComponent {
   public positions = [];
 
   code: string;
 
-  constructor(public sc: SourceCodeService) {
+  constructor(public sc: SourceCodeService, public mls: MapListenerService) {
     this.positions = this.getRandomMarkers();
     sc.getText('MarkerNgForComponent').subscribe(text => this.code = text);
   }
@@ -30,7 +32,7 @@ export class MarkerNgForComponent {
     let randomLat: number, randomLng: number;
 
     let positions = [];
-    for (let i = 0 ; i < 9; i++) {
+    for (let i = 0; i < 9; i++) {
       randomLat = Math.random() * (43.7399 - 43.7300) + 43.7300;
       randomLng = Math.random() * (-79.7600 - -79.7699) + -79.7699;
       positions.push([randomLat, randomLng]);
@@ -40,7 +42,7 @@ export class MarkerNgForComponent {
 
   showMarkersFromObservable() {
     of(this.getRandomMarkers()) // Think this as http call
-      .subscribe( positions => {
+      .subscribe(positions => {
         this.positions = positions;
       });
   }

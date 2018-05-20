@@ -1,11 +1,12 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { DrawingManager } from '@ngui/map';
-import { SourceCodeService } from '../services/source-code.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {DrawingManager} from '@ngui/map';
+import {SourceCodeService} from '../services/source-code.service';
+import {MapListenerService} from '../services/map-listener.service';
 
 @Component({
   template: `
     <h1>Drawing Manager</h1>
-    <ngui-map zoom="8" center="-34.397, 150.644">
+    <ngui-map zoom="8" center="-34.397, 150.644" (mapReady)="mls.mapReady($event)">
       <drawing-manager
         [drawingMode]="'marker'"
         [drawingControl]="true"
@@ -27,13 +28,14 @@ import { SourceCodeService } from '../services/source-code.service';
     <button (click)="sc.plnkr(code)">See in plunker</button>
 
     <pre class="prettyprint">{{code}}</pre>
-  `})
+  `
+})
 export class DrawingManagerComponent implements OnInit {
   code: string;
   selectedOverlay: any;
   @ViewChild(DrawingManager) drawingManager: DrawingManager;
 
-  constructor(public sc: SourceCodeService) {
+  constructor(public sc: SourceCodeService, public mls: MapListenerService) {
     sc.getText('DrawingManagerComponent').subscribe(text => this.code = text);
   }
 

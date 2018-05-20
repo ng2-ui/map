@@ -34,7 +34,7 @@ export class Marker extends BaseMapDirective implements OnInit {
     if (this.nguiMapComponent.mapIdledOnce) { // map is ready already
       this.initialize();
     } else {
-      this.nguiMapComponent.mapReady$.subscribe(map => this.initialize());
+      this.nguiMapComponent.mapReady.subscribe(map => this.initialize());
     }
   }
 

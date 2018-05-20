@@ -1,8 +1,7 @@
-import { Input, Directive, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
+import {Directive, Input, NgZone, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
 
-import { BaseMapDirective } from './base-map-directive';
-import { NguiMapComponent } from '../components/ngui-map.component';
-import { NavigatorGeolocation } from '../services/navigator-geolocation';
+import {BaseMapDirective} from './base-map-directive';
+import {NguiMapComponent} from '../components/ngui-map.component';
 
 const INPUTS = [
   'directions', 'draggable', 'hideRouteList', 'infoWindow', 'panel', 'markerOptions',
@@ -24,8 +23,8 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
   directionsRenderer: google.maps.DirectionsRenderer;
 
   constructor(
+    public zone: NgZone,
     nguiMapComponent: NguiMapComponent,
-    public geolocation: NavigatorGeolocation
   ) {
     super(nguiMapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS);
   }
@@ -67,8 +66,9 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
   }
 
   showDirections(directionsRequest: google.maps.DirectionsRequest) {
+    const zone = this.zone;
     this.directionsService.route(directionsRequest,
-      (response: any, status: any) =>  {
+      (response: any, status: any) => {
         // in some-case the callback is called during destroy component,
         // we should make sure directionsRenderer is still defined (cancelling `route` callback is not possible).
         if (!this.directionsRenderer) {
@@ -76,7 +76,7 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
         }
 
         if (status === google.maps.DirectionsStatus.OK) {
-          this.directionsRenderer.setDirections(response);
+          zone.run(() => this.directionsRenderer.setDirections(response));
         } else {
           console.error('Directions request failed due to ' + status);
         }

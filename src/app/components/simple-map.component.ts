@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { SourceCodeService } from '../services/source-code.service';
+import {Component} from '@angular/core';
+import {SourceCodeService} from '../services/source-code.service';
+import {MapListenerService} from '../services/map-listener.service';
 
 @Component({
   template: `
     <h1>Simple Map</h1>
     <ngui-map center="Brampton, Canada"
-      (mapClick)="onClick($event)"
-      [fullscreenControl]="true"
-      [fullscreenControlOptions]="{position: 'TOP_RIGHT'}"></ngui-map>
+              (mapClick)="onClick($event)"
+              [fullscreenControl]="true"
+              [fullscreenControlOptions]="{position: 'TOP_RIGHT'}"></ngui-map>
     "center" can be an;
     <ul>
       <li>lat/lng array e.g., [42.99, -77.79]
@@ -15,7 +16,8 @@ import { SourceCodeService } from '../services/source-code.service';
       <li> or, none(for the current position)
     </ul>
     <ngui-map center="some-invalid-location"
-      [geoFallbackCenter]="[42.99, -77.79]"></ngui-map>
+              (mapReady)="mls.mapReady($event)"
+              [geoFallbackCenter]="[42.99, -77.79]"></ngui-map>
 
     <button (click)="sc.plnkr(code)">See in plunker</button>
 
@@ -23,11 +25,13 @@ import { SourceCodeService } from '../services/source-code.service';
 })
 export class SimpleMapComponent {
   code: string;
-  constructor(public sc: SourceCodeService) {
+
+  constructor(public sc: SourceCodeService, public mls: MapListenerService) {
     sc.getText('SimpleMapComponent').subscribe(text => this.code = text);
   }
+
   onClick(event) {
-    if (event instanceof MouseEvent)  {
+    if (event instanceof MouseEvent) {
       return false;
     }
     console.log('map is clicked', event, event.target);

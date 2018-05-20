@@ -34,7 +34,7 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
     if (this.nguiMapComponent.mapIdledOnce) { // map is ready already
       this.initialize();
     } else {
-      this.nguiMapComponent.mapReady$.subscribe(map => this.initialize());
+      this.nguiMapComponent.mapReady.subscribe(map => this.initialize());
     }
   }
 
@@ -70,7 +70,6 @@ export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   // When input is changed, update object too.
   // e.g., when map center is changed by user, update center on the map
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this.mapObjectName, 'objectOptions are changed', changes);
     this.nguiMap.updateGoogleObject(this.mapObject, changes);
   }
 

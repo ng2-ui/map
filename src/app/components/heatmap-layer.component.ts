@@ -1,11 +1,12 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { HeatmapLayer } from '@ngui/map';
-import { SourceCodeService } from '../services/source-code.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {HeatmapLayer} from '@ngui/map';
+import {SourceCodeService} from '../services/source-code.service';
+import {MapListenerService} from '../services/map-listener.service';
 
 @Component({
   template: `
     <h1>Heatmap Layer</h1>
-    <ngui-map zoom="13" center="37.782551, -122.445368">
+    <ngui-map zoom="13" center="37.782551, -122.445368" (mapReady)="mls.mapReady($event)">
       <div id="floating-panel">
         <button (click)="toggleHeatmap()">Toggle Heatmap</button>
         <button (click)="changeGradient()">Change gradient</button>
@@ -27,7 +28,7 @@ import { SourceCodeService } from '../services/source-code.service';
       position: absolute;
       background-color: #fff;
       border: 1px solid #999;
-      font-family: 'Roboto','sans-serif';
+      font-family: 'Roboto', 'sans-serif';
       left: 25%;
       line-height: 30px;
       padding: 5px;
@@ -45,7 +46,7 @@ export class HeatmapLayerComponent implements OnInit {
   points = [];
   code: string;
 
-  constructor(public sc: SourceCodeService) {
+  constructor(public sc: SourceCodeService, public mls: MapListenerService) {
     sc.getText('HeatmapLayerComponent').subscribe(text => this.code = text);
   }
 
@@ -96,7 +97,7 @@ export class HeatmapLayerComponent implements OnInit {
   loadRandomPoints() {
     this.points = [];
 
-    for (let i = 0 ; i < 9; i++) {
+    for (let i = 0; i < 9; i++) {
       this.addPoint();
     }
   }

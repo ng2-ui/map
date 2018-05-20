@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { SourceCodeService } from '../services/source-code.service';
+import {Component} from '@angular/core';
+import {SourceCodeService} from '../services/source-code.service';
+import {MapListenerService} from '../services/map-listener.service';
 
 @Component({
   template: `
@@ -9,7 +10,8 @@ import { SourceCodeService } from '../services/source-code.service';
       zoom="18"
       map-type-id="MapTypeId.SATELLITE"
       tilt="45"
-      streetView="StreetViewPanorama(document.querySelector('div#sv'), {position:new google.maps.LatLng(40.688738,-74.043871)})">
+      streetView="StreetViewPanorama(document.querySelector('div#sv'), {position:new google.maps.LatLng(40.688738,-74.043871)})"
+      (mapReady)="mls.mapReady($event)">
     </ngui-map>
     <div id="sv"></div>
 
@@ -17,12 +19,20 @@ import { SourceCodeService } from '../services/source-code.service';
 
     <pre class="prettyprint">{{code}}</pre>
   `,
-  styles: [`#sv {width: 50%; height: 300px} ngui-map {width: 50%; float: left}`]
+  styles: [`#sv {
+    width: 50%;
+    height: 300px
+  }
+
+  ngui-map {
+    width: 50%;
+    float: left
+  }`]
 })
 export class MapWithStreetviewComponent {
   code: string;
 
-  constructor(public sc: SourceCodeService) {
+  constructor(public sc: SourceCodeService, public mls: MapListenerService) {
     sc.getText('MapWithStreetviewComponent').subscribe(text => this.code = text);
   }
 

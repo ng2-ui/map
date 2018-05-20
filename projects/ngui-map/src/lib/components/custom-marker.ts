@@ -3,7 +3,7 @@ import {
   ElementRef,
   Output,
   EventEmitter,
-  SimpleChanges, OnInit, OnDestroy, OnChanges,
+  SimpleChanges, OnInit, OnDestroy, OnChanges, ChangeDetectionStrategy,
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { debounceTime, tap } from 'rxjs/operators';
@@ -125,12 +125,11 @@ function getCustomMarkerOverlayView(htmlEl: HTMLElement, position: any) {
   template: `
     <ng-content></ng-content>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class CustomMarker implements OnInit, OnDestroy, OnChanges {
   @Output() initialized$: EventEmitter<any> = new EventEmitter();
-
-  public inputChanges$ = new Subject();
 
   private el: HTMLElement;
   private mapObject: any;
@@ -147,16 +146,15 @@ export class CustomMarker implements OnInit, OnDestroy, OnChanges {
     if (this.nguiMapComponent.mapIdledOnce) { // map is ready already
       this.initialize();
     } else {
-      this.nguiMapComponent.mapReady$.subscribe(map => this.initialize());
+      this.nguiMapComponent.mapReady.subscribe(map => this.initialize());
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.inputChanges$.next(changes);
+    this.nguiMap.updateGoogleObject(this.mapObject, changes)
   }
 
   ngOnDestroy() {
-    this.inputChanges$.complete();
     this.nguiMapComponent.removeFromMapObjectGroup('CustomMarker', this.mapObject);
 
     if (this.mapObject) {
@@ -173,12 +171,6 @@ export class CustomMarker implements OnInit, OnDestroy, OnChanges {
 
     // set google events listeners and emits to this outputs listeners
     this.nguiMap.setObjectEvents(OUTPUTS, this, 'mapObject');
-
-    // update object when input changes
-    this.inputChanges$.pipe(
-      debounceTime(1000),
-      tap((changes: SimpleChanges) => this.nguiMap.updateGoogleObject(this.mapObject, changes)),
-    ).subscribe();
 
     this.nguiMapComponent.addToMapObjectGroup('CustomMarker', this.mapObject);
     this.initialized$.emit(this.mapObject);

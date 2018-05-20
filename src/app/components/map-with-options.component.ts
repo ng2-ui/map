@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
-import { SourceCodeService } from '../services/source-code.service';
+import {Component} from '@angular/core';
+import {SourceCodeService} from '../services/source-code.service';
+import {MapListenerService} from '../services/map-listener.service';
 
 @Component({
   template: `
     <h1>Map With Options - satellite view</h1>
-    <ngui-map [options]="allOptions"></ngui-map>
+    <ngui-map [options]="allOptions" (mapReady)="mls.mapReady($event)"></ngui-map>
 
     <button (click)="sc.plnkr(code)">See in plunker</button>
 
     <pre class="prettyprint">{{code}}</pre>
-  `})
+  `
+})
 export class MapWithOptionsComponent {
   code: string;
 
@@ -20,7 +22,7 @@ export class MapWithOptionsComponent {
     tilt: 45
   };
 
-  constructor(public sc: SourceCodeService) {
+  constructor(public sc: SourceCodeService, public mls: MapListenerService) {
     sc.getText('MapWithOptionsComponent').subscribe(text => this.code = text);
   }
 

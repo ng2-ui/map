@@ -19,10 +19,13 @@ export class NguiMap {
     definedEvents.forEach(definedEvent => {
       const eventName = this.getEventName(definedEvent),
         zone = this.zone;
-      thisObj[prefix].addListener(eventName, function (event: google.maps.event) {
-        let param: any = event ? event : {};
-        param.target = this;
-        zone.run(() => thisObj[definedEvent].emit(param));
+
+      this.zone.runOutsideAngular(() => {
+        thisObj[prefix].addListener(eventName, function (event: google.maps.event) {
+          let param: any = event ? event : {};
+          param.target = this;
+          thisObj[definedEvent].emit(param);
+        });
       });
     });
   }
@@ -43,7 +46,6 @@ export class NguiMap {
       delete thisObj[prefix].nguiMapComponent;
       delete thisObj[prefix];
     }
-
   }
 
   updateGoogleObject = (object: any, changes: SimpleChanges) => {

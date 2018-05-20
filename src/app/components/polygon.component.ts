@@ -1,32 +1,34 @@
-import { Component } from '@angular/core';
-import { SourceCodeService } from '../services/source-code.service';
+import {Component} from '@angular/core';
+import {SourceCodeService} from '../services/source-code.service';
+import {MapListenerService} from '../services/map-listener.service';
 
 @Component({
   template: `
     <h1>Polygon</h1>
     <ngui-map zoom="5" center="24.886, -70.268" scrollwheel="false">
       <polygon [editable]="true"
-        [paths]="paths"
-        [strokeColor]="'#FFC107'"
-        [strokeOpacity]="0.8"
-        [strokeWeight]="2"
-        [fillColor]="'#FFC107'"
-        [fillOpacity]="0.35"></polygon>
+               [paths]="paths"
+               [strokeColor]="'#FFC107'"
+               [strokeOpacity]="0.8"
+               [strokeWeight]="2"
+               [fillColor]="'#FFC107'"
+               [fillOpacity]="0.35"></polygon>
     </ngui-map>
-    <ngui-map zoom="5" center="24.886, -70.268" scrollwheel="false">
+    <ngui-map zoom="5" center="24.886, -70.268" scrollwheel="false" (mapReady)="mls.mapReady($event)">
       <map-polygon [editable]="true"
-        [paths]="paths"
-        [strokeColor]="'#FFC107'"
-        [strokeOpacity]="0.8"
-        [strokeWeight]="2"
-        [fillColor]="'#FFC107'"
-        [fillOpacity]="0.35"></map-polygon>
+                   [paths]="paths"
+                   [strokeColor]="'#FFC107'"
+                   [strokeOpacity]="0.8"
+                   [strokeWeight]="2"
+                   [fillColor]="'#FFC107'"
+                   [fillOpacity]="0.35"></map-polygon>
     </ngui-map>
 
     <button (click)="sc.plnkr(code)">See in plunker</button>
 
     <pre class="prettyprint">{{code}}</pre>
-  `})
+  `
+})
 export class PolygonComponent {
   paths = [[
     {lat: 25.774, lng: -80.190},
@@ -39,7 +41,8 @@ export class PolygonComponent {
   ]];
 
   code: string;
-  constructor(public sc: SourceCodeService) {
+
+  constructor(public sc: SourceCodeService, public mls: MapListenerService) {
     sc.getText('PolygonComponent').subscribe(text => this.code = text);
   }
 }

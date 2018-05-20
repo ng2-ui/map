@@ -1,26 +1,29 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
+import {SourceCodeService} from '../services/source-code.service';
+import {MapListenerService} from '../services/map-listener.service';
+
 declare let google: any;
-import { SourceCodeService } from '../services/source-code.service';
 
 @Component({
   template: `
     <h3 *ngFor="let pos of positions">{{pos}}</h3>
-    <ngui-map zoom="14" center="Brampton, Canada">
+    <ngui-map zoom="14" center="Brampton, Canada" (mapReady)="mls.mapReady($event)">
       <heatmap-layer dissipating="true" radius="25"
-        (initialized$)="onHeatmapInitialized($event)"></heatmap-layer>
+                     (initialized$)="onHeatmapInitialized($event)"></heatmap-layer>
       <marker *ngFor="let pos of positions" [position]="pos"></marker>
     </ngui-map>
 
     <button (click)="sc.plnkr(code)">See in plunker</button>
 
     <pre class="prettyprint">{{code}}</pre>
-  `})
+  `
+})
 export class ExperimentComponent {
   positions = [];
   heatmap: any;
   code: string;
 
-  constructor(private cdr: ChangeDetectorRef, public sc: SourceCodeService) {
+  constructor(private cdr: ChangeDetectorRef, public sc: SourceCodeService, public mls: MapListenerService) {
     sc.getText('ExperimentComponent').subscribe(text => this.code = text);
   }
 

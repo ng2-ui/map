@@ -1,17 +1,20 @@
-import { Component } from '@angular/core';
-import { SourceCodeService } from '../services/source-code.service';
+import {Component} from '@angular/core';
+import {SourceCodeService} from '../services/source-code.service';
+import {MapListenerService} from '../services/map-listener.service';
 
 @Component({
   template: `
     <h1>Simple Circle</h1>
-    <ngui-map center="Brampton, Canada" scrollwheel="false">
+    <ngui-map center="Brampton, Canada"
+              (mapReady)="mls.mapReady($event)"
+              scrollwheel="false">
       <circle center="Brampton, Canada"
-        [strokeColor]="'#FF0000'"
-        [strokeOpacity]="0.8"
-        [strokeWeight]="2"
-        [editable]="true"
-        radius="100"
-        draggable="true"></circle>
+              [strokeColor]="'#FF0000'"
+              [strokeOpacity]="0.8"
+              [strokeWeight]="2"
+              [editable]="true"
+              radius="100"
+              draggable="true"></circle>
     </ngui-map>
 
     <button (click)="sc.plnkr(code)">See in plunker</button>
@@ -20,7 +23,8 @@ import { SourceCodeService } from '../services/source-code.service';
 })
 export class SimpleCircleComponent {
   code: string;
-  constructor(public sc: SourceCodeService) {
+
+  constructor(public sc: SourceCodeService, public mls: MapListenerService) {
     sc.getText('SimpleCircleComponent').subscribe(text => this.code = text);
   }
 }

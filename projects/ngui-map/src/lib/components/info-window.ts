@@ -1,15 +1,18 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
   SimpleChanges,
-  ViewChild, ViewContainerRef,
-  Output, OnInit, OnChanges, OnDestroy
+  ViewChild,
+  ViewContainerRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { debounceTime, tap } from 'rxjs/operators';
-import { NguiMap } from '../services/ngui-map';
-import { NguiMapComponent } from './ngui-map.component';
+import {NguiMap} from '../services/ngui-map';
+import {NguiMapComponent} from './ngui-map.component';
 
 const INPUTS = [
   'content', 'disableAutoPan', 'maxWidth', 'pixelOffset', 'position', 'zIndex', 'options'
@@ -22,7 +25,11 @@ const OUTPUTS = [
   selector: 'ngui-map > info-window',
   inputs: INPUTS,
   outputs: OUTPUTS,
-  template: `<div #template><ng-content></ng-content></div>`,
+  template: `
+    <div #template>
+      <ng-content></ng-content>
+    </div>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InfoWindow implements OnInit, OnChanges, OnDestroy {
   @Output() initialized$: EventEmitter<any> = new EventEmitter();
@@ -45,12 +52,12 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     if (this.nguiMapComponent.mapIdledOnce) { // map is ready already
       this.initialize();
     } else {
-      this.nguiMapComponent.mapReady$.subscribe(map => this.initialize());
+      this.nguiMapComponent.mapReady.subscribe(map => this.initialize());
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.nguiMap.updateGoogleObject(this.infoWindow, changes)
+    this.nguiMap.updateGoogleObject(this.infoWindow, changes);
   }
 
   // called when map is ready
@@ -81,11 +88,13 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
     this.infoWindow.setContent(this.template.element.nativeElement);
     this.infoWindow.open(this.nguiMapComponent.map, anchor);
   }
+
   close() {
     // check if infoWindow exists, and closes it
     if (this.infoWindow)
       this.infoWindow.close();
   }
+
   ngOnDestroy() {
     if (this.infoWindow) {
       this.nguiMap.clearObjectEvents(OUTPUTS, this, 'infoWindow');

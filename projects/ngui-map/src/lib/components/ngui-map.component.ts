@@ -1,6 +1,7 @@
 import {
   AfterViewChecked,
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
@@ -61,9 +62,10 @@ const OUTPUTS = [
     <div class="google-map"></div>
     <ng-content></ng-content>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, AfterViewChecked {
-  @Output() public mapReady$: EventEmitter<any> = new EventEmitter();
+  @Output() public mapReady: EventEmitter<any> = new EventEmitter();
 
   public el: HTMLElement;
   public map: google.maps.Map;
@@ -119,34 +121,25 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
 
     this.initializeMapAfterDisplayed = false;
     this.mapOptions = this.optionBuilder.googlizeAllInputs(INPUTS, this);
-    console.log('ngui-map mapOptions', this.mapOptions);
 
     this.mapOptions.zoom = this.mapOptions.zoom || 15;
     typeof this.mapOptions.center === 'string' && (delete this.mapOptions.center);
 
-    this.zone.runOutsideAngular(() => {
-      this.map = new google.maps.Map(this.el, this.mapOptions);
-      this.map['mapObjectName'] = 'NguiMapComponent';
+    this.map = new google.maps.Map(this.el, this.mapOptions);
+    this.map['mapObjectName'] = 'NguiMapComponent';
 
-      if (!this.mapOptions.center) { // if center is not given as lat/lng
-        this.setCenter();
-      }
+    if (!this.mapOptions.center) { // if center is not given as lat/lng
+      this.setCenter();
+    }
 
-      // set google events listeners and emits to this outputs listeners
-      this.nguiMap.setObjectEvents(OUTPUTS, this, 'map');
+    // set google events listeners and emits to this outputs listeners
+    this.nguiMap.setObjectEvents(OUTPUTS, this, 'map');
 
-      this.map.addListener('idle', () => {
-        if (!this.mapIdledOnce) {
-          this.mapIdledOnce = true;
-          setTimeout(() => { // Why????, subsribe and emit must not be in the same cycle???
-            this.mapReady$.emit(this.map);
-          });
-        }
-      });
+    this.map.addListener('idle', () => {
+      if (!this.mapIdledOnce) {
+        this.mapIdledOnce = true;
 
-      if (typeof window !== 'undefined' && (<any>window)['nguiMapRef']) {
-        // expose map object for test and debugging on (<any>window)
-        (<any>window)['nguiMapRef'].map = this.map;
+        this.mapReady.emit(this.map);
       }
     });
   }

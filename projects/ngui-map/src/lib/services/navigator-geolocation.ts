@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Observable, Observer } from 'rxjs';
-import { IJson } from './util';
+import {Injectable, NgZone} from '@angular/core';
+import {Observable, Observer} from 'rxjs';
 
 /**
  *  service for navigator.geolocation methods
@@ -8,17 +7,26 @@ import { IJson } from './util';
 @Injectable()
 export class NavigatorGeolocation {
 
-  getCurrentPosition(geoLocationOptions?: IJson): Observable<any> {
-    geoLocationOptions = geoLocationOptions || { timeout: 5000 };
+  constructor(public zone: NgZone) {
+  }
+
+  getCurrentPosition(geoLocationOptions?: PositionOptions): Observable<any> {
+    geoLocationOptions = geoLocationOptions || {timeout: 5000};
 
     return new Observable<any>((responseObserver: Observer<any>) => {
       if (navigator.geolocation) {
+        const zone = this.zone;
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            responseObserver.next(position);
-            responseObserver.complete();
+            zone.run(() => {
+              responseObserver.next(position);
+              responseObserver.complete();
+            });
           },
-          (evt) => responseObserver.error(evt),
+          (evt) => this.zone.run(() => {
+            responseObserver.error(evt);
+            responseObserver.complete();
+          }),
           geoLocationOptions
         );
       } else {
