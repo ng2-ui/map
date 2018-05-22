@@ -128,19 +128,21 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
     this.map = new google.maps.Map(this.el, this.mapOptions);
     this.map['mapObjectName'] = 'NguiMapComponent';
 
-    if (!this.mapOptions.center) { // if center is not given as lat/lng
-      this.setCenter();
-    }
-
-    // set google events listeners and emits to this outputs listeners
-    this.nguiMap.setObjectEvents(OUTPUTS, this, 'map');
-
-    this.map.addListener('idle', () => {
-      if (!this.mapIdledOnce) {
-        this.mapIdledOnce = true;
-
-        this.mapReady.emit(this.map);
+    this.zone.runOutsideAngular(() => {
+      if (!this.mapOptions.center) { // if center is not given as lat/lng
+        this.setCenter();
       }
+
+      // set google events listeners and emits to this outputs listeners
+      this.nguiMap.setObjectEvents(OUTPUTS, this, 'map');
+
+      this.map.addListener('idle', () => {
+        if (!this.mapIdledOnce) {
+          this.mapIdledOnce = true;
+
+          this.mapReady.emit(this.map);
+        }
+      });
     });
   }
 
@@ -152,7 +154,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
           let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
           this.map.setCenter(latLng);
         },
-        error => {
+        () => {
           console.error('ngui-map: Error finding the current position');
           this.map.setCenter(this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
         }
@@ -164,7 +166,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
           console.log('setting map center from address', this['center']);
           this.map.setCenter(results[0].geometry.location);
         },
-        error => {
+        () => {
           this.map.setCenter(this.mapOptions['geoFallbackCenter'] || new google.maps.LatLng(0, 0));
         });
     }

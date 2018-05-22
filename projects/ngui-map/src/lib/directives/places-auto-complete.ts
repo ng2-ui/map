@@ -1,15 +1,9 @@
-import {
-  Input,
-  Output,
-  Directive,
-  EventEmitter,
-  ElementRef,
-} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, Input, NgZone, Output,} from '@angular/core';
 
-import { NgMapApiLoader } from '../services/api-loader';
-import { OptionBuilder } from '../services/option-builder';
-import { missingLibraryError } from '../services/util';
-import { first } from 'rxjs/operators';
+import {NgMapApiLoader} from '../services/api-loader';
+import {OptionBuilder} from '../services/option-builder';
+import {missingLibraryError} from '../services/util';
+import {first} from 'rxjs/operators';
 
 @Directive({
   selector: '[places-auto-complete]'
@@ -29,6 +23,7 @@ export class PlacesAutoComplete {
     public optionBuilder: OptionBuilder,
     public elementRef: ElementRef,
     public apiLoader: NgMapApiLoader,
+    protected zone: NgZone,
   ) {
     apiLoader.load();
     apiLoader.api$
@@ -40,22 +35,22 @@ export class PlacesAutoComplete {
   initialize = (): void => {
     this.objectOptions =
       this.optionBuilder.googlizeAllInputs(['bounds', 'componentRestrictions', 'types'], this);
-    console.log('places autocomplete options', this.objectOptions);
 
     if (!google.maps.places) {
       throw missingLibraryError('PlacesAutoComplete', 'places');
     }
 
-    this.autocomplete = new google.maps.places.Autocomplete(
-      this.elementRef.nativeElement,
-      this.objectOptions
-    );
-    console.log('this.autocomplete', this.autocomplete);
+    this.zone.runOutsideAngular(() => {
+      this.autocomplete = new google.maps.places.Autocomplete(
+        this.elementRef.nativeElement,
+        this.objectOptions
+      );
 
-    this.autocomplete.addListener('place_changed', place => {
-      this.place_changed.emit(this.autocomplete.getPlace());
+      this.autocomplete.addListener('place_changed', () => {
+        this.zone.run(() => this.place_changed.emit(this.autocomplete.getPlace()));
+      });
     });
 
     this.initialized$.emit(this.autocomplete);
-  }
+  };
 }

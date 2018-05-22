@@ -1,6 +1,5 @@
 import {browser, by, element} from 'protractor';
 
-
 export class AppPage {
   placesAutocomplete = element(by.css('[places-auto-complete]'));
   centerAndZoom = element(by.css('#center-zoom'));

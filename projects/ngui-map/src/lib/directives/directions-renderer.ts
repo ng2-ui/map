@@ -1,4 +1,4 @@
-import {Directive, Input, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
+import {Directive, EventEmitter, Input, NgZone, OnChanges, OnDestroy, Output, SimpleChanges} from '@angular/core';
 
 import {BaseMapDirective} from './base-map-directive';
 import {NguiMapComponent} from '../components/ngui-map.component';
@@ -16,14 +16,15 @@ const OUTPUTS = ['directions_changed'];
   outputs: OUTPUTS,
 })
 export class DirectionsRenderer extends BaseMapDirective implements OnChanges, OnDestroy {
-  // tslint:disable-next-line
-  @Input('directions-request') directionsRequest: google.maps.DirectionsRequest;
+  @Input() directionsRequest: google.maps.DirectionsRequest;
+  @Output() directionsRendered: EventEmitter<any> = new EventEmitter<any>();
 
   directionsService: google.maps.DirectionsService;
   directionsRenderer: google.maps.DirectionsRenderer;
 
   constructor(
-    nguiMapComponent: NguiMapComponent
+    private zone: NgZone,
+    protected nguiMapComponent: NguiMapComponent
   ) {
     super(nguiMapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS);
   }
@@ -31,11 +32,10 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
   // only called when map is ready
   initialize(): void {
     this.objectOptions = this.optionBuilder.googlizeAllInputs(this.inputs, this);
+
     if (typeof this.objectOptions['panel'] === 'string') { // find a Node for panel
       this.objectOptions['panel'] = document.querySelector(this.objectOptions['panel']);
     }
-
-    console.log('DirectionsRenderer', 'initialization options', this.objectOptions, this.directionsRequest);
 
     this.directionsService = new google.maps.DirectionsService();
     this.directionsRenderer = new google.maps.DirectionsRenderer(this.objectOptions);
@@ -65,7 +65,7 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
   }
 
   showDirections(directionsRequest: google.maps.DirectionsRequest) {
-    this.directionsService.route(directionsRequest,
+    this.zone.runOutsideAngular(() => this.directionsService.route(directionsRequest,
       (response: any, status: any) => {
         // in some-case the callback is called during destroy component,
         // we should make sure directionsRenderer is still defined (cancelling `route` callback is not possible).
@@ -75,11 +75,13 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
 
         if (status === google.maps.DirectionsStatus.OK) {
           this.directionsRenderer.setDirections(response);
+          requestAnimationFrame(() => this.directionsRendered.emit(response));
         } else {
           console.error('Directions request failed due to ' + status);
+          this.directionsRendered.error(status);
         }
       }
-    );
+    ));
   }
 
   ngOnDestroy() {

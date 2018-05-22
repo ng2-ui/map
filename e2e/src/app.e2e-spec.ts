@@ -6,10 +6,10 @@ describe('Angular(2+) Google Maps Demo', () => {
 
   beforeAll(() => {
     page = new AppPage();
-    page.navigateTo();
   });
 
   it('should display title', () => {
+    page.navigateTo();
     expect(page.getTitle()).toEqual('Angular(2+) Google Maps');
   });
 
@@ -100,7 +100,7 @@ describe('Angular(2+) Google Maps Demo', () => {
 
       page.click('button#change-props');
 
-      expect(page.centerAndZoom.getText()).toContain('40.7127753');
+      expect(page.centerAndZoom.getAttribute('innerHTML')).toContain('40.7127753');
 
       expect(page.global('nguiMapRef.map.getCenter().lat()')).toEqual(40.7127753);
       expect(page.global('nguiMapRef.map.getZoom()')).toEqual(8);
@@ -173,6 +173,7 @@ describe('Angular(2+) Google Maps Demo', () => {
     it('should show selected place text', () => {
       browser.get('#/places-auto-complete');
       page.searchForPlace('Brampton, ON');
+      browser.wait(ExpectedConditions.elementToBeClickable(page.pacResults.first()));
       page.pacResults.first().click();
       expect(page.getPlaceText()).toBe('Brampton, ON, Canada');
     });

@@ -1,4 +1,4 @@
-import {Injectable, SimpleChanges} from '@angular/core';
+import {Injectable, NgZone, SimpleChanges} from '@angular/core';
 import {OptionBuilder} from './option-builder';
 import {GeoCoder} from './geo-coder';
 
@@ -9,6 +9,7 @@ import {GeoCoder} from './geo-coder';
 export class NguiMap {
 
   constructor(
+    private zone: NgZone,
     private geoCoder: GeoCoder,
     private optionBuilder: OptionBuilder,
   ) {
@@ -18,12 +19,11 @@ export class NguiMap {
     definedEvents.forEach(definedEvent => {
       const eventName = this.getEventName(definedEvent);
 
-      thisObj[prefix].addListener(eventName, function (event: google.maps.event) {
+      this.zone.runOutsideAngular(() => thisObj[prefix].addListener(eventName, function (event: google.maps.event) {
         let param: any = event ? event : {};
         param.target = this;
-        if (thisObj[definedEvent].observers.length)
-          thisObj[definedEvent].emit(param);
-      });
+        thisObj[definedEvent].emit(param);
+      }));
     });
   }
 
@@ -55,6 +55,7 @@ export class NguiMap {
           // To preserve setMethod name in Observable callback, wrap it as a function, then execute
           ((setMethodName) => {
             this.geoCoder.geocode({address: currentValue}).subscribe(results => {
+
               if (typeof object[setMethodName] === 'function') {
                 object[setMethodName](results[0].geometry.location);
               } else {

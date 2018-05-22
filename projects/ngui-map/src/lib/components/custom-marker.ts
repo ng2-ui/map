@@ -1,15 +1,17 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
-  Output,
   EventEmitter,
-  SimpleChanges, OnInit, OnDestroy, OnChanges, ChangeDetectionStrategy,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { debounceTime, tap } from 'rxjs/operators';
 
-import { NguiMap } from '../services/ngui-map';
-import { NguiMapComponent } from './ngui-map.component';
+import {NguiMap} from '../services/ngui-map';
+import {NguiMapComponent} from './ngui-map.component';
 
 const INPUTS = [
   'position'
@@ -55,7 +57,6 @@ function getCustomMarkerOverlayView(htmlEl: HTMLElement, position: any) {
     }
 
     onRemove(): void {
-      //
     }
 
     getPosition() {
@@ -102,10 +103,11 @@ function getCustomMarkerOverlayView(htmlEl: HTMLElement, position: any) {
           setTimeout(() => positionOnMap());
         }
       }
-    }
+    };
 
     setZIndex(zIndex: string): void {
-      zIndex && (this.zIndex = zIndex); /* jshint ignore:line */
+      zIndex && (this.zIndex = zIndex);
+      /* jshint ignore:line */
       this.htmlEl.style.zIndex = this.zIndex;
     }
 
@@ -146,12 +148,12 @@ export class CustomMarker implements OnInit, OnDestroy, OnChanges {
     if (this.nguiMapComponent.mapIdledOnce) { // map is ready already
       this.initialize();
     } else {
-      this.nguiMapComponent.mapReady.subscribe(map => this.initialize());
+      this.nguiMapComponent.mapReady.subscribe(() => this.initialize());
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.nguiMap.updateGoogleObject(this.mapObject, changes)
+    this.nguiMap.updateGoogleObject(this.mapObject, changes);
   }
 
   ngOnDestroy() {
