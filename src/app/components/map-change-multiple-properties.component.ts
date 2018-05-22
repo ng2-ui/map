@@ -36,6 +36,7 @@ export class MapChangeMultiplePropertiesComponent {
 
   onIdle(event) {
     let map = event.target;
+
     if (!map.getCenter())
       return;
 

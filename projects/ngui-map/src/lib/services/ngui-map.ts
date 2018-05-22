@@ -18,11 +18,11 @@ export class NguiMap {
   setObjectEvents(definedEvents: string[], thisObj: any, prefix: string) {
     definedEvents.forEach(definedEvent => {
       const eventName = this.getEventName(definedEvent);
-
+      const zone = this.zone;
       this.zone.runOutsideAngular(() => thisObj[prefix].addListener(eventName, function (event: google.maps.event) {
         let param: any = event ? event : {};
         param.target = this;
-        thisObj[definedEvent].emit(param);
+        zone.run(() => thisObj[definedEvent].emit(param));
       }));
     });
   }
@@ -49,8 +49,11 @@ export class NguiMap {
     let val: any, currentValue: any, setMethodName: string;
     if (object) {
       for (let key in changes) {
-        setMethodName = `set${key.replace(/^[a-z]/, x => x.toUpperCase()) }`;
         currentValue = changes[key].currentValue;
+        if (!currentValue)
+          continue;
+
+        setMethodName = `set${key.replace(/^[a-z]/, x => x.toUpperCase()) }`;
         if (['position', 'center'].indexOf(key) !== -1 && typeof currentValue === 'string') {
           // To preserve setMethod name in Observable callback, wrap it as a function, then execute
           ((setMethodName) => {

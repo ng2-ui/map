@@ -109,7 +109,7 @@ export class NguiMapComponent implements OnChanges, OnDestroy, AfterViewInit, Af
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.nguiMap.updateGoogleObject(this.map, changes);
+    this.zone.runOutsideAngular( () => this.nguiMap.updateGoogleObject(this.map, changes));
   }
 
   initializeMap(): void {

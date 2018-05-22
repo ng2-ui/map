@@ -65,6 +65,7 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
   }
 
   showDirections(directionsRequest: google.maps.DirectionsRequest) {
+    const zone = this.zone;
     this.zone.runOutsideAngular(() => this.directionsService.route(directionsRequest,
       (response: any, status: any) => {
         // in some-case the callback is called during destroy component,
@@ -73,12 +74,13 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
           return;
         }
 
+
         if (status === google.maps.DirectionsStatus.OK) {
           this.directionsRenderer.setDirections(response);
-          requestAnimationFrame(() => this.directionsRendered.emit(response));
+          zone.run(() => requestAnimationFrame(() => this.directionsRendered.emit(response)));
         } else {
           console.error('Directions request failed due to ' + status);
-          this.directionsRendered.error(status);
+          zone.run(() => this.directionsRendered.error(status));
         }
       }
     ));
