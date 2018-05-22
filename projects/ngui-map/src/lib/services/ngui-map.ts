@@ -1,4 +1,4 @@
-import {Injectable, NgZone, SimpleChanges} from '@angular/core';
+import {Injectable, SimpleChanges} from '@angular/core';
 import {OptionBuilder} from './option-builder';
 import {GeoCoder} from './geo-coder';
 
@@ -11,21 +11,18 @@ export class NguiMap {
   constructor(
     private geoCoder: GeoCoder,
     private optionBuilder: OptionBuilder,
-    private zone: NgZone,
   ) {
   }
 
   setObjectEvents(definedEvents: string[], thisObj: any, prefix: string) {
     definedEvents.forEach(definedEvent => {
-      const eventName = this.getEventName(definedEvent),
-        zone = this.zone;
+      const eventName = this.getEventName(definedEvent);
 
-      this.zone.runOutsideAngular(() => {
-        thisObj[prefix].addListener(eventName, function (event: google.maps.event) {
-          let param: any = event ? event : {};
-          param.target = this;
+      thisObj[prefix].addListener(eventName, function (event: google.maps.event) {
+        let param: any = event ? event : {};
+        param.target = this;
+        if (thisObj[definedEvent].observers.length)
           thisObj[definedEvent].emit(param);
-        });
       });
     });
   }

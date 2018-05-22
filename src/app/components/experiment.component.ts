@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import {SourceCodeService} from '../services/source-code.service';
 import {MapListenerService} from '../services/map-listener.service';
 
@@ -23,7 +23,7 @@ export class ExperimentComponent {
   heatmap: any;
   code: string;
 
-  constructor(private cdr: ChangeDetectorRef, public sc: SourceCodeService, public mls: MapListenerService) {
+  constructor(public sc: SourceCodeService, public mls: MapListenerService) {
     sc.getText('ExperimentComponent').subscribe(text => this.code = text);
   }
 
@@ -48,7 +48,6 @@ export class ExperimentComponent {
     this.positions.push([43.72723792568628, -79.7657115210506]);
     this.positions.push([randomLat, randomLon]);
     console.log(this.positions);
-    this.cdr.detectChanges();
-  }
+  };
 
 }

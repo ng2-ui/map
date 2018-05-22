@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import {SourceCodeService} from '../services/source-code.service';
 import {MapListenerService} from '../services/map-listener.service';
 
@@ -24,12 +24,8 @@ export class PlacesAutoCompleteComponent {
   center: any;
   code: string;
 
-  constructor(private ref: ChangeDetectorRef, public sc: SourceCodeService, public mls: MapListenerService) {
+  constructor(public sc: SourceCodeService, public mls: MapListenerService) {
     sc.getText('PlacesAutoCompleteComponent').subscribe(text => this.code = text);
-  }
-
-  initialized(autocomplete: any) {
-    this.autocomplete = autocomplete;
   }
 
   placeChanged(place) {
@@ -38,6 +34,5 @@ export class PlacesAutoCompleteComponent {
       let addressType = place.address_components[i].types[0];
       this.address[addressType] = place.address_components[i].long_name;
     }
-    this.ref.detectChanges();
   }
 }

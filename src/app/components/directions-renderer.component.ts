@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {DirectionsRenderer} from '@ngui/map';
 import {SourceCodeService} from '../services/source-code.service';
 import {MapListenerService} from '../services/map-listener.service';
@@ -26,7 +26,7 @@ import {MapListenerService} from '../services/map-listener.service';
       <directions-renderer
         [suppressMarkers]="true"
         [draggable]="true"
-        panel=".directions"
+        panel="#directions"
         (directions_changed)="directionsChanged()"
         [directions-request]="direction">
       </directions-renderer>
@@ -50,7 +50,7 @@ export class DirectionsRendererComponent implements OnInit {
     travelMode: 'WALKING'
   };
 
-  constructor(private cdr: ChangeDetectorRef, public sc: SourceCodeService, public mls: MapListenerService) {
+  constructor(public sc: SourceCodeService, public mls: MapListenerService) {
     sc.getText('DirectionsRendererComponent').subscribe(text => this.code = text);
   }
 
@@ -62,7 +62,6 @@ export class DirectionsRendererComponent implements OnInit {
 
   directionsChanged() {
     this.directionsResult = this.directionsRenderer.getDirections();
-    this.cdr.detectChanges();
   }
 
   showDirection() {

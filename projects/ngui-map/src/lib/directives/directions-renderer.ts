@@ -1,4 +1,4 @@
-import {Directive, Input, NgZone, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
+import {Directive, Input, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
 
 import {BaseMapDirective} from './base-map-directive';
 import {NguiMapComponent} from '../components/ngui-map.component';
@@ -23,8 +23,7 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
   directionsRenderer: google.maps.DirectionsRenderer;
 
   constructor(
-    public zone: NgZone,
-    nguiMapComponent: NguiMapComponent,
+    nguiMapComponent: NguiMapComponent
   ) {
     super(nguiMapComponent, 'DirectionsRenderer', INPUTS, OUTPUTS);
   }
@@ -43,7 +42,7 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
 
     this.directionsRenderer.setMap(this.nguiMapComponent.map);
 
-    // set google events listeners and emidirectionsRenderer to this outputs listeners
+    // set google events listeners and directionsRenderer to this outputs listeners
     this.showDirections(this.directionsRequest);
 
     this.nguiMap.setObjectEvents(this.outputs, this, 'directionsRenderer');
@@ -66,7 +65,6 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
   }
 
   showDirections(directionsRequest: google.maps.DirectionsRequest) {
-    const zone = this.zone;
     this.directionsService.route(directionsRequest,
       (response: any, status: any) => {
         // in some-case the callback is called during destroy component,
@@ -76,7 +74,7 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
         }
 
         if (status === google.maps.DirectionsStatus.OK) {
-          zone.run(() => this.directionsRenderer.setDirections(response));
+          this.directionsRenderer.setDirections(response);
         } else {
           console.error('Directions request failed due to ' + status);
         }
