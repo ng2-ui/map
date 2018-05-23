@@ -103,7 +103,7 @@ function getCustomMarkerOverlayView(htmlEl: HTMLElement, position: any) {
           setTimeout(() => positionOnMap());
         }
       }
-    };
+    }
 
     setZIndex(zIndex: string): void {
       zIndex && (this.zIndex = zIndex);

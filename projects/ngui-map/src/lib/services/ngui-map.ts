@@ -82,7 +82,7 @@ export class NguiMap {
         }
       }
     }
-  };
+  }
 
   private getEventName(definedEvent) {
     return definedEvent

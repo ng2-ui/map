@@ -1,4 +1,4 @@
-import {Directive, ElementRef, EventEmitter, Input, NgZone, Output,} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, Input, NgZone, Output} from '@angular/core';
 
 import {NgMapApiLoader} from '../services/api-loader';
 import {OptionBuilder} from '../services/option-builder';
@@ -52,5 +52,5 @@ export class PlacesAutoComplete {
     });
 
     this.initialized$.emit(this.autocomplete);
-  };
+  }
 }

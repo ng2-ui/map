@@ -33,7 +33,7 @@ If you like this, you may also like these;
 
 2. _For SystemJs users only_, update `system.config.js` to recognize @ngui/map.
 
-        map['@ngui/map'] = 'node_modules/@ngui/map/dist/map.umd.js';
+        map['@ngui/map'] = 'node_modules/@ngui/map/bundles/ngui-map.umd.js';
 
 3. import NguiMapModule to your AppModule
 
@@ -42,7 +42,7 @@ If you like this, you may also like these;
         import { BrowserModule  } from '@angular/platform-browser';
 
         import { AppComponent } from './app.component';
-        import { NguiMapModule} from '@ngui/map';
+        import { NguiMapModule } from '@ngui/map';
 
         @NgModule({
           imports: [

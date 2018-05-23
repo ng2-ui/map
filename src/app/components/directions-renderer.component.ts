@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {DirectionsRenderer} from '@ngui/map';
 import {SourceCodeService} from '../services/source-code.service';
 import {MapListenerService} from '../services/map-listener.service';
