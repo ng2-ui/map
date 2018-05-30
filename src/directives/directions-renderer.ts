@@ -1,4 +1,4 @@
-import { Input, Directive, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
+import { Input, Directive, SimpleChanges, OnChanges, OnDestroy, Output, EventEmitter } from '@angular/core';
 
 import { BaseMapDirective } from './base-map-directive';
 import { NguiMapComponent } from '../components/ngui-map.component';
@@ -19,6 +19,7 @@ const OUTPUTS = ['directions_changed'];
 export class DirectionsRenderer extends BaseMapDirective implements OnChanges, OnDestroy {
   // tslint:disable-next-line
   @Input('directions-request') directionsRequest: google.maps.DirectionsRequest;
+  @Output('directionsFailed') directionsFailed: EventEmitter<string> = new EventEmitter();
 
   directionsService: google.maps.DirectionsService;
   directionsRenderer: google.maps.DirectionsRenderer;
@@ -78,6 +79,7 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
         if (status === google.maps.DirectionsStatus.OK) {
           this.directionsRenderer.setDirections(response);
         } else {
+          this.directionsFailed.emit(status);
           console.error('Directions request failed due to ' + status);
         }
       }
