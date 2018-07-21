@@ -9,7 +9,7 @@ const INPUTS = [
   'polylineOptions', 'preserveViewport', 'routeIndex', 'suppressBicyclingLayer',
   'suppressInfoWindows', 'suppressMarkers', 'suppressPolylines'
 ];
-const OUTPUTS = ['directions_changed'];
+const OUTPUTS = ['directions_changed', 'directions_result'];
 
 @Directive({
   selector: 'ngui-map > directions-renderer',
@@ -20,6 +20,7 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
   // tslint:disable-next-line
   @Input('directions-request') directionsRequest: google.maps.DirectionsRequest;
   @Output('directionsFailed') directionsFailed: EventEmitter<string> = new EventEmitter();
+  @Output('directions_result') directionsResult: EventEmitter<string> = new EventEmitter();
 
   directionsService: google.maps.DirectionsService;
   directionsRenderer: google.maps.DirectionsRenderer;
@@ -45,7 +46,7 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
 
     this.directionsRenderer.setMap(this.nguiMapComponent.map);
 
-    // set google events listeners and emidirectionsRenderer to this outputs listeners
+    // set google events listeners and emit directionsRenderer to this outputs listeners
     this.showDirections(this.directionsRequest);
 
     this.nguiMap.setObjectEvents(this.outputs, this, 'directionsRenderer');
@@ -53,7 +54,6 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
     this.nguiMapComponent.addToMapObjectGroup(this.mapObjectName, this.mapObject);
     this.initialized$.emit(this.directionsRenderer);
   }
-
 
   ngOnChanges(changes: SimpleChanges) {
     let newOptions = {};
@@ -78,6 +78,7 @@ export class DirectionsRenderer extends BaseMapDirective implements OnChanges, O
 
         if (status === google.maps.DirectionsStatus.OK) {
           this.directionsRenderer.setDirections(response);
+          this.directionsResult.emit(response);
         } else {
           this.directionsFailed.emit(status);
           console.error('Directions request failed due to ' + status);
