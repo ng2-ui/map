@@ -5,6 +5,7 @@ import { NguiMap } from '../services/ngui-map';
 import { NguiMapComponent } from '../components/ngui-map.component';
 import { missingLibraryError } from '../services/util';
 
+@Directive()
 export abstract class BaseMapDirective implements OnInit, OnChanges, OnDestroy {
   // this should be redefined on each childr directive
   @Output() initialized$: EventEmitter<any> = new EventEmitter();
