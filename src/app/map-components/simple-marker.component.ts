@@ -26,7 +26,7 @@ export class SimpleMarkerComponent {
   constructor(public sc: SourceCodeService) {
     sc.getText('SimpleMarkerComponent').subscribe(text => this.code = text);
   }
-  log(event, str) {
+  log(event, str?) {
     if (event instanceof MouseEvent) {
       return false;
     }

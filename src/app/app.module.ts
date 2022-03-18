@@ -9,7 +9,6 @@ import { SourceCodeService } from './source-code.service';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-// import { Codeblock } from 'ng2-prism/codeblock';
 
 import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app-routing.module';
 
@@ -24,7 +23,7 @@ import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app-routing.modul
             apiUrl: 'https://maps.google.com/maps/api/js?key=AIzaSyCbMGRUwcqKjlYX4h4-P6t-xcDryRYLmCM' +
             '&libraries=visualization,places,drawing',
         }),
-        NguiUtilsModule
+        // NguiUtilsModule
     ],
     declarations: [AppComponent, APP_ROUTER_COMPONENTS],
     providers: [

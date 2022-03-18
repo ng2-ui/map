@@ -59,7 +59,7 @@ export const routes: Routes = [
   { path: '',  redirectTo: '/simple-marker', pathMatch: 'full' },
 ];
 
-export const APP_ROUTER_PROVIDERS: ModuleWithProviders = RouterModule.forRoot(routes);
+export const APP_ROUTER_PROVIDERS: ModuleWithProviders<RouterModule> = RouterModule.forRoot(routes);
 export const APP_ROUTER_COMPONENTS = [
   BicyclingLayerComponent,
   DataLayerComponent,
