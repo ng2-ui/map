@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 // import { Codeblock } from 'ng2-prism/codeblock';
 
-import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app.route';
+import { APP_ROUTER_PROVIDERS, APP_ROUTER_COMPONENTS } from './app-routing.module';
 
 @NgModule({
     imports: [

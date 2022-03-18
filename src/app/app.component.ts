@@ -5,7 +5,7 @@ import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'ngui-map-app',
-  templateUrl: './app.html',
+  templateUrl: './app.component.html',
 })
 export class AppComponent {
   public center = 'Brampton, Canada';

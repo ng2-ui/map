@@ -49,7 +49,7 @@ const COMPONENTS_DIRECTIVES = [
   ]
 })
 export class NguiMapModule {
-  static forRoot(config: ConfigOption = {}): ModuleWithProviders {
+  static forRoot(config: ConfigOption = {}): ModuleWithProviders<NguiMapModule> {
     return {
       ngModule: NguiMapModule,
       providers: [
