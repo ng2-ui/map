@@ -39,7 +39,7 @@ import { SourceCodeService } from '../source-code.service';
   `]
 })
 export class HeatmapLayerComponent implements OnInit {
-  @ViewChild(HeatmapLayer) heatmapLayer: HeatmapLayer;
+  @ViewChild(HeatmapLayer, { static: true }) heatmapLayer: HeatmapLayer;
   heatmap: google.maps.visualization.HeatmapLayer;
   map: google.maps.Map;
   points = [];

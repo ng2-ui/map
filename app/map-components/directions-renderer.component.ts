@@ -36,7 +36,7 @@ import { SourceCodeService } from '../source-code.service';
     <pre class="prettyprint">{{code}}</pre>
   `})
 export class DirectionsRendererComponent implements OnInit {
-  @ViewChild(DirectionsRenderer) directionsRendererDirective: DirectionsRenderer;
+  @ViewChild(DirectionsRenderer, { static: true }) directionsRendererDirective: DirectionsRenderer;
 
   code: string;
   directionsRenderer: google.maps.DirectionsRenderer;

@@ -31,7 +31,7 @@ import { SourceCodeService } from '../source-code.service';
 export class DrawingManagerComponent implements OnInit {
   code: string;
   selectedOverlay: any;
-  @ViewChild(DrawingManager) drawingManager: DrawingManager;
+  @ViewChild(DrawingManager, { static: true }) drawingManager: DrawingManager;
 
   constructor(public sc: SourceCodeService) {
     sc.getText('DrawingManagerComponent').subscribe(text => this.code = text);

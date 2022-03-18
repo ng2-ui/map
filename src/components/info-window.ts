@@ -30,7 +30,7 @@ export class InfoWindow implements OnInit, OnChanges, OnDestroy {
   public infoWindow: google.maps.InfoWindow;
   public objectOptions: google.maps.InfoWindowOptions = {};
   public inputChanges$ = new Subject();
-  @ViewChild('template', {read: ViewContainerRef}) template: ViewContainerRef;
+  @ViewChild('template', {read: ViewContainerRef, static: true}) template: ViewContainerRef;
 
   constructor(
     private elementRef: ElementRef,
