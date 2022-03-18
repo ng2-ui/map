@@ -19,7 +19,7 @@ export class NguiMap {
       const eventName = this.getEventName(definedEvent),
         zone = this.zone;
       zone.runOutsideAngular(() => {
-        thisObj[prefix].addListener(eventName, function(event: google.maps.event) {
+        thisObj[prefix].addListener(eventName, function(event: google.maps.MapMouseEvent | google.maps.IconMouseEvent | google.maps.ErrorEvent) {
           let param: any = event ? event : {};
           param.target = this;
           zone.run(() => thisObj[definedEvent].emit(param));

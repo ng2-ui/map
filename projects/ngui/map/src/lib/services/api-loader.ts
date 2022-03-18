@@ -3,12 +3,13 @@ import { ReplaySubject } from 'rxjs';
 import { NG_MAP_CONFIG_TOKEN } from './config';
 import { isMapsApiLoaded } from './util';
 
+@Injectable()
 export abstract class NgMapApiLoader implements OnDestroy {
   api$: ReplaySubject<any> = new ReplaySubject(1);
 
   abstract load();
 
-  constructor(protected config) {
+  constructor(@Optional() @Inject(null) protected config) {
     this.config = this.config || {apiUrl: 'https://maps.google.com/maps/api/js'};
   }
 
