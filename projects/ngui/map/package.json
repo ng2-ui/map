@@ -1,0 +1,11 @@
+{
+  "name": "@ngui/map",
+  "version": "0.0.1",
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@angular/common": "^8.2.14",
+    "@angular/core": "^8.2.14"
+  }
+}

@@ -1,38 +1,34 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "target": "es5",
-    "module": "es2015",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
     "sourceMap": true,
-    "strictNullChecks": false,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "module": "es2020",
+    "moduleResolution": "node",
     "importHelpers": true,
-    "lib": ["dom", "es2016"],
-    "baseUrl": "src",
-    "paths": {
-      "@ngui/map": ["./index"],
-      // workaround for https://github.com/ng2-ui/utils/issues/5
-      "@ngui/utils": ["../node_modules/@ngui/utils/src/index.ts"]
-    },
+    "target": "es2015",
     "typeRoots": [
       "./node_modules/@types"
-    ]
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "@ngui/map": [
+        "dist/ngui/map"
+      ],
+      "@ngui/map/*": [
+        "dist/ngui/map/*"
+      ]
+    }
   },
-  "include": [
-    "node_modules/@ngui/utils/src/**/*.ts",
-    "src/**/*.ts",
-    "app/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "app/build"
-  ],
-  "compileOnSave": false,
-  "buildOnSave": false,
   "angularCompilerOptions": {
-    "strictMetadataEmit": true,
-    "skipTemplateCodegen": true,
-    "preserveWhitespaces": false
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
   }
 }
