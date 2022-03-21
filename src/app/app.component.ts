@@ -4,7 +4,7 @@ import { Component} from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
-  selector: 'ngui-map-app',
+  selector: 'app-component',
   templateUrl: './app.component.html',
 })
 export class AppComponent {

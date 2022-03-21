@@ -33,7 +33,7 @@ export class MapChangeMultiplePropertiesComponent {
 
   onIdle(event) {
     let map = event.target;
-    this.mapInfo.center = [map.getCenter().lat(), map.getCenter().lng()];
+    this.mapInfo.center = [map.getCenter()?.lat(), map.getCenter()?.lng()];
     this.mapInfo.zoom = map.getZoom();
   }
 }
